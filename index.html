@@ -1,0 +1,1034 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prehrana</title>
+<style>
+  :root{
+    color-scheme: light;
+    --bg:#eef4f0; --panel:#ffffff; --panel2:#f1f6f2; --line:#e3eae5;
+    --txt:#1c2a23; --muted:#6a7a71; --accent:#1f9d63; --accent-d:#17824f; --accent2:#3a86c4;
+    --warn:#d29529; --bad:#d15a52; --good:#1f9d63; --kcal:#e0742a;
+    --shadow:0 2px 12px rgba(24,52,38,.06); --shadow-lg:0 12px 34px rgba(24,52,38,.16);
+    --radius:16px;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased;
+    background:radial-gradient(1100px 480px at 100% -10%,#f0e7d6 0%,transparent 58%),linear-gradient(180deg,#f5f0e6 0%,#efe8db 100%);
+    background-attachment:fixed;color:var(--txt);font-size:15px;line-height:1.5;min-height:100vh}
+  header{background:linear-gradient(120deg,#178a52 0%,#1fa08a 100%);padding:20px 22px;color:#fff;position:relative;overflow:hidden}
+  header::after{content:"";position:absolute;right:-40px;top:-60px;width:220px;height:220px;border-radius:50%;background:rgba(255,255,255,.08)}
+  header h1{margin:0;font-size:22px;font-weight:750;letter-spacing:-.3px}
+  header p{margin:3px 0 0;color:rgba(255,255,255,.82);font-size:12.5px}
+  .wrap{max-width:1100px;margin:0 auto;padding:18px 16px 40px}
+  .tabs{display:flex;gap:6px;margin:0 0 18px;flex-wrap:wrap;background:#fff;padding:6px;border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);position:sticky;top:8px;z-index:20}
+  .tabs button{background:transparent;color:var(--muted);border:none;padding:9px 15px;border-radius:9px;cursor:pointer;font-size:13.5px;font-weight:600;transition:all .15s}
+  .tabs button:hover{background:var(--panel2);color:var(--txt)}
+  .tabs button.active{background:linear-gradient(120deg,var(--accent),#22ab73);color:#fff;box-shadow:0 4px 12px rgba(31,157,99,.28)}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:18px;margin-bottom:16px;box-shadow:var(--shadow)}
+  .card h2{margin:0 0 12px;font-size:16px;font-weight:700;letter-spacing:-.2px}
+  .card h3{margin:12px 0 4px;font-size:11.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;font-weight:700}
+  label{display:block;font-size:12px;color:var(--muted);margin-bottom:5px;font-weight:500}
+  input,select,textarea{width:100%;background:#fff;border:1px solid var(--line);color:var(--txt);
+    padding:10px 11px;border-radius:10px;font-size:14px;font-family:inherit;transition:border-color .15s,box-shadow .15s}
+  input:focus,select:focus,textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(31,157,99,.14)}
+  textarea{min-height:72px;resize:vertical}
+  .grid{display:grid;gap:12px}
+  .g2{grid-template-columns:1fr 1fr}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}
+  @media(max-width:720px){.g2,.g3,.g4{grid-template-columns:1fr 1fr}}
+  @media(max-width:480px){.g2,.g3,.g4{grid-template-columns:1fr}}
+  button.btn{background:linear-gradient(120deg,var(--accent),#22ab73);color:#fff;border:none;padding:10px 17px;border-radius:10px;cursor:pointer;font-size:14px;font-weight:650;box-shadow:0 3px 10px rgba(31,157,99,.22);transition:transform .1s,box-shadow .15s,filter .15s}
+  button.btn:hover{filter:brightness(1.05);box-shadow:0 5px 14px rgba(31,157,99,.3)}
+  button.btn:active{transform:translateY(1px)}
+  button.btn:disabled{opacity:.55;cursor:wait;box-shadow:none}
+  button.btn.secondary{background:var(--panel2);border:1px solid var(--line);color:var(--txt);box-shadow:none}
+  button.btn.secondary:hover{filter:none;background:#e7efe9}
+  button.btn.danger{background:linear-gradient(120deg,#d15a52,#e06a5f);box-shadow:0 3px 10px rgba(209,90,82,.22)}
+  button.btn.small{padding:6px 12px;font-size:12px;border-radius:8px}
+  button.icon{background:transparent;border:none;color:#aab6ae;cursor:pointer;font-size:15px;padding:2px 6px;transition:color .15s}
+  button.icon:hover{color:var(--bad)}
+  button.icon[data-editfood]:hover{color:var(--accent2)}
+  .mbtn{font-size:12.5px;color:#a7b3aa;padding:1px 4px}
+  .mbtn:hover{color:var(--accent2)}
+  .mbtn[data-mclear]:hover{color:var(--bad)}
+  .row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .muted{color:var(--muted)}.small{font-size:12px}
+  table{width:100%;border-collapse:collapse}
+  th,td{text-align:left;padding:8px 8px;border-bottom:1px solid var(--line);font-size:13px}
+  th{color:var(--muted);font-weight:700;font-size:10.5px;text-transform:uppercase;letter-spacing:.4px}
+  th[data-k]{cursor:pointer;user-select:none;white-space:nowrap}
+  th[data-k]:hover{color:var(--accent)}
+  th.sorted{color:var(--accent)}
+  tbody tr{transition:background .12s}
+  tbody tr:hover{background:var(--panel2)}
+  .meal{background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:13px;margin-bottom:12px}
+  .meal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;flex-wrap:wrap;gap:4px}
+  .meal-head b{font-size:14px;font-weight:700}
+  .item{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;padding:7px 0;border-bottom:1px dashed var(--line);font-size:13px}
+  .item:last-child{border-bottom:none}
+  .item input.gr{width:70px;padding:5px 7px;font-size:13px}
+  .item .row{flex-shrink:0}
+  .cdot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px;vertical-align:middle}
+  .catlegend{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:6px}
+  .catlegend span{font-size:11.5px;color:var(--muted);display:inline-flex;align-items:center}
+  .prog{height:10px;background:#e6eee9;border-radius:8px;overflow:hidden;margin-top:6px}
+  .prog>div{height:100%;border-radius:8px;transition:width .35s ease;background-image:linear-gradient(180deg,rgba(255,255,255,.28),rgba(255,255,255,0))}
+  .nut{margin-bottom:12px}
+  .nut .top{display:flex;justify-content:space-between;font-size:13px;margin-bottom:2px}
+  .add-row{display:grid;grid-template-columns:1fr 90px auto;gap:8px;align-items:end;margin-top:10px}
+  @media(max-width:480px){.add-row{grid-template-columns:1fr}}
+  .kcalbig{font-size:28px;font-weight:800;letter-spacing:-.5px;font-variant-numeric:tabular-nums}
+  .kcal-c{color:var(--kcal);font-weight:700}
+  #dayKcal{color:var(--kcal)}
+  .flexsplit{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:8px}
+  .hint{font-size:12px;color:var(--muted);margin-top:6px}
+  .tag{font-size:11px;color:var(--accent2)}
+  .profselwrap{display:flex;gap:8px;align-items:center;margin-bottom:12px;flex-wrap:wrap}
+  .profselwrap select{width:auto;min-width:150px;background:linear-gradient(120deg,#efeaff 0%,#f7ecff 100%);
+    border:1px solid #d6c7f2;color:#5b34b0;font-weight:700;border-radius:10px;padding-left:12px}
+  .profselwrap select:focus{border-color:#7c4dd6;box-shadow:0 0 0 3px rgba(124,77,214,.18)}
+  #profSel{background:linear-gradient(120deg,#efeaff 0%,#f7ecff 100%);border-color:#d6c7f2;color:#5b34b0;font-weight:700}
+  #profSel:focus{border-color:#7c4dd6;box-shadow:0 0 0 3px rgba(124,77,214,.18)}
+  .aibox{background:linear-gradient(120deg,#eaf5ff 0%,#e9faf1 100%);border:1px solid #d3e7db}
+  .datenav{display:flex;align-items:center;gap:10px;justify-content:center;margin:2px 0 8px;flex-wrap:wrap}
+  .datenav b{font-size:15px;min-width:190px;text-align:center;font-weight:700}
+  .cal{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}
+  .cah{font-size:11px;color:var(--muted);text-align:center;padding:2px;font-weight:700;text-transform:uppercase;letter-spacing:.3px}
+  .cell{min-height:58px;border:1px solid var(--line);border-radius:10px;padding:5px 6px;cursor:pointer;background:#fff;transition:transform .1s,box-shadow .15s,background .15s}
+  .cell:hover{box-shadow:var(--shadow);transform:translateY(-1px)}
+  .cell.empty{background:transparent;border:none;cursor:default}
+  .cell.empty:hover{box-shadow:none;transform:none}
+  .cell.sel{background:#e9f6ef;border-color:var(--accent);box-shadow:0 0 0 2px rgba(31,157,99,.2)}
+  .cell.today{border-color:var(--accent2)}
+  .cell.today .dn{color:var(--accent2)}
+  .cell .dn{font-weight:800;font-size:13px}
+  .cell .kc{color:var(--kcal);font-size:10.5px;margin-top:3px;font-weight:700}
+  .shop h3{margin:12px 0 4px;color:var(--accent-d)}
+  .shop ul{margin:2px 0 8px;padding-left:20px}
+  .shop li{font-size:13px;margin-bottom:3px}
+  .modal-ov{position:fixed;inset:0;background:rgba(18,34,26,.5);backdrop-filter:blur(2px);display:flex;align-items:center;justify-content:center;z-index:100;padding:20px}
+  .modal-box{background:#fff;border:1px solid var(--line);border-radius:16px;padding:20px;max-width:420px;width:100%;box-shadow:var(--shadow-lg)}
+  .modal-box .m-msg{font-size:14px;margin-bottom:12px;font-weight:500;white-space:pre-wrap;max-height:50vh;overflow:auto}
+  .modal-box input{margin-bottom:14px}
+  .modal-actions{display:flex;gap:8px;justify-content:flex-end}
+  #toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:#14261d;color:#fff;padding:11px 18px;border-radius:10px;font-size:13px;z-index:120;box-shadow:var(--shadow-lg);max-width:90%}
+  .statuschip{font-size:12px;padding:3px 10px;border-radius:14px;display:inline-block}
+  .statuschip.ok{background:#dff3e8;color:#1f7f4e}
+  .statuschip.off{background:#f6ecdb;color:#a9791f}
+</style>
+</head>
+<body>
+<header>
+  <h1>🥗 Prehrana</h1>
+  <p>Jelovnici i dnevnik pojedenog — AI unos radi preko tvoje Claude pretplate</p>
+</header>
+
+<div class="wrap">
+  <div class="tabs">
+    <button data-tab="dnevnik" class="active">📊 Dnevnik</button>
+    <button data-tab="plan">🍽️ Jelovnik</button>
+    <button data-tab="profil">👤 Osobe i ciljevi</button>
+    <button data-tab="namirnice">🍎 Namirnice</button>
+    <button data-tab="postavke">⚙️ Postavke</button>
+  </div>
+
+  <!-- ===== DNEVNIK (pojedeno) ===== -->
+  <div id="tab-dnevnik">
+    <div class="card">
+      <div class="profselwrap" style="justify-content:space-between;margin-bottom:8px">
+        <div class="row"><label style="margin:0">Osoba:</label><select id="jProfSel"></select><label style="margin:0 0 0 6px">Mjesec:</label><select id="dMonthSel" style="width:auto"></select></div>
+        <div class="row">
+          <button class="btn secondary small" id="dPrev">◀</button>
+          <b id="dDateLabel" style="min-width:150px;text-align:center"></b>
+          <button class="btn secondary small" id="dNext">▶</button>
+          <button class="btn small" id="dToday">Danas</button>
+          <button class="btn secondary small" id="dCal" title="Otvori birač datuma">📅</button>
+          <input type="date" id="dDatePicker" style="position:absolute;opacity:0;width:1px;height:1px;pointer-events:none">
+        </div>
+      </div>
+      <div class="small muted" style="margin-bottom:10px">🍽️ <span id="dDesc"></span></div>
+      <div class="cal" id="dnevnikCal"></div>
+      <p class="hint">Klikni dan za prikaz; brojka u ćeliji su pojedene kalorije tog dana.</p>
+    </div>
+
+    <div class="card aibox">
+      <h2>🤖 AI unos — upiši što si pojeo</h2>
+      <p class="muted small">Npr. <i>"za doručak 2 jaja i kriška kruha s maslacem"</i>. Claude prepozna namirnice i doda ih u dnevnik za <b id="aiDayLabel"></b>. Možeš tražiti i dopunu: <i>"fali mi kalcija, dodaj nešto bogato kalcijem"</i> — Claude gleda što je već uneseno i tvoje ciljeve. AI samo <b>dodaje</b> stavke; brisanje radiš sam gumbom ✕.</p>
+      <textarea id="aiText" placeholder="Upiši što si pojeo i popio, ili traži prilagodbu dana..."></textarea>
+      <div class="row" style="margin-top:10px">
+        <button class="btn" id="aiRun">✨ Izračunaj i dodaj</button>
+        <span id="aiMsg" class="small muted"></span>
+      </div>
+      <div id="aiSaveWrap" style="margin-top:8px;display:none"><button class="btn secondary small" id="aiSaveFoods"></button></div>
+    </div>
+
+    <div class="card">
+      <div class="flexsplit">
+        <h2 style="margin:0">Obroci (pojedeno)</h2>
+        <div class="row"><select id="loadMenuSel" style="width:auto;max-width:220px"></select><button class="btn secondary small" id="dFromPlan">⬇ Preuzmi jelovnik</button></div>
+      </div>
+      <div id="meals" style="margin-top:10px"></div>
+    </div>
+
+    <div class="card">
+      <h2>Pregled dana <span class="muted small" id="dayPersonLabel"></span></h2>
+      <div class="flexsplit">
+        <div>
+          <div class="kcalbig"><span id="dayKcal">0</span> <span class="muted" style="font-size:14px">/ <span id="targetKcal">0</span> kcal</span></div>
+          <div class="small muted">Preostalo: <span id="remainKcal">0</span> kcal</div>
+        </div>
+        <div>
+          <div style="font-size:18px;font-weight:650">💧 <span id="dayFluid">0</span> / <span id="targetFluid">0</span> L</div>
+          <div class="small muted">tekućina (pića)</div>
+        </div>
+      </div>
+      <div id="dayNutrients" style="margin-top:14px"></div>
+    </div>
+
+    <div class="card">
+      <h2>Tjedni prosjek (tjedan odabranog dana)</h2>
+      <div id="weekSummary"></div>
+    </div>
+  </div>
+
+  <!-- ===== MJESEČNI PLAN ===== -->
+  <div id="tab-plan" style="display:none">
+    <div class="card">
+      <div class="profselwrap" style="justify-content:space-between;margin-bottom:10px">
+        <div class="row"><label style="margin:0">Osoba:</label><select id="pProfSel"></select></div>
+        <div class="row"><label style="margin:0">Jelovnik:</label><select id="menuSel" style="width:auto;max-width:280px"></select>
+          <button class="btn small" id="menuAdd">+ Novi</button>
+          <button class="btn danger small" id="menuDel">Obriši</button></div>
+      </div>
+      <div class="flexsplit"><div><h2 style="margin:0" id="menuTitleH">Jelovnik</h2><div class="small muted" id="menuDescH"></div></div>
+        <button class="btn secondary small" id="menuEdit">✎ Naziv / opis</button></div>
+      <div class="small" id="menuFullH" style="margin-top:10px;line-height:1.7"></div>
+    </div>
+
+    <div class="card aibox">
+      <h2>🤖 AI unos u plan — <span id="planDateLabel"></span></h2>
+      <p class="muted small">Isto kao u dnevniku, ali sprema u <b>plan</b> odabranog dana (<span id="aiDayLabelP"></span>). AI samo dodaje stavke; brisanje radiš sam gumbom ✕.</p>
+      <textarea id="aiTextP" placeholder="Npr. za ručak planiram bolognese s tjesteninom..."></textarea>
+      <div class="row" style="margin-top:10px">
+        <button class="btn" id="aiRunP">✨ Dodaj u plan</button>
+        <span id="aiMsgP" class="small muted"></span>
+      </div>
+      <div id="aiSaveWrapP" style="margin-top:8px;display:none"><button class="btn secondary small" id="aiSaveFoodsP"></button></div>
+    </div>
+
+    <div class="card">
+      <div class="flexsplit"><h2 style="margin:0">Plan obroka — <span id="planDateLabel2"></span></h2>
+        <div class="row">
+          <button class="btn secondary small" id="planCopy">⧉ Kopiraj dan</button>
+          <button class="btn secondary small" id="planPaste">📋 Zalijepi</button>
+          <button class="btn secondary small" id="planClear">Isprazni</button>
+          <span class="small muted" id="planClipInfo"></span>
+        </div></div>
+      <div class="small muted" style="margin-top:6px" id="planDayKcal"></div>
+      <div id="planMeals" style="margin-top:10px"></div>
+    </div>
+
+    <div class="card">
+      <h2>Pregled dana — <span id="planOvLabel"></span></h2>
+      <div class="flexsplit">
+        <div><div class="kcalbig"><span class="kcal-c" id="planOvKcal">0</span> <span class="muted" style="font-size:14px">/ <span id="planOvTarget">0</span> kcal</span></div><div class="small muted">planirano za odabrani dan</div></div>
+        <div><div style="font-size:18px;font-weight:650">💧 <span id="planOvFluid">0</span> / <span id="planOvFluidT">0</span> L</div><div class="small muted">tekućina (pića)</div></div>
+      </div>
+      <div id="planOvNut" style="margin-top:14px"></div>
+    </div>
+
+    <div class="card shop">
+      <div class="flexsplit">
+        <h2 style="margin:0">🛒 Popis za kupovinu</h2>
+        <div class="row">
+          <button class="btn secondary small" id="shopCopy">Kopiraj</button>
+          <button class="btn secondary small" id="shopExcel">⬇ Excel</button>
+          <button class="btn secondary small" id="shopPrint">🖨 Print</button>
+        </div>
+      </div>
+      <p class="muted small" style="margin:2px 0 4px">Odaberi jelovnike i koliko puta (npr. za tjedan dana):</p>
+      <div id="shopMenus" style="margin-bottom:8px"></div>
+      <div id="shopList" style="margin-top:8px"></div>
+    </div>
+  </div>
+
+  <!-- ===== OSOBE ===== -->
+  <div id="tab-profil" style="display:none">
+    <div class="card">
+      <h2>Osobe</h2>
+      <div class="profselwrap">
+        <select id="profSel"></select>
+        <button class="btn small" id="addProf">+ Nova osoba</button>
+        <button class="btn secondary small" id="renameProf">Preimenuj</button>
+        <button class="btn danger small" id="delProf">Obriši</button>
+      </div>
+      <p class="muted small">Svaka osoba ima vlastite ciljeve i dnevnik. Plan može biti po osobi ili zajednički (Postavke). Baza namirnica je zajednička.</p>
+    </div>
+    <div class="card">
+      <h2>Podaci — <span id="profFormName"></span></h2>
+      <div class="grid g3" style="margin-top:10px">
+        <div><label>Spol</label><select id="p_sex"><option value="m">Muško</option><option value="z">Žensko</option></select></div>
+        <div><label>Dob (godina)</label><input id="p_age" type="number" min="10" max="100" value="30"></div>
+        <div><label>Razina aktivnosti</label>
+          <select id="p_act">
+            <option value="1.2">Sjedilački (bez vježbanja)</option>
+            <option value="1.375">Lagana (1–3×/tj)</option>
+            <option value="1.55" selected>Umjerena (3–5×/tj)</option>
+            <option value="1.725">Aktivna (6–7×/tj)</option>
+            <option value="1.9">Vrlo aktivna</option>
+          </select></div>
+        <div><label>Težina (kg)</label><input id="p_weight" type="number" min="30" max="250" value="75"></div>
+        <div><label>Visina (cm)</label><input id="p_height" type="number" min="120" max="220" value="178"></div>
+        <div><label>Cilj</label>
+          <select id="p_goal">
+            <option value="-500">Mršavljenje (−500 kcal)</option>
+            <option value="-250">Blago mršavljenje (−250 kcal)</option>
+            <option value="0" selected>Održavanje</option>
+            <option value="300">Dobivanje mase (+300 kcal)</option>
+          </select></div>
+      </div>
+      <div style="margin-top:14px" class="row"><button class="btn" id="saveProfile">Spremi i izračunaj</button><span id="profileSaved" class="small muted"></span></div>
+    </div>
+    <div class="card"><h2>Dnevni ciljevi — <span id="targetsName"></span></h2><div id="targetsView"></div></div>
+  </div>
+
+  <!-- ===== NAMIRNICE ===== -->
+  <div id="tab-namirnice" style="display:none">
+    <div class="card aibox">
+      <h2>🤖 AI dodaj namirnicu u bazu</h2>
+      <p class="muted small">Upiši naziv namirnice ili jela (može više njih, odvojenih zarezom) — Claude procijeni hranjive vrijednosti na 100 g i doda ih u bazu. Npr. <i>"sarma, domaći ajvar, protein pločica"</i>.</p>
+      <textarea id="aiFoodText" placeholder="npr. sarma, punjena paprika, njoki..."></textarea>
+      <div class="row" style="margin-top:10px"><button class="btn" id="aiFoodRun">✨ Pronađi i dodaj u bazu</button><span id="aiFoodMsg" class="small muted"></span></div>
+    </div>
+
+    <div class="card aibox">
+      <h2>📏 Provjeri gramažu (AI)</h2>
+      <p class="muted small">Pitaj koliko grama ima neka porcija — npr. <i>"1 šnita kruha"</i>, <i>"četvrtina tanjura rajčice"</i>, <i>"žlica maslinovog ulja"</i>, <i>"šalica kuhane riže"</i>.</p>
+      <div class="add-row" style="grid-template-columns:1fr auto">
+        <input id="aiWeightText" placeholder="npr. 1 šnita kruha">
+        <button class="btn" id="aiWeightRun">Provjeri</button>
+      </div>
+      <div id="aiWeightMsg" class="small" style="margin-top:10px"></div>
+    </div>
+
+    <div class="card">
+      <h2>Dodaj vlastitu namirnicu</h2>
+      <p class="muted small">Vrijednosti na <b>100 g</b> (ili 100 ml za pića).</p>
+      <div class="grid g4" style="margin-top:8px">
+        <div><label>Naziv</label><input id="f_name" placeholder="npr. Domaći ajvar"></div>
+        <div><label>Kategorija</label><select id="f_cat">
+          <option>Meso i riba</option><option>Mliječno i jaja</option><option>Žitarice i kruh</option>
+          <option>Mahunarke</option><option>Povrće</option><option>Voće</option>
+          <option>Orašasti i masti</option><option>Pića</option><option>Suplementi</option><option>Ostalo</option></select></div>
+        <div><label>Kalorije (kcal)</label><input id="f_kcal" type="number" min="0"></div>
+        <div><label>Bjelančevine (g)</label><input id="f_p" type="number" min="0" step="0.1"></div>
+        <div><label>Ugljikohidrati (g)</label><input id="f_c" type="number" min="0" step="0.1"></div>
+        <div><label>Masti (g)</label><input id="f_f" type="number" min="0" step="0.1"></div>
+        <div><label>Vlakna (g)</label><input id="f_fib" type="number" min="0" step="0.1" value="0"></div>
+        <div><label>Željezo (mg)</label><input id="f_fe" type="number" min="0" step="0.01" value="0"></div>
+        <div><label>Kalcij (mg)</label><input id="f_ca" type="number" min="0" step="1" value="0"></div>
+        <div><label>Vitamin C (mg)</label><input id="f_vc" type="number" min="0" step="0.1" value="0"></div>
+        <div><label>Vitamin D (µg)</label><input id="f_vd" type="number" min="0" step="0.1" value="0"></div>
+        <div><label>Magnezij (mg)</label><input id="f_mg" type="number" min="0" step="0.1" value="0"></div>
+        <div><label>Uobičajena porcija (g/ml)</label><input id="f_serv" type="number" min="1" step="1" value="100"></div>
+      </div>
+      <div style="margin-top:12px"><button class="btn" id="addFood">Dodaj namirnicu</button></div>
+    </div>
+    <div class="card">
+      <h2>Baza namirnica <span class="muted small" id="foodCount"></span></h2>
+      <p class="muted small" style="margin:-4px 0 8px">Sve vrijednosti su prikazane <b>na 100 g</b> (za pića na 100 ml). Kod dodavanja u obrok preračunava se prema upisanoj količini.</p>
+      <input id="foodSearch" placeholder="🔍 Pretraži namirnice..." style="margin-bottom:8px">
+      <div class="catlegend" id="catLegend"></div>
+      <div style="overflow-x:auto"><table id="foodTable">
+        <thead><tr><th data-k="name">Namirnica</th><th data-k="cat">Kat.</th><th data-k="kcal">kcal</th><th data-k="p">Bjelančevine</th><th data-k="c">Ugljikohidrati</th><th data-k="f">Masti</th><th data-k="fib">Vlakna</th><th data-k="fe">Željezo</th><th data-k="ca">Kalcij</th><th data-k="mg">Magnezij</th><th data-k="vc">Vitamin C</th><th data-k="vd">Vitamin D</th><th data-k="serv">Porcija</th><th></th></tr></thead>
+        <tbody></tbody></table></div>
+    </div>
+  </div>
+
+  <!-- ===== POSTAVKE ===== -->
+  <div id="tab-postavke" style="display:none">
+    <div class="card">
+      <h2>Podaci</h2>
+      <div class="row">
+        <button class="btn secondary small" id="exportBtn">⬇ Izvezi (JSON)</button>
+        <button class="btn secondary small" id="importBtn">⬆ Uvezi</button>
+        <input type="file" id="importFile" accept=".json" style="display:none">
+      </div>
+      <p class="hint">Podaci se čuvaju unutar Claude aplikacije na ovom računalu. Isti format kao HTML verzija (izvoz/uvoz za prijenos).</p>
+    </div>
+  </div>
+</div>
+
+<div id="modal" class="modal-ov" style="display:none">
+  <div class="modal-box">
+    <div class="m-msg" id="modalMsg"></div>
+    <input id="modalInput" style="display:none">
+    <div class="modal-actions"><button class="btn secondary" id="modalCancel">Odustani</button><button class="btn" id="modalOk">U redu</button></div>
+  </div>
+</div>
+<div id="fedit" class="modal-ov" style="display:none">
+  <div class="modal-box" style="max-width:600px">
+    <div style="font-size:15px;font-weight:700;margin-bottom:4px" id="feTitle">Uredi namirnicu</div>
+    <p class="muted small" style="margin:0 0 12px" id="feScaleNote"></p>
+    <div class="grid g2">
+      <div><label>Naziv</label><input id="fe_name"></div>
+      <div><label>Kategorija</label><select id="fe_cat">
+        <option>Meso i riba</option><option>Mliječno i jaja</option><option>Žitarice i kruh</option>
+        <option>Mahunarke</option><option>Povrće</option><option>Voće</option>
+        <option>Orašasti i masti</option><option>Pića</option><option>Suplementi</option><option>Ostalo</option></select></div>
+    </div>
+    <div class="grid g3" style="margin-top:10px">
+      <div><label>Kalorije (kcal)</label><input id="fe_kcal" type="number" step="1" min="0"></div>
+      <div><label>Bjelančevine (g)</label><input id="fe_p" type="number" step="0.1" min="0"></div>
+      <div><label>Ugljikohidrati (g)</label><input id="fe_c" type="number" step="0.1" min="0"></div>
+      <div><label>Masti (g)</label><input id="fe_f" type="number" step="0.1" min="0"></div>
+      <div><label>Vlakna (g)</label><input id="fe_fib" type="number" step="0.1" min="0"></div>
+      <div><label>Željezo (mg)</label><input id="fe_fe" type="number" step="0.01" min="0"></div>
+      <div><label>Kalcij (mg)</label><input id="fe_ca" type="number" step="1" min="0"></div>
+      <div><label>Magnezij (mg)</label><input id="fe_mg" type="number" step="0.1" min="0"></div>
+      <div><label>Vitamin C (mg)</label><input id="fe_vc" type="number" step="0.1" min="0"></div>
+      <div><label>Vitamin D (µg)</label><input id="fe_vd" type="number" step="0.1" min="0"></div>
+      <div><label>Gramaža / porcija (g/ml)</label><input id="fe_serv" type="number" step="1" min="1"></div>
+    </div>
+    <div class="modal-actions" style="margin-top:16px;justify-content:space-between">
+      <button class="btn secondary" id="fe_ai">🤖 AI provjeri</button>
+      <span><button class="btn secondary" id="fe_cancel">Odustani</button> <button class="btn" id="fe_save">Spremi</button></span>
+    </div>
+  </div>
+</div>
+<div id="toast" style="display:none"></div>
+
+<script>
+/* ===== Modali (rade u Claude sandboxu gdje su prompt/confirm blokirani) ===== */
+let _mres=null;
+function _openModal(msg,withInput,defVal,okText){return new Promise(res=>{_mres=res;
+  document.getElementById('modalMsg').textContent=msg;const inp=document.getElementById('modalInput');
+  inp.style.display=withInput?'block':'none';inp.value=defVal||'';document.getElementById('modalOk').textContent=okText||'U redu';
+  document.getElementById('modal').style.display='flex';if(withInput)setTimeout(()=>{inp.focus();inp.select();},40);});}
+function _closeModal(v){document.getElementById('modal').style.display='none';const r=_mres;_mres=null;if(r)r(v);}
+function uiConfirm(m,ok){return _openModal(m,false,'',ok).then(v=>v===true);}
+function uiPrompt(m,d){return _openModal(m,true,d).then(v=>v===false?null:v);}
+function uiToast(m){const t=document.getElementById('toast');t.textContent=m;t.style.display='block';clearTimeout(t._t);t._t=setTimeout(()=>{t.style.display='none';},3200);}
+document.getElementById('modalOk').onclick=()=>{const inp=document.getElementById('modalInput');_closeModal(inp.style.display==='none'?true:inp.value);};
+document.getElementById('modalCancel').onclick=()=>_closeModal(false);
+document.getElementById('modalInput').addEventListener('keydown',e=>{if(e.key==='Enter')_closeModal(document.getElementById('modalInput').value);if(e.key==='Escape')_closeModal(false);});
+
+/* ===== Nutrijenti ===== */
+const NUTS=[{key:'kcal',label:'Kalorije',unit:'kcal'},{key:'p',label:'Bjelančevine',unit:'g'},{key:'c',label:'Ugljikohidrati',unit:'g'},
+{key:'f',label:'Masti',unit:'g'},{key:'fib',label:'Vlakna',unit:'g'},{key:'fe',label:'Željezo',unit:'mg'},
+{key:'ca',label:'Kalcij',unit:'mg'},{key:'mg',label:'Magnezij',unit:'mg'},{key:'vc',label:'Vitamin C',unit:'mg'},{key:'vd',label:'Vitamin D',unit:'µg'}];
+
+/* ===== Baza namirnica [naziv,kat,kcal,P,UH,M,vlakna,Fe,Ca,vitC,vitD,Mg,porcija] ===== */
+const BASE_FOODS=[
+  ["Pileća prsa (pečena)","Meso i riba",165,31,0,3.6,0,1.0,15,0,0.1,29],["Pileći batak","Meso i riba",209,26,0,11,0,1.3,12,0,0.1,23],
+  ["Pureća prsa","Meso i riba",135,30,0,1,0,1.4,12,0,0.2,28],["Junetina (nemasna)","Meso i riba",217,26,0,12,0,2.6,18,0,0.1,21],
+  ["Svinjetina (but)","Meso i riba",242,27,0,14,0,0.9,19,0.7,0.7,24],["Mljeveno meso (miješano)","Meso i riba",250,18,0,20,0,2.0,20,0,0.5,20],
+  ["Losos","Meso i riba",208,20,0,13,0,0.3,12,0,11,29],["Tuna (konzerva u vodi)","Meso i riba",116,26,0,1,0,1.3,11,0,1.7,27],
+  ["Skuša","Meso i riba",205,19,0,14,0,1.6,12,0.4,16,60],["Srdele","Meso i riba",208,25,0,11,0,2.9,382,0,4.8,39],
+  ["Šunka (pileća)","Meso i riba",110,18,1,3.5,0,0.8,8,0,0.3,18],
+  ["Jaje (cijelo)","Mliječno i jaja",143,13,1.1,9.5,0,1.8,56,0,2.0,12],["Bjelanjak","Mliječno i jaja",52,11,0.7,0.2,0,0.1,7,0,0,11],
+  ["Mlijeko 2.8%","Mliječno i jaja",64,3.3,4.8,3.5,0,0.05,120,1,0.1,11],["Jogurt (obični)","Mliječno i jaja",61,3.5,4.7,3.3,0,0.05,110,0.8,0.1,11],
+  ["Grčki jogurt","Mliječno i jaja",97,9,3.9,5,0,0.1,100,0,0,11],["Sir (gauda/edamer)","Mliječno i jaja",356,25,2.2,27,0,0.3,700,0,0.5,29],
+  ["Svježi sir (posni)","Mliječno i jaja",98,11,3.4,4.3,0,0.1,83,0,0.1,8],["Feta sir","Mliječno i jaja",264,14,4,21,0,0.7,493,0,0.4,19],
+  ["Maslac","Mliječno i jaja",717,0.9,0.1,81,0,0,24,0,1.5,2],
+  ["Kruh bijeli","Žitarice i kruh",265,9,49,3.2,2.7,3.6,100,0,0,25],["Kruh integralni","Žitarice i kruh",247,13,41,3.4,7,2.5,107,0,0,75],
+  ["Riža bijela (kuhana)","Žitarice i kruh",130,2.7,28,0.3,0.4,1.2,10,0,0,12],["Riža smeđa (kuhana)","Žitarice i kruh",123,2.7,26,1,1.6,0.5,10,0,0,43],
+  ["Tjestenina (kuhana)","Žitarice i kruh",158,6,31,0.9,1.8,0.9,7,0,0,18],["Zobene pahuljice","Žitarice i kruh",389,17,66,7,10,4.7,54,0,0,177],
+  ["Krumpir (kuhani)","Žitarice i kruh",87,2,20,0.1,1.8,0.3,5,13,0,22],["Palenta (kukuruzna krupica)","Žitarice i kruh",85,2,18,0.4,1,0.4,2,0,0,17],
+  ["Heljda (kuhana)","Žitarice i kruh",92,3.4,20,0.6,2.7,0.8,7,0,0,51],["Kvinoja (kuhana)","Žitarice i kruh",120,4.4,21,1.9,2.8,1.5,17,0,0,64],
+  ["Grah (kuhani)","Mahunarke",127,8.7,23,0.5,6.4,2.1,35,1,0,45],["Leća (kuhana)","Mahunarke",116,9,20,0.4,7.9,3.3,19,1.5,0,36],
+  ["Slanutak (kuhani)","Mahunarke",164,8.9,27,2.6,7.6,2.9,49,1.3,0,48],["Grašak","Mahunarke",81,5.4,14,0.4,5.7,1.5,25,40,0,33],
+  ["Tofu","Mahunarke",76,8,1.9,4.8,0.3,5.4,350,0.1,0,60],
+  ["Brokula","Povrće",34,2.8,7,0.4,2.6,0.7,47,89,0,21],["Špinat","Povrće",23,2.9,3.6,0.4,2.2,2.7,99,28,0,79],
+  ["Mrkva","Povrće",41,0.9,10,0.2,2.8,0.3,33,6,0,12],["Rajčica","Povrće",18,0.9,3.9,0.2,1.2,0.3,10,14,0,11],
+  ["Paprika crvena","Povrće",31,1,6,0.3,2.1,0.4,7,128,0,12],["Krastavac","Povrće",15,0.7,3.6,0.1,0.5,0.3,16,2.8,0,13],
+  ["Kupus","Povrće",25,1.3,6,0.1,2.5,0.5,40,37,0,12],["Cvjetača","Povrće",25,1.9,5,0.3,2,0.4,22,48,0,15],
+  ["Tikvica","Povrće",17,1.2,3.1,0.3,1,0.4,16,18,0,18],["Luk","Povrće",40,1.1,9,0.1,1.7,0.2,23,7,0,10],
+  ["Salata (zelena)","Povrće",15,1.4,2.9,0.2,1.3,0.9,36,9,0,13],["Avokado","Povrće",160,2,9,15,6.7,0.6,12,10,0,29],
+  ["Jabuka","Voće",52,0.3,14,0.2,2.4,0.1,6,5,0,5],["Banana","Voće",89,1.1,23,0.3,2.6,0.3,5,8.7,0,27],
+  ["Naranča","Voće",47,0.9,12,0.1,2.4,0.1,40,53,0,10],["Jagode","Voće",32,0.7,7.7,0.3,2,0.4,16,59,0,13],
+  ["Borovnice","Voće",57,0.7,14,0.3,2.4,0.3,6,9.7,0,6],["Grožđe","Voće",69,0.7,18,0.2,0.9,0.4,10,3.2,0,7],
+  ["Kruška","Voće",57,0.4,15,0.1,3.1,0.2,9,4.3,0,7],["Kivi","Voće",61,1.1,15,0.5,3,0.3,34,93,0,17],["Lubenica","Voće",30,0.6,8,0.2,0.4,0.2,7,8,0,10],
+  ["Bademi","Orašasti i masti",579,21,22,50,12.5,3.7,269,0,0,270],["Orasi","Orašasti i masti",654,15,14,65,6.7,2.9,98,1.3,0,158],
+  ["Lješnjaci","Orašasti i masti",628,15,17,61,9.7,4.7,114,6.3,0,163],["Kikiriki","Orašasti i masti",567,26,16,49,8.5,4.6,92,0,0,168],
+  ["Sjemenke bundeve","Orašasti i masti",559,30,11,49,6,8.8,46,1.9,0,592],["Chia sjemenke","Orašasti i masti",486,17,42,31,34,7.7,631,1.6,0,335],
+  ["Maslinovo ulje","Orašasti i masti",884,0,0,100,0,0.6,1,0,0,0],
+  ["Med","Ostalo",304,0.3,82,0,0.2,0.4,6,0.5,0,2],["Tamna čokolada 70%","Ostalo",598,7.8,46,43,11,12,73,0,0,228],
+  ["Voda","Pića",0,0,0,0,0,0,0,0,0,0,250],["Voda s limunom (1 L + 1 limun)","Pića",2,0,0.6,0,0.1,0.02,2,4,0,1,1000],
+  ["Mineralna voda (gazirana)","Pića",0,0,0,0,0,0,10,0,0,8,330],["Pivo svijetlo (5%)","Pića",43,0.5,3.6,0,0,0.02,4,0,0,6,500],
+  ["Pivo bezalkoholno","Pića",26,0.4,5,0,0,0,5,0,0,6,330],["Vino crno","Pića",85,0.1,2.6,0,0,0.5,8,0,0,12,150],
+  ["Sok od naranče (100%)","Pića",45,0.7,10,0.2,0.2,0.2,11,50,0,11,250],["Sok od jabuke (100%)","Pića",46,0.1,11,0.1,0.1,0.1,8,1,0,5,250],
+  ["Gazirani sok (cola)","Pića",42,0,10.6,0,0,0.1,2,0,0,1,330],["Gazirani sok (zero/light)","Pića",0,0,0,0,0,0,2,0,0,1,330],
+  ["Ledeni čaj (zaslađen)","Pića",30,0,7.5,0,0,0,0,0,0,1,330],["Kava (crna, nezaslađena)","Pića",1,0.1,0,0,0,0.01,2,0,0,3,200],
+  ["Čaj (nezaslađen)","Pića",1,0,0.3,0,0,0.02,0,0,0,1,250],["Kokosova voda","Pića",19,0.7,3.7,0.2,1.1,0.29,24,2.4,0,25,330],
+  ["Bademovo mlijeko (nezaslađeno)","Pića",15,0.5,0.3,1.1,0.2,0.3,120,0,0,6,250],["Voćni smoothie","Pića",60,1.5,12,0.8,1.5,0.4,40,15,0,12,300],
+  ["Magnezijev citrat (prah)","Suplementi",0,0,0,0,0,0,0,0,0,16000,2.5],["Kreatin monohidrat","Suplementi",0,0,0,0,0,0,0,0,0,0,5],
+  ["Whey protein (prah)","Suplementi",400,80,8,6,0,1,500,0,0,100,30],["Kazein protein (prah)","Suplementi",370,78,9,3,0,0.5,1200,0,0,60,30],
+  ["Biljni protein (prah)","Suplementi",380,75,10,6,4,7,300,0,0,150,30],["Multivitamin (1 tableta)","Suplementi",0,0,0,0,0,1400,12000,8000,500,5000,1],
+  ["Vitamin D3 (1000 IU)","Suplementi",0,0,0,0,0,0,0,0,2500,0,1],["Vitamin C (1000 mg)","Suplementi",0,0,0,0,0,0,0,100000,0,0,1],
+  ["Kalcij + D3 (tableta)","Suplementi",0,0,0,0,0,0,60000,0,1000,0,1],["Željezo (tableta 14 mg)","Suplementi",0,0,0,0,0,1400,0,0,0,0,1],
+  ["Cink + magnezij (ZMA)","Suplementi",0,0,0,0,0,0,0,0,0,45000,1],["Omega-3 riblje ulje (kapsula)","Suplementi",9,0,0,1,0,0,0,0,0,0,1],
+];
+function normalizeServings(){
+  // jednokratno: sve porcije na standard (hrana 100 g, pića 100 ml); suplementi zadržavaju doze; kasnije ručne izmjene se poštuju
+  if(state.servNorm)return;state.servNorm=1;
+  (state.customFoods||[]).forEach(f=>{if(f.cat!=='Suplementi')f.serv=100;});
+  if(state.foodServ)BASE_FOODS.forEach((a,i)=>{if(a[1]!=='Suplementi')delete state.foodServ['b'+i];});
+}
+function foodFromArr(a,i){const id='b'+i;
+  const o={id,name:(state.foodRenames&&state.foodRenames[id])||a[0],cat:(state.foodCat&&state.foodCat[id])||a[1],kcal:a[2],p:a[3],c:a[4],f:a[5],fib:a[6],fe:a[7],ca:a[8],vc:a[9],vd:a[10],
+    mg:a[11]!==undefined?a[11]:0,
+    serv:(state.foodServ&&state.foodServ[id])||((a[1]==='Suplementi'&&a[12]!==undefined)?a[12]:100),base:true};
+  const ov=state.foodVals&&state.foodVals[id];
+  if(ov)NUTS.forEach(n=>{if(typeof ov[n.key]==='number')o[n.key]=ov[n.key];});
+  return o;}
+
+/* ===== Datumi ===== */
+const DAYNAMES=['Nedjelja','Ponedjeljak','Utorak','Srijeda','Četvrtak','Petak','Subota'];
+const MONTHS=['Siječanj','Veljača','Ožujak','Travanj','Svibanj','Lipanj','Srpanj','Kolovoz','Rujan','Listopad','Studeni','Prosinac'];
+function iso(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+function parseISO(s){const[y,m,d]=s.split('-').map(Number);return new Date(y,m-1,d);}
+function todayISO(){return iso(new Date());}
+function addDays(s,n){const d=parseISO(s);d.setDate(d.getDate()+n);return iso(d);}
+function addMonths(s,n){const d=parseISO(s);return iso(new Date(d.getFullYear(),d.getMonth()+n,1));}
+function firstOfMonth(s){const d=parseISO(s);return iso(new Date(d.getFullYear(),d.getMonth(),1));}
+function monthDates(s){const d=parseISO(s),y=d.getFullYear(),m=d.getMonth(),n=new Date(y,m+1,0).getDate(),a=[];for(let i=1;i<=n;i++)a.push(iso(new Date(y,m,i)));return a;}
+function mondayOf(s){const d=parseISO(s),wd=(d.getDay()+6)%7;d.setDate(d.getDate()-wd);return iso(d);}
+function dayName(s){return DAYNAMES[parseISO(s).getDay()];}
+function fmtDate(s){const d=parseISO(s);return d.getDate()+'.'+(d.getMonth()+1)+'.'+d.getFullYear()+'.';}
+function dayShort(s){const d=parseISO(s);return dayName(s)+' '+d.getDate()+'. '+MONTHS[d.getMonth()].toLowerCase();}
+function monthLabel(s){const d=parseISO(s);return MONTHS[d.getMonth()]+' '+d.getFullYear();}
+
+/* ===== Stanje ===== */
+const LS_KEY='prehrana_artifact_v2', LS_OLD='prehrana_artifact_v1';
+const MEALS=['Doručak','Ručak','Večera','Međuobrok'];
+const MEAL_INDEX={'Doručak':0,'Ručak':1,'Večera':2,'Međuobrok':3};
+function emptyMeals(){return MEALS.map(()=>[]);}
+function defProfile(){return{sex:'m',age:30,act:1.55,weight:75,height:178,goal:0};}
+function newPerson(name){return{id:'p'+Date.now()+Math.floor(Math.random()*1000),name,profile:defProfile(),log:{},plan:{}};}
+
+let state={profiles:[newPerson('Osoba 1')],activeProfileId:null,sharedPlan:{},menuMode:'own',customFoods:[],foodRenames:{},foodHidden:[],menus:[],updatedAt:0};
+state.activeProfileId=state.profiles[0].id;
+function newMenu(){return{id:'mn'+Date.now()+Math.floor(Math.random()*1000),meals:emptyMeals()};}
+let logDate=todayISO();
+let logMonth=firstOfMonth(todayISO());
+let curMenuIdx=0;
+
+function migrateWeek(week,targetMap){ // week: 7×4 -> map keyed by this week's dates
+  if(!week||week.length!==7)return;
+  const mon=mondayOf(todayISO());
+  week.forEach((dm,i)=>{ if(dm && dm.some(m=>m.length)) targetMap[addDays(mon,i)]=dm; });
+}
+function load(){
+  try{
+    const raw=localStorage.getItem(LS_KEY);
+    if(raw){const s=JSON.parse(raw);if(s.profiles&&s.profiles.length)state=s;}
+    else{
+      const old=localStorage.getItem(LS_OLD);
+      if(old){const s=JSON.parse(old);
+        state.customFoods=s.customFoods||[]; state.menuMode=s.menuMode||'own'; state.sharedPlan={};
+        state.profiles=(s.profiles||[newPerson('Osoba 1')]).map(p=>{
+          const np={id:p.id||('p'+Math.random()),name:p.name||'Osoba',profile:Object.assign(defProfile(),p.profile||{}),log:{},plan:{}};
+          migrateWeek(p.week, np.log);
+          return np;
+        });
+        migrateWeek(s.sharedWeek, state.sharedPlan);
+        state.activeProfileId=state.profiles[0].id;
+      }
+    }
+  }catch(e){console.warn('load fail',e);}
+  state.profiles.forEach(p=>{if(!p.log)p.log={};if(!p.plan)p.plan={};});
+  if(!state.sharedPlan)state.sharedPlan={};
+  if(!state.foodRenames)state.foodRenames={};
+  if(!state.foodHidden)state.foodHidden=[];
+  if(!state.foodServ)state.foodServ={};if(!state.foodVals)state.foodVals={};if(!state.foodCat)state.foodCat={};
+  normalizeServings();
+  if(!state.menus){state.menus=[];
+    // migracija starih plan-dana u numerirane jelovnike
+    const seen={};const add=map=>{if(!map)return;Object.keys(map).forEach(d=>{const m=map[d];if(m.some(x=>x.length)){state.menus.push({id:'mn'+Math.random(),meals:JSON.parse(JSON.stringify(m))});}});};
+    state.profiles.forEach(p=>add(p.plan));add(state.sharedPlan);
+  }
+  if(!state.menus.length)state.menus.push(newMenu());
+  if(curMenuIdx>=state.menus.length)curMenuIdx=0;
+  if(!state.profiles.find(p=>p.id===state.activeProfileId))state.activeProfileId=state.profiles[0].id;
+}
+function pruneMap(m){if(!m)return;for(const k in m){if(m[k].every(x=>x.length===0))delete m[k];}}
+function save(){state.updatedAt=Date.now();state.profiles.forEach(p=>{pruneMap(p.log);pruneMap(p.plan);});pruneMap(state.sharedPlan);
+  try{localStorage.setItem(LS_KEY,JSON.stringify(state));}catch(e){console.warn(e);}}
+
+function activeP(){return state.profiles.find(p=>p.id===state.activeProfileId)||state.profiles[0];}
+function allFoods(){return BASE_FOODS.map(foodFromArr).filter(f=>!(state.foodHidden&&state.foodHidden.indexOf(f.id)>=0)).concat(state.customFoods);}
+function foodById(id){return allFoods().find(f=>f.id===id);}
+function foodByName(name){const n=name.trim().toLowerCase();return allFoods().find(f=>f.name.toLowerCase()===n);}
+function foodUsage(id){let n=0;const scan=m=>{if(!m)return;for(const k in m)m[k].forEach(meal=>meal.forEach(it=>{if(it.foodId===id)n++;}));};
+  state.profiles.forEach(p=>scan(p.log));(state.menus||[]).forEach(mn=>mn.meals.forEach(meal=>meal.forEach(it=>{if(it.foodId===id)n++;})));return n;}
+function curMenu(){if(!state.menus.length)state.menus.push(newMenu());if(curMenuIdx>=state.menus.length)curMenuIdx=0;return state.menus[curMenuIdx];}
+function menuMeals(){return curMenu().meals;}
+function menuTitle(i){const m=state.menus[i];return(m&&m.title&&m.title.trim())?m.title:'Jelovnik '+(i+1);}
+function menuDescAuto(meals){const names=[];meals.forEach(m=>m.forEach(it=>{const nm=itemName(it);if(names.indexOf(nm)<0)names.push(nm);}));if(!names.length)return 'prazan jelovnik';return names.slice(0,5).join(', ')+(names.length>5?'…':'');}
+function menuDescShown(m){return(m&&m.desc&&m.desc.trim())?m.desc:menuDescAuto(m.meals);}
+function menuFullList(meals){const parts=[];
+  MEALS.forEach((mn,mi)=>{const items=meals[mi];if(!items.length)return;
+    const kc=Math.round(sumItems(items).kcal);
+    parts.push('<div style="margin-bottom:3px"><b>'+mn+'</b> <span class="kcal-c">'+kc+' kcal</span>: '+
+      items.map(it=>'<span class="cdot" style="background:'+catColor(itemCat(it))+'"></span>'+itemName(it)+' <span class="muted">'+it.g+' '+itemUnit(it)+'</span>').join(', ')+'</div>');});
+  return parts.length?parts.join(''):'<span class="muted">Nema unesenih namirnica u ovom jelovniku.</span>';}
+
+/* log & plan pristup */
+function logMealsR(d){const p=activeP();return(p.log&&p.log[d])||emptyMeals();}
+function logMealsW(d){const p=activeP();if(!p.log)p.log={};if(!p.log[d])p.log[d]=emptyMeals();return p.log[d];}
+function planStoreR(){return state.menuMode==='shared'?(state.sharedPlan||{}):(activeP().plan||{});}
+function planStoreW(){if(state.menuMode==='shared'){if(!state.sharedPlan)state.sharedPlan={};return state.sharedPlan;}const p=activeP();if(!p.plan)p.plan={};return p.plan;}
+function planMealsR(d){return planStoreR()[d]||emptyMeals();}
+function planMealsW(d){const st=planStoreW();if(!st[d])st[d]=emptyMeals();return st[d];}
+
+/* ===== Ciljevi ===== */
+function targets(){
+  const p=activeP().profile,w=+p.weight,h=+p.height,a=+p.age;
+  let bmr=10*w+6.25*h-5*a+(p.sex==='m'?5:-161),tdee=bmr*(+p.act),kcal=Math.round((tdee+(+p.goal))/10)*10;
+  const proteinG=Math.round(1.6*w),fatG=Math.round(0.25*kcal/9);let carbsG=Math.round((kcal-proteinG*4-fatG*9)/4);if(carbsG<0)carbsG=0;
+  const fibG=Math.round(14*kcal/1000),female=p.sex==='z';
+  const fe=(female&&a<51)?18:8,ca=((female&&a>=51)||(!female&&a>=71))?1200:1000,vc=female?75:90,vd=a>=71?20:15,mgT=female?(a<=30?310:320):(a<=30?400:420);
+  const water=Math.round(35*w/100)/10;
+  return{kcal,p:proteinG,c:carbsG,f:fatG,fib:fibG,fe,ca,mg:mgT,vc,vd,bmr:Math.round(bmr),tdee:Math.round(tdee),water};
+}
+
+/* ===== Zbrajanje ===== */
+function zeroTot(){const t={};NUTS.forEach(n=>t[n.key]=0);return t;}
+function itemPer100(it){if(it.foodId)return foodById(it.foodId);if(it.n)return it.n;return null;}
+function itemName(it){if(it.foodId){const f=foodById(it.foodId);return f?f.name:'?';}return it.name||'?';}
+function itemIsDrink(it){if(it.foodId){const f=foodById(it.foodId);return!!(f&&f.cat==='Pića');}return!!it.drink;}
+function foodUnit(cat,name){return(cat==='Pića'||/mlijeko/i.test(name||''))?'ml':'g';}
+function itemUnit(it){if(it.foodId){const f=foodById(it.foodId);return f?foodUnit(f.cat,f.name):'g';}return it.drink?'ml':'g';}
+const CAT_COLORS={'Meso i riba':'#d15a52','Mliječno i jaja':'#d9a521','Žitarice i kruh':'#c17d1a','Mahunarke':'#7f8b2e','Povrće':'#2e9d5f','Voće':'#d1568f','Orašasti i masti':'#9c6b3f','Pića':'#3a86c4','Suplementi':'#7c4dd6','Ostalo':'#7a8a80'};
+function catColor(cat){return CAT_COLORS[cat]||'#7a8a80';}
+function itemCat(it){if(it.foodId){const f=foodById(it.foodId);return f?f.cat:'Ostalo';}return it.drink?'Pića':'Ostalo';}
+function itemDetail(p,k){const parts=[];
+  [['p','B','g'],['c','UH','g'],['f','M','g'],['fib','Vlakna','g']].forEach(([key,lab,u])=>{parts.push(lab+' '+fmt((p[key]||0)*k,1)+u);});
+  [['fe','Fe','mg'],['ca','Ca','mg'],['mg','Mg','mg'],['vc','Vit C','mg'],['vd','Vit D','µg']].forEach(([key,lab,u])=>{const v=(p[key]||0)*k;if(v>0)parts.push(lab+' '+fmt(v,1)+u);});
+  return parts.join(' · ');}
+function sumItems(items){const t=zeroTot();items.forEach(it=>{const p=itemPer100(it);if(!p)return;const k=it.g/100;NUTS.forEach(n=>t[n.key]+=(p[n.key]||0)*k);});return t;}
+function mealsTotals(meals){let items=[];meals.forEach(m=>items=items.concat(m));return sumItems(items);}
+function mealsFluid(meals){let ml=0;meals.forEach(m=>m.forEach(it=>{if(itemIsDrink(it))ml+=it.g;}));return ml/1000;}
+
+/* ===== Render helpers ===== */
+function fmt(v,dec=0){return(Math.round(v*Math.pow(10,dec))/Math.pow(10,dec)).toLocaleString('hr-HR');}
+function barColor(pct){if(pct>=90)return'var(--good)';if(pct>=50)return'var(--warn)';return'var(--bad)';}
+function ensureFoodlist(){let dl=document.getElementById('foodlist');if(!dl){dl=document.createElement('datalist');dl.id='foodlist';document.body.appendChild(dl);}
+  dl.innerHTML=allFoods().map(f=>'<option value="'+f.name.replace(/"/g,'&quot;')+'">').join('');}
+
+let mealClipboard=null,itemClipboard=null;
+function renderMealEditor(el,meals,rerender){
+  ensureFoodlist();el.innerHTML='';
+  MEALS.forEach((mname,mi)=>{
+    const items=meals[mi];const div=document.createElement('div');div.className='meal';const tot=sumItems(items);
+    let html='<div class="meal-head"><span class="row" style="gap:5px"><b>'+mname+'</b>'+
+      '<button class="icon mbtn" data-mcopy="'+mi+'" title="Kopiraj obrok">⧉</button>'+
+      '<button class="icon mbtn" data-mpaste="'+mi+'" title="Zalijepi obrok">📋</button>'+
+      '<button class="icon mbtn" data-mclear="'+mi+'" title="Isprazni obrok">🗑</button></span>'+
+      '<span class="small muted"><span class="kcal-c">'+Math.round(tot.kcal)+' kcal</span> · Bjelančevine '+fmt(tot.p,0)+'g · Ugljikohidrati '+fmt(tot.c,0)+'g · Masti '+fmt(tot.f,0)+'g</span></div>';
+    items.forEach((it,ii)=>{const p=itemPer100(it);if(!p)return;const k=it.g/100;const tag=it.foodId?'':' <span class="tag">🤖</span>';
+      html+='<div class="item" style="border-left:3px solid '+catColor(itemCat(it))+';padding-left:9px"><span style="flex:1;min-width:0"><span class="cdot" style="background:'+catColor(itemCat(it))+'"></span>'+itemName(it)+tag+' <span class="muted small">· <span class="kcal-c">'+Math.round((p.kcal||0)*k)+' kcal</span> · '+itemDetail(p,k)+'</span></span>'+
+        '<span class="row"><input class="gr" type="number" min="1" value="'+it.g+'" data-edit="'+mi+'-'+ii+'"> <span class="muted small">'+itemUnit(it)+'</span>'+
+        '<button class="icon mbtn" data-icopy="'+mi+'-'+ii+'" title="Kopiraj namirnicu">⧉</button>'+
+        '<button class="icon" data-del="'+mi+'-'+ii+'">✕</button></span></div>';});
+    html+='<div class="add-row"><div><label>Namirnica (tipkaj za pretragu)</label><input list="foodlist" data-food="'+mi+'" placeholder="npr. pile..."></div>'+
+      '<div><label>Grama / ml</label><input type="number" data-g="'+mi+'" value="100" min="1"></div>'+
+      '<div class="row"><button class="btn small" data-add="'+mi+'">+ Dodaj</button><button class="btn secondary small" data-ipaste="'+mi+'" title="Zalijepi kopiranu namirnicu">📋</button></div></div>';
+    div.innerHTML=html;el.appendChild(div);
+  });
+  el.querySelectorAll('[data-food]').forEach(inp=>{const mi=inp.dataset.food;inp.addEventListener('change',()=>{const f=foodByName(inp.value);if(f)el.querySelector('[data-g="'+mi+'"]').value=f.serv;});});
+  el.querySelectorAll('[data-add]').forEach(b=>b.onclick=()=>{const mi=+b.dataset.add;const inp=el.querySelector('[data-food="'+mi+'"]');const f=foodByName(inp.value);
+    if(!f){uiToast('Namirnica nije pronađena — odaberi s popisa, dodaj u Namirnice, ili koristi AI unos.');return;}
+    const g=+el.querySelector('[data-g="'+mi+'"]').value||f.serv;meals[mi].push({foodId:f.id,g});save();rerender();});
+  el.querySelectorAll('[data-del]').forEach(b=>b.onclick=()=>{const[mi,ii]=b.dataset.del.split('-').map(Number);meals[mi].splice(ii,1);save();rerender();});
+  el.querySelectorAll('[data-edit]').forEach(inp=>inp.addEventListener('change',()=>{const[mi,ii]=inp.dataset.edit.split('-').map(Number);const g=+inp.value;if(g>0){meals[mi][ii].g=g;save();rerender();}}));
+  el.querySelectorAll('[data-icopy]').forEach(b=>b.onclick=()=>{const[mi,ii]=b.dataset.icopy.split('-').map(Number);const it=meals[mi][ii];if(!it)return;
+    itemClipboard=JSON.parse(JSON.stringify(it));uiToast('Kopirano: '+itemName(it)+'. Klikni 📋 u željenom obroku.');});
+  el.querySelectorAll('[data-ipaste]').forEach(b=>b.onclick=()=>{const mi=+b.dataset.ipaste;if(!itemClipboard){uiToast('Prvo kopiraj namirnicu (⧉ uz stavku).');return;}
+    meals[mi].push(JSON.parse(JSON.stringify(itemClipboard)));save();rerender();uiToast('Zalijepljeno u '+MEALS[mi]+'.');});
+  el.querySelectorAll('[data-mcopy]').forEach(b=>b.onclick=()=>{const mi=+b.dataset.mcopy;if(!meals[mi].length){uiToast(MEALS[mi]+' je prazan.');return;}mealClipboard=JSON.parse(JSON.stringify(meals[mi]));rerender();uiToast('Kopiran '+MEALS[mi]+'. Odaberi drugi obrok/dan pa Zalijepi.');});
+  el.querySelectorAll('[data-mpaste]').forEach(b=>b.onclick=async()=>{const mi=+b.dataset.mpaste;if(!mealClipboard){uiToast('Prvo kopiraj neki obrok (⧉).');return;}
+    if(meals[mi].length&&!(await uiConfirm('Zalijepiti preko postojećeg obroka '+MEALS[mi]+'?','Zalijepi')))return;
+    meals[mi]=JSON.parse(JSON.stringify(mealClipboard));save();rerender();uiToast('Zalijepljeno u '+MEALS[mi]+'.');});
+  el.querySelectorAll('[data-mclear]').forEach(b=>b.onclick=async()=>{const mi=+b.dataset.mclear;if(!meals[mi].length){uiToast(MEALS[mi]+' je već prazan.');return;}
+    if(!(await uiConfirm('Isprazniti '+MEALS[mi]+'?','Isprazni')))return;meals[mi]=[];save();rerender();});
+}
+
+function renderNutrients(container,totals,tgt){let html='';NUTS.forEach(n=>{if(n.key==='kcal')return;const val=totals[n.key],goal=tgt[n.key],pct=goal>0?(val/goal*100):0;
+  html+='<div class="nut"><div class="top"><span>'+n.label+'</span><span class="muted">'+fmt(val,1)+' / '+fmt(goal,0)+' '+n.unit+' ('+Math.round(pct)+'%)</span></div><div class="prog"><div style="width:'+Math.min(pct,100)+'%;background:'+barColor(pct)+'"></div></div></div>';});
+  container.innerHTML=html;}
+
+function renderProfSelectors(){
+  ['jProfSel','pProfSel','profSel'].forEach(id=>{const el=document.getElementById(id);if(!el)return;el.innerHTML='';
+    state.profiles.forEach(p=>{const o=document.createElement('option');o.value=p.id;o.textContent=p.name;if(p.id===state.activeProfileId)o.selected=true;el.appendChild(o);});});
+  document.getElementById('profFormName').textContent=activeP().name;
+  document.getElementById('targetsName').textContent=activeP().name;
+  document.getElementById('dayPersonLabel').textContent='('+activeP().name+')';
+}
+
+function renderDnevnik(){
+  document.getElementById('dDateLabel').textContent=dayName(logDate)+', '+fmtDate(logDate);
+  document.getElementById('aiDayLabel').textContent=dayName(logDate)+' '+fmtDate(logDate);
+  const desc=menuDescAuto(logMealsR(logDate));document.getElementById('dDesc').textContent=desc==='prazan jelovnik'?'—':desc;
+  const dsel=document.getElementById('dMonthSel');if(dsel&&!dsel.options.length){MONTHS.forEach((mn,i)=>{const o=document.createElement('option');o.value=i;o.textContent=mn;dsel.appendChild(o);});}
+  if(dsel)dsel.value=parseISO(logMonth).getMonth();
+  renderCal(document.getElementById('dnevnikCal'),logMonth,logDate,dt=>{logDate=dt;logMonth=firstOfMonth(dt);renderDnevnik();});
+  const lms=document.getElementById('loadMenuSel');if(lms){lms.innerHTML='';state.menus.forEach((m,i)=>{const o=document.createElement('option');o.value=i;o.textContent=menuTitle(i)+' — '+menuDescShown(m);lms.appendChild(o);});}
+  renderMealEditor(document.getElementById('meals'),logMealsW(logDate),renderDnevnik);
+  const tgt=targets(),dt=mealsTotals(logMealsR(logDate));
+  document.getElementById('dayKcal').textContent=Math.round(dt.kcal);
+  document.getElementById('targetKcal').textContent=tgt.kcal;
+  document.getElementById('remainKcal').textContent=Math.round(tgt.kcal-dt.kcal);
+  document.getElementById('dayFluid').textContent=fmt(mealsFluid(logMealsR(logDate)),1);
+  document.getElementById('targetFluid').textContent=tgt.water;
+  renderNutrients(document.getElementById('dayNutrients'),dt,tgt);
+  const mon=mondayOf(logDate);let days=0;const wtot=zeroTot();
+  for(let i=0;i<7;i++){const dm=logMealsR(addDays(mon,i));if(!dm.some(m=>m.length))continue;days++;const d2=mealsTotals(dm);NUTS.forEach(n=>wtot[n.key]+=d2[n.key]);}
+  const avg=zeroTot();if(days>0)NUTS.forEach(n=>avg[n.key]=wtot[n.key]/days);
+  const wk=document.getElementById('weekSummary');
+  if(!days){wk.innerHTML='<p class="muted small">Nema unosa u ovom tjednu.</p>';}
+  else{
+    wk.innerHTML='<div class="small muted" style="margin-bottom:6px">'+days+(days===1?' dan':' dana')+' s unosom u ovom tjednu</div>'+
+      '<div class="kcalbig"><span class="kcal-c">'+Math.round(avg.kcal)+'</span> <span class="muted" style="font-size:14px">kcal/dan (prosjek) · cilj '+tgt.kcal+'</span></div>'+
+      '<div class="small muted" style="margin:2px 0 12px">Ukupno: <span class="kcal-c">'+Math.round(wtot.kcal)+'</span> / '+(tgt.kcal*days)+' kcal ('+days+' × '+tgt.kcal+')</div>';
+    const wc=document.createElement('div');renderNutrients(wc,avg,tgt);wk.appendChild(wc);
+  }
+}
+
+function renderCal(el,monthIso,selDate,onpick){
+  el.innerHTML='';
+  ['Pon','Uto','Sri','Čet','Pet','Sub','Ned'].forEach(h=>{const c=document.createElement('div');c.className='cah';c.textContent=h;el.appendChild(c);});
+  const dates=monthDates(monthIso),startWd=(parseISO(dates[0]).getDay()+6)%7,today=todayISO();
+  for(let i=0;i<startWd;i++){const c=document.createElement('div');c.className='cell empty';el.appendChild(c);}
+  dates.forEach(dt=>{const c=document.createElement('div');c.className='cell';if(dt===selDate)c.classList.add('sel');if(dt===today)c.classList.add('today');
+    const kc=Math.round(mealsTotals(logMealsR(dt)).kcal);
+    c.innerHTML='<div class="dn">'+parseISO(dt).getDate()+'</div><div class="kc">'+(kc?kc+' kcal':'')+'</div>';
+    c.onclick=()=>onpick(dt);el.appendChild(c);});
+}
+let shopData={rows:[],title:''};let shopSelection=null;
+function renderShopMenus(){
+  const el=document.getElementById('shopMenus');if(!el)return;
+  if(!shopSelection){shopSelection={};const cm=curMenu();shopSelection[cm.id]=1;}
+  const ids=state.menus.map(m=>m.id);Object.keys(shopSelection).forEach(id=>{if(ids.indexOf(id)<0)delete shopSelection[id];});
+  el.innerHTML=state.menus.map((m,i)=>{const on=shopSelection[m.id]>0,cnt=shopSelection[m.id]||1;
+    return '<div class="row" style="gap:6px;padding:2px 0"><label class="row" style="gap:6px;font-weight:600;margin:0"><input type="checkbox" data-mchk="'+m.id+'" '+(on?'checked':'')+' style="width:auto"> '+menuTitle(i)+'</label>'+
+      '<span class="muted small" style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+menuDescShown(m)+'</span>'+
+      '<span class="muted small">×</span><input type="number" min="1" value="'+cnt+'" data-mcnt="'+m.id+'" style="width:52px;padding:4px 6px" '+(on?'':'disabled')+'></div>';}).join('');
+  el.querySelectorAll('[data-mchk]').forEach(c=>c.onchange=()=>{const id=c.dataset.mchk;if(c.checked)shopSelection[id]=+el.querySelector('[data-mcnt="'+id+'"]').value||1;else delete shopSelection[id];renderShop();});
+  el.querySelectorAll('[data-mcnt]').forEach(inp=>inp.onchange=()=>{const id=inp.dataset.mcnt;if(shopSelection[id])shopSelection[id]=Math.max(1,+inp.value||1);renderShop();});
+}
+function renderShop(){
+  renderShopMenus();
+  const chosen=state.menus.filter(m=>shopSelection[m.id]>0);
+  shopData.title=chosen.map(m=>{const i=state.menus.indexOf(m),c=shopSelection[m.id];return menuTitle(i)+(c>1?' ×'+c:'');}).join(', ')||'—';
+  const agg={};chosen.forEach(m=>{const c=shopSelection[m.id]||1;m.meals.forEach(meal=>meal.forEach(it=>{const per=itemPer100(it);if(!per)return;
+    let name,cat;if(it.foodId){const f=foodById(it.foodId);name=f.name;cat=f.cat;}else{name=it.name||'?';cat=it.drink?'Pića':'Ostalo';}
+    if(!agg[name])agg[name]={g:0,cat};agg[name].g+=it.g*c;}));});
+  const names=Object.keys(agg),el=document.getElementById('shopList');
+  shopData.rows=names.sort().map(n=>({cat:agg[n].cat,name:n,g:Math.round(agg[n].g),unit:foodUnit(agg[n].cat,n)}));
+  if(!names.length){el.innerHTML='<p class="muted small">Odaberi jelovnik(e) s namirnicama iznad.</p>';el._text='';return;}
+  const byCat={};names.forEach(n=>{(byCat[agg[n].cat]=byCat[agg[n].cat]||[]).push(n);});
+  let html='',txt=[];Object.keys(byCat).sort().forEach(cat=>{html+='<h3>'+cat+'</h3><ul>';byCat[cat].sort().forEach(n=>{const g=Math.round(agg[n].g),u=' '+foodUnit(agg[n].cat,n);
+    html+='<li>'+n+' — <b>'+g+u+'</b></li>';txt.push(n+' — '+g+u);});html+='</ul>';});
+  el.innerHTML=html;el._text=txt.join('\n');
+}
+function exportShopCSV(){if(!shopData.rows.length){uiToast('Popis je prazan.');return;}
+  let csv='Kategorija;Namirnica;Količina\n';shopData.rows.forEach(r=>csv+=r.cat+';'+String(r.name).replace(/;/g,',')+';'+r.g+' '+r.unit+'\n');
+  const blob=new Blob(['﻿'+csv],{type:'text/csv;charset=utf-8'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='popis-za-kupovinu.csv';document.body.appendChild(a);a.click();a.remove();uiToast('Excel (CSV) datoteka preuzeta.');}
+function printShop(){if(!shopData.rows.length){uiToast('Popis je prazan.');return;}
+  const byCat={};shopData.rows.forEach(r=>{(byCat[r.cat]=byCat[r.cat]||[]).push(r);});
+  let h='<h1>🛒 Popis za kupovinu</h1><p>'+shopData.title+'</p>';
+  Object.keys(byCat).sort().forEach(c=>{h+='<h3>'+c+'</h3><ul>';byCat[c].forEach(r=>h+='<li>'+r.name+' — '+r.g+' '+r.unit+'</li>');h+='</ul>';});
+  const w=window.open('','_blank');
+  if(!w){uiToast('Ispis blokiran u pregledniku. Koristi Excel izvoz.');return;}
+  w.document.write('<html><head><meta charset="utf-8"><title>Popis za kupovinu</title><style>body{font-family:system-ui,sans-serif;padding:24px;color:#1c2a23}h1{font-size:20px}h3{margin:14px 0 4px;color:#17824f}ul{margin:0 0 8px}li{margin-bottom:3px}</style></head><body>'+h+'</body></html>');
+  w.document.close();w.focus();setTimeout(()=>{w.print();},250);}
+function renderMenuSelector(){
+  const sel=document.getElementById('menuSel');if(!sel)return;sel.innerHTML='';
+  state.menus.forEach((m,i)=>{const o=document.createElement('option');o.value=i;o.textContent=menuTitle(i)+' — '+menuDescShown(m);if(i===curMenuIdx)o.selected=true;sel.appendChild(o);});
+}
+function renderPlan(){
+  renderMenuSelector();
+  const meals=menuMeals(),tot=mealsTotals(meals);
+  document.getElementById('menuTitleH').textContent=menuTitle(curMenuIdx);
+  document.getElementById('menuDescH').textContent=menuDescShown(curMenu());
+  document.getElementById('menuFullH').innerHTML=menuFullList(meals);
+  document.getElementById('aiDayLabelP').textContent=menuTitle(curMenuIdx);
+  document.getElementById('planDateLabel2').textContent=menuTitle(curMenuIdx);
+  renderMealEditor(document.getElementById('planMeals'),meals,renderPlan);
+  document.getElementById('planDayKcal').innerHTML='<span class="kcal-c">'+Math.round(tot.kcal)+' kcal</span> ukupno';
+  const ci=document.getElementById('planClipInfo');if(ci)ci.textContent=(typeof planClipboard!=='undefined'&&planClipboard)?'📋 spremno za lijepljenje':'';
+  renderShop();
+  const tgt=targets(),pf=mealsFluid(meals);
+  document.getElementById('planOvLabel').textContent=menuTitle(curMenuIdx);
+  document.getElementById('planOvKcal').textContent=Math.round(tot.kcal);
+  document.getElementById('planOvTarget').textContent=tgt.kcal;
+  document.getElementById('planOvFluid').textContent=fmt(pf,1);
+  document.getElementById('planOvFluidT').textContent=tgt.water;
+  renderNutrients(document.getElementById('planOvNut'),tot,tgt);
+}
+
+function renderTargets(){const t=targets();document.getElementById('targetsView').innerHTML='<div class="grid g4">'+
+  tcard('Kalorije',t.kcal+' kcal','BMR '+t.bmr+' · TDEE '+t.tdee)+tcard('Bjelančevine',t.p+' g','≈1.6 g/kg')+tcard('Ugljikohidrati',t.c+' g','ostatak energije')+
+  tcard('Masti',t.f+' g','≈25% energije')+tcard('Vlakna',t.fib+' g','14 g/1000 kcal')+tcard('Željezo',t.fe+' mg','')+tcard('Kalcij',t.ca+' mg','')+
+  tcard('Magnezij',t.mg+' mg','')+tcard('Vitamin C',t.vc+' mg','')+tcard('Vitamin D',t.vd+' µg','')+tcard('Voda',t.water+' L','≈35 ml/kg')+'</div>'+
+  '<p class="hint">Ciljevi su okvirni i ne zamjenjuju savjet liječnika ili nutricionista.</p>';}
+function tcard(t,v,s){return'<div class="card" style="margin:0;background:var(--panel2)"><div class="muted small">'+t+'</div><div style="font-size:20px;font-weight:700;margin:2px 0">'+v+'</div>'+(s?'<div class="muted small">'+s+'</div>':'')+'</div>';}
+function fillProfileForm(){const p=activeP().profile;p_sex.value=p.sex;p_age.value=p.age;p_act.value=p.act;p_weight.value=p.weight;p_height.value=p.height;p_goal.value=p.goal;}
+let foodSort={key:'name',dir:1};
+function updateSortHeaders(){document.querySelectorAll('#foodTable th[data-k]').forEach(th=>{if(!th.dataset.label)th.dataset.label=th.textContent;
+  const on=th.dataset.k===foodSort.key;th.classList.toggle('sorted',on);th.textContent=th.dataset.label+(on?(foodSort.dir>0?' ▲':' ▼'):'');});}
+function renderFoods(filter=''){const tb=document.querySelector('#foodTable tbody');tb.innerHTML='';let foods=allFoods().filter(f=>f.name.toLowerCase().includes(filter.toLowerCase()));
+  const k=foodSort.key,dir=foodSort.dir,strKey=(k==='name'||k==='cat');
+  foods.sort((a,b)=>{let x=a[k],y=b[k];if(strKey){x=String(x).toLowerCase();y=String(y).toLowerCase();return x<y?-dir:x>y?dir:0;}return((+x||0)-(+y||0))*dir;});
+  updateSortHeaders();
+  document.getElementById('foodCount').textContent='('+foods.length+')';
+  foods.forEach(f=>{const tr=document.createElement('tr');tr.innerHTML='<td><span class="cdot" style="background:'+catColor(f.cat)+'"></span>'+f.name+(f.base?'':' <span class="tag">(vlastito)</span>')+'</td><td class="small" style="color:'+catColor(f.cat)+';font-weight:600">'+f.cat+'</td>'+
+    '<td>'+f.kcal+'</td><td>'+f.p+'</td><td>'+f.c+'</td><td>'+f.f+'</td><td>'+f.fib+'</td><td>'+f.fe+'</td><td>'+f.ca+'</td><td>'+f.mg+'</td><td>'+f.vc+'</td><td>'+f.vd+'</td><td style="white-space:nowrap;color:var(--muted)">'+f.serv+((f.cat==='Pića'||/mlijeko/i.test(f.name))?' ml':' g')+'</td>'+
+    '<td style="white-space:nowrap"><button class="icon mbtn" data-airecheck="'+f.id+'" title="AI provjeri vrijednosti">🤖</button><button class="icon" data-editfood="'+f.id+'" title="Uredi naziv i porciju">✎</button><button class="icon" data-delfood="'+f.id+'" title="Obriši">✕</button></td>';tb.appendChild(tr);});
+  tb.querySelectorAll('[data-airecheck]').forEach(b=>b.onclick=()=>aiRecheckFood(b.dataset.airecheck));
+  tb.querySelectorAll('[data-editfood]').forEach(b=>b.onclick=()=>openFoodEdit(b.dataset.editfood));
+  tb.querySelectorAll('[data-delfood]').forEach(b=>b.onclick=async()=>{const id=b.dataset.delfood,cnt=foodUsage(id);
+    if(cnt>0&&!(await uiConfirm('⚠️ Ova namirnica se koristi u planu/dnevniku ('+cnt+(cnt===1?' put':' puta')+'). Ako je obrišeš, te stavke će nestati. Sigurno?','Obriši')))return;
+    if(id[0]==='b'){if(!state.foodHidden)state.foodHidden=[];if(state.foodHidden.indexOf(id)<0)state.foodHidden.push(id);if(state.foodRenames)delete state.foodRenames[id];}
+    else{state.customFoods=state.customFoods.filter(f=>f.id!==id);}
+    save();renderFoods(document.getElementById('foodSearch').value);renderDnevnik();renderPlan();uiToast('Namirnica obrisana.');});}
+
+function renderLegend(){const el=document.getElementById('catLegend');if(!el)return;el.innerHTML=Object.keys(CAT_COLORS).map(c=>'<span><span class="cdot" style="background:'+CAT_COLORS[c]+'"></span>'+c+'</span>').join('');}
+let feditId=null,fePrevServ=100;
+const r2=v=>Math.round(v*100)/100;
+function feUnit(){const f=foodById(feditId);const nm=document.getElementById('fe_name').value||(f?f.name:'');const cat=document.getElementById('fe_cat').value||(f?f.cat:'');return foodUnit(cat,nm);}
+function feSetNote(){const s=Math.max(1,+document.getElementById('fe_serv').value||100);
+  document.getElementById('feScaleNote').textContent='Sve vrijednosti dolje odnose se na '+s+' '+feUnit()+'. Promijeniš li gramažu, vrijednosti se automatski preračunaju i AI ih provjeri.';}
+function openFoodEdit(id){const f=foodById(id);if(!f)return;feditId=id;
+  const serv=Math.max(1,f.serv||100);fePrevServ=serv;
+  document.getElementById('feTitle').textContent='Uredi: '+f.name+(f.base?' (ugrađena)':' (vlastita)');
+  document.getElementById('fe_name').value=f.name;document.getElementById('fe_cat').value=f.cat;
+  NUTS.forEach(n=>{const el=document.getElementById('fe_'+n.key);if(el)el.value=r2((f[n.key]||0)*serv/100);});
+  document.getElementById('fe_serv').value=serv;feSetNote();
+  document.getElementById('fedit').style.display='flex';}
+function feRescale(){const nv=Math.max(1,Math.round(+document.getElementById('fe_serv').value||100)),old=fePrevServ||100;
+  if(nv!==old){NUTS.forEach(n=>{const el=document.getElementById('fe_'+n.key);if(el)el.value=r2((+el.value||0)*nv/old);});fePrevServ=nv;}
+  document.getElementById('fe_serv').value=nv;feSetNote();return nv!==old;}
+async function feAiCheck(auto){
+  const f=foodById(feditId);if(!f)return;
+  if(!(window.cowork&&window.cowork.askClaude)){if(!auto)uiToast('AI radi samo unutar Claude aplikacije.');return;}
+  const name=document.getElementById('fe_name').value.trim()||f.name;
+  const serv=Math.max(1,+document.getElementById('fe_serv').value||100);
+  uiToast('✨ AI provjerava vrijednosti...');
+  try{const res=await window.cowork.askClaude(AI_FOOD_PROMPT+'\n\nNamirnice: '+name,[]);
+    let out=typeof res==='string'?res:(res&&res.text)?res.text:(res&&res.content&&res.content[0]&&res.content[0].text)?res.content[0].text:JSON.stringify(res);
+    const a=out.indexOf('{'),b=out.lastIndexOf('}');if(a<0||b<0)throw new Error('Neočekivan odgovor.');
+    const nf=((JSON.parse(out.slice(a,b+1)).foods)||[])[0];if(!nf)throw new Error('Nema rezultata.');
+    NUTS.forEach(n=>{const el=document.getElementById('fe_'+n.key);if(el)el.value=r2((+nf[n.key]||0)*serv/100);});
+    uiToast('AI popunio vrijednosti za '+serv+' '+feUnit()+'. Provjeri pa Spremi.');
+  }catch(e){uiToast('AI greška: '+(e&&e.message?e.message:e));}
+}
+function closeFoodEdit(){document.getElementById('fedit').style.display='none';feditId=null;}
+function saveFoodEdit(){
+  const id=feditId;if(!id)return;const f=foodById(id);if(!f){closeFoodEdit();return;}
+  const name=document.getElementById('fe_name').value.trim();
+  if(!name){uiToast('Naziv ne može biti prazan.');return;}
+  const ex=foodByName(name);if(ex&&ex.id!==id){uiToast('Namirnica s tim nazivom već postoji.');return;}
+  const serv=Math.max(1,Math.round(+document.getElementById('fe_serv').value||100));
+  const vals={};NUTS.forEach(n=>{const el=document.getElementById('fe_'+n.key);vals[n.key]=r2((el?(+el.value||0):0)*100/serv);});
+  const cat=document.getElementById('fe_cat').value;
+  if(f.base){state.foodRenames[id]=name;state.foodCat[id]=cat;state.foodVals[id]=vals;state.foodServ[id]=serv;}
+  else{const cf=state.customFoods.find(x=>x.id===id);if(cf){cf.name=name;cf.cat=cat;NUTS.forEach(n=>cf[n.key]=vals[n.key]);cf.serv=serv;}}
+  closeFoodEdit();save();renderFoods(document.getElementById('foodSearch').value);renderDnevnik();renderPlan();uiToast('Spremljeno: '+name);}
+function renderAll(){renderProfSelectors();fillProfileForm();renderTargets();renderDnevnik();renderPlan();renderFoods(document.getElementById('foodSearch').value||'');renderLegend();}
+
+/* ===== AI unos (askClaude) ===== */
+const AI_PROMPT='Ti si nutricionistički asistent. Korisnik na hrvatskom opisuje što je pojeo/popio/planira, ILI traži da prilagodiš već uneseni dan (npr. zbog prekoračenja kalorija ili manjka nekog nutrijenta). Vrati ISKLJUČIVO JSON (bez teksta okolo, bez markdowna), oblika: {"items":[{"meal":"Doručak|Ručak|Večera|Međuobrok","name":"kratak naziv","grams":broj,"drink":true_ili_false,"match":"","cat":"Meso i riba|Mliječno i jaja|Žitarice i kruh|Mahunarke|Povrće|Voće|Orašasti i masti|Pića|Suplementi|Ostalo","per100":{"kcal":0,"p":0,"c":0,"f":0,"fib":0,"fe":0,"ca":0,"mg":0,"vc":0,"vd":0}}]}. "items" su namirnice koje treba DODATI. VAŽNO: ti NIKADA ne brišeš ni ne mijenjaš postojeće stavke — smiješ isključivo dodavati nove. Brisanje radi korisnik sam u aplikaciji. grams=UKUPNA procijenjena pojedena količina u gramima (za pića ml) — ako korisnik navede više komada, zbroji ih (npr. "dvije kriške pizze" → grams=250). Ako korisnik navede broj komada (npr. "dvije kriške pizze", "3 jaja"), pomnoži s masom jednog komada i upiši ukupno u grams. per100=vrijednosti na 100 g/ml: kcal, p (bjelančevine g), c (ugljikohidrati g), f (masti g), fib (vlakna g), fe (željezo mg), ca (kalcij mg), mg (magnezij mg), vc (vitamin C mg), vd (vitamin D µg). match=ako namirnica odgovara nekoj s POPISA (dolje) upiši njen TOČAN naziv, inače prazan string ""; svejedno uvijek ispuni per100. cat=kategorija namirnice, točno jedna od navedenih. Ako korisnik navede količinu izračunaj ukupno; svaku namirnicu kao zasebnu stavku; ako obrok nije naveden procijeni najlogičniji; drink=true samo za napitke; realne prosječne vrijednosti za hrvatske namirnice. Ako korisnik traži prilagodbu (npr. "fali mi kalcija", "premalo bjelančevina danas"), pogledaj TRENUTNO STANJE (dolje): trenutne obroke i koliko je uneseno naspram dnevnog cilja, pa DODAJ namirnicu koja rješava manjak: nedostaje kalcija → sir, jogurt, brokula, bademi, sardine; nedostaje željeza → crveno meso, leća, špinat; nedostaje vlakana → cjelovite žitarice, mahunarke, povrće; nedostaje bjelančevina → meso, riba, jaja, grčki jogurt. Ako korisnik traži uklanjanje ili zamjenu neke stavke, NE briši ništa — vrati prazan popis items ([]) jer brisanje radi korisnik sam.';
+function buildDayContext(kind){
+  const isLog=kind==='log';
+  const meals=isLog?logMealsR(logDate):menuMeals();
+  const tgt=targets(),tot=mealsTotals(meals),fluid=mealsFluid(meals);
+  const lines=[];
+  MEALS.forEach((mname,mi)=>{const items=meals[mi];if(!items.length)return;
+    lines.push(mname+': '+items.map(it=>itemName(it)+' ('+it.g+' '+itemUnit(it)+')').join(', '));});
+  const mealsText=lines.length?lines.join('; '):'trenutno prazno, nema unesenih namirnica';
+  const nutText=NUTS.map(n=>n.label+' '+fmt(tot[n.key],1)+'/'+fmt(tgt[n.key],0)+n.unit).join(', ');
+  return 'TRENUTNO STANJE ('+(isLog?'dnevnik za '+fmtDate(logDate):menuTitle(curMenuIdx))+'): obroci: '+mealsText+'. Uneseno/cilj: '+nutText+'. Tekućina: '+fmt(fluid,1)+'/'+tgt.water+' L.';
+}
+const AI_WEIGHT_PROMPT='Ti si nutricionistički asistent. Korisnik na hrvatskom pita koliko grama (ili ml za tekućine) ima neka porcija hrane. Odgovori KRATKO i konkretno, u jednoj do dvije rečenice, bez markdowna i bez popisa: procijenjena masa, po potrebi raspon, i vrlo kratko pojašnjenje. Primjer: "1 šnita kruha ≈ 30 g (tanja 25 g, deblja 40 g)." Pitanje korisnika: ';
+async function aiWeight(){
+  const msg=document.getElementById('aiWeightMsg'),t=document.getElementById('aiWeightText').value.trim();
+  if(!t){msg.textContent='Upiši pitanje.';return;}
+  if(!(window.cowork&&window.cowork.askClaude)){msg.textContent='AI radi samo unutar Claude aplikacije.';return;}
+  const btn=document.getElementById('aiWeightRun');btn.disabled=true;msg.textContent='✨ Claude računa...';
+  try{const res=await window.cowork.askClaude(AI_WEIGHT_PROMPT+t,[]);
+    let out=typeof res==='string'?res:(res&&res.text)?res.text:(res&&res.content&&res.content[0]&&res.content[0].text)?res.content[0].text:String(res);
+    msg.textContent='📏 '+String(out).trim().slice(0,400);
+  }catch(e){msg.textContent='Greška: '+(e&&e.message?e.message:e);console.error(e);}finally{btn.disabled=false;}
+}
+const AI_FOOD_PROMPT='Ti si nutricionistička baza. Korisnik navodi jednu ili više namirnica/jela (hrvatski). Za svaku vrati vrijednosti na 100 g (za pića na 100 ml). Vrati ISKLJUČIVO JSON (bez teksta okolo): {"foods":[{"name":"kratak naziv","cat":"Meso i riba|Mliječno i jaja|Žitarice i kruh|Mahunarke|Povrće|Voće|Orašasti i masti|Pića|Suplementi|Ostalo","kcal":0,"p":0,"c":0,"f":0,"fib":0,"fe":0,"ca":0,"mg":0,"vc":0,"vd":0,"serv":100}]}. p=bjelančevine g, c=ugljikohidrati g, f=masti g, fib=vlakna g; fe=željezo mg, ca=kalcij mg, mg=magnezij mg, vc=vitamin C mg, vd=vitamin D µg — sve na 100 g. serv=uobičajena porcija u g (ml za pića). cat MORA biti točno jedna od navedenih kategorija. Koristi realne prosječne vrijednosti za hrvatske namirnice i jela.';
+async function aiRecheckFood(id){
+  const f=foodById(id);if(!f)return;
+  if(!(window.cowork&&window.cowork.askClaude)){uiToast('AI radi samo unutar Claude aplikacije.');return;}
+  uiToast('✨ Provjeravam "'+f.name+'"...');
+  try{
+    const res=await window.cowork.askClaude(AI_FOOD_PROMPT+'\n\nNamirnice: '+f.name,[]);
+    let out=typeof res==='string'?res:(res&&res.text)?res.text:(res&&res.content&&res.content[0]&&res.content[0].text)?res.content[0].text:JSON.stringify(res);
+    const a=out.indexOf('{'),b=out.lastIndexOf('}');if(a<0||b<0)throw new Error('Neočekivan odgovor.');
+    const arr=(JSON.parse(out.slice(a,b+1)).foods)||[];const nf=arr[0];if(!nf)throw new Error('Nema rezultata.');
+    const changes=[],vals={};
+    NUTS.forEach(n=>{const nv=+nf[n.key]||0,ov=+f[n.key]||0;vals[n.key]=nv;
+      if(Math.abs(nv-ov)>Math.max(0.5,Math.abs(ov)*0.03))changes.push(n.label+': '+fmt(ov,1)+' → '+fmt(nv,1)+' '+n.unit);});
+    if(!changes.length){uiToast('✓ Vrijednosti za "'+f.name+'" već odgovaraju.');return;}
+    if(!(await uiConfirm('AI predlaže izmjene za "'+f.name+'" (na 100 '+foodUnit(f.cat,f.name)+'):\n\n'+changes.join('\n')+'\n\nPrimijeniti?','Primijeni')))return;
+    if(f.base){state.foodVals[id]=vals;}
+    else{const cf=state.customFoods.find(x=>x.id===id);if(cf){NUTS.forEach(n=>cf[n.key]=vals[n.key]);}}
+    save();renderFoods(document.getElementById('foodSearch').value);renderDnevnik();renderPlan();uiToast('Vrijednosti ažurirane.');
+  }catch(e){uiToast('Greška: '+(e&&e.message?e.message:e));console.error(e);}
+}
+async function aiAddFood(){
+  const msg=document.getElementById('aiFoodMsg'),text=document.getElementById('aiFoodText').value.trim();
+  if(!text){msg.textContent='Upiši naziv namirnice.';return;}
+  if(!(window.cowork&&window.cowork.askClaude)){msg.textContent='AI radi samo unutar Claude aplikacije.';return;}
+  const btn=document.getElementById('aiFoodRun');btn.disabled=true;msg.textContent='✨ Claude traži...';
+  try{
+    const res=await window.cowork.askClaude(AI_FOOD_PROMPT+'\n\nNamirnice: '+text,[]);
+    let out=typeof res==='string'?res:(res&&res.text)?res.text:(res&&res.content&&res.content[0]&&res.content[0].text)?res.content[0].text:JSON.stringify(res);
+    const a=out.indexOf('{'),b=out.lastIndexOf('}');if(a<0||b<0)throw new Error('Neočekivan odgovor.');
+    const foods=(JSON.parse(out.slice(a,b+1)).foods)||[];if(!foods.length)throw new Error('Nisam prepoznao namirnice.');
+    const valid=['Meso i riba','Mliječno i jaja','Žitarice i kruh','Mahunarke','Povrće','Voće','Orašasti i masti','Pića','Suplementi','Ostalo'];
+    let added=[],skipped=[];
+    foods.forEach(f=>{const nm=(f.name||'').trim();if(!nm)return;if(foodByName(nm)){skipped.push(nm);return;}
+      const cat=valid.indexOf(f.cat)>=0?f.cat:'Ostalo';
+      state.customFoods.push({id:'c'+Date.now()+Math.floor(Math.random()*1000),name:nm,cat,kcal:+f.kcal||0,p:+f.p||0,c:+f.c||0,f:+f.f||0,fib:+f.fib||0,fe:+f.fe||0,ca:+f.ca||0,vc:+f.vc||0,vd:+f.vd||0,mg:+f.mg||0,serv:(cat==='Suplementi'&&+f.serv>0)?+f.serv:100,base:false});added.push(nm);});
+    save();document.getElementById('aiFoodText').value='';renderFoods(document.getElementById('foodSearch').value||'');renderDnevnik();renderPlan();
+    const parts=[];if(added.length)parts.push('Dodano '+added.length+': '+added.join(', '));if(skipped.length)parts.push('već postoji: '+skipped.join(', '));
+    msg.textContent='✓ '+(parts.join('. ')||'Nema promjena.');
+  }catch(e){msg.textContent='Greška: '+(e&&e.message?e.message:e);console.error(e);}finally{btn.disabled=false;}
+}
+let lastAiAdhoc=[];
+function relinkAdhocToFood(name,foodId){
+  const target=name.toLowerCase();let n=0;
+  const scanMeals=meals=>meals.forEach(meal=>meal.forEach((it,i)=>{if(!it.foodId&&(it.name||'').toLowerCase()===target){meal[i]={foodId,g:it.g};n++;}}));
+  state.profiles.forEach(p=>{if(p.log)Object.keys(p.log).forEach(d=>scanMeals(p.log[d]));});
+  (state.menus||[]).forEach(m=>scanMeals(m.meals));
+  return n;}
+function saveAiFoodsToBase(){let added=0,relinked=0;
+  const valid=['Meso i riba','Mliječno i jaja','Žitarice i kruh','Mahunarke','Povrće','Voće','Orašasti i masti','Pića','Suplementi','Ostalo'];
+  lastAiAdhoc.forEach(a=>{if(foodByName(a.name))return;
+    const cat=valid.indexOf(a.cat)>=0?a.cat:(a.drink?'Pića':'Ostalo');
+    const id='c'+Date.now()+Math.floor(Math.random()*1000);
+    state.customFoods.push({id,name:a.name,cat,
+      kcal:a.n.kcal||0,p:a.n.p||0,c:a.n.c||0,f:a.n.f||0,fib:a.n.fib||0,fe:a.n.fe||0,ca:a.n.ca||0,vc:a.n.vc||0,vd:a.n.vd||0,mg:a.n.mg||0,serv:100,base:false});
+    relinked+=relinkAdhocToFood(a.name,id);added++;});
+  lastAiAdhoc=[];document.getElementById('aiSaveWrap').style.display='none';document.getElementById('aiSaveWrapP').style.display='none';
+  save();renderAll();uiToast('Spremljeno '+added+' u bazu'+(relinked?' i povezano '+relinked+' postojećih unosa':'')+'.');}
+
+async function aiParse(kind){
+  const isLog=kind==='log';
+  const ids=isLog?{t:'aiText',m:'aiMsg',w:'aiSaveWrap',b:'aiSaveFoods',run:'aiRun'}:{t:'aiTextP',m:'aiMsgP',w:'aiSaveWrapP',b:'aiSaveFoodsP',run:'aiRunP'};
+  const msg=document.getElementById(ids.m),text=document.getElementById(ids.t).value.trim();
+  if(!text){msg.textContent='Upiši nešto.';return;}
+  if(!(window.cowork&&window.cowork.askClaude)){msg.textContent='AI radi samo unutar Claude aplikacije.';return;}
+  const mealsW=isLog?logMealsW(logDate):menuMeals();const rerender=isLog?renderDnevnik:renderPlan;
+  const btn=document.getElementById(ids.run);btn.disabled=true;document.getElementById(ids.w).style.display='none';msg.textContent='✨ Claude računa...';
+  const prompt=AI_PROMPT+'\n\n'+buildDayContext(kind)+'\n\nPOPIS POZNATIH NAMIRNICA (za match): '+allFoods().map(f=>f.name).join('; ')+'\n\nZahtjev korisnika: '+text;
+  try{
+    const res=await window.cowork.askClaude(prompt,[]);
+    let out=typeof res==='string'?res:(res&&res.text)?res.text:(res&&res.content&&res.content[0]&&res.content[0].text)?res.content[0].text:JSON.stringify(res);
+    const a=out.indexOf('{'),b=out.lastIndexOf('}');if(a<0||b<0)throw new Error('Neočekivan odgovor.');
+    const parsed=JSON.parse(out.slice(a,b+1)),its=parsed.items||[];
+    if(!its.length)throw new Error('Nisam prepoznao namirnice — pokušaj preciznije. (AI samo dodaje; brisanje radiš sam ✕)');
+    let added=0,matchedN=0,names=[];const newAdhoc=[];
+    its.forEach(it=>{const mi=(MEAL_INDEX[it.meal]!==undefined)?MEAL_INDEX[it.meal]:3;const g=+it.grams||100;
+      let base=(it.match&&it.match.trim())?foodByName(it.match):null;if(!base&&it.name)base=foodByName(it.name);
+      if(base){mealsW[mi].push({foodId:base.id,g});matchedN++;names.push(base.name+' '+g+'g (baza)');}
+      else{const n={};NUTS.forEach(k=>n[k.key]=+((it.per100&&it.per100[k.key])||0)||0);mealsW[mi].push({name:it.name||'AI stavka',g,n,drink:!!it.drink});
+        newAdhoc.push({name:it.name||'AI stavka',n,g,serv:100,drink:!!it.drink,cat:it.cat||''});names.push((it.name||'?')+' '+g+'g');}added++;});
+    save();document.getElementById(ids.t).value='';rerender();
+    lastAiAdhoc=newAdhoc.filter(x=>!foodByName(x.name));const sb=document.getElementById(ids.b);
+    if(lastAiAdhoc.length){sb.textContent='➕ Spremi '+lastAiAdhoc.length+(lastAiAdhoc.length===1?' novu namirnicu':' nove namirnice')+' u bazu';document.getElementById(ids.w).style.display='block';}
+    msg.textContent=added?('✓ Dodano '+added+' ('+matchedN+' iz baze): '+names.join(', ')+'.'):'Nema promjena.';
+  }catch(e){msg.textContent='Greška: '+(e&&e.message?e.message:e);console.error(e);}finally{btn.disabled=false;}
+}
+
+/* ===== Događaji ===== */
+document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>{document.querySelectorAll('.tabs button').forEach(x=>x.classList.remove('active'));b.classList.add('active');
+  ['dnevnik','plan','profil','namirnice','postavke'].forEach(t=>document.getElementById('tab-'+t).style.display='none');document.getElementById('tab-'+b.dataset.tab).style.display='';});
+
+['jProfSel','pProfSel','profSel'].forEach(id=>document.getElementById(id).onchange=e=>{state.activeProfileId=e.target.value;save();renderAll();});
+
+document.getElementById('dPrev').onclick=()=>{logDate=addDays(logDate,-1);renderDnevnik();};
+document.getElementById('dNext').onclick=()=>{logDate=addDays(logDate,1);renderDnevnik();};
+document.getElementById('dToday').onclick=()=>{logDate=todayISO();renderDnevnik();};
+document.getElementById('dCal').onclick=()=>{const dp=document.getElementById('dDatePicker');dp.value=logDate;if(dp.showPicker)try{dp.showPicker();}catch(e){dp.click();}else dp.click();};
+document.getElementById('dDatePicker').onchange=e=>{if(e.target.value){logDate=e.target.value;logMonth=firstOfMonth(e.target.value);renderDnevnik();}};
+document.getElementById('dMonthSel').onchange=e=>{const y=parseISO(logMonth).getFullYear();logMonth=iso(new Date(y,+e.target.value,1));renderDnevnik();};
+document.getElementById('menuSel').onchange=e=>{curMenuIdx=+e.target.value;renderPlan();};
+document.getElementById('menuAdd').onclick=()=>{state.menus.push(newMenu());curMenuIdx=state.menus.length-1;save();renderPlan();uiToast('Dodan '+menuTitle(curMenuIdx)+'.');};
+document.getElementById('menuEdit').onclick=async()=>{const m=curMenu();
+  const t=await uiPrompt('Naziv jelovnika (prazno = automatski "Jelovnik N"):',m.title||'');if(t===null)return;m.title=t.trim();
+  const de=await uiPrompt('Kratki opis (prazno = automatski iz namirnica):',m.desc||'');if(de!==null)m.desc=de.trim();
+  save();renderPlan();uiToast('Spremljeno.');};
+document.getElementById('menuDel').onclick=async()=>{if(state.menus.length<=1){uiToast('Mora postojati barem jedan jelovnik.');return;}
+  if(!(await uiConfirm('Obrisati '+menuTitle(curMenuIdx)+'?','Obriši')))return;state.menus.splice(curMenuIdx,1);if(curMenuIdx>=state.menus.length)curMenuIdx=state.menus.length-1;save();renderPlan();};
+let planClipboard=null;
+document.getElementById('planCopy').onclick=()=>{const pm=menuMeals();if(pm.every(m=>m.length===0)){uiToast('Jelovnik je prazan.');return;}planClipboard=JSON.parse(JSON.stringify(pm));renderPlan();uiToast('Kopiran '+menuTitle(curMenuIdx)+'. Odaberi drugi jelovnik pa Zalijepi.');};
+document.getElementById('planPaste').onclick=async()=>{if(!planClipboard){uiToast('Prvo kopiraj neki jelovnik (⧉ Kopiraj dan).');return;}
+  if(!menuMeals().every(m=>m.length===0)&&!(await uiConfirm('Zalijepiti preko '+menuTitle(curMenuIdx)+'?','Zalijepi')))return;
+  curMenu().meals=JSON.parse(JSON.stringify(planClipboard));save();renderPlan();uiToast('Zalijepljeno u '+menuTitle(curMenuIdx)+'.');};
+document.getElementById('planClear').onclick=async()=>{if(menuMeals().every(m=>m.length===0)){uiToast('Već je prazno.');return;}
+  if(!(await uiConfirm('Isprazniti '+menuTitle(curMenuIdx)+'?','Isprazni')))return;curMenu().meals=emptyMeals();save();renderPlan();};
+document.getElementById('shopExcel').onclick=exportShopCSV;
+document.getElementById('shopPrint').onclick=printShop;
+document.getElementById('shopCopy').onclick=()=>{const t=document.getElementById('shopList')._text||'';if(!t){uiToast('Popis je prazan.');return;}
+  if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(t).then(()=>uiToast('Popis kopiran.')).catch(()=>uiToast('Kopiranje nije uspjelo.'));else uiToast('Kopiranje nije dostupno.');};
+
+document.getElementById('dFromPlan').onclick=async()=>{const idx=+document.getElementById('loadMenuSel').value||0;const mn=state.menus[idx];if(!mn){uiToast('Nema jelovnika.');return;}
+  if(mn.meals.every(m=>m.length===0)){uiToast(menuTitle(idx)+' je prazan.');return;}
+  if(!(await uiConfirm('Preuzeti '+menuTitle(idx)+' u dnevnik za '+fmtDate(logDate)+'? Zamjenjuje trenutni unos tog dana.','Preuzmi')))return;
+  const p=activeP();if(!p.log)p.log={};p.log[logDate]=JSON.parse(JSON.stringify(mn.meals));save();renderDnevnik();uiToast('Preuzet '+menuTitle(idx)+'.');};
+
+document.getElementById('aiRun').onclick=()=>aiParse('log');
+document.getElementById('aiRunP').onclick=()=>aiParse('plan');
+document.getElementById('aiSaveFoods').onclick=saveAiFoodsToBase;
+document.getElementById('aiSaveFoodsP').onclick=saveAiFoodsToBase;
+
+document.getElementById('addProf').onclick=async()=>{const name=await uiPrompt('Ime nove osobe:','');if(!name||!name.trim())return;const per=newPerson(name.trim());state.profiles.push(per);state.activeProfileId=per.id;save();renderAll();uiToast('Dodana osoba: '+per.name);};
+document.getElementById('renameProf').onclick=async()=>{const name=await uiPrompt('Novo ime:',activeP().name);if(!name||!name.trim())return;activeP().name=name.trim();save();renderAll();};
+document.getElementById('delProf').onclick=async()=>{if(state.profiles.length<=1){uiToast('Mora postojati barem jedna osoba.');return;}
+  if(!(await uiConfirm('Obrisati osobu "'+activeP().name+'" i njene podatke?','Obriši')))return;
+  state.profiles=state.profiles.filter(p=>p.id!==state.activeProfileId);state.activeProfileId=state.profiles[0].id;save();renderAll();};
+
+document.getElementById('saveProfile').onclick=()=>{activeP().profile={sex:p_sex.value,age:+p_age.value,act:+p_act.value,weight:+p_weight.value,height:+p_height.value,goal:+p_goal.value};
+  save();renderTargets();renderDnevnik();renderPlan();const s=document.getElementById('profileSaved');s.textContent='✓ Spremljeno';setTimeout(()=>s.textContent='',2000);};
+
+
+document.getElementById('addFood').onclick=()=>{const name=f_name.value.trim();if(!name){uiToast('Unesite naziv namirnice.');return;}
+  state.customFoods.push({id:'c'+Date.now(),name,cat:f_cat.value,kcal:+f_kcal.value||0,p:+f_p.value||0,c:+f_c.value||0,f:+f_f.value||0,fib:+f_fib.value||0,fe:+f_fe.value||0,ca:+f_ca.value||0,vc:+f_vc.value||0,vd:+f_vd.value||0,mg:+f_mg.value||0,serv:+f_serv.value||100,base:false});
+  save();['f_name','f_kcal','f_p','f_c','f_f'].forEach(id=>document.getElementById(id).value='');renderFoods();renderDnevnik();renderPlan();uiToast('Dodano: '+name);};
+document.getElementById('foodSearch').oninput=e=>renderFoods(e.target.value);
+document.getElementById('aiFoodRun').onclick=aiAddFood;
+document.getElementById('aiWeightRun').onclick=aiWeight;
+document.getElementById('fe_cancel').onclick=closeFoodEdit;
+document.getElementById('fe_save').onclick=saveFoodEdit;
+document.getElementById('fe_ai').onclick=()=>feAiCheck(false);
+document.getElementById('fe_serv').onchange=()=>{const changed=feRescale();if(changed)feAiCheck(true);};
+document.getElementById('fe_cat').onchange=feSetNote;
+document.getElementById('fe_name').onchange=feSetNote;
+document.getElementById('aiWeightText').addEventListener('keydown',e=>{if(e.key==='Enter')aiWeight();});
+document.querySelectorAll('#foodTable th[data-k]').forEach(th=>th.onclick=()=>{const k=th.dataset.k;if(foodSort.key===k)foodSort.dir*=-1;else{foodSort.key=k;foodSort.dir=(k==='name'||k==='cat')?1:-1;}renderFoods(document.getElementById('foodSearch').value);});
+
+document.getElementById('exportBtn').onclick=()=>{const blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='prehrana-backup.json';a.click();};
+document.getElementById('importBtn').onclick=()=>document.getElementById('importFile').click();
+document.getElementById('importFile').onchange=e=>{const file=e.target.files[0];if(!file)return;const r=new FileReader();
+  r.onload=async()=>{try{const s=JSON.parse(r.result);if(!s.profiles||!s.profiles.length)throw new Error('Neispravna datoteka.');
+    if(!(await uiConfirm('Zamijeniti sve trenutne podatke uvezenima?','Zamijeni')))return;
+    state=s;state.profiles.forEach(p=>{if(!p.log)p.log={};if(!p.plan)p.plan={};});if(!state.sharedPlan)state.sharedPlan={};if(!state.foodRenames)state.foodRenames={};if(!state.foodHidden)state.foodHidden=[];if(!state.foodServ)state.foodServ={};if(!state.foodVals)state.foodVals={};if(!state.foodCat)state.foodCat={};if(!state.menus||!state.menus.length)state.menus=[newMenu()];curMenuIdx=0;normalizeServings();
+    if(!state.profiles.find(p=>p.id===state.activeProfileId))state.activeProfileId=state.profiles[0].id;
+    save();renderAll();uiToast('Uvezeno.');}catch(err){uiToast('Greška pri uvozu: '+err.message);}};
+  r.readAsText(file);};
+
+/* ===== Init ===== */
+load();renderAll();
+</script>
+</body>
+</html>

@@ -289,8 +289,13 @@ if (problems.length) {
   for (const p of problems) md += `- ${p}\n`
 }
 
-mkdirSync(dirname(REPORT_PATH), { recursive: true })
-writeFileSync(REPORT_PATH, md, 'utf8')
-
-console.log(`\n\nIzvjestaj: reports/usda-izvjestaj.md`)
+// Djelomicno pokretanje ne smije pregaziti izvjestaj — on opisuje cijelu bazu.
+if (only.length) {
+  console.log(`\n\nDjelomicno pokretanje (${only.join(', ')}) — izvjestaj nije mijenjan.`)
+  console.log(`Za osvjezavanje izvjestaja pokreni skriptu bez argumenata.`)
+} else {
+  mkdirSync(dirname(REPORT_PATH), { recursive: true })
+  writeFileSync(REPORT_PATH, md, 'utf8')
+  console.log(`\n\nIzvjestaj: reports/usda-izvjestaj.md`)
+}
 console.log(`Poklapa se: ${matching.length} · Odstupa: ${deviating.length} · Problema: ${problems.length}`)

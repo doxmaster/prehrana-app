@@ -1,6 +1,6 @@
 import { BASE_FOODS } from '../data/foods'
-import type { AppState, BaseFoodOverrides, Food } from './types'
-import { NUTRIENT_KEYS } from './types'
+import type { AppState, BaseFoodOverrides, Food, MealItem } from './types'
+import { NUTRIENT_KEYS, isFoodRef } from './types'
 import type { FoodLookup } from './nutrients'
 import { recipeAsFood } from './recipes'
 
@@ -77,19 +77,39 @@ function indexOf(foods: Food[]): FoodLookup {
   }
 }
 
+/** Prolazi kroz svaki popis stavki u stanju: dnevnici, jelovnici i sastojci recepata. */
+function forEachItemList(state: AppState, fn: (items: MealItem[]) => void): void {
+  for (const person of state.profiles) {
+    for (const meals of Object.values(person.log)) for (const meal of meals) fn(meal)
+  }
+  for (const menu of state.menus) for (const meal of menu.meals) fn(meal)
+  for (const recipe of state.recipes) fn(recipe.items)
+}
+
 /** Broji koliko puta se namirnica koristi u dnevnicima, jelovnicima i receptima. */
 export function foodUsage(state: AppState, foodId: string): number {
-  let n = 0
-  for (const person of state.profiles) {
-    for (const meals of Object.values(person.log)) {
-      for (const meal of meals) for (const it of meal) if ('foodId' in it && it.foodId === foodId) n++
+  let count = 0
+  forEachItemList(state, (items) => {
+    for (const item of items) if (isFoodRef(item) && item.foodId === foodId) count++
+  })
+  return count
+}
+
+/**
+ * Uklanja sve stavke koje pokazuju na namirnicu i vraca koliko ih je maknuto.
+ * Bez ovoga bi brisanje namirnice ostavilo stavke koje se nigdje ne prikazuju
+ * ni ne zbrajaju, ali i dalje zauzimaju mjesto u pohrani.
+ */
+export function removeFoodReferences(state: AppState, foodId: string): number {
+  let removed = 0
+  forEachItemList(state, (items) => {
+    for (let i = items.length - 1; i >= 0; i--) {
+      const item = items[i]
+      if (item && isFoodRef(item) && item.foodId === foodId) {
+        items.splice(i, 1)
+        removed++
+      }
     }
-  }
-  for (const menu of state.menus) {
-    for (const meal of menu.meals) for (const it of meal) if ('foodId' in it && it.foodId === foodId) n++
-  }
-  for (const recipe of state.recipes) {
-    for (const it of recipe.items) if (it.foodId === foodId) n++
-  }
-  return n
+  })
+  return removed
 }

@@ -21,6 +21,8 @@ interface StoreState {
 
   /** Jedina točka izmjene podataka — mutira nacrt, sprema i osvježava indeks. */
   update: (recipe: (draft: AppState) => void) => void
+  /** Zamjena cijelog stanja (uvoz sigurnosne kopije). */
+  replaceAll: (next: AppState) => void
   setSelectedDate: (date: string) => void
   setActiveMenuIndex: (index: number) => void
   dismissMigrationNotice: () => void
@@ -48,6 +50,11 @@ export const useAppStore = create<StoreState>()((set, get) => ({
             ? 'Memorija preglednika je puna — izvezi podatke i obriši starije unose.'
             : 'Spremanje nije uspjelo.',
     })
+  },
+
+  replaceAll: (next) => {
+    saveState(next)
+    set({ data: next, foods: buildFoodIndex(next), activeMenuIndex: 0, saveError: null })
   },
 
   setSelectedDate: (selectedDate) => set({ selectedDate }),

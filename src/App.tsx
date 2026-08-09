@@ -1,6 +1,10 @@
 import { useState } from 'react'
 import { Dialogs } from './components/Dialogs'
 import { Dnevnik } from './components/tabs/Dnevnik'
+import { Jelovnik } from './components/tabs/Jelovnik'
+import { Namirnice } from './components/tabs/Namirnice'
+import { Osobe } from './components/tabs/Osobe'
+import { Postavke } from './components/tabs/Postavke'
 import { useAppStore } from './store/useAppStore'
 
 const TABS = [
@@ -55,12 +59,10 @@ export default function App() {
 
         <div role="tabpanel" id={`panel-${tab}`} aria-labelledby={`tab-${tab}`}>
           {tab === 'dnevnik' && <Dnevnik />}
-          {tab !== 'dnevnik' && (
-            <div className="card">
-              <h2>{TABS.find((t) => t.id === tab)?.label}</h2>
-              <p className="hint">Ova kartica se još prepisuje u komponente.</p>
-            </div>
-          )}
+          {tab === 'jelovnik' && <Jelovnik />}
+          {tab === 'osobe' && <Osobe />}
+          {tab === 'namirnice' && <Namirnice />}
+          {tab === 'postavke' && <Postavke />}
         </div>
       </div>
 

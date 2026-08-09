@@ -1,6 +1,7 @@
 import { useState } from 'react'
-import { ACTIVITY_LEVELS, GOALS, PROFILE_LIMITS, computeTargets, targetsFor, weightOn } from '../../domain/targets'
+import { ACTIVITY_LEVELS, ADULT_AGE, GOALS, PROFILE_LIMITS, computeTargets, isMinor, targetsFor, weightOn } from '../../domain/targets'
 import { REFERENCE_KCAL, householdFactor, householdKcal, memberShares } from '../../domain/household'
+import { proteinPerKg } from '../../domain/dri'
 import { uid } from '../../domain/id'
 import { todayISO } from '../../domain/dates'
 import { confirmDialog, promptDialog, toast } from '../../store/dialogs'
@@ -47,13 +48,18 @@ export function Osobe() {
   const weight = inRange(form.weight, PROFILE_LIMITS.weight)
   const height = inRange(form.height, PROFILE_LIMITS.height)
 
+  const maloljetnik = isMinor(person.profile)
   const targets = targetsFor(person, todayISO())
   const measuredWeight = weightOn(person, todayISO())
   const usesMeasurement = measuredWeight !== person.profile.weight
 
   const save = () => {
     if (age === null || weight === null || height === null) {
-      toast('Provjeri unos: dob 10–100 g., težina 30–250 kg, visina 120–220 cm.')
+      // Poruka se izvodi iz samih granica da ne zastari kad se one promijene.
+      const { age: a, weight: w, height: h } = PROFILE_LIMITS
+      toast(
+        `Provjeri unos: dob ${a.min}–${a.max} g., težina ${w.min}–${w.max} kg, visina ${h.min}–${h.max} cm.`,
+      )
       return
     }
     const profile: Profile = {
@@ -130,6 +136,15 @@ export function Osobe() {
 
       <div className="card">
         <h2>Podaci — {person.name}</h2>
+        {maloljetnik && (
+          <div className="banner" style={{ marginTop: 4 }}>
+            Ciljevi se za dob ispod {ADULT_AGE} godina računaju po Schofieldovoj jednadžbi
+            (FAO/WHO), a mikronutrijenti prate preporuke za tu dob — kalcij je viši nego kod
+            odraslih, željezo i magnezij niži. <b>Cilj mršavljenja se ne nudi</b>: u dobi rasta to
+            nije stvar računanja kalorija. Za bilo kakvu prehrambenu intervenciju kod djeteta
+            posavjetuj se s pedijatrom.
+          </div>
+        )}
         <div className="grid g3" style={{ marginTop: 10 }}>
           <div>
             <label htmlFor="p-sex">Spol</label>
@@ -192,8 +207,12 @@ export function Osobe() {
           </div>
           <div>
             <label htmlFor="p-goal">Cilj</label>
-            <select id="p-goal" value={form.goal} onChange={(e) => setForm({ ...form, goal: e.target.value })}>
-              {GOALS.map((g) => (
+            <select
+              id="p-goal"
+              value={form.goal}
+              onChange={(e) => setForm({ ...form, goal: e.target.value })}
+            >
+              {GOALS.filter((g) => !maloljetnik || g.value >= 0).map((g) => (
                 <option value={g.value} key={g.value}>
                   {g.label}
                 </option>
@@ -217,17 +236,29 @@ export function Osobe() {
       <div className="card">
         <h2>Dnevni ciljevi — {person.name}</h2>
         <div className="grid g4">
-          <TargetCard label="Kalorije" value={`${fmt(targets.kcal)} kcal`} note={`BMR ${fmt(targets.bmr)} · TDEE ${fmt(targets.tdee)}`} />
-          <TargetCard label="Bjelančevine" value={`${fmt(targets.p)} g`} note="≈1,6 g/kg" />
+          <TargetCard
+            label="Kalorije"
+            value={`${fmt(targets.kcal)} kcal`}
+            note={`BMR ${fmt(targets.bmr)} · TDEE ${fmt(targets.tdee)} · ${maloljetnik ? 'Schofield' : 'Mifflin-St Jeor'}`}
+          />
+          <TargetCard
+            label="Bjelančevine"
+            value={`${fmt(targets.p)} g`}
+            note={`≈${fmt(proteinPerKg(person.profile.age), 2)} g/kg`}
+          />
           <TargetCard label="Ugljikohidrati" value={`${fmt(targets.c)} g`} note="ostatak energije" />
           <TargetCard label="Masti" value={`${fmt(targets.f)} g`} note="≈25 % energije" />
           <TargetCard label="Vlakna" value={`${fmt(targets.fib)} g`} note="14 g/1000 kcal" />
-          <TargetCard label="Željezo" value={`${fmt(targets.fe)} mg`} />
-          <TargetCard label="Kalcij" value={`${fmt(targets.ca)} mg`} />
-          <TargetCard label="Magnezij" value={`${fmt(targets.mg)} mg`} />
-          <TargetCard label="Vitamin C" value={`${fmt(targets.vc)} mg`} />
-          <TargetCard label="Vitamin D" value={`${fmt(targets.vd)} µg`} />
-          <TargetCard label="Voda" value={`${fmt(targets.water, 1)} L`} note="≈35 ml/kg" />
+          <TargetCard label="Željezo" value={`${fmt(targets.fe)} mg`} note="DRI za dob" />
+          <TargetCard label="Kalcij" value={`${fmt(targets.ca)} mg`} note="DRI za dob" />
+          <TargetCard label="Magnezij" value={`${fmt(targets.mg)} mg`} note="DRI za dob" />
+          <TargetCard label="Vitamin C" value={`${fmt(targets.vc)} mg`} note="DRI za dob" />
+          <TargetCard label="Vitamin D" value={`${fmt(targets.vd)} µg`} note="DRI za dob" />
+          <TargetCard
+            label="Voda"
+            value={`${fmt(targets.water, 1)} L`}
+            note={maloljetnik ? 'Holliday-Segar' : '≈35 ml/kg'}
+          />
         </div>
         <p className="hint">Ciljevi su okvirni i ne zamjenjuju savjet liječnika ili nutricionista.</p>
       </div>

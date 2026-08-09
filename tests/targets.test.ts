@@ -6,6 +6,10 @@ import type { Person, Profile, Targets } from '../src/domain/types'
  * Zlatne vrijednosti izvučene pokretanjem targets() u legacy/index.html.
  * Ako neki od ovih testova padne, nova implementacija računa drukčije od stare
  * i podaci korisnika prestali bi se poklapati.
+ *
+ * Popis sadrži isključivo odrasle. Za djecu i mlade stara je aplikacija koristila
+ * Mifflin-St Jeor, koji za tu dob nije validiran — te vrijednosti su namjerno
+ * promijenjene i pokrivene su zasebnim testovima niže.
  */
 const GOLDEN: Array<{ profile: Profile; expected: Targets }> = [
   {
@@ -45,10 +49,6 @@ const GOLDEN: Array<{ profile: Profile; expected: Targets }> = [
     expected: { kcal: 2700, p: 104, c: 402, f: 75, fib: 38, fe: 18, ca: 1000, mg: 310, vc: 75, vd: 15, bmr: 1389, tdee: 2396, water: 2.3 },
   },
   {
-    profile: { sex: 'm', age: 10, act: 1.2, weight: 30, height: 120, goal: -1000 },
-    expected: { kcal: 210, p: 48, c: 0, f: 6, fib: 3, fe: 8, ca: 1000, mg: 400, vc: 90, vd: 15, bmr: 1005, tdee: 1206, water: 1.1 },
-  },
-  {
     profile: { sex: 'z', age: 100, act: 1.9, weight: 250, height: 220, goal: 1000 },
     expected: { kcal: 7110, p: 400, c: 932, f: 198, fib: 100, fe: 8, ca: 1200, mg: 320, vc: 75, vd: 20, bmr: 3214, tdee: 6107, water: 8.8 },
   },
@@ -66,7 +66,11 @@ describe('computeTargets — granice i otpornost', () => {
   const base: Profile = { sex: 'm', age: 30, act: 1.55, weight: 75, height: 178, goal: 0 }
 
   it('ugljikohidrati nikad ne padaju ispod nule', () => {
-    const t = computeTargets({ ...base, age: 10, weight: 30, height: 120, act: 1.2, goal: -1000 })
+    // Odrasla osoba velike mase, niske aktivnosti i s najvecim dopustenim
+    // deficitom: bjelancevine (1,6 g/kg) i masti pojedu cijeli energetski budzet.
+    const t = computeTargets({ ...base, age: 60, weight: 100, height: 150, act: 1, goal: -1000 })
+    expect(t.kcal).toBeGreaterThan(0)
+    expect(t.p * 4 + t.f * 9).toBeGreaterThan(t.kcal)
     expect(t.c).toBe(0)
   })
 

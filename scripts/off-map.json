@@ -1,0 +1,59 @@
+{
+  "_opis": "Hrvatski i regionalni PAKIRANI proizvodi koji nedostaju u bazi. Domaca jela (sarma, strukli, gulas) namjerno NISU ovdje - njih pokrivaju recepti od provjerenih USDA sastojaka, jer OFF za njih nema pouzdane vrijednosti.",
+  "_metoda": "Koristi se OFF kategorija (categories_tags_en), ne slobodan tekst: cjelotekstualna pretraga je nepouzdana i vraca 503, a kategorije su kontrolirani rjecnik pa daju precizniji skup. Vrijednost je medijan preko najmanje 3 proizvoda.",
+  "products": [
+    { "name": "Ajvar", "cat": "Povrće", "tag": "ajvar", "serv": 30 },
+    { "name": "Kiseli kupus", "cat": "Povrće", "tag": "sauerkraut", "serv": 150 },
+    { "name": "Kisele paprike", "cat": "Povrće", "tag": "pickled-peppers", "serv": 80 },
+    { "name": "Pelati (guljene rajčice)", "cat": "Povrće", "tag": "peeled-tomatoes", "serv": 200 },
+    { "name": "Grašak (konzerva)", "cat": "Mahunarke", "tag": "canned-peas", "serv": 150 },
+    { "name": "Kukuruz šećerac (konzerva)", "cat": "Povrće", "tag": "canned-sweet-corn", "serv": 100 },
+    { "name": "Masline zelene", "cat": "Povrće", "tag": "green-olives", "serv": 30 },
+
+    { "name": "Kobasica", "cat": "Meso i riba", "tag": "sausages", "serv": 80 },
+    { "name": "Pršut", "cat": "Meso i riba", "tag": "prosciutto", "serv": 40 },
+    { "name": "Slanina", "cat": "Meso i riba", "tag": "bacon", "serv": 30 },
+    { "name": "Jetrena pašteta", "cat": "Meso i riba", "tag": "liver-pates", "serv": 50 },
+    { "name": "Salama", "cat": "Meso i riba", "tag": "salamis", "serv": 40 },
+    { "name": "Mortadela", "cat": "Meso i riba", "tag": "mortadella", "serv": 40 },
+    { "name": "Inćuni (fileti u ulju)", "cat": "Meso i riba", "tag": "anchovies", "serv": 20 },
+    { "name": "Kulen", "cat": "Meso i riba", "tag": "kulen", "serv": 40 },
+    { "name": "Čvarci", "cat": "Meso i riba", "tag": "pork-rinds", "serv": 30 },
+
+    { "name": "Kiselo vrhnje", "cat": "Mliječno i jaja", "tag": "sour-creams", "serv": 30 },
+    { "name": "Vrhnje za kuhanje", "cat": "Mliječno i jaja", "tag": "cooking-creams", "serv": 50 },
+    { "name": "Skuta (ricotta)", "cat": "Mliječno i jaja", "tag": "ricotta", "serv": 100 },
+    { "name": "Mozzarella", "cat": "Mliječno i jaja", "tag": "mozzarella", "serv": 60 },
+    { "name": "Dimljeni sir", "cat": "Mliječno i jaja", "tag": "smoked-cheeses", "serv": 40 },
+    { "name": "Topljeni sir", "cat": "Mliječno i jaja", "tag": "processed-cheese", "serv": 30 },
+    { "name": "Kefir", "cat": "Mliječno i jaja", "tag": "kefir", "serv": 250 },
+    { "name": "Pitki jogurt", "cat": "Mliječno i jaja", "tag": "drinking-yogurts", "serv": 250 },
+
+    { "name": "Tost kruh", "cat": "Žitarice i kruh", "tag": "toast-bread", "serv": 50 },
+    { "name": "Pecivo (kifla)", "cat": "Žitarice i kruh", "tag": "bread-rolls", "serv": 70 },
+    { "name": "Krafna", "cat": "Žitarice i kruh", "tag": "donuts", "serv": 80 },
+    { "name": "Griz (pšenična krupica)", "cat": "Žitarice i kruh", "tag": "semolina", "serv": 60 },
+    { "name": "Musli", "cat": "Žitarice i kruh", "tag": "mueslis", "serv": 60 },
+    { "name": "Kukuruzne pahuljice", "cat": "Žitarice i kruh", "tag": "corn-flakes", "serv": 40 },
+    { "name": "Krekeri", "cat": "Žitarice i kruh", "tag": "crackers", "serv": 30 },
+    { "name": "Burek", "cat": "Žitarice i kruh", "tag": "burek", "serv": 200 },
+
+    { "name": "Majoneza", "cat": "Orašasti i masti", "tag": "mayonnaise", "serv": 20 },
+    { "name": "Suncokretovo ulje", "cat": "Orašasti i masti", "tag": "sunflower-oils", "serv": 10 },
+    { "name": "Margarin", "cat": "Orašasti i masti", "tag": "margarine", "serv": 15 },
+    { "name": "Kikiriki maslac", "cat": "Orašasti i masti", "tag": "peanut-butters", "serv": 20 },
+
+    { "name": "Kečap", "cat": "Ostalo", "tag": "ketchup", "serv": 20 },
+    { "name": "Senf", "cat": "Ostalo", "tag": "mustards", "serv": 10 },
+    { "name": "Krem namaz od lješnjaka", "cat": "Ostalo", "tag": "hazelnut-spreads", "serv": 20 },
+    { "name": "Mliječna čokolada", "cat": "Ostalo", "tag": "milk-chocolates", "serv": 30 },
+    { "name": "Napolitanke", "cat": "Ostalo", "tag": "wafers", "serv": 40 },
+    { "name": "Keks", "cat": "Ostalo", "tag": "biscuits", "serv": 30 },
+    { "name": "Sladoled", "cat": "Ostalo", "tag": "ice-creams", "serv": 100 },
+    { "name": "Čips od krumpira", "cat": "Ostalo", "tag": "potato-crisps", "serv": 40 },
+
+    { "name": "Protein pločica", "cat": "Suplementi", "tag": "protein-bars", "serv": 50 },
+    { "name": "Gusti sok (nektar)", "cat": "Pića", "tag": "nectars", "serv": 200 },
+    { "name": "Energetsko piće", "cat": "Pića", "tag": "energy-drinks", "serv": 250 }
+  ]
+}

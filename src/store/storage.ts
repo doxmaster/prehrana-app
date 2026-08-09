@@ -1,5 +1,6 @@
 import { LEGACY_KEYS, STORAGE_KEY } from '../domain/constants'
 import { emptyState, migrateState, pruneState } from '../domain/migrate'
+import { STARTER_RECIPES } from '../data/recipes'
 import type { AppState } from '../domain/types'
 
 export interface LoadResult {
@@ -33,7 +34,11 @@ export function loadState(): LoadResult {
     if (legacy) return { state: migrateState(legacy), from: key, migrated: true }
   }
 
-  return { state: emptyState(), from: null, migrated: false }
+  // Prvi start: ponudi domaca jela kao gotove recepte. Postojeci korisnici ih ne
+  // dobivaju naknadno da im se ne bi vracali recepti koje su obrisali.
+  const fresh = emptyState()
+  fresh.recipes = structuredClone(STARTER_RECIPES)
+  return { state: fresh, from: null, migrated: false }
 }
 
 export type SaveOutcome = { ok: true } | { ok: false; reason: 'quota' | 'unknown'; error: unknown }

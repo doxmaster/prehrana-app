@@ -1,8 +1,7 @@
 import { useState } from 'react'
-import { useAppStore, useActivePerson, useFoods } from './store/useAppStore'
-import { targetsFor } from './domain/targets'
-import { mealsTotals } from './domain/nutrients'
-import { fmtDate } from './domain/dates'
+import { Dialogs } from './components/Dialogs'
+import { Dnevnik } from './components/tabs/Dnevnik'
+import { useAppStore } from './store/useAppStore'
 
 const TABS = [
   { id: 'dnevnik', label: '📊 Dnevnik' },
@@ -16,15 +15,9 @@ type TabId = (typeof TABS)[number]['id']
 
 export default function App() {
   const [tab, setTab] = useState<TabId>('dnevnik')
-  const person = useActivePerson()
-  const foods = useFoods()
-  const selectedDate = useAppStore((s) => s.selectedDate)
   const saveError = useAppStore((s) => s.saveError)
   const migratedFrom = useAppStore((s) => s.migratedFrom)
   const dismiss = useAppStore((s) => s.dismissMigrationNotice)
-
-  const targets = targetsFor(person, selectedDate)
-  const totals = mealsTotals(person.log[selectedDate] ?? [[], [], [], []], foods)
 
   return (
     <>
@@ -36,8 +29,8 @@ export default function App() {
       <div className="wrap">
         {migratedFrom && (
           <div className="banner">
-            Podaci su preuzeti iz starije verzije ({migratedFrom}) i pretvoreni u novi format.
-            Stara kopija nije obrisana.{' '}
+            Podaci su preuzeti iz starije verzije ({migratedFrom}) i pretvoreni u novi format. Stara
+            kopija nije obrisana.{' '}
             <button className="btn secondary small" onClick={dismiss}>
               U redu
             </button>
@@ -50,9 +43,9 @@ export default function App() {
             <button
               key={t.id}
               role="tab"
+              id={`tab-${t.id}`}
               aria-selected={tab === t.id}
               aria-controls={`panel-${t.id}`}
-              id={`tab-${t.id}`}
               onClick={() => setTab(t.id)}
             >
               {t.label}
@@ -61,26 +54,17 @@ export default function App() {
         </div>
 
         <div role="tabpanel" id={`panel-${tab}`} aria-labelledby={`tab-${tab}`}>
-          <div className="card">
-            <div className="flexsplit">
-              <h2 style={{ margin: 0 }}>
-                {TABS.find((t) => t.id === tab)?.label} — {person.name}
-              </h2>
-              <span className="muted small">{fmtDate(selectedDate)}</span>
+          {tab === 'dnevnik' && <Dnevnik />}
+          {tab !== 'dnevnik' && (
+            <div className="card">
+              <h2>{TABS.find((t) => t.id === tab)?.label}</h2>
+              <p className="hint">Ova kartica se još prepisuje u komponente.</p>
             </div>
-            <div className="kcalbig" style={{ marginTop: 12 }}>
-              <span className="kcal-c">{Math.round(totals.kcal)}</span>{' '}
-              <span className="muted" style={{ fontSize: 14 }}>
-                / {targets.kcal} kcal
-              </span>
-            </div>
-            <p className="hint">
-              Sučelje se prepisuje u komponente (Faza 4). Podaci, izračuni i migracija su
-              preneseni i pokriveni testovima — baza sadrži {foods.all().length} namirnica.
-            </p>
-          </div>
+          )}
         </div>
       </div>
+
+      <Dialogs />
     </>
   )
 }

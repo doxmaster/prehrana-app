@@ -298,6 +298,238 @@ button.icon:hover {
   border-color: #eedcb4;
 }
 
+/* Dijalozi i obavijesti */
+.modal-ov {
+  position: fixed;
+  inset: 0;
+  background: rgba(18, 34, 26, 0.5);
+  backdrop-filter: blur(2px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  padding: 20px;
+}
+.modal-box {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 20px;
+  max-width: 420px;
+  width: 100%;
+  box-shadow: var(--shadow-lg);
+}
+.modal-box.wide {
+  max-width: 640px;
+}
+.modal-box .m-msg {
+  font-size: 14px;
+  margin: 0 0 12px;
+  font-weight: 500;
+  white-space: pre-wrap;
+  max-height: 50vh;
+  overflow: auto;
+}
+.modal-box input {
+  margin-bottom: 14px;
+}
+.modal-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+#toast {
+  position: fixed;
+  left: 50%;
+  bottom: 24px;
+  transform: translateX(-50%);
+  background: #14261d;
+  color: #fff;
+  padding: 11px 18px;
+  border-radius: 10px;
+  font-size: 13px;
+  z-index: 120;
+  box-shadow: var(--shadow-lg);
+  max-width: 90%;
+}
+
+/* Kalendar */
+.cal {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+}
+.cah {
+  font-size: 11px;
+  color: var(--muted);
+  text-align: center;
+  padding: 2px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+.cell {
+  min-height: 58px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 5px 6px;
+  cursor: pointer;
+  background: #fff;
+  text-align: left;
+  font: inherit;
+  color: inherit;
+  transition:
+    transform 0.1s,
+    box-shadow 0.15s,
+    background 0.15s;
+}
+.cell:hover {
+  box-shadow: var(--shadow);
+  transform: translateY(-1px);
+}
+.cell.empty {
+  background: transparent;
+  border: none;
+  cursor: default;
+  pointer-events: none;
+}
+.cell[aria-pressed='true'] {
+  background: #e9f6ef;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px rgba(31, 157, 99, 0.2);
+}
+.cell.today {
+  border-color: var(--accent2);
+}
+.cell.today .dn {
+  color: var(--accent2);
+}
+.cell .dn {
+  font-weight: 800;
+  font-size: 13px;
+}
+.cell .kc {
+  color: var(--kcal);
+  font-size: 10.5px;
+  margin-top: 3px;
+  font-weight: 700;
+}
+
+/* Obroci */
+.meal {
+  background: var(--panel2);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 13px;
+  margin-bottom: 12px;
+}
+.meal-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+.meal-head b {
+  font-size: 14px;
+  font-weight: 700;
+}
+.item {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 7px 0 7px 9px;
+  border-bottom: 1px dashed var(--line);
+  font-size: 13px;
+}
+.item:last-of-type {
+  border-bottom: none;
+}
+.item input.gr {
+  width: 74px;
+  padding: 5px 7px;
+  font-size: 13px;
+}
+.add-row {
+  display: grid;
+  grid-template-columns: 1fr 90px auto;
+  gap: 8px;
+  align-items: end;
+  margin-top: 10px;
+}
+@media (max-width: 480px) {
+  .add-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+.nut {
+  margin-bottom: 12px;
+}
+.nut .top {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  margin-bottom: 2px;
+}
+
+.tag {
+  font-size: 11px;
+  color: var(--accent2);
+}
+.catlegend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+  margin-top: 6px;
+}
+.catlegend span {
+  font-size: 11.5px;
+  color: var(--muted);
+  display: inline-flex;
+  align-items: center;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+th,
+td {
+  text-align: left;
+  padding: 8px;
+  border-bottom: 1px solid var(--line);
+  font-size: 13px;
+}
+th {
+  color: var(--muted);
+  font-weight: 700;
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+th button.sort {
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  text-transform: inherit;
+  letter-spacing: inherit;
+  white-space: nowrap;
+}
+th button.sort:hover,
+th button.sort[aria-sort] {
+  color: var(--accent);
+}
+tbody tr:hover {
+  background: var(--panel2);
+}
+
 /* Poštuje sistemsku postavku smanjenog kretanja */
 @media (prefers-reduced-motion: reduce) {
   * {

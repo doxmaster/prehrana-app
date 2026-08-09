@@ -1,5 +1,4 @@
 import { create } from 'zustand'
-import { useShallow } from 'zustand/react/shallow'
 import { buildFoodIndex, type FoodIndex } from '../domain/foodIndex'
 import { emptyMeals } from '../domain/nutrients'
 import { todayISO } from '../domain/dates'
@@ -65,8 +64,13 @@ export function useActivePerson(): Person {
   return useAppStore((s) => s.data.profiles.find((p) => p.id === s.data.activeProfileId) ?? s.data.profiles[0]!)
 }
 
-export function usePeople() {
-  return useAppStore(useShallow((s) => s.data.profiles.map((p) => ({ id: p.id, name: p.name }))))
+/**
+ * Vraca samo referencu na polje iz stanja. Mapiranje u nove objekte ovdje bi
+ * pri svakom citanju dalo nove reference, pa bi useSyncExternalStore vrtio
+ * beskonacnu petlju — useShallow usporeduje elemente po referenci, ne dubinski.
+ */
+export function usePeople(): readonly Person[] {
+  return useAppStore((s) => s.data.profiles)
 }
 
 export function useDayMeals(date: string): DayMeals {

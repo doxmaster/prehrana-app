@@ -35,6 +35,16 @@ const FIELDS = [
 
 const REQUIRED = ['kcal', 'p', 'c', 'f']
 const MIN_SAMPLES = 3
+
+/**
+ * Najveci dopusteni medukvartilni raspon kalorija, u postocima medijana.
+ *
+ * Medijan sam po sebi nije dovoljan: OFF kategorije znaju biti preduboke, pa
+ * "sauerkraut" osim kiselog kupusa (19 kcal) sadrzi i gotova jela s kobasicom.
+ * Takav pojam dao je medijan od 87 kcal uz raspon od 109 % — vrijednost bez
+ * znacenja. Kad se proizvodi medusobno ne slazu, pojam se odbacuje.
+ */
+const MAX_SPREAD = 35
 const USER_AGENT = 'Prehrana/3.0 (osobna aplikacija za pracenje prehrane)'
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms))
@@ -51,13 +61,19 @@ function quartiles(values) {
   return { q1: q(0.25), q3: q(0.75) }
 }
 
-/** Atwater s vlaknima po 2 kcal/g — usklađeno s src/domain/nutrients.ts */
+/**
+ * Atwater s vlaknima po 2 kcal/g. Tolerancija mora biti ISTA kao
+ * ATWATER_TOLERANCE u src/domain/nutrients.ts — inace ovdje prode vrijednost
+ * koju aplikacija poslije oznaci kao nekonzistentnu.
+ */
+const ATWATER_TOLERANCE = 0.15
+
 function atwaterOk(v) {
   const net = Math.max(0, (v.c ?? 0) - (v.fib ?? 0))
   const computed = 4 * (v.p ?? 0) + 4 * net + 2 * (v.fib ?? 0) + 9 * (v.f ?? 0)
   const base = Math.max(v.kcal ?? 0, computed)
   if (base < 20) return true
-  return Math.abs((v.kcal ?? 0) - computed) / base <= 0.25
+  return Math.abs((v.kcal ?? 0) - computed) / base <= ATWATER_TOLERANCE
 }
 
 /**
@@ -132,6 +148,17 @@ for (const entry of map.products) {
     // Ako medijan sam po sebi ne prolazi Atwatera, pojam je presarolik za bazu.
     if (!atwaterOk(merged)) {
       rows.push({ ...entry, status: 'nekonzistentno', count: samples.length })
+      continue
+    }
+
+    if ((spread.kcal ?? 0) > MAX_SPREAD) {
+      rows.push({
+        ...entry,
+        status: 'preširok raspon',
+        count: samples.length,
+        kcal: merged.kcal,
+        spread: spread.kcal,
+      })
       continue
     }
 

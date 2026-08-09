@@ -1,0 +1,141 @@
+/** Ključevi hranjivih tvari koje aplikacija prati. */
+export const NUTRIENT_KEYS = ['kcal', 'p', 'c', 'f', 'fib', 'fe', 'ca', 'mg', 'vc', 'vd'] as const
+export type NutrientKey = (typeof NUTRIENT_KEYS)[number]
+
+/** Vrijednosti hranjivih tvari — uvijek na 100 g (100 ml za pića). */
+export type Nutrients = Record<NutrientKey, number>
+
+export const CATEGORIES = [
+  'Meso i riba',
+  'Mliječno i jaja',
+  'Žitarice i kruh',
+  'Mahunarke',
+  'Povrće',
+  'Voće',
+  'Orašasti i masti',
+  'Pića',
+  'Suplementi',
+  'Ostalo',
+] as const
+export type Category = (typeof CATEGORIES)[number]
+
+/**
+ * Odakle vrijednosti dolaze:
+ * `usda`/`off` = provjereno prema bazi, `ai` = Claudeova procjena, `user` = ručni unos,
+ * `recipe` = izvedeno iz sastojaka recepta.
+ */
+export type FoodSource = 'usda' | 'off' | 'ai' | 'user' | 'recipe'
+
+export interface Food extends Nutrients {
+  id: string
+  name: string
+  cat: Category
+  /** Uobičajena porcija u g (ml za pića) — koristi se kao predložena količina. */
+  serv: number
+  source: FoodSource
+  /** Identifikator u izvornoj bazi (USDA fdcId ili OFF barkod). */
+  sourceId?: string
+  /** ISO datum zadnje provjere prema izvoru. */
+  verifiedAt?: string
+  /** Namirnica iz ugrađene baze (nije korisnička). */
+  base?: boolean
+  /** Postavljeno kad je namirnica izvedena iz recepta. */
+  recipeId?: string
+}
+
+/** Stavka obroka koja pokazuje na namirnicu iz baze. */
+export interface FoodRefItem {
+  foodId: string
+  g: number
+}
+
+/** Stavka koju je AI procijenio, a nije spremljena u bazu — nosi vlastite vrijednosti. */
+export interface AdHocItem {
+  name: string
+  g: number
+  n: Nutrients
+  drink?: boolean
+  cat?: Category
+}
+
+export type MealItem = FoodRefItem | AdHocItem
+
+export function isFoodRef(it: MealItem): it is FoodRefItem {
+  return 'foodId' in it && typeof it.foodId === 'string'
+}
+
+/** Četiri obroka u danu, redoslijedom iz MEALS. */
+export type DayMeals = MealItem[][]
+
+export interface Recipe {
+  id: string
+  name: string
+  cat: Category
+  /** Broj porcija koje sastojci daju — koristi se za prijedlog porcije. */
+  servings: number
+  items: FoodRefItem[]
+  /** Gubitak/dobitak mase pri pripremi (npr. 0.85 za kuhanje). 1 = bez promjene. */
+  yieldFactor?: number
+  note?: string
+}
+
+export interface Measurement {
+  /** ISO datum (YYYY-MM-DD). */
+  date: string
+  weight?: number
+  waist?: number
+  note?: string
+}
+
+export interface Profile {
+  sex: 'm' | 'z'
+  age: number
+  act: number
+  weight: number
+  height: number
+  goal: number
+}
+
+export interface Person {
+  id: string
+  name: string
+  profile: Profile
+  /** Pojedeno, po ISO datumu. */
+  log: Record<string, DayMeals>
+  /** Naslijeđeno iz v1/v2 — zadržano samo radi migracije u jelovnike. */
+  plan?: Record<string, DayMeals>
+  measurements: Measurement[]
+}
+
+export interface Menu {
+  id: string
+  title?: string
+  desc?: string
+  meals: DayMeals
+}
+
+/** Izmjene nad ugrađenim namirnicama, ključ je id namirnice. */
+export interface BaseFoodOverrides {
+  names: Record<string, string>
+  cats: Record<string, Category>
+  vals: Record<string, Partial<Nutrients>>
+  servs: Record<string, number>
+  hidden: string[]
+}
+
+export interface AppState {
+  version: 3
+  profiles: Person[]
+  activeProfileId: string
+  menus: Menu[]
+  recipes: Recipe[]
+  customFoods: Food[]
+  overrides: BaseFoodOverrides
+  updatedAt: number
+}
+
+export interface Targets extends Nutrients {
+  bmr: number
+  tdee: number
+  water: number
+}

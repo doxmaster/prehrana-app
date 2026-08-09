@@ -1,0 +1,27 @@
+/* Vizualni identitet prenesen iz legacy/index.html — boje i mjere ostaju iste. */
+:root {
+  color-scheme: light;
+
+  --bg: #eef4f0;
+  --panel: #ffffff;
+  --panel2: #f1f6f2;
+  --line: #e3eae5;
+
+  --txt: #1c2a23;
+  --muted: #6a7a71;
+
+  --accent: #1f9d63;
+  --accent-d: #17824f;
+  --accent2: #3a86c4;
+
+  --warn: #d29529;
+  --bad: #d15a52;
+  --good: #1f9d63;
+  --kcal: #e0742a;
+
+  --shadow: 0 2px 12px rgba(24, 52, 38, 0.06);
+  --shadow-lg: 0 12px 34px rgba(24, 52, 38, 0.16);
+  --radius: 16px;
+
+  --font: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+}

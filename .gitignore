@@ -1,3 +1,9 @@
+# Ovisnosti i build
+node_modules/
+dist/
+coverage/
+*.tsbuildinfo
+
 # OS
 .DS_Store
 Thumbs.db
@@ -13,3 +19,7 @@ Thumbs.db
 # Lokalni podaci / sigurnosne kopije
 prehrana-backup.json
 popis-za-kupovinu.csv
+
+# Tajne (USDA API ključ i sl.)
+.env
+.env.local

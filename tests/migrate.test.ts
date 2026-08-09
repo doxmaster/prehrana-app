@@ -3,6 +3,7 @@ import { emptyState, migrateState, pruneState } from '../src/domain/migrate'
 import { mealsTotals } from '../src/domain/nutrients'
 import { buildFoodIndex } from '../src/domain/foodIndex'
 import { mondayOf, todayISO } from '../src/domain/dates'
+import { BASE_FOODS } from '../src/data/foods'
 
 /** Stanje kakvo je zapisivala stara aplikacija (prehrana_artifact_v2). */
 const V2 = {
@@ -101,11 +102,13 @@ describe('migracija v2 → v3', () => {
     expect(foods.byId('b60')).toBeUndefined() // skrivena
   })
 
-  it('nutritivni zbroj dana ostaje isti kao u staroj aplikaciji', () => {
+  it('zbroj dana kombinira bazu, korisnicku izmjenu i AI stavku', () => {
     const foods = buildFoodIndex(state)
     const total = mealsTotals(state.profiles[0]!.log['2026-08-01']!, foods)
-    // b25 = Zobene pahuljice 80 g, b0 = izmijenjen na 170 kcal/100 g × 200 g, Sarma 120 kcal/100 g × 300 g
-    expect(total.kcal).toBeCloseTo(0.8 * 389 + 2 * 170 + 3 * 120, 6)
+    // b25 iz baze 80 g + b0 izmijenjen na 170 kcal/100 g × 200 g + Sarma 120 kcal/100 g × 300 g.
+    // Vrijednost za b25 se cita iz baze jer se ona osvjezava prema USDA.
+    const zobene = BASE_FOODS.find((f) => f.id === 'b25')!
+    expect(total.kcal).toBeCloseTo(0.8 * zobene.kcal + 2 * 170 + 3 * 120, 6)
   })
 })
 

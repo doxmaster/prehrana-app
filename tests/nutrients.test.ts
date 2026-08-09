@@ -14,13 +14,19 @@ import {
   type FoodLookup,
 } from '../src/domain/nutrients'
 import type { DayMeals, Food, MealItem } from '../src/domain/types'
+import { LEGACY_FOODS } from './fixtures/legacyFoods'
 
-const byId = new Map(BASE_FOODS.map((f) => [f.id, f]))
-const byName = new Map(BASE_FOODS.map((f) => [f.name.toLowerCase(), f]))
+// Zlatni testovi zbrajanja rade nad zamrznutim vrijednostima iz stare aplikacije.
+// Time provjeravaju motor izracuna neovisno o kasnijim ispravkama baze prema USDA.
+const byId = new Map(LEGACY_FOODS.map((f) => [f.id, f]))
+const byName = new Map(LEGACY_FOODS.map((f) => [f.name.toLowerCase(), f]))
 const foods: FoodLookup = {
   byId: (id) => byId.get(id),
   byName: (n) => byName.get(n.toLowerCase()),
 }
+
+/** Ziva baza — koristi se samo za provjere kvalitete podataka, ne za zlatne zbrojeve. */
+const liveByName = new Map(BASE_FOODS.map((f) => [f.name.toLowerCase(), f]))
 
 function ref(name: string, g: number): MealItem {
   const f = byName.get(name.toLowerCase())
@@ -147,13 +153,13 @@ describe('Atwaterova provjera', () => {
   })
 
   it('vlakna se računaju kao 2 kcal/g, ne 4', () => {
-    const brokula = byName.get('brokula')!
+    const brokula = liveByName.get('brokula')!
     expect(isPlausible(brokula)).toBe(true)
     expect(atwaterDeviation(brokula)!).toBeLessThan(0.15)
   })
 
   it('alkoholna pića se preskaču jer etanol nije makronutrijent', () => {
-    const vino = byName.get('vino crno')!
+    const vino = liveByName.get('vino crno')!
     expect(isAlcoholic(vino.name, vino.cat)).toBe(true)
     expect(isPlausible(vino, vino.name, vino.cat)).toBe(true)
     expect(isPlausible(vino)).toBe(false)

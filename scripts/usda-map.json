@@ -1,0 +1,1335 @@
+{
+  "_opis": "Mapiranje hrvatskih naziva na USDA FoodData Central. 'must' su rijeci koje opis MORA sadrzavati, 'avoid' one koje ga diskvalificiraju (npr. 'roll' za pileca prsa). 'fdcId' se upisuje nakon prve uspjesne pretrage i od tada je izbor determinististican. 'skip' iskljucuje namirnicu iz provjere uz obrazlozenje.",
+  "_avoidGlobal": [
+    "baby food",
+    "infant",
+    "restaurant",
+    "fast food",
+    "school lunch",
+    "candies",
+    "babyfood"
+  ],
+  "foods": [
+    {
+      "id": "b0",
+      "query": "chicken broilers breast meat only cooked roasted",
+      "must": [
+        "chicken",
+        "breast",
+        "roasted"
+      ],
+      "avoid": [
+        "roll",
+        "sliced",
+        "skin",
+        "fat-free",
+        "canned"
+      ],
+      "fdcId": 171477,
+      "description": "Chicken, broilers or fryers, breast, meat only, cooked, roasted"
+    },
+    {
+      "id": "b1",
+      "query": "chicken broilers drumstick meat only cooked roasted",
+      "must": [
+        "chicken",
+        "drumstick",
+        "roasted"
+      ],
+      "avoid": [
+        "roll",
+        "sliced",
+        "battered",
+        "fried",
+        "skin"
+      ],
+      "fdcId": 172376,
+      "description": "Chicken, broilers or fryers, dark meat, drumstick, meat only, cooked, roasted"
+    },
+    {
+      "id": "b2",
+      "query": "turkey breast meat only cooked roasted",
+      "must": [
+        "turkey",
+        "breast",
+        "roasted"
+      ],
+      "avoid": [
+        "roll",
+        "prepackaged",
+        "deli",
+        "sliced",
+        "raw",
+        "pre-basted",
+        "skin"
+      ],
+      "fdcId": 171496,
+      "description": "Turkey, whole, breast, meat only, cooked, roasted"
+    },
+    {
+      "id": "b3",
+      "query": "beef round separable lean only cooked roasted",
+      "must": [
+        "beef",
+        "lean",
+        "cooked"
+      ],
+      "avoid": [
+        "ground",
+        "corned",
+        "cured",
+        "new zealand",
+        "australian",
+        "raw"
+      ],
+      "fdcId": 170227,
+      "description": "Beef, round, bottom round roast, separable lean only, trimmed to 0\" fat, select, cooked, roasted"
+    },
+    {
+      "id": "b4",
+      "query": "pork fresh leg ham separable lean only cooked roasted",
+      "must": [
+        "pork",
+        "lean",
+        "cooked"
+      ],
+      "avoid": [
+        "cured",
+        "bacon",
+        "sausage",
+        "canned",
+        "raw"
+      ],
+      "fdcId": 168225,
+      "description": "Pork, fresh, leg (ham), whole, separable lean only, cooked, roasted"
+    },
+    {
+      "id": "b5",
+      "query": "beef ground 80% lean meat 20% fat raw",
+      "must": [
+        "ground"
+      ],
+      "avoid": [
+        "cooked",
+        "patty",
+        "crumbles"
+      ],
+      "note": "mjesano mljeveno (svinjetina+junetina) vs USDA cista junetina",
+      "fdcId": 2514744,
+      "description": "Beef, ground, 80% lean meat / 20% fat, raw",
+      "reportOnly": true
+    },
+    {
+      "id": "b6",
+      "query": "fish salmon atlantic farmed cooked dry heat",
+      "must": [
+        "salmon",
+        "atlantic",
+        "cooked"
+      ],
+      "avoid": [
+        "smoked",
+        "canned",
+        "raw",
+        "wild"
+      ],
+      "fdcId": 175168,
+      "description": "Fish, salmon, Atlantic, farmed, cooked, dry heat"
+    },
+    {
+      "id": "b7",
+      "query": "fish tuna light canned in water drained solids",
+      "must": [
+        "tuna",
+        "water"
+      ],
+      "avoid": [
+        "oil",
+        "fresh"
+      ],
+      "fdcId": 334194,
+      "description": "Fish, tuna, light, canned in water, drained solids"
+    },
+    {
+      "id": "b8",
+      "query": "fish mackerel atlantic cooked dry heat",
+      "must": [
+        "mackerel",
+        "cooked"
+      ],
+      "avoid": [
+        "salted",
+        "smoked",
+        "canned",
+        "raw",
+        "jack",
+        "king",
+        "spanish"
+      ],
+      "fdcId": 175120,
+      "description": "Fish, mackerel, Atlantic, cooked, dry heat"
+    },
+    {
+      "id": "b9",
+      "query": "fish sardine atlantic canned in oil drained solids with bone",
+      "must": [
+        "sardine",
+        "canned"
+      ],
+      "avoid": [
+        "tomato",
+        "fish oil"
+      ],
+      "fdcId": 175139,
+      "description": "Fish, sardine, Atlantic, canned in oil, drained solids with bone"
+    },
+    {
+      "id": "b10",
+      "query": "turkey breast meat sliced prepackaged deli",
+      "must": [
+        "turkey"
+      ],
+      "avoid": [
+        "patty",
+        "roasted whole"
+      ],
+      "note": "pileca sunka vs pureca delikatesa",
+      "fdcId": 172941,
+      "description": "Turkey breast, sliced, prepackaged",
+      "reportOnly": true
+    },
+    {
+      "id": "b11",
+      "query": "egg whole raw fresh",
+      "must": [
+        "egg",
+        "whole"
+      ],
+      "avoid": [
+        "cooked",
+        "fried",
+        "dried",
+        "substitute"
+      ],
+      "fdcId": 748967,
+      "description": "Eggs, Grade A, Large, egg whole"
+    },
+    {
+      "id": "b12",
+      "query": "egg white raw fresh",
+      "must": [
+        "egg",
+        "white"
+      ],
+      "avoid": [
+        "dried",
+        "cooked"
+      ],
+      "fdcId": 747997,
+      "description": "Eggs, Grade A, Large, egg white"
+    },
+    {
+      "id": "b13",
+      "query": "milk reduced fat fluid 2% milkfat",
+      "must": [
+        "milk",
+        "fluid"
+      ],
+      "avoid": [
+        "cheese",
+        "cream",
+        "dry",
+        "evaporated",
+        "condensed",
+        "chocolate",
+        "buttermilk",
+        "goat",
+        "sheep",
+        "human",
+        "nonfat"
+      ],
+      "note": "hrvatsko mlijeko 2,8 % vs USDA 2 %",
+      "fdcId": 746778,
+      "description": "Milk, reduced fat, fluid, 2% milkfat, with added vitamin A and vitamin D",
+      "reportOnly": true
+    },
+    {
+      "id": "b14",
+      "query": "yogurt plain whole milk",
+      "must": [
+        "yogurt",
+        "plain"
+      ],
+      "avoid": [
+        "greek",
+        "vanilla",
+        "fruit",
+        "low fat",
+        "nonfat"
+      ],
+      "fdcId": 2259793,
+      "description": "Yogurt, plain, whole milk"
+    },
+    {
+      "id": "b15",
+      "query": "yogurt greek plain whole milk",
+      "must": [
+        "yogurt",
+        "greek",
+        "plain"
+      ],
+      "avoid": [
+        "nonfat",
+        "vanilla",
+        "fruit"
+      ],
+      "fdcId": 2259794,
+      "description": "Yogurt, Greek, plain, whole milk"
+    },
+    {
+      "id": "b16",
+      "query": "cheese gouda",
+      "must": [
+        "cheese",
+        "gouda"
+      ],
+      "avoid": [
+        "spread",
+        "processed"
+      ],
+      "fdcId": 171241,
+      "description": "Cheese, gouda"
+    },
+    {
+      "id": "b17",
+      "query": "cheese cottage lowfat 2% milkfat",
+      "must": [
+        "cottage",
+        "lowfat"
+      ],
+      "avoid": [
+        "creamed",
+        "fruit",
+        "full fat"
+      ],
+      "note": "svjezi posni sir (skuta) vs cottage cheese",
+      "fdcId": 328841,
+      "description": "Cheese, cottage, lowfat, 2% milkfat",
+      "reportOnly": true
+    },
+    {
+      "id": "b18",
+      "query": "cheese feta",
+      "must": [
+        "cheese",
+        "feta"
+      ],
+      "avoid": [
+        "spread"
+      ],
+      "fdcId": 173420,
+      "description": "Cheese, feta"
+    },
+    {
+      "id": "b19",
+      "query": "butter without salt",
+      "must": [
+        "butter"
+      ],
+      "avoid": [
+        "whipped",
+        "oil",
+        "light",
+        "blend"
+      ],
+      "fdcId": 173430,
+      "description": "Butter, without salt"
+    },
+    {
+      "id": "b20",
+      "query": "bread white commercially prepared",
+      "must": [
+        "bread",
+        "white"
+      ],
+      "avoid": [
+        "toasted",
+        "crumbs",
+        "reduced calorie"
+      ],
+      "fdcId": 2758993,
+      "description": "Bread, white, commercial"
+    },
+    {
+      "id": "b21",
+      "query": "bread whole wheat commercially prepared",
+      "must": [
+        "bread",
+        "wheat"
+      ],
+      "avoid": [
+        "toasted",
+        "crumbs",
+        "reduced calorie"
+      ],
+      "fdcId": 2758994,
+      "description": "Bread, 100% whole wheat, commercial"
+    },
+    {
+      "id": "b22",
+      "query": "rice white long grain regular enriched cooked",
+      "must": [
+        "rice",
+        "white",
+        "cooked"
+      ],
+      "avoid": [
+        "instant",
+        "parboiled",
+        "fried",
+        "glutinous"
+      ],
+      "fdcId": 168880,
+      "description": "Rice, white, medium-grain, enriched, cooked"
+    },
+    {
+      "id": "b23",
+      "query": "rice brown long grain cooked",
+      "must": [
+        "rice",
+        "brown",
+        "cooked"
+      ],
+      "avoid": [
+        "instant",
+        "parboiled",
+        "sausage",
+        "pork",
+        "links",
+        "flour"
+      ],
+      "fdcId": 169704,
+      "description": "Rice, brown, long-grain, cooked (Includes foods for USDA's Food Distribution Program)"
+    },
+    {
+      "id": "b24",
+      "query": "pasta cooked enriched without added salt",
+      "must": [
+        "pasta",
+        "cooked"
+      ],
+      "avoid": [
+        "whole wheat",
+        "spinach",
+        "corn",
+        "gluten free"
+      ],
+      "fdcId": 169737,
+      "description": "Pasta, cooked, enriched, without added salt"
+    },
+    {
+      "id": "b25",
+      "query": "oats",
+      "must": [
+        "oats"
+      ],
+      "avoid": [
+        "cooked",
+        "instant",
+        "flavored",
+        "fortified",
+        "milk",
+        "bar",
+        "bread",
+        "quaker",
+        "cereals",
+        "granola"
+      ],
+      "fdcId": 2346397,
+      "description": "Oats, whole grain, steel cut"
+    },
+    {
+      "id": "b26",
+      "query": "potatoes boiled cooked without skin flesh without salt",
+      "must": [
+        "potatoes",
+        "boiled"
+      ],
+      "avoid": [
+        "french fried",
+        "chips",
+        "mashed",
+        "canned",
+        "baked",
+        "microwave",
+        "au gratin",
+        "scalloped"
+      ],
+      "fdcId": 170440,
+      "description": "Potatoes, boiled, cooked without skin, flesh, without salt"
+    },
+    {
+      "id": "b27",
+      "query": "cornmeal degermed enriched yellow cooked",
+      "must": [
+        "cornmeal",
+        "cooked"
+      ],
+      "avoid": [
+        "self-rising",
+        "whole grain",
+        "navajo",
+        "blue",
+        "dry"
+      ],
+      "note": "palenta",
+      "skip": "USDA nema kuhanu palentu - nasa vrijednost je za kuhanu, razrijedenu verziju, a USDA nudi samo suhu krupicu"
+    },
+    {
+      "id": "b28",
+      "query": "buckwheat groats roasted cooked",
+      "must": [
+        "buckwheat",
+        "cooked"
+      ],
+      "avoid": [
+        "flour",
+        "dry"
+      ],
+      "fdcId": 170686,
+      "description": "Buckwheat groats, roasted, cooked"
+    },
+    {
+      "id": "b29",
+      "query": "quinoa cooked",
+      "must": [
+        "quinoa",
+        "cooked"
+      ],
+      "avoid": [
+        "uncooked"
+      ],
+      "fdcId": 168917,
+      "description": "Quinoa, cooked"
+    },
+    {
+      "id": "b30",
+      "query": "beans kidney red mature seeds cooked boiled without salt",
+      "must": [
+        "kidney",
+        "beans",
+        "cooked"
+      ],
+      "avoid": [
+        "canned",
+        "baked",
+        "refried",
+        "sprouted"
+      ],
+      "fdcId": 175244,
+      "description": "Beans, kidney, royal red, mature seeds, cooked, boiled with salt"
+    },
+    {
+      "id": "b31",
+      "query": "lentils mature seeds cooked boiled without salt",
+      "must": [
+        "lentils",
+        "cooked"
+      ],
+      "avoid": [
+        "canned",
+        "sprouted"
+      ],
+      "fdcId": 172421,
+      "description": "Lentils, mature seeds, cooked, boiled, without salt"
+    },
+    {
+      "id": "b32",
+      "query": "chickpeas garbanzo beans mature seeds cooked boiled without salt",
+      "must": [
+        "chickpeas",
+        "cooked"
+      ],
+      "avoid": [
+        "canned",
+        "flour"
+      ],
+      "fdcId": 173757,
+      "description": "Chickpeas (garbanzo beans, bengal gram), mature seeds, cooked, boiled, without salt"
+    },
+    {
+      "id": "b33",
+      "query": "peas green raw",
+      "must": [
+        "peas",
+        "green"
+      ],
+      "avoid": [
+        "canned",
+        "split",
+        "soup",
+        "pods",
+        "dried"
+      ],
+      "fdcId": 170419,
+      "description": "Peas, green, raw"
+    },
+    {
+      "id": "b34",
+      "query": "tofu raw regular prepared with calcium sulfate",
+      "must": [
+        "tofu",
+        "raw",
+        "regular"
+      ],
+      "avoid": [
+        "yogurt",
+        "house foods",
+        "fried",
+        "smoked",
+        "salted",
+        "dried",
+        "okara",
+        "silken",
+        "firm",
+        "light"
+      ],
+      "note": "hrvatski tofu odgovara USDA regular, ne firm varijanti",
+      "fdcId": 172476,
+      "description": "Tofu, raw, regular, prepared with calcium sulfate"
+    },
+    {
+      "id": "b35",
+      "query": "broccoli raw",
+      "must": [
+        "broccoli",
+        "raw"
+      ],
+      "avoid": [
+        "cooked",
+        "frozen",
+        "chinese",
+        "leaves"
+      ],
+      "fdcId": 747447,
+      "description": "Broccoli, raw"
+    },
+    {
+      "id": "b36",
+      "query": "spinach raw",
+      "must": [
+        "spinach",
+        "raw"
+      ],
+      "avoid": [
+        "cooked",
+        "canned",
+        "frozen",
+        "mustard",
+        "new zealand"
+      ],
+      "fdcId": 168462,
+      "description": "Spinach, raw"
+    },
+    {
+      "id": "b37",
+      "query": "carrots raw",
+      "must": [
+        "carrots",
+        "raw"
+      ],
+      "avoid": [
+        "cooked",
+        "canned",
+        "frozen",
+        "baby",
+        "juice"
+      ],
+      "fdcId": 2258586,
+      "description": "Carrots, mature, raw"
+    },
+    {
+      "id": "b38",
+      "query": "tomatoes red ripe raw year round average",
+      "must": [
+        "tomatoes",
+        "red",
+        "raw"
+      ],
+      "avoid": [
+        "grape",
+        "cherry",
+        "plum",
+        "roma",
+        "canned",
+        "cooked",
+        "sun-dried",
+        "juice",
+        "green",
+        "orange",
+        "yellow"
+      ],
+      "fdcId": 170457,
+      "description": "Tomatoes, red, ripe, raw, year round average"
+    },
+    {
+      "id": "b39",
+      "query": "peppers sweet red raw",
+      "must": [
+        "peppers",
+        "red",
+        "raw"
+      ],
+      "avoid": [
+        "cooked",
+        "canned",
+        "frozen",
+        "hot",
+        "chili"
+      ],
+      "fdcId": 2258590,
+      "description": "Peppers, bell, red, raw"
+    },
+    {
+      "id": "b40",
+      "query": "cucumber with peel raw",
+      "must": [
+        "cucumber",
+        "raw"
+      ],
+      "avoid": [
+        "pickled",
+        "peeled"
+      ],
+      "fdcId": 2346406,
+      "description": "Cucumber, with peel, raw"
+    },
+    {
+      "id": "b41",
+      "query": "cabbage raw",
+      "must": [
+        "cabbage",
+        "raw"
+      ],
+      "avoid": [
+        "cooked",
+        "red",
+        "savoy",
+        "chinese",
+        "napa"
+      ],
+      "fdcId": 2346407,
+      "description": "Cabbage, green, raw"
+    },
+    {
+      "id": "b42",
+      "query": "cauliflower raw",
+      "must": [
+        "cauliflower",
+        "raw"
+      ],
+      "avoid": [
+        "cooked",
+        "frozen",
+        "green"
+      ],
+      "fdcId": 2685573,
+      "description": "Cauliflower, raw"
+    },
+    {
+      "id": "b43",
+      "query": "squash summer zucchini includes skin raw",
+      "must": [
+        "zucchini"
+      ],
+      "avoid": [
+        "cooked",
+        "canned",
+        "italian style"
+      ],
+      "fdcId": 2685568,
+      "description": "Squash, summer, green, zucchini, includes skin, raw"
+    },
+    {
+      "id": "b44",
+      "query": "onions raw",
+      "must": [
+        "onions",
+        "raw"
+      ],
+      "avoid": [
+        "cooked",
+        "spring",
+        "welsh",
+        "young green",
+        "dehydrated",
+        "canned"
+      ],
+      "fdcId": 790577,
+      "description": "Onions, red, raw"
+    },
+    {
+      "id": "b45",
+      "query": "lettuce green leaf raw",
+      "must": [
+        "lettuce",
+        "green leaf",
+        "raw"
+      ],
+      "avoid": [
+        "iceberg",
+        "cos",
+        "romaine",
+        "red leaf",
+        "butterhead"
+      ],
+      "fdcId": 169249,
+      "description": "Lettuce, green leaf, raw"
+    },
+    {
+      "id": "b46",
+      "query": "avocados raw all commercial varieties",
+      "must": [
+        "avocado",
+        "raw"
+      ],
+      "avoid": [
+        "california",
+        "florida"
+      ],
+      "fdcId": 2710824,
+      "description": "Avocado, Hass, peeled, raw"
+    },
+    {
+      "id": "b47",
+      "query": "apples raw with skin",
+      "must": [
+        "apples",
+        "raw"
+      ],
+      "avoid": [
+        "dried",
+        "canned",
+        "juice",
+        "sauce",
+        "without skin"
+      ],
+      "fdcId": 1750340,
+      "description": "Apples, fuji, with skin, raw"
+    },
+    {
+      "id": "b48",
+      "query": "bananas raw",
+      "must": [
+        "bananas",
+        "raw"
+      ],
+      "avoid": [
+        "dried",
+        "dehydrated",
+        "plantain"
+      ],
+      "fdcId": 1105073,
+      "description": "Bananas, overripe, raw"
+    },
+    {
+      "id": "b49",
+      "query": "oranges raw all commercial varieties",
+      "must": [
+        "oranges",
+        "raw"
+      ],
+      "avoid": [
+        "juice",
+        "peel",
+        "mandarin"
+      ],
+      "fdcId": 169097,
+      "description": "Oranges, raw, all commercial varieties"
+    },
+    {
+      "id": "b50",
+      "query": "strawberries raw",
+      "must": [
+        "strawberries",
+        "raw"
+      ],
+      "avoid": [
+        "frozen",
+        "canned",
+        "dried"
+      ],
+      "fdcId": 2346409,
+      "description": "Strawberries, raw"
+    },
+    {
+      "id": "b51",
+      "query": "blueberries raw",
+      "must": [
+        "blueberries",
+        "raw"
+      ],
+      "avoid": [
+        "frozen",
+        "canned",
+        "dried",
+        "wild"
+      ],
+      "fdcId": 2346411,
+      "description": "Blueberries, raw"
+    },
+    {
+      "id": "b52",
+      "query": "grapes red or green european type raw",
+      "must": [
+        "grapes",
+        "raw"
+      ],
+      "avoid": [
+        "juice",
+        "raisins",
+        "canned",
+        "american"
+      ],
+      "fdcId": 2346412,
+      "description": "Grapes, red, seedless, raw"
+    },
+    {
+      "id": "b53",
+      "query": "pears raw",
+      "must": [
+        "pears",
+        "raw"
+      ],
+      "avoid": [
+        "dried",
+        "canned",
+        "juice",
+        "asian"
+      ],
+      "fdcId": 746773,
+      "description": "Pears, raw, bartlett"
+    },
+    {
+      "id": "b54",
+      "query": "kiwifruit green raw",
+      "must": [
+        "kiwifruit"
+      ],
+      "avoid": [
+        "gold",
+        "dried"
+      ],
+      "fdcId": 327046,
+      "description": "Kiwifruit, green, raw"
+    },
+    {
+      "id": "b55",
+      "query": "watermelon raw",
+      "must": [
+        "watermelon",
+        "raw"
+      ],
+      "avoid": [
+        "juice",
+        "seeds"
+      ],
+      "fdcId": 167765,
+      "description": "Watermelon, raw"
+    },
+    {
+      "id": "b56",
+      "query": "nuts almonds raw",
+      "must": [
+        "almonds"
+      ],
+      "avoid": [
+        "oil roasted",
+        "dry roasted",
+        "blanched",
+        "butter",
+        "milk",
+        "flour",
+        "salted"
+      ],
+      "fdcId": 2346393,
+      "description": "Nuts, almonds, whole, raw"
+    },
+    {
+      "id": "b57",
+      "query": "nuts walnuts english raw",
+      "must": [
+        "walnuts"
+      ],
+      "avoid": [
+        "black",
+        "roasted",
+        "candied"
+      ],
+      "fdcId": 2346394,
+      "description": "Nuts, walnuts, English, halves, raw"
+    },
+    {
+      "id": "b58",
+      "query": "nuts hazelnuts filberts raw",
+      "must": [
+        "hazelnuts"
+      ],
+      "avoid": [
+        "roasted",
+        "blanched",
+        "butter"
+      ],
+      "fdcId": 2515375,
+      "description": "Nuts, hazelnuts or filberts, raw"
+    },
+    {
+      "id": "b59",
+      "query": "peanuts all types raw",
+      "must": [
+        "peanuts"
+      ],
+      "avoid": [
+        "oil roasted",
+        "dry roasted",
+        "butter",
+        "boiled",
+        "salted"
+      ],
+      "fdcId": 2515376,
+      "description": "Peanuts, raw"
+    },
+    {
+      "id": "b60",
+      "query": "seeds pumpkin and squash seed kernels dried",
+      "must": [
+        "pumpkin"
+      ],
+      "avoid": [
+        "roasted",
+        "salted",
+        "whole"
+      ],
+      "fdcId": 2515380,
+      "description": "Seeds, pumpkin seeds (pepitas), raw"
+    },
+    {
+      "id": "b61",
+      "query": "seeds chia seeds dried",
+      "must": [
+        "chia"
+      ],
+      "avoid": [
+        "beverage",
+        "drink"
+      ],
+      "fdcId": 2710819,
+      "description": "Chia seeds, dry, raw"
+    },
+    {
+      "id": "b62",
+      "query": "oil olive salad or cooking",
+      "must": [
+        "oil",
+        "olive"
+      ],
+      "avoid": [
+        "extra light",
+        "spread",
+        "dressing",
+        "blend",
+        "pomace",
+        "sunflower"
+      ],
+      "fdcId": 171413,
+      "description": "Oil, olive, salad or cooking",
+      "note": "Foundation unos za ekstra djevicansko nema makronutrijente, pa je prikvacen SR Legacy zapis"
+    },
+    {
+      "id": "b63",
+      "query": "honey",
+      "must": [
+        "honey"
+      ],
+      "avoid": [
+        "mustard",
+        "roasted",
+        "cereal",
+        "graham"
+      ],
+      "fdcId": 169640,
+      "description": "Honey"
+    },
+    {
+      "id": "b64",
+      "query": "chocolate dark 70-85% cacao solids",
+      "must": [
+        "chocolate",
+        "dark"
+      ],
+      "avoid": [
+        "milk",
+        "syrup",
+        "drink",
+        "45-59",
+        "60-69"
+      ],
+      "fdcId": 170273,
+      "description": "Chocolate, dark, 70-85% cacao solids"
+    },
+    {
+      "id": "b65",
+      "skip": "obicna voda - sve vrijednosti su nula po definiciji"
+    },
+    {
+      "id": "b66",
+      "skip": "domaca priprema, nije standardizirana namirnica"
+    },
+    {
+      "id": "b67",
+      "skip": "mineralni sastav ovisi o izvoru, nema smisla usporedivati s USDA"
+    },
+    {
+      "id": "b68",
+      "query": "alcoholic beverage beer regular all",
+      "must": [
+        "beer",
+        "regular"
+      ],
+      "avoid": [
+        "light",
+        "nonalcoholic",
+        "malt",
+        "higher alcohol"
+      ],
+      "fdcId": 168746,
+      "description": "Alcoholic beverage, beer, regular, all"
+    },
+    {
+      "id": "b69",
+      "query": "beverage near beer nonalcoholic malt",
+      "must": [
+        "beer"
+      ],
+      "avoid": [
+        "regular",
+        "light"
+      ],
+      "note": "bezalkoholno pivo",
+      "fdcId": 174863,
+      "description": "Malt beverage, includes non-alcoholic beer"
+    },
+    {
+      "id": "b70",
+      "query": "alcoholic beverage wine table red",
+      "must": [
+        "wine",
+        "red"
+      ],
+      "avoid": [
+        "white",
+        "dessert",
+        "cooking",
+        "light"
+      ],
+      "fdcId": 173190,
+      "description": "Alcoholic beverage, wine, table, red"
+    },
+    {
+      "id": "b71",
+      "query": "orange juice raw",
+      "must": [
+        "orange juice",
+        "raw"
+      ],
+      "avoid": [
+        "concentrate",
+        "canned",
+        "added",
+        "frozen",
+        "chilled"
+      ],
+      "fdcId": 169098,
+      "description": "Orange juice, raw (Includes foods for USDA's Food Distribution Program)"
+    },
+    {
+      "id": "b72",
+      "query": "apple juice canned or bottled unsweetened without added ascorbic acid",
+      "must": [
+        "apple juice"
+      ],
+      "avoid": [
+        "concentrate",
+        "with added"
+      ],
+      "fdcId": 173933,
+      "description": "Apple juice, canned or bottled, unsweetened, without added ascorbic acid"
+    },
+    {
+      "id": "b73",
+      "query": "beverages carbonated cola contains caffeine",
+      "must": [
+        "carbonated",
+        "cola"
+      ],
+      "avoid": [
+        "zevia",
+        "diet",
+        "low calorie",
+        "aspartame",
+        "without caffeine",
+        "pepper"
+      ],
+      "fdcId": 174852,
+      "description": "Beverages, carbonated, cola, regular"
+    },
+    {
+      "id": "b74",
+      "query": "beverages carbonated low calorie cola with aspartame",
+      "must": [
+        "low calorie",
+        "cola"
+      ],
+      "avoid": [
+        "zevia",
+        "regular",
+        "without caffeine"
+      ],
+      "fdcId": 175099,
+      "description": "Beverages, carbonated, low calorie, cola or pepper-type, with aspartame, contains caffeine"
+    },
+    {
+      "id": "b75",
+      "query": "beverages tea black ready to drink lemon sweetened",
+      "must": [
+        "tea",
+        "sweetened"
+      ],
+      "avoid": [
+        "unsweetened",
+        "diet",
+        "green",
+        "herb",
+        "instant",
+        "hibiscus"
+      ],
+      "fdcId": 171888,
+      "description": "Beverages, tea, black, ready-to-drink, lemon, sweetened"
+    },
+    {
+      "id": "b76",
+      "query": "beverages coffee brewed prepared with tap water",
+      "must": [
+        "coffee"
+      ],
+      "avoid": [
+        "instant",
+        "decaffeinated",
+        "espresso",
+        "with milk"
+      ],
+      "fdcId": 171890,
+      "description": "Beverages, coffee, brewed, prepared with tap water"
+    },
+    {
+      "id": "b77",
+      "query": "beverages tea black brewed prepared with tap water",
+      "must": [
+        "tea",
+        "black",
+        "brewed"
+      ],
+      "avoid": [
+        "instant",
+        "sweetened",
+        "herb",
+        "green",
+        "decaffeinated",
+        "hibiscus",
+        "ready to drink"
+      ],
+      "fdcId": 173227,
+      "description": "Beverages, tea, black, brewed, prepared with tap water"
+    },
+    {
+      "id": "b78",
+      "query": "nuts coconut water liquid from coconuts",
+      "must": [
+        "coconut water"
+      ],
+      "avoid": [
+        "milk",
+        "cream",
+        "sweetened"
+      ],
+      "fdcId": 170174,
+      "description": "Nuts, coconut water (liquid from coconuts)"
+    },
+    {
+      "id": "b79",
+      "query": "beverages almond milk unsweetened shelf stable",
+      "must": [
+        "almond"
+      ],
+      "avoid": [
+        "sweetened",
+        "chocolate",
+        "vanilla"
+      ],
+      "fdcId": 1999631,
+      "description": "Almond milk, unsweetened, plain, shelf stable"
+    },
+    {
+      "id": "b80",
+      "skip": "smoothie ovisi o receptu, ne postoji standardna vrijednost"
+    },
+    {
+      "id": "b81",
+      "skip": "suplement - vrijednosti su deklarirana doza, ne laboratorijska analiza"
+    },
+    {
+      "id": "b82",
+      "skip": "suplement - vrijednosti su deklarirana doza"
+    },
+    {
+      "id": "b83",
+      "skip": "suplement - sastav ovisi o proizvodacu"
+    },
+    {
+      "id": "b84",
+      "skip": "suplement - sastav ovisi o proizvodacu"
+    },
+    {
+      "id": "b85",
+      "skip": "suplement - sastav ovisi o proizvodacu"
+    },
+    {
+      "id": "b86",
+      "skip": "suplement - vrijednosti su deklarirana doza"
+    },
+    {
+      "id": "b87",
+      "skip": "suplement - vrijednosti su deklarirana doza"
+    },
+    {
+      "id": "b88",
+      "skip": "suplement - vrijednosti su deklarirana doza"
+    },
+    {
+      "id": "b89",
+      "skip": "suplement - vrijednosti su deklarirana doza"
+    },
+    {
+      "id": "b90",
+      "skip": "suplement - vrijednosti su deklarirana doza"
+    },
+    {
+      "id": "b91",
+      "skip": "suplement - vrijednosti su deklarirana doza"
+    },
+    {
+      "id": "b92",
+      "skip": "suplement - vrijednosti su deklarirana doza"
+    }
+  ]
+}

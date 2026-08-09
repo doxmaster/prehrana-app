@@ -1,0 +1,1134 @@
+{
+  "b0": {
+    "fdcId": 171477,
+    "description": "Chicken, broilers or fryers, breast, meat only, cooked, roasted",
+    "values": {
+      "vd": 0.1,
+      "f": 3.57,
+      "c": 0,
+      "kcal": 165,
+      "ca": 15,
+      "p": 31,
+      "fib": 0,
+      "fe": 1.04,
+      "mg": 29,
+      "vc": 0
+    }
+  },
+  "b1": {
+    "fdcId": 172376,
+    "description": "Chicken, broilers or fryers, dark meat, drumstick, meat only, cooked, roasted",
+    "values": {
+      "p": 24.2,
+      "fe": 1.14,
+      "mg": 22,
+      "f": 5.7,
+      "kcal": 155,
+      "ca": 11,
+      "vd": 0,
+      "vc": 0,
+      "fib": 0,
+      "c": 0
+    }
+  },
+  "b2": {
+    "fdcId": 171496,
+    "description": "Turkey, whole, breast, meat only, cooked, roasted",
+    "values": {
+      "fe": 0.71,
+      "mg": 32,
+      "vd": 0.3,
+      "p": 30.1,
+      "f": 2.08,
+      "kcal": 147,
+      "ca": 9,
+      "vc": 0,
+      "fib": 0,
+      "c": 0
+    }
+  },
+  "b3": {
+    "fdcId": 170227,
+    "description": "Beef, round, bottom round roast, separable lean only, trimmed to 0\" fat, select, cooked, roasted",
+    "values": {
+      "vc": 0,
+      "fib": 0,
+      "c": 0,
+      "p": 28.3,
+      "fe": 2.35,
+      "mg": 19,
+      "f": 5.33,
+      "ca": 6,
+      "kcal": 169
+    }
+  },
+  "b4": {
+    "fdcId": 168225,
+    "description": "Pork, fresh, leg (ham), whole, separable lean only, cooked, roasted",
+    "values": {
+      "vd": 0.9,
+      "f": 9.44,
+      "c": 0,
+      "kcal": 211,
+      "ca": 7,
+      "p": 29.4,
+      "vc": 0.4,
+      "fib": 0,
+      "fe": 1.12,
+      "mg": 25
+    }
+  },
+  "b5": {
+    "fdcId": 2514744,
+    "description": "Beef, ground, 80% lean meat / 20% fat, raw",
+    "values": {
+      "fe": 1.96,
+      "mg": 16.4,
+      "f": 19.4,
+      "ca": 6.89,
+      "p": 17.5,
+      "c": 0,
+      "kcal": 243
+    }
+  },
+  "b6": {
+    "fdcId": 175168,
+    "description": "Fish, salmon, Atlantic, farmed, cooked, dry heat",
+    "values": {
+      "ca": 15,
+      "vd": 13.1,
+      "f": 12.4,
+      "c": 0,
+      "p": 22.1,
+      "vc": 3.7,
+      "fib": 0,
+      "fe": 0.34,
+      "mg": 30,
+      "kcal": 206
+    }
+  },
+  "b7": {
+    "fdcId": 334194,
+    "description": "Fish, tuna, light, canned in water, drained solids",
+    "values": {
+      "ca": 18,
+      "f": 0.94,
+      "kcal": 90,
+      "vd": 1.2,
+      "p": 19,
+      "fe": 1.67,
+      "mg": 22.7,
+      "c": 0.08
+    }
+  },
+  "b8": {
+    "fdcId": 175120,
+    "description": "Fish, mackerel, Atlantic, cooked, dry heat",
+    "values": {
+      "p": 23.8,
+      "fib": 0,
+      "fe": 1.57,
+      "mg": 97,
+      "vc": 0.4,
+      "f": 17.8,
+      "c": 0,
+      "kcal": 262,
+      "ca": 15
+    }
+  },
+  "b9": {
+    "fdcId": 175139,
+    "description": "Fish, sardine, Atlantic, canned in oil, drained solids with bone",
+    "values": {
+      "vd": 4.8,
+      "ca": 382,
+      "f": 11.4,
+      "c": 0,
+      "kcal": 208,
+      "fib": 0,
+      "fe": 2.92,
+      "mg": 39,
+      "p": 24.6,
+      "vc": 0
+    }
+  },
+  "b10": {
+    "fdcId": 172941,
+    "description": "Turkey breast, sliced, prepackaged",
+    "values": {
+      "ca": 14,
+      "f": 3.77,
+      "c": 2.2,
+      "kcal": 106,
+      "vd": 0.2,
+      "fe": 0.42,
+      "mg": 19,
+      "p": 14.8,
+      "fib": 0,
+      "vc": 0
+    }
+  },
+  "b11": {
+    "fdcId": 748967,
+    "description": "Eggs, Grade A, Large, egg whole",
+    "values": {
+      "kcal": 148,
+      "p": 12.4,
+      "fe": 1.67,
+      "mg": 11.4,
+      "ca": 48,
+      "f": 9.96,
+      "c": 0.96,
+      "vd": 2.46,
+      "fib": 0
+    }
+  },
+  "b12": {
+    "fdcId": 747997,
+    "description": "Eggs, Grade A, Large, egg white",
+    "values": {
+      "p": 10.7,
+      "f": 0,
+      "kcal": 55,
+      "c": 2.36
+    }
+  },
+  "b13": {
+    "fdcId": 746778,
+    "description": "Milk, reduced fat, fluid, 2% milkfat, with added vitamin A and vitamin D",
+    "values": {
+      "p": 3.36,
+      "vd": 1.13,
+      "c": 4.9,
+      "kcal": 50,
+      "ca": 126,
+      "f": 1.9,
+      "fe": 0,
+      "mg": 12
+    }
+  },
+  "b14": {
+    "fdcId": 2259793,
+    "description": "Yogurt, plain, whole milk",
+    "values": {
+      "fe": 0,
+      "mg": 11.4,
+      "f": 4.48,
+      "ca": 127,
+      "c": 5.57,
+      "p": 3.82,
+      "vd": 0.778,
+      "kcal": 78
+    }
+  },
+  "b15": {
+    "fdcId": 2259794,
+    "description": "Yogurt, Greek, plain, whole milk",
+    "values": {
+      "fe": 0,
+      "mg": 10.7,
+      "f": 4.39,
+      "ca": 111,
+      "c": 4.75,
+      "p": 8.78,
+      "vd": 0,
+      "kcal": 93.7
+    }
+  },
+  "b16": {
+    "fdcId": 171241,
+    "description": "Cheese, gouda",
+    "values": {
+      "kcal": 356,
+      "vd": 0.5,
+      "vc": 0,
+      "fib": 0,
+      "fe": 0.24,
+      "mg": 29,
+      "p": 24.9,
+      "f": 27.4,
+      "c": 2.22,
+      "ca": 700
+    }
+  },
+  "b17": {
+    "fdcId": 328841,
+    "description": "Cheese, cottage, lowfat, 2% milkfat",
+    "values": {
+      "f": 2.3,
+      "c": 4.31,
+      "kcal": 84,
+      "ca": 103,
+      "p": 11,
+      "fe": 0.13,
+      "mg": 8.9
+    }
+  },
+  "b18": {
+    "fdcId": 173420,
+    "description": "Cheese, feta",
+    "values": {
+      "vd": 0.4,
+      "f": 21.5,
+      "c": 3.88,
+      "kcal": 265,
+      "ca": 493,
+      "p": 14.2,
+      "fib": 0,
+      "fe": 0.65,
+      "mg": 19,
+      "vc": 0
+    }
+  },
+  "b19": {
+    "fdcId": 173430,
+    "description": "Butter, without salt",
+    "values": {
+      "ca": 24,
+      "mg": 2,
+      "kcal": 717,
+      "fe": 0.02,
+      "vd": 0,
+      "f": 81.1,
+      "c": 0.06,
+      "p": 0.85,
+      "fib": 0,
+      "vc": 0
+    }
+  },
+  "b20": {
+    "fdcId": 2758993,
+    "description": "Bread, white, commercial",
+    "values": {
+      "fe": 4.06,
+      "mg": 22.4,
+      "ca": 288
+    }
+  },
+  "b21": {
+    "fdcId": 2758994,
+    "description": "Bread, 100% whole wheat, commercial",
+    "values": {
+      "fe": 2.78,
+      "mg": 72.9,
+      "ca": 132
+    }
+  },
+  "b22": {
+    "fdcId": 168880,
+    "description": "Rice, white, medium-grain, enriched, cooked",
+    "values": {
+      "f": 0.21,
+      "c": 28.6,
+      "kcal": 130,
+      "ca": 3,
+      "p": 2.38,
+      "fib": 0.3,
+      "fe": 1.49,
+      "mg": 13,
+      "vc": 0,
+      "vd": 0
+    }
+  },
+  "b23": {
+    "fdcId": 169704,
+    "description": "Rice, brown, long-grain, cooked (Includes foods for USDA's Food Distribution Program)",
+    "values": {
+      "fib": 1.6,
+      "fe": 0.56,
+      "mg": 39,
+      "p": 2.74,
+      "f": 0.97,
+      "c": 25.6,
+      "kcal": 123,
+      "ca": 3,
+      "vc": 0,
+      "vd": 0
+    }
+  },
+  "b24": {
+    "fdcId": 169737,
+    "description": "Pasta, cooked, enriched, without added salt",
+    "values": {
+      "f": 0.93,
+      "p": 5.8,
+      "ca": 7,
+      "fe": 1.28,
+      "mg": 18,
+      "c": 30.9,
+      "kcal": 158,
+      "vc": 0,
+      "fib": 1.8,
+      "vd": 0
+    }
+  },
+  "b25": {
+    "fdcId": 2346397,
+    "description": "Oats, whole grain, steel cut",
+    "values": {
+      "fe": 3.8,
+      "mg": 129,
+      "f": 5.8,
+      "ca": 51.3,
+      "c": 69.8,
+      "p": 12.5,
+      "kcal": 381
+    }
+  },
+  "b26": {
+    "fdcId": 170440,
+    "description": "Potatoes, boiled, cooked without skin, flesh, without salt",
+    "values": {
+      "c": 20,
+      "kcal": 86,
+      "f": 0.1,
+      "ca": 8,
+      "p": 1.71,
+      "fib": 1.8,
+      "fe": 0.31,
+      "mg": 20,
+      "vc": 7.4,
+      "vd": 0
+    }
+  },
+  "b28": {
+    "fdcId": 170686,
+    "description": "Buckwheat groats, roasted, cooked",
+    "values": {
+      "fib": 2.7,
+      "f": 0.62,
+      "c": 19.9,
+      "kcal": 92,
+      "ca": 7,
+      "p": 3.38,
+      "vc": 0,
+      "fe": 0.8,
+      "mg": 51,
+      "vd": 0
+    }
+  },
+  "b29": {
+    "fdcId": 168917,
+    "description": "Quinoa, cooked",
+    "values": {
+      "p": 4.4,
+      "fib": 2.8,
+      "fe": 1.49,
+      "mg": 64,
+      "f": 1.92,
+      "ca": 17,
+      "vc": 0,
+      "c": 21.3,
+      "kcal": 120,
+      "vd": 0
+    }
+  },
+  "b30": {
+    "fdcId": 175244,
+    "description": "Beans, kidney, royal red, mature seeds, cooked, boiled with salt",
+    "values": {
+      "fib": 9.3,
+      "vd": 0,
+      "p": 9.49,
+      "vc": 1.2,
+      "fe": 2.77,
+      "mg": 42,
+      "f": 0.17,
+      "c": 21.8,
+      "kcal": 123,
+      "ca": 44
+    }
+  },
+  "b31": {
+    "fdcId": 172421,
+    "description": "Lentils, mature seeds, cooked, boiled, without salt",
+    "values": {
+      "c": 20.1,
+      "kcal": 116,
+      "vd": 0,
+      "p": 9.02,
+      "fib": 7.9,
+      "fe": 3.33,
+      "mg": 36,
+      "vc": 1.5,
+      "f": 0.38,
+      "ca": 19
+    }
+  },
+  "b32": {
+    "fdcId": 173757,
+    "description": "Chickpeas (garbanzo beans, bengal gram), mature seeds, cooked, boiled, without salt",
+    "values": {
+      "fib": 7.6,
+      "c": 27.4,
+      "kcal": 164,
+      "vd": 0,
+      "f": 2.59,
+      "ca": 49,
+      "fe": 2.89,
+      "mg": 48,
+      "p": 8.86,
+      "vc": 1.3
+    }
+  },
+  "b33": {
+    "fdcId": 170419,
+    "description": "Peas, green, raw",
+    "values": {
+      "c": 14.4,
+      "kcal": 81,
+      "p": 5.42,
+      "fe": 1.47,
+      "mg": 33,
+      "vc": 40,
+      "f": 0.4,
+      "ca": 25,
+      "fib": 5.7,
+      "vd": 0
+    }
+  },
+  "b34": {
+    "fdcId": 172476,
+    "description": "Tofu, raw, regular, prepared with calcium sulfate",
+    "values": {
+      "c": 1.87,
+      "fib": 0.3,
+      "vd": 0,
+      "ca": 350,
+      "f": 4.78,
+      "kcal": 76,
+      "p": 8.08,
+      "vc": 0.1,
+      "fe": 5.36,
+      "mg": 30
+    }
+  },
+  "b35": {
+    "fdcId": 747447,
+    "description": "Broccoli, raw",
+    "values": {
+      "c": 6.27,
+      "kcal": 31,
+      "f": 0.34,
+      "ca": 46,
+      "p": 2.57,
+      "fib": 2.4,
+      "fe": 0.69,
+      "mg": 21,
+      "vc": 91.3
+    }
+  },
+  "b36": {
+    "fdcId": 168462,
+    "description": "Spinach, raw",
+    "values": {
+      "ca": 99,
+      "p": 2.86,
+      "fe": 2.71,
+      "mg": 79,
+      "vc": 28.1,
+      "fib": 2.2,
+      "f": 0.39,
+      "c": 3.63,
+      "kcal": 23,
+      "vd": 0
+    }
+  },
+  "b37": {
+    "fdcId": 2258586,
+    "description": "Carrots, mature, raw",
+    "values": {
+      "fe": 0.15,
+      "mg": 12.4,
+      "f": 0.351,
+      "fib": 3.1,
+      "ca": 30.5,
+      "p": 0.941,
+      "c": 10.3,
+      "kcal": 48
+    }
+  },
+  "b38": {
+    "fdcId": 170457,
+    "description": "Tomatoes, red, ripe, raw, year round average",
+    "values": {
+      "vc": 13.7,
+      "c": 3.89,
+      "kcal": 18,
+      "ca": 10,
+      "f": 0.2,
+      "fib": 1.2,
+      "fe": 0.27,
+      "mg": 11,
+      "p": 0.88,
+      "vd": 0
+    }
+  },
+  "b39": {
+    "fdcId": 2258590,
+    "description": "Peppers, bell, red, raw",
+    "values": {
+      "fe": 0.353,
+      "mg": 11,
+      "vc": 142,
+      "f": 0.126,
+      "fib": 1.16,
+      "ca": 6.36,
+      "c": 6.65,
+      "p": 0.896,
+      "kcal": 31.3
+    }
+  },
+  "b40": {
+    "fdcId": 2346406,
+    "description": "Cucumber, with peel, raw",
+    "values": {
+      "fe": 0,
+      "mg": 10.1,
+      "f": 0.178,
+      "ca": 16.3,
+      "p": 0.625,
+      "c": 2.95,
+      "kcal": 15.9
+    }
+  },
+  "b41": {
+    "fdcId": 2346407,
+    "description": "Cabbage, green, raw",
+    "values": {
+      "fe": 0.0662,
+      "mg": 13.9,
+      "vc": 40.3,
+      "f": 0.228,
+      "ca": 41.8,
+      "p": 0.961,
+      "c": 6.38,
+      "kcal": 31.4
+    }
+  },
+  "b42": {
+    "fdcId": 2685573,
+    "description": "Cauliflower, raw",
+    "values": {
+      "fe": 0.334,
+      "mg": 14.2,
+      "f": 0.238,
+      "fib": 1.95,
+      "ca": 20.4,
+      "p": 1.64,
+      "c": 4.72,
+      "vc": 67.1,
+      "kcal": 27.6
+    }
+  },
+  "b43": {
+    "fdcId": 2685568,
+    "description": "Squash, summer, green, zucchini, includes skin, raw",
+    "values": {
+      "fe": 0.194,
+      "mg": 15.3,
+      "f": 0.205,
+      "fib": 0.752,
+      "ca": 20.8,
+      "p": 0.984,
+      "c": 3.27,
+      "vc": 15,
+      "kcal": 19
+    }
+  },
+  "b44": {
+    "fdcId": 790577,
+    "description": "Onions, red, raw",
+    "values": {
+      "fib": 2.2,
+      "ca": 17,
+      "fe": 0.24,
+      "mg": 11.4,
+      "p": 0.94,
+      "f": 0.1,
+      "vc": 8.1,
+      "c": 9.93,
+      "kcal": 44
+    }
+  },
+  "b45": {
+    "fdcId": 169249,
+    "description": "Lettuce, green leaf, raw",
+    "values": {
+      "vc": 9.2,
+      "fib": 1.3,
+      "c": 2.87,
+      "kcal": 15,
+      "vd": 0,
+      "p": 1.36,
+      "fe": 0.86,
+      "mg": 13,
+      "ca": 36,
+      "f": 0.15
+    }
+  },
+  "b46": {
+    "fdcId": 2710824,
+    "description": "Avocado, Hass, peeled, raw",
+    "values": {
+      "fe": 0.613,
+      "mg": 32.8,
+      "vc": 0,
+      "f": 20.3,
+      "ca": 14.5,
+      "p": 1.81,
+      "c": 8.32,
+      "kcal": 223
+    }
+  },
+  "b47": {
+    "fdcId": 1750340,
+    "description": "Apples, fuji, with skin, raw",
+    "values": {
+      "fe": 0.015,
+      "mg": 4.67,
+      "f": 0.162,
+      "fib": 2.08,
+      "ca": 5.98,
+      "p": 0.148,
+      "c": 15.7,
+      "kcal": 64.7
+    }
+  },
+  "b48": {
+    "fdcId": 1105073,
+    "description": "Bananas, overripe, raw",
+    "values": {
+      "f": 0.22,
+      "vc": 9.7,
+      "fib": 1.7,
+      "p": 0.73,
+      "c": 20.1,
+      "kcal": 85
+    }
+  },
+  "b49": {
+    "fdcId": 169097,
+    "description": "Oranges, raw, all commercial varieties",
+    "values": {
+      "ca": 40,
+      "f": 0.12,
+      "c": 11.8,
+      "kcal": 47,
+      "vc": 53.2,
+      "fib": 2.4,
+      "fe": 0.1,
+      "mg": 10,
+      "p": 0.94,
+      "vd": 0
+    }
+  },
+  "b50": {
+    "fdcId": 2346409,
+    "description": "Strawberries, raw",
+    "values": {
+      "fe": 0.255,
+      "mg": 12.5,
+      "vc": 59.6,
+      "f": 0.22,
+      "ca": 16.9,
+      "c": 7.96,
+      "p": 0.641,
+      "kcal": 36.4
+    }
+  },
+  "b51": {
+    "fdcId": 2346411,
+    "description": "Blueberries, raw",
+    "values": {
+      "fe": 0.34,
+      "mg": 6.18,
+      "vc": 8.06,
+      "f": 0.306,
+      "ca": 11.7,
+      "p": 0.703,
+      "c": 14.6,
+      "kcal": 63.9
+    }
+  },
+  "b52": {
+    "fdcId": 2346412,
+    "description": "Grapes, red, seedless, raw",
+    "values": {
+      "fe": 0.162,
+      "mg": 8.56,
+      "vc": 3.31,
+      "f": 0.164,
+      "ca": 10.2,
+      "p": 0.914,
+      "c": 20.2,
+      "kcal": 85.9
+    }
+  },
+  "b53": {
+    "fdcId": 746773,
+    "description": "Pears, raw, bartlett",
+    "values": {
+      "p": 0.38,
+      "fib": 3.1,
+      "fe": 0.17,
+      "mg": 5.7,
+      "vc": 4.4,
+      "f": 0.16,
+      "c": 15.1,
+      "kcal": 57,
+      "ca": 8
+    }
+  },
+  "b54": {
+    "fdcId": 327046,
+    "description": "Kiwifruit, green, raw",
+    "values": {
+      "f": 0.44,
+      "ca": 35,
+      "fe": 0.24,
+      "mg": 15.7,
+      "vc": 74.7,
+      "fib": 3,
+      "p": 1.06,
+      "c": 14,
+      "kcal": 58
+    }
+  },
+  "b55": {
+    "fdcId": 167765,
+    "description": "Watermelon, raw",
+    "values": {
+      "p": 0.61,
+      "fib": 0.4,
+      "fe": 0.24,
+      "mg": 10,
+      "vc": 8.1,
+      "ca": 7,
+      "f": 0.15,
+      "c": 7.55,
+      "kcal": 30,
+      "vd": 0
+    }
+  },
+  "b56": {
+    "fdcId": 2346393,
+    "description": "Nuts, almonds, whole, raw",
+    "values": {
+      "fe": 3.74,
+      "mg": 258,
+      "f": 51.1,
+      "fib": 10.8,
+      "ca": 254,
+      "c": 20,
+      "p": 21.5,
+      "kcal": 626
+    }
+  },
+  "b57": {
+    "fdcId": 2346394,
+    "description": "Nuts, walnuts, English, halves, raw",
+    "values": {
+      "fe": 2.24,
+      "mg": 142,
+      "f": 69.7,
+      "fib": 5.21,
+      "ca": 88.3,
+      "c": 10.9,
+      "p": 14.6,
+      "kcal": 730
+    }
+  },
+  "b58": {
+    "fdcId": 2515375,
+    "description": "Nuts, hazelnuts or filberts, raw",
+    "values": {
+      "fe": 3.46,
+      "mg": 156,
+      "f": 53.5,
+      "fib": 8.41,
+      "ca": 135,
+      "p": 13.5,
+      "c": 26.5,
+      "kcal": 641
+    }
+  },
+  "b59": {
+    "fdcId": 2515376,
+    "description": "Peanuts, raw",
+    "values": {
+      "fe": 1.55,
+      "mg": 180,
+      "f": 43.3,
+      "fib": 8.01,
+      "ca": 49.1,
+      "p": 23.2,
+      "c": 26.5,
+      "kcal": 588
+    }
+  },
+  "b60": {
+    "fdcId": 2515380,
+    "description": "Seeds, pumpkin seeds (pepitas), raw",
+    "values": {
+      "fe": 8.36,
+      "mg": 500,
+      "f": 40,
+      "fib": 5.08,
+      "ca": 37.4,
+      "p": 29.9,
+      "c": 18.7,
+      "kcal": 555
+    }
+  },
+  "b61": {
+    "fdcId": 2710819,
+    "description": "Chia seeds, dry, raw",
+    "values": {
+      "fe": 6.04,
+      "mg": 326,
+      "f": 32.9,
+      "ca": 595,
+      "p": 17,
+      "c": 38.3,
+      "kcal": 517
+    }
+  },
+  "b62": {
+    "fdcId": 171413,
+    "description": "Oil, olive, salad or cooking",
+    "values": {
+      "f": 100,
+      "c": 0,
+      "kcal": 884,
+      "ca": 1,
+      "fe": 0.56,
+      "mg": 0,
+      "p": 0,
+      "fib": 0,
+      "vc": 0,
+      "vd": 0
+    }
+  },
+  "b63": {
+    "fdcId": 169640,
+    "description": "Honey",
+    "values": {
+      "p": 0.3,
+      "fib": 0.2,
+      "fe": 0.42,
+      "mg": 2,
+      "vc": 0.5,
+      "f": 0,
+      "c": 82.4,
+      "kcal": 304,
+      "ca": 6,
+      "vd": 0
+    }
+  },
+  "b64": {
+    "fdcId": 170273,
+    "description": "Chocolate, dark, 70-85% cacao solids",
+    "values": {
+      "f": 42.6,
+      "c": 45.9,
+      "kcal": 598,
+      "ca": 73,
+      "p": 7.79,
+      "fib": 10.9,
+      "fe": 11.9,
+      "mg": 228
+    }
+  },
+  "b68": {
+    "fdcId": 168746,
+    "description": "Alcoholic beverage, beer, regular, all",
+    "values": {
+      "p": 0.46,
+      "c": 3.55,
+      "kcal": 43,
+      "vc": 0,
+      "fib": 0,
+      "fe": 0.02,
+      "mg": 6,
+      "f": 0,
+      "ca": 4,
+      "vd": 0
+    }
+  },
+  "b69": {
+    "fdcId": 174863,
+    "description": "Malt beverage, includes non-alcoholic beer",
+    "values": {
+      "p": 0.21,
+      "fib": 0,
+      "fe": 0.06,
+      "mg": 7,
+      "c": 8.05,
+      "kcal": 37,
+      "ca": 7,
+      "f": 0.12,
+      "vc": 0.5,
+      "vd": 0
+    }
+  },
+  "b70": {
+    "fdcId": 173190,
+    "description": "Alcoholic beverage, wine, table, red",
+    "values": {
+      "fib": 0,
+      "fe": 0.46,
+      "mg": 12,
+      "vc": 0,
+      "f": 0,
+      "c": 2.61,
+      "ca": 8,
+      "kcal": 85,
+      "p": 0.07,
+      "vd": 0
+    }
+  },
+  "b71": {
+    "fdcId": 169098,
+    "description": "Orange juice, raw (Includes foods for USDA's Food Distribution Program)",
+    "values": {
+      "vc": 50,
+      "p": 0.7,
+      "fib": 0.2,
+      "fe": 0.2,
+      "mg": 11,
+      "f": 0.2,
+      "c": 10.4,
+      "kcal": 45,
+      "ca": 11,
+      "vd": 0
+    }
+  },
+  "b72": {
+    "fdcId": 173933,
+    "description": "Apple juice, canned or bottled, unsweetened, without added ascorbic acid",
+    "values": {
+      "ca": 8,
+      "f": 0.13,
+      "c": 11.3,
+      "kcal": 46,
+      "p": 0.1,
+      "fib": 0.2,
+      "fe": 0.12,
+      "mg": 5,
+      "vc": 0.9,
+      "vd": 0
+    }
+  },
+  "b73": {
+    "fdcId": 174852,
+    "description": "Beverages, carbonated, cola, regular",
+    "values": {
+      "vc": 0,
+      "f": 0.25,
+      "c": 10.4,
+      "kcal": 42,
+      "ca": 1,
+      "fib": 0,
+      "fe": 0.02,
+      "mg": 0,
+      "p": 0,
+      "vd": 0
+    }
+  },
+  "b74": {
+    "fdcId": 175099,
+    "description": "Beverages, carbonated, low calorie, cola or pepper-type, with aspartame, contains caffeine",
+    "values": {
+      "ca": 3,
+      "c": 0.29,
+      "kcal": 2,
+      "p": 0.11,
+      "fe": 0.11,
+      "mg": 1,
+      "f": 0.03,
+      "vd": 0,
+      "fib": 0,
+      "vc": 0
+    }
+  },
+  "b75": {
+    "fdcId": 171888,
+    "description": "Beverages, tea, black, ready-to-drink, lemon, sweetened",
+    "values": {
+      "f": 0.22,
+      "c": 10.8,
+      "kcal": 45,
+      "ca": 4,
+      "p": 0,
+      "fib": 0,
+      "fe": 0,
+      "mg": 1,
+      "vd": 0,
+      "vc": 0
+    }
+  },
+  "b76": {
+    "fdcId": 171890,
+    "description": "Beverages, coffee, brewed, prepared with tap water",
+    "values": {
+      "vc": 0,
+      "kcal": 1,
+      "p": 0.12,
+      "f": 0.02,
+      "c": 0,
+      "ca": 2,
+      "fib": 0,
+      "fe": 0.01,
+      "mg": 3,
+      "vd": 0
+    }
+  },
+  "b77": {
+    "fdcId": 173227,
+    "description": "Beverages, tea, black, brewed, prepared with tap water",
+    "values": {
+      "fib": 0,
+      "fe": 0.02,
+      "mg": 3,
+      "p": 0,
+      "vc": 0,
+      "f": 0,
+      "c": 0.3,
+      "kcal": 1,
+      "ca": 0,
+      "vd": 0
+    }
+  },
+  "b78": {
+    "fdcId": 170174,
+    "description": "Nuts, coconut water (liquid from coconuts)",
+    "values": {
+      "vd": 0,
+      "p": 0.72,
+      "fib": 1.1,
+      "fe": 0.29,
+      "mg": 25,
+      "vc": 2.4,
+      "f": 0.2,
+      "c": 3.71,
+      "kcal": 19,
+      "ca": 24
+    }
+  },
+  "b79": {
+    "fdcId": 1999631,
+    "description": "Almond milk, unsweetened, plain, shelf stable",
+    "values": {
+      "fib": 0,
+      "ca": 173,
+      "fe": 0.29,
+      "mg": 6.78,
+      "f": 1.22,
+      "p": 0.555,
+      "c": 0.337,
+      "vd": 0.927,
+      "kcal": 14.6
+    }
+  }
+}

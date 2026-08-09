@@ -1,6 +1,7 @@
 import { LEGACY_KEYS, STORAGE_KEY } from '../domain/constants'
 import { emptyState, migrateState, pruneState } from '../domain/migrate'
 import { STARTER_RECIPES } from '../data/recipes'
+import { STARTER_MENUS, STARTER_WEEKS } from '../data/menus'
 import type { AppState } from '../domain/types'
 
 export interface LoadResult {
@@ -34,10 +35,12 @@ export function loadState(): LoadResult {
     if (legacy) return { state: migrateState(legacy), from: key, migrated: true }
   }
 
-  // Prvi start: ponudi domaca jela kao gotove recepte. Postojeci korisnici ih ne
-  // dobivaju naknadno da im se ne bi vracali recepti koje su obrisali.
+  // Prvi start: ponudi domaca jela, dnevne jelovnike i sezonske tjedne. Postojeci
+  // korisnici ih ne dobivaju naknadno da im se ne bi vracalo ono sto su obrisali.
   const fresh = emptyState()
   fresh.recipes = structuredClone(STARTER_RECIPES)
+  fresh.menus = structuredClone(STARTER_MENUS)
+  fresh.weeks = structuredClone(STARTER_WEEKS)
   return { state: fresh, from: null, migrated: false }
 }
 

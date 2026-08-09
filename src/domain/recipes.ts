@@ -1,5 +1,5 @@
 import { NUTRIENT_KEYS } from './types'
-import type { Food, Nutrients, Recipe } from './types'
+import type { Food, FoodRefItem, Nutrients, Recipe } from './types'
 import { addInto, scale, zeroNutrients, type FoodLookup } from './nutrients'
 
 export interface RecipeTotals {
@@ -56,4 +56,37 @@ export function recipeAsFood(recipe: Recipe, foods: FoodLookup): Food {
 
 export function isRecipeFoodId(id: string): boolean {
   return id.startsWith('r:')
+}
+
+export function recipeIdFromFoodId(id: string): string {
+  return id.slice(2)
+}
+
+/**
+ * Razlaze stavku na stvarne namirnice.
+ *
+ * Za nabavu je ovo nuzno: "sarma 450 g" se ne moze kupiti, nego kupus, mljeveno
+ * meso i riza u odgovarajucim kolicinama. Uzeta kolicina se pretvara u udio
+ * cijelog recepta, pa se svaki sastojak skalira tim udjelom.
+ *
+ * Recepti ne mogu sadrzavati druge recepte, pa razlaganje ide samo jednu razinu.
+ */
+export function expandToIngredients(
+  item: FoodRefItem,
+  foods: FoodLookup,
+  recipes: Recipe[],
+): FoodRefItem[] {
+  if (!isRecipeFoodId(item.foodId)) return [item]
+
+  const recipe = recipes.find((r) => r.id === recipeIdFromFoodId(item.foodId))
+  if (!recipe) return [item]
+
+  const { grams } = recipeTotals(recipe, foods)
+  if (!(grams > 0)) return []
+
+  const share = item.g / grams
+  return recipe.items.map((ingredient) => ({
+    foodId: ingredient.foodId,
+    g: ingredient.g * share,
+  }))
 }

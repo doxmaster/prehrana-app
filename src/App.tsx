@@ -5,12 +5,14 @@ import { Jelovnik } from './components/tabs/Jelovnik'
 import { Namirnice } from './components/tabs/Namirnice'
 import { Osobe } from './components/tabs/Osobe'
 import { Postavke } from './components/tabs/Postavke'
+import { Tjedni } from './components/tabs/Tjedni'
 import { useAppStore } from './store/useAppStore'
 
 const TABS = [
   { id: 'dnevnik', label: '📊 Dnevnik' },
-  { id: 'jelovnik', label: '🍽️ Jelovnik' },
-  { id: 'osobe', label: '👤 Osobe i ciljevi' },
+  { id: 'tjedni', label: '📅 Tjedni i nabava' },
+  { id: 'jelovnik', label: '🍽️ Jelovnici' },
+  { id: 'osobe', label: '👨‍👩‍👧 Obitelj i ciljevi' },
   { id: 'namirnice', label: '🍎 Namirnice' },
   { id: 'postavke', label: '⚙️ Postavke' },
 ] as const
@@ -59,6 +61,7 @@ export default function App() {
 
         <div role="tabpanel" id={`panel-${tab}`} aria-labelledby={`tab-${tab}`}>
           {tab === 'dnevnik' && <Dnevnik />}
+          {tab === 'tjedni' && <Tjedni />}
           {tab === 'jelovnik' && <Jelovnik />}
           {tab === 'osobe' && <Osobe />}
           {tab === 'namirnice' && <Namirnice />}

@@ -1,14 +1,11 @@
-import { useMemo, useState } from 'react'
 import { MEALS } from '../../domain/constants'
 import { emptyMeals, foodUnit, isEmptyMeals, itemName, mealsFluid, mealsTotals, sumItems } from '../../domain/nutrients'
 import { targetsFor } from '../../domain/targets'
-import { isFoodRef } from '../../domain/types'
 import { uid } from '../../domain/id'
 import { confirmDialog, promptDialog, toast } from '../../store/dialogs'
 import { useActivePerson, useAppStore, useFoods, useUpdate } from '../../store/useAppStore'
 import { MealEditor } from '../MealEditor'
 import { NutrientBars } from '../NutrientBars'
-import { downloadBlob } from '../../store/storage'
 import { fmt } from '../../lib/format'
 import { todayISO } from '../../domain/dates'
 import type { DayMeals, Menu } from '../../domain/types'
@@ -23,7 +20,6 @@ export function Jelovnik() {
 
   const safeIndex = Math.min(index, menus.length - 1)
   const menu = menus[safeIndex]
-  const [selection, setSelection] = useState<Record<string, number>>({})
 
   const title = (m: Menu, i: number) => (m.title?.trim() ? m.title : `Jelovnik ${i + 1}`)
 
@@ -49,30 +45,6 @@ export function Jelovnik() {
       if (target) mutate(target.meals)
     })
   }
-
-  /** Zbroj namirnica preko odabranih jelovnika i broja ponavljanja. */
-  const shopping = useMemo(() => {
-    const totalsByName: Record<string, { grams: number; cat: string }> = {}
-    for (const m of menus) {
-      const times = selection[m.id] ?? 0
-      if (times <= 0) continue
-      for (const meal of m.meals)
-        for (const item of meal) {
-          const name = itemName(item, foods)
-          const cat = isFoodRef(item) ? (foods.byId(item.foodId)?.cat ?? 'Ostalo') : (item.cat ?? 'Ostalo')
-          const entry = (totalsByName[name] ??= { grams: 0, cat })
-          entry.grams += item.g * times
-        }
-    }
-    const byCat: Record<string, Array<{ name: string; grams: number; unit: string }>> = {}
-    for (const [name, { grams, cat }] of Object.entries(totalsByName)) {
-      ;(byCat[cat] ??= []).push({ name, grams: Math.round(grams), unit: foodUnit(cat, name) })
-    }
-    for (const list of Object.values(byCat)) list.sort((a, b) => a.name.localeCompare(b.name, 'hr'))
-    return byCat
-  }, [menus, selection, foods])
-
-  const hasShopping = Object.keys(shopping).length > 0
 
   return (
     <>
@@ -206,76 +178,11 @@ export function Jelovnik() {
       </div>
 
       <div className="card">
-        <div className="flexsplit">
-          <h2 style={{ margin: 0 }}>🛒 Popis za kupovinu</h2>
-          <button
-            className="btn secondary small"
-            disabled={!hasShopping}
-            onClick={() => {
-              let csv = 'Kategorija;Namirnica;Količina\n'
-              for (const [cat, items] of Object.entries(shopping))
-                for (const it of items)
-                  csv += `${cat};${it.name.replace(/;/g, ',')};${it.grams} ${it.unit}\n`
-              downloadBlob(
-                new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8' }),
-                'popis-za-kupovinu.csv',
-              )
-              toast('CSV preuzet.')
-            }}
-          >
-            ⬇ Excel (CSV)
-          </button>
-        </div>
-        <p className="muted small" style={{ margin: '2px 0 8px' }}>
-          Odaberi jelovnike i koliko puta ih planiraš (npr. za tjedan dana):
+        <h2>🛒 Nabava</h2>
+        <p className="muted small">
+          Popis za kupovinu radi se na razini tjedna, u kartici <b>Tjedni i nabava</b> — ondje se
+          količine množe sastavom kućanstva, a jela iz recepata razlažu na sastojke.
         </p>
-        {menus.map((m, i) => (
-          <div className="row" key={m.id} style={{ gap: 6, padding: '2px 0' }}>
-            <label className="row" style={{ gap: 6, fontWeight: 600, margin: 0 }}>
-              <input
-                type="checkbox"
-                style={{ width: 'auto' }}
-                checked={(selection[m.id] ?? 0) > 0}
-                onChange={(e) =>
-                  setSelection((prev) => ({ ...prev, [m.id]: e.target.checked ? 1 : 0 }))
-                }
-              />
-              {title(m, i)}
-            </label>
-            <input
-              type="number"
-              min="1"
-              style={{ width: 60, padding: '4px 6px' }}
-              aria-label={`Broj ponavljanja za ${title(m, i)}`}
-              disabled={(selection[m.id] ?? 0) <= 0}
-              value={selection[m.id] || 1}
-              onChange={(e) =>
-                setSelection((prev) => ({ ...prev, [m.id]: Math.max(1, Number(e.target.value) || 1) }))
-              }
-            />
-          </div>
-        ))}
-
-        <div style={{ marginTop: 10 }}>
-          {!hasShopping ? (
-            <p className="muted small">Odaberi jelovnik s namirnicama iznad.</p>
-          ) : (
-            Object.entries(shopping)
-              .sort(([a], [b]) => a.localeCompare(b, 'hr'))
-              .map(([cat, items]) => (
-                <div key={cat}>
-                  <h3 style={{ margin: '12px 0 4px', color: 'var(--accent-d)', fontSize: 12 }}>{cat}</h3>
-                  <ul style={{ margin: '2px 0 8px', paddingLeft: 20 }}>
-                    {items.map((it) => (
-                      <li key={it.name} style={{ fontSize: 13 }}>
-                        {it.name} — <b>{fmt(it.grams)} {it.unit}</b>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ))
-          )}
-        </div>
       </div>
     </>
   )

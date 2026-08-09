@@ -1,5 +1,7 @@
 import { useState } from 'react'
-import { ACTIVITY_LEVELS, GOALS, PROFILE_LIMITS, targetsFor, weightOn } from '../../domain/targets'
+import { ACTIVITY_LEVELS, GOALS, PROFILE_LIMITS, computeTargets, targetsFor, weightOn } from '../../domain/targets'
+import { REFERENCE_KCAL, householdFactor, householdKcal, memberShares } from '../../domain/household'
+import { uid } from '../../domain/id'
 import { todayISO } from '../../domain/dates'
 import { confirmDialog, promptDialog, toast } from '../../store/dialogs'
 import { newPerson, useActivePerson, useAppStore, useUpdate } from '../../store/useAppStore'
@@ -124,6 +126,8 @@ export function Osobe() {
         </p>
       </div>
 
+      <Obitelji />
+
       <div className="card">
         <h2>Podaci — {person.name}</h2>
         <div className="grid g3" style={{ marginTop: 10 }}>
@@ -228,6 +232,167 @@ export function Osobe() {
         <p className="hint">Ciljevi su okvirni i ne zamjenjuju savjet liječnika ili nutricionista.</p>
       </div>
     </>
+  )
+}
+
+/**
+ * Kucanstva odreduju kolicine u tjednoj nabavi: svaki clan nosi udio izracunat
+ * iz svoje energetske potrebe, pa obitelj s malom djecom ne kupuje kao da su
+ * svi odrasli.
+ */
+function Obitelji() {
+  const update = useUpdate()
+  const people = useAppStore((s) => s.data.profiles)
+  const households = useAppStore((s) => s.data.households)
+
+  return (
+    <div className="card">
+      <div className="flexsplit">
+        <h2 style={{ margin: 0 }}>Obitelj / kućanstvo</h2>
+        <button
+          className="btn small"
+          onClick={async () => {
+            const name = await promptDialog('Naziv kućanstva:', 'Obitelj')
+            if (!name?.trim()) return
+            update((draft) => {
+              draft.households.push({ id: uid('h'), name: name.trim(), memberIds: [] })
+            })
+          }}
+        >
+          + Novo kućanstvo
+        </button>
+      </div>
+      <p className="muted small" style={{ margin: '4px 0 12px' }}>
+        Udio članova množi količine u tjednoj nabavi. Računa se iz dnevnog cilja kalorija naspram
+        referentnih {REFERENCE_KCAL} kcal, a možeš ga i sam zadati u podacima osobe.
+      </p>
+
+      {households.map((household) => {
+        const shares = memberShares(household, people)
+        const total = householdFactor(household, people)
+        return (
+          <div className="meal" key={household.id}>
+            <div className="meal-head">
+              <b>{household.name}</b>
+              <span className="row" style={{ gap: 6 }}>
+                <span className="small muted">
+                  ukupni udio <b>{fmt(total, 2)}</b> · {fmt(householdKcal(household, people))} kcal/dan
+                </span>
+                <button
+                  className="icon"
+                  title="Preimenuj kućanstvo"
+                  aria-label={`Preimenuj ${household.name}`}
+                  onClick={async () => {
+                    const name = await promptDialog('Novi naziv:', household.name)
+                    if (!name?.trim()) return
+                    update((draft) => {
+                      const target = draft.households.find((h) => h.id === household.id)
+                      if (target) target.name = name.trim()
+                    })
+                  }}
+                >
+                  ✎
+                </button>
+                <button
+                  className="icon"
+                  title="Obriši kućanstvo"
+                  aria-label={`Obriši ${household.name}`}
+                  onClick={async () => {
+                    if (households.length <= 1) return toast('Mora postojati barem jedno kućanstvo.')
+                    if (!(await confirmDialog(`Obrisati kućanstvo "${household.name}"?`, 'Obriši')))
+                      return
+                    update((draft) => {
+                      draft.households = draft.households.filter((h) => h.id !== household.id)
+                      for (const week of draft.weeks) {
+                        if (week.householdId === household.id) delete week.householdId
+                      }
+                    })
+                  }}
+                >
+                  ✕
+                </button>
+              </span>
+            </div>
+
+            {people.map((person) => {
+              const member = household.memberIds.includes(person.id)
+              const share = shares.find((s) => s.person.id === person.id)
+              return (
+                <div className="item" key={person.id}>
+                  <label className="row" style={{ gap: 8, margin: 0, flex: 1 }}>
+                    <input
+                      type="checkbox"
+                      style={{ width: 'auto' }}
+                      checked={member}
+                      onChange={(e) =>
+                        update((draft) => {
+                          const target = draft.households.find((h) => h.id === household.id)
+                          if (!target) return
+                          if (e.target.checked) {
+                            if (!target.memberIds.includes(person.id)) target.memberIds.push(person.id)
+                          } else {
+                            target.memberIds = target.memberIds.filter((id) => id !== person.id)
+                          }
+                        })
+                      }
+                    />
+                    <span style={{ fontWeight: 600 }}>{person.name}</span>
+                    <span className="muted small">
+                      {fmt(computeTargets(person.profile).kcal)} kcal/dan
+                    </span>
+                  </label>
+                  {member && share && (
+                    <span className="row">
+                      <span className="muted small">udio</span>
+                      <input
+                        className="gr"
+                        type="number"
+                        min="0.2"
+                        max="2.5"
+                        step="0.05"
+                        aria-label={`Udio za ${person.name}`}
+                        value={share.factor}
+                        onChange={(e) => {
+                          const value = Number(e.target.value)
+                          update((draft) => {
+                            const target = draft.profiles.find((p) => p.id === person.id)
+                            if (!target) return
+                            // Prazno ili nula znaci "vrati na izracunati udio".
+                            if (value > 0) target.portionFactor = value
+                            else delete target.portionFactor
+                          })
+                        }}
+                      />
+                      {share.manual && (
+                        <button
+                          className="icon"
+                          title="Vrati na izračunati udio"
+                          aria-label={`Vrati izračunati udio za ${person.name}`}
+                          onClick={() =>
+                            update((draft) => {
+                              const target = draft.profiles.find((p) => p.id === person.id)
+                              if (target) delete target.portionFactor
+                            })
+                          }
+                        >
+                          ↺
+                        </button>
+                      )}
+                    </span>
+                  )}
+                </div>
+              )
+            })}
+
+            {!household.memberIds.length && (
+              <p className="muted small" style={{ margin: '8px 0 0' }}>
+                Nema članova — označi ih iznad da bi nabava imala smisla.
+              </p>
+            )}
+          </div>
+        )
+      })}
+    </div>
   )
 }
 

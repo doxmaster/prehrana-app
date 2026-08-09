@@ -152,7 +152,7 @@ describe('otpornost na neispravan ulaz', () => {
     'ulaz %o daje upotrebljivo prazno stanje',
     (input) => {
       const state = migrateState(input)
-      expect(state.version).toBe(3)
+      expect(state.version).toBe(4)
       expect(state.profiles.length).toBeGreaterThan(0)
       expect(state.menus.length).toBeGreaterThan(0)
       expect(state.profiles.some((p) => p.id === state.activeProfileId)).toBe(true)

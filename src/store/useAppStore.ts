@@ -14,6 +14,8 @@ interface StoreState {
   foods: FoodIndex
   selectedDate: string
   activeMenuIndex: number
+  /** Odabrani tjedni plan; null kad ih nema. */
+  activeWeekId: string | null
   /** Poruka o neuspjelom spremanju, npr. puna memorija preglednika. */
   saveError: string | null
   /** Podaci su pri prvom pokretanju preuzeti iz stare verzije. */
@@ -25,6 +27,7 @@ interface StoreState {
   replaceAll: (next: AppState) => void
   setSelectedDate: (date: string) => void
   setActiveMenuIndex: (index: number) => void
+  setActiveWeekId: (id: string | null) => void
   dismissMigrationNotice: () => void
 }
 
@@ -33,6 +36,7 @@ export const useAppStore = create<StoreState>()((set, get) => ({
   foods: buildFoodIndex(initial.state),
   selectedDate: todayISO(),
   activeMenuIndex: 0,
+  activeWeekId: initial.state.weeks[0]?.id ?? null,
   saveError: null,
   migratedFrom: initial.migrated ? initial.from : null,
 
@@ -54,11 +58,18 @@ export const useAppStore = create<StoreState>()((set, get) => ({
 
   replaceAll: (next) => {
     saveState(next)
-    set({ data: next, foods: buildFoodIndex(next), activeMenuIndex: 0, saveError: null })
+    set({
+      data: next,
+      foods: buildFoodIndex(next),
+      activeMenuIndex: 0,
+      activeWeekId: next.weeks[0]?.id ?? null,
+      saveError: null,
+    })
   },
 
   setSelectedDate: (selectedDate) => set({ selectedDate }),
   setActiveMenuIndex: (activeMenuIndex) => set({ activeMenuIndex }),
+  setActiveWeekId: (activeWeekId) => set({ activeWeekId }),
   dismissMigrationNotice: () => set({ migratedFrom: null }),
 }))
 

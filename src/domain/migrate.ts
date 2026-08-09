@@ -5,6 +5,7 @@ import type {
   Category,
   DayMeals,
   Food,
+  Household,
   MealItem,
   Measurement,
   Menu,
@@ -12,8 +13,10 @@ import type {
   Person,
   Profile,
   Recipe,
+  WeekPlan,
 } from './types'
 import { emptyMeals, isEmptyMeals } from './nutrients'
+import { WEEK_LENGTH } from './weeks'
 import { addDays, isISODate, mondayOf, todayISO } from './dates'
 import { uid } from './id'
 import { PROFILE_LIMITS, clampNum } from './targets'
@@ -202,6 +205,38 @@ function migrateMenu(v: unknown): Menu {
   return menu
 }
 
+function migrateHousehold(v: unknown, index: number): Household | null {
+  const d = asDict(v)
+  if (!d) return null
+  return {
+    id: str(d.id) || uid('h'),
+    name: str(d.name).trim() || `Kućanstvo ${index + 1}`,
+    memberIds: asArray(d.memberIds).filter((x): x is string => typeof x === 'string'),
+  }
+}
+
+const SEASONS = ['proljeće', 'ljeto', 'jesen', 'zima'] as const
+
+function migrateWeekPlan(v: unknown): WeekPlan | null {
+  const d = asDict(v)
+  if (!d) return null
+  const raw = asArray(d.days)
+  // Tjedan uvijek ima točno sedam mjesta, bez obzira što je zapisano.
+  const days = Array.from({ length: WEEK_LENGTH }, (_, i) => {
+    const value = raw[i]
+    return typeof value === 'string' && value ? value : null
+  })
+  const week: WeekPlan = { id: str(d.id) || uid('wk'), days }
+  const title = str(d.title).trim()
+  if (title) week.title = title
+  const desc = str(d.desc).trim()
+  if (desc) week.desc = desc
+  if (typeof d.householdId === 'string' && d.householdId) week.householdId = d.householdId
+  const season = SEASONS.find((s) => s === d.season)
+  if (season) week.season = season
+  return week
+}
+
 /**
  * v2 je izmjene nad ugrađenim namirnicama držao u pet odvojenih objekata.
  * U v3 su spojeni u jedan `overrides`.
@@ -273,10 +308,12 @@ export function emptyState(): AppState {
     measurements: [],
   }
   return {
-    version: 3,
+    version: 4,
     profiles: [person],
     activeProfileId: person.id,
+    households: [{ id: uid('h'), name: 'Obitelj', memberIds: [person.id] }],
     menus: [{ id: uid('mn'), meals: emptyMeals() }],
+    weeks: [],
     recipes: [],
     customFoods: [],
     overrides: { names: {}, cats: {}, vals: {}, servs: {}, hidden: [] },
@@ -322,11 +359,38 @@ export function migrateState(raw: unknown): AppState {
   const activeId = str(root.activeProfileId)
   const active = profiles.find((p) => p.id === activeId)
 
+  // Kucanstva: postojeci se cisti od clanova kojih vise nema; ako ih nema
+  // uopce, svi profili postaju jedna obitelj — tako stariji podaci odmah rade.
+  const knownIds = new Set(profiles.map((p) => p.id))
+  const households = asArray(root.households)
+    .map(migrateHousehold)
+    .filter((h): h is Household => h !== null)
+    .map((h) => ({ ...h, memberIds: [...new Set(h.memberIds.filter((id) => knownIds.has(id)))] }))
+
+  if (!households.length) {
+    households.push({ id: uid('h'), name: 'Obitelj', memberIds: profiles.map((p) => p.id) })
+  }
+
+  const menuIds = new Set(menus.map((m) => m.id))
+  const householdIds = new Set(households.map((h) => h.id))
+  const weeks = asArray(root.weeks)
+    .map(migrateWeekPlan)
+    .filter((w): w is WeekPlan => w !== null)
+    .map((week) => {
+      // Dan koji pokazuje na obrisani jelovnik postaje slobodan, a ne pokvaren.
+      const days = week.days.map((id) => (id && menuIds.has(id) ? id : null))
+      const cleaned: WeekPlan = { ...week, days }
+      if (cleaned.householdId && !householdIds.has(cleaned.householdId)) delete cleaned.householdId
+      return cleaned
+    })
+
   return {
-    version: 3,
+    version: 4,
     profiles,
     activeProfileId: active ? active.id : profiles[0]!.id,
+    households,
     menus,
+    weeks,
     recipes: asArray(root.recipes)
       .map(migrateRecipe)
       .filter((r): r is Recipe => r !== null),

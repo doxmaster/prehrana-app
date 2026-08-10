@@ -1,4 +1,5 @@
 import { useId, useState } from 'react'
+import { JeloPicker } from './JeloPicker'
 import { MEALS } from '../domain/constants'
 import { catColor } from '../domain/constants'
 import {
@@ -48,6 +49,7 @@ function Meal({
   const totals = sumItems(items, foods)
   const [query, setQuery] = useState('')
   const [grams, setGrams] = useState('100')
+  const [pickerOpen, setPickerOpen] = useState(false)
   const listId = useId()
   const foodInputId = useId()
   const gramsInputId = useId()
@@ -142,6 +144,10 @@ function Meal({
         />
       ))}
 
+      {pickerOpen && (
+        <JeloPicker mealIndex={index} onChange={onChange} onClose={() => setPickerOpen(false)} />
+      )}
+
       <div className="add-row">
         <div>
           <label htmlFor={foodInputId}>Namirnica (tipkaj za pretragu)</label>
@@ -178,6 +184,14 @@ function Meal({
         <div className="row">
           <button className="btn small" onClick={addFood}>
             + Dodaj
+          </button>
+          <button
+            className="btn small"
+            title="Odaberi gotovo jelo"
+            aria-label={`Odaberi gotovo jelo za ${name}`}
+            onClick={() => setPickerOpen(true)}
+          >
+            🍲 Jelo
           </button>
           <button
             className="btn secondary small"

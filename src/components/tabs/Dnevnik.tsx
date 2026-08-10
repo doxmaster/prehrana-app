@@ -4,6 +4,7 @@ import { NUTRIENT_KEYS } from '../../domain/types'
 import { emptyMeals, mealsFluid, mealsTotals, zeroNutrients } from '../../domain/nutrients'
 import { targetsFor } from '../../domain/targets'
 import { ensureDay, useActivePerson, useAppStore, useFoods, useUpdate } from '../../store/useAppStore'
+import { AiUnos } from '../AiUnos'
 import { Calendar } from '../Calendar'
 import { MealEditor } from '../MealEditor'
 import { NutrientBars } from '../NutrientBars'
@@ -107,6 +108,8 @@ export function Dnevnik() {
         <Calendar month={month} selected={selectedDate} kcalByDate={kcalByDate} onPick={setSelectedDate} />
         <p className="hint">Klikni dan za prikaz; brojka u ćeliji su pojedene kalorije tog dana.</p>
       </div>
+
+      <AiUnos onChange={editMeals} />
 
       <div className="card">
         <h2>Obroci (pojedeno)</h2>

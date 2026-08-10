@@ -1,0 +1,5077 @@
+{
+  "_opis": "Izvor za src/data/recipes.ts. Sastojci se pisu IMENOM namirnice; generator ih razrjesava u identifikatore i pada ako ime ne postoji u bazi.",
+  "_o_izvorima": "Jela su tradicionalni repertoar hrvatske i susjednih kuhinja - dalmatinske, istarske, slavonske, zagorske, licke, bosanske, srpske, slovenske, madarske i talijanske. Popisi sastojaka i gramaze su vlastiti; iz kuharica nije preuzet nikakav tekst. Kanon na koji se oslanja: Vlatka Sinkovic i Ivanka Bilus za hrvatsku kuhinju, Spasenija Pata Markovic za srpsku, Lamija Hadziosmanovic za bosansku, Felicita Kalinsek za slovensku, Pellegrino Artusi za talijansku, uz regionalne zbirke dalmatinske, istarske i slavonske kuhinje.",
+  "_polja": "items: [naziv namirnice, grama]. yieldFactor: udio mase nakon pripreme (isparavanje). drink: preporuceno pice, dodaje se posebno i NE ulazi u vrijednosti jela.",
+  "recipes": [
+    {
+      "id": "rc-punjena-paprika",
+      "name": "Punjena paprika",
+      "cat": "Meso i riba",
+      "cuisine": "hrvatska",
+      "servings": 4,
+      "yieldFactor": 0.9,
+      "note": "Klasicna priprema s mljevenim mesom i rizom.",
+      "items": [
+        [
+          "Paprika crvena",
+          600
+        ],
+        [
+          "Mljeveno meso (miješano)",
+          400
+        ],
+        [
+          "Riža bijela (kuhana)",
+          300
+        ],
+        [
+          "Luk",
+          100
+        ],
+        [
+          "Rajčica",
+          400
+        ],
+        [
+          "Maslinovo ulje",
+          20
+        ]
+      ]
+    },
+    {
+      "id": "rc-sarma",
+      "name": "Sarma",
+      "cat": "Meso i riba",
+      "cuisine": "hrvatska",
+      "servings": 6,
+      "yieldFactor": 0.9,
+      "note": "S kupusom iz baze; za kiseli kupus zamijeni sastojak.",
+      "items": [
+        [
+          "Kupus",
+          800
+        ],
+        [
+          "Mljeveno meso (miješano)",
+          600
+        ],
+        [
+          "Riža bijela (kuhana)",
+          300
+        ],
+        [
+          "Luk",
+          150
+        ],
+        [
+          "Rajčica",
+          300
+        ]
+      ]
+    },
+    {
+      "id": "rc-bolognese",
+      "name": "Tjestenina bolognese",
+      "cat": "Žitarice i kruh",
+      "cuisine": "regionalna",
+      "servings": 4,
+      "items": [
+        [
+          "Tjestenina (kuhana)",
+          600
+        ],
+        [
+          "Mljeveno meso (miješano)",
+          400
+        ],
+        [
+          "Rajčica",
+          400
+        ],
+        [
+          "Mrkva",
+          100
+        ],
+        [
+          "Luk",
+          100
+        ],
+        [
+          "Maslinovo ulje",
+          20
+        ]
+      ]
+    },
+    {
+      "id": "rc-grah",
+      "name": "Grah s povrćem",
+      "cat": "Mahunarke",
+      "cuisine": "hrvatska",
+      "servings": 4,
+      "items": [
+        [
+          "Grah (kuhani)",
+          600
+        ],
+        [
+          "Mrkva",
+          150
+        ],
+        [
+          "Luk",
+          120
+        ],
+        [
+          "Rajčica",
+          200
+        ],
+        [
+          "Maslinovo ulje",
+          20
+        ]
+      ]
+    },
+    {
+      "id": "rc-musaka",
+      "name": "Musaka",
+      "cat": "Meso i riba",
+      "cuisine": "regionalna",
+      "servings": 6,
+      "yieldFactor": 0.85,
+      "items": [
+        [
+          "Krumpir (kuhani)",
+          1000
+        ],
+        [
+          "Mljeveno meso (miješano)",
+          500
+        ],
+        [
+          "Luk",
+          120
+        ],
+        [
+          "Jaje (cijelo)",
+          150
+        ],
+        [
+          "Mlijeko 2.8%",
+          250
+        ]
+      ]
+    },
+    {
+      "id": "rc-rizot-piletina",
+      "name": "Rižot s piletinom",
+      "cat": "Žitarice i kruh",
+      "cuisine": "hrvatska",
+      "servings": 4,
+      "items": [
+        [
+          "Riža bijela (kuhana)",
+          600
+        ],
+        [
+          "Pileća prsa (pečena)",
+          400
+        ],
+        [
+          "Grašak",
+          150
+        ],
+        [
+          "Mrkva",
+          100
+        ],
+        [
+          "Luk",
+          80
+        ],
+        [
+          "Maslinovo ulje",
+          25
+        ]
+      ]
+    },
+    {
+      "id": "rc-zapecena-tjestenina",
+      "name": "Zapečena tjestenina sa sirom",
+      "cat": "Žitarice i kruh",
+      "cuisine": "regionalna",
+      "servings": 4,
+      "yieldFactor": 0.9,
+      "items": [
+        [
+          "Tjestenina (kuhana)",
+          600
+        ],
+        [
+          "Sir (gauda/edamer)",
+          150
+        ],
+        [
+          "Jaje (cijelo)",
+          100
+        ],
+        [
+          "Mlijeko 2.8%",
+          200
+        ],
+        [
+          "Maslac",
+          20
+        ]
+      ]
+    },
+    {
+      "id": "rc-omlet",
+      "name": "Omlet sa sirom",
+      "cat": "Mliječno i jaja",
+      "cuisine": "regionalna",
+      "servings": 1,
+      "yieldFactor": 0.9,
+      "items": [
+        [
+          "Jaje (cijelo)",
+          150
+        ],
+        [
+          "Sir (gauda/edamer)",
+          30
+        ],
+        [
+          "Maslac",
+          10
+        ]
+      ]
+    },
+    {
+      "id": "rc-cevapi",
+      "name": "Ćevapi",
+      "cat": "Meso i riba",
+      "cuisine": "regionalna",
+      "servings": 4,
+      "yieldFactor": 0.8,
+      "items": [
+        [
+          "Mljeveno meso (miješano)",
+          800
+        ],
+        [
+          "Luk",
+          60
+        ]
+      ]
+    },
+    {
+      "id": "rc-pileca-juha",
+      "name": "Pileća juha s povrćem",
+      "cat": "Meso i riba",
+      "cuisine": "hrvatska",
+      "servings": 4,
+      "items": [
+        [
+          "Pileći batak",
+          300
+        ],
+        [
+          "Mrkva",
+          200
+        ],
+        [
+          "Luk",
+          80
+        ],
+        [
+          "Tjestenina (kuhana)",
+          150
+        ]
+      ]
+    },
+    {
+      "id": "rc-pasticada",
+      "name": "Pašticada",
+      "cat": "Meso i riba",
+      "cuisine": "hrvatska",
+      "servings": 6,
+      "yieldFactor": 0.8,
+      "note": "Dalmatinska govedina u umaku od suhih šljiva i vina.",
+      "drink": [
+        "Vino crno",
+        150
+      ],
+      "items": [
+        [
+          "Junetina za gulaš",
+          1200
+        ],
+        [
+          "Luk",
+          250
+        ],
+        [
+          "Mrkva",
+          200
+        ],
+        [
+          "Celer korijen",
+          100
+        ],
+        [
+          "Suhe šljive",
+          120
+        ],
+        [
+          "Pelati (guljene rajčice)",
+          300
+        ],
+        [
+          "Vino crno",
+          250
+        ],
+        [
+          "Maslinovo ulje",
+          40
+        ],
+        [
+          "Češnjak",
+          20
+        ]
+      ]
+    },
+    {
+      "id": "rc-brudet",
+      "name": "Brudet",
+      "cat": "Meso i riba",
+      "cuisine": "hrvatska",
+      "servings": 4,
+      "yieldFactor": 0.85,
+      "note": "Riblji gulaš, poslužuje se uz palentu.",
+      "drink": [
+        "Vino bijelo (suho)",
+        150
+      ],
+      "items": [
+        [
+          "Oslić",
+          600
+        ],
+        [
+          "Škampi",
+          200
+        ],
+        [
+          "Lignje",
+          300
+        ],
+        [
+          "Pelati (guljene rajčice)",
+          400
+        ],
+        [
+          "Luk",
+          200
+        ],
+        [
+          "Češnjak",
+          20
+        ],
+        [
+          "Maslinovo ulje",
+          50
+        ],
+        [
+          "Peršin",
+          20
+        ],
+        [
+          "Vino bijelo (suho)",
+          150
+        ]
+      ]
+    },
+    {
+      "id": "rc-crni-rizot",
+      "name": "Crni rižot",
+      "cat": "Meso i riba",
+      "cuisine": "hrvatska",
+      "servings": 4,
+      "note": "Rižot s lignjama.",
+      "drink": [
+        "Vino bijelo (Pinot gris)",
+        150
+      ],
+      "items": [
+        [
+          "Lignje",
+          600
+        ],
+        [
+          "Riža bijela (kuhana)",
+          700
+        ],
+        [
+          "Luk",
+          150
+        ],
+        [
+          "Češnjak",
+          15
+        ],
+        [
+          "Maslinovo ulje",
+          45
+        ],
+        [
+          "Vino bijelo (suho)",
+          120
+        ],
+        [
+          "Peršin",
+          15
+        ]
+      ]
+    },
+    {
+      "id": "rc-buzara",
+      "name": "Škampi na buzaru",
+      "cat": "Meso i riba",
+      "cuisine": "hrvatska",
+      "servings": 4,
+      "yieldFactor": 0.9,
+      "note": "Škampi u umaku od vina, češnjaka i mrvica.",
+      "drink": [
+        "Vino bijelo (suho)",
+        150
+      ],
+      "items": [
+        [
+          "Škampi",
+          800
+        ],
+        [
+          "Češnjak",
+          25
+        ],
+        [
+          "Peršin",
+          20
+        ],
+        [
+          "Krušne mrvice",
+          40
+        ],
+        [
+          "Maslinovo ulje",
+          50
+        ],
+        [
+          "Vino bijelo (suho)",
+          150
+        ],
+        [
+          "Pelati (guljene rajčice)",
+          150
+        ]
+      ]
+    },
+    {
+      "id": "rc-dagnje-buzara",
+      "name": "Dagnje na buzaru",
+      "cat": "Meso i riba",
+      "cuisine": "hrvatska",
+      "servings": 4,
+      "yieldFactor": 0.9,
+      "note": "Klasik jadranske obale.",
+      "drink": [
+        "Vino bijelo (Sauvignon)",
+        150
+      ],
+      "items": [
+        [
+          "Dagnje",
+          900
+        ],
+        [
+          "Češnjak",
+          25
+        ],
+        [
+          "Peršin",
+          20
+        ],
+        [
+          "Maslinovo ulje",
+          45
+        ],
+        [
+          "Vino bijelo (suho)",
+          150
+        ],
+        [
+          "Krušne mrvice",
+          30
+        ]
+      ]
+    },
+    {
+      "id": "rc-hobotnica-peka",
+      "name": "Hobotnica ispod peke",
+      "cat": "Meso i riba",
+      "cuisine": "hrvatska",
+      "servings": 4,
+      "yieldFactor": 0.75,
+      "note": "Hobotnica s krumpirom, sporo pečena.",
+      "drink": [
+        "Vino bijelo (suho)",
+        150
+      ],
+      "items": [
+        [
+          "Hobotnica",
+          800
+        ],
+        [
+          "Krumpir (kuhani)",
+          800
+        ],
+        [
+          "Luk",
+          200
+        ],
+        [
+          "Mrkva",
+          150
+        ],
+        [
+          "Maslinovo ulje",
+          60
+        ],
+        [
+          "Češnjak",
+          20
+        ],
+        [
+          "Vino bijelo (suho)",
+          150
+        ],
+        [
+          "Origano (suhi)",
+          3
+        ]
+      ]
+    },
+    {
+      "id": "rc-gregada",
+      "name": "Gregada",
+      "cat": "Meso i riba",
+      "cuisine": "hrvatska",
+      "servings": 4,
+      "yieldFactor": 0.85,
+      "note": "Hvarski ribarski lonac s krumpirom.",
+      "drink": [
+        "Vino bijelo (suho)",
+        150
+      ],
+      "items": [
+        [
+          "Brancin",
+          700
+        ],
+        [
+          "Krumpir (kuhani)",
+          700
+        ],
+        [
+          "Luk",
+          200
+        ],
+        [
+          "Češnjak",
+          20
+        ],
+        [
+          "Maslinovo ulje",
+          50
+        ],
+        [
+          "Peršin",
+          15
+        ],
+        [
+          "Vino bijelo (suho)",
+          150
+        ]
+      ]
+    },
+    {
+      "id": "rc-riba-gradele",
+      "name": "Riba na gradele",
+      "cat": "Meso i riba",
+      "cuisine": "hrvatska",
+      "servings": 4,
+      "yieldFactor": 0.85,
+      "note": "Orada s maslinovim uljem i češnjakom.",
+      "drink": [
+        "Vino bijelo (Chardonnay)",
+        150
+      ],
+      "items": [
+        [
+          "Orada",
+          800
+        ],
+        [
+          "Maslinovo ulje",
+          40
+        ],
+        [
+          "Češnjak",
+          15
+        ],
+        [
+          "Peršin",
+          15
+        ],
+        [
+          "Limun",
+          60
+        ]
+      ]
+    },
+    {
+      "id": "rc-blitva-krumpir",
+      "name": "Blitva s krumpirom",
+      "cat": "Povrće",
+      "cuisine": "hrvatska",
+      "servings": 4,
+      "yieldFactor": 0.8,
+      "note": "Dalmatinski prilog uz ribu.",
+      "items": [
+        [
+          "Blitva",
+          700
+        ],
+        [
+          "Krumpir (kuhani)",
+          500
+        ],
+        [
+          "Češnjak",
+          20
+        ],
+        [
+          "Maslinovo ulje",
+          50
+        ]
+      ]
+    },
+    {
+      "id": "rc-pasta-fazol",
+      "name": "Pašta fažol",
+      "cat": "Mahunarke",
+      "cuisine": "hrvatska",
+      "servings": 4,
+      "note": "Grah s tjesteninom, primorski i istarski klasik.",
+      "items": [
+        [
+          "Grah (kuhani)",
+          500
+        ],
+        [
+          "Tjestenina (kuhana)",
+          300
+        ],
+        [
+          "Luk",
+          120
+        ],
+        [
+          "Mrkva",
+          100
+        ],
+        [
+          "Kobasica",
+          100
+        ],
+        [
+          "Maslinovo ulje",
+          30
+        ],
+        [
+          "Pelati (guljene rajčice)",
+          150
+        ]
+      ]
+    },
+    {
+      "id": "rc-manestra",
+      "name": "Istarska maneštra",
+      "cat": "Mahunarke",
+      "cuisine": "hrvatska",
+      "servings": 5,
+      "note": "Gusta juha od kukuruza i graha.",
+      "items": [
+        [
+          "Grah (kuhani)",
+          400
+        ],
+        [
+          "Kukuruz šećerac",
+          300
+        ],
+        [
+          "Krumpir (kuhani)",
+          350
+        ],
+        [
+          "Mrkva",
+          150
+        ],
+        [
+          "Luk",
+          120
+        ],
+        [
+          "Svinjetina (but)",
+          150
+        ],
+        [
+          "Kobasica",
+          120
+        ],
+        [
+          "Maslinovo ulje",
+          25
+        ]
+      ]
+    },
+    {
+      "id": "rc-jota",
+      "name": "Jota",
+      "cat": "Mahunarke",
+      "cuisine": "regionalna",
+      "servings": 5,
+      "note": "Kiseli kupus, grah i krumpir — istarska i slovenska.",
+      "items": [
+        [
+          "Kupus",
+          500
+        ],
+        [
+          "Grah (kuhani)",
+          400
+        ],
+        [
+          "Krumpir (kuhani)",
+          350
+        ],
+        [
+          "Kobasica",
+          150
+        ],
+        [
+          "Luk",
+          120
+        ],
+        [
+          "Češnjak",
+          15
+        ],
+        [
+          "Svinjska mast",
+          25
+        ]
+      ]
+    },
+    {
+      "id": "rc-soparnik",
+      "name": "Soparnik",
+      "cat": "Žitarice i kruh",
+      "cuisine": "hrvatska",
+      "servings": 6,
+      "yieldFactor": 0.85,
+      "note": "Poljička pita s blitvom.",
+      "items": [
+        [
+          "Brašno glatko (pšenično)",
+          500
+        ],
+        [
+          "Blitva",
+          800
+        ],
+        [
+          "Luk",
+          150
+        ],
+        [
+          "Peršin",
+          30
+        ],
+        [
+          "Maslinovo ulje",
+          70
+        ],
+        [
+          "Češnjak",
+          20
+        ]
+      ]
+    },
+    {
+      "id": "rc-arambasici",
+      "name": "Arambašići",
+      "cat": "Meso i riba",
+      "cuisine": "hrvatska",
+      "servings": 6,
+      "yieldFactor": 0.9,
+      "note": "Sinjski sarmi s ručno rezanim mesom.",
+      "items": [
+        [
+          "Kupus",
+          800
+        ],
+        [
+          "Junetina za gulaš",
+          700
+        ],
+        [
+          "Svinjetina (but)",
+          300
+        ],
+        [
+          "Luk",
+          150
+        ],
+        [
+          "Češnjak",
+          15
+        ],
+        [
+          "Cimet",
+          2
+        ],
+        [
+          "Svinjska mast",
+          30
+        ]
+      ]
+    },
+    {
+      "id": "rc-janjetina-peka",
+      "name": "Janjetina ispod peke",
+      "cat": "Meso i riba",
+      "cuisine": "hrvatska",
+      "servings": 6,
+      "yieldFactor": 0.7,
+      "note": "Janjetina s krumpirom, sporo pečena.",
+      "drink": [
+        "Vino crno",
+        150
+      ],
+      "items": [
+        [
+          "Janjetina",
+          1400
+        ],
+        [
+          "Krumpir (kuhani)",
+          1000
+        ],
+        [
+          "Luk",
+          200
+        ],
+        [
+          "Mrkva",
+          200
+        ],
+        [
+          "Maslinovo ulje",
+          50
+        ],
+        [
+          "Češnjak",
+          20
+        ],
+        [
+          "Origano (suhi)",
+          4
+        ]
+      ]
+    },
+    {
+      "id": "rc-cobanac",
+      "name": "Čobanac",
+      "cat": "Meso i riba",
+      "cuisine": "hrvatska",
+      "servings": 6,
+      "yieldFactor": 0.85,
+      "note": "Slavonski lovački gulaš od više vrsta mesa.",
+      "drink": [
+        "Vino crno",
+        150
+      ],
+      "items": [
+        [
+          "Junetina za gulaš",
+          600
+        ],
+        [
+          "Svinjetina (but)",
+          500
+        ],
+        [
+          "Janjetina",
+          300
+        ],
+        [
+          "Luk",
+          400
+        ],
+        [
+          "Crvena mljevena paprika",
+          20
+        ],
+        [
+          "Ljuta paprika",
+          20
+        ],
+        [
+          "Pelati (guljene rajčice)",
+          300
+        ],
+        [
+          "Svinjska mast",
+          50
+        ],
+        [
+          "Češnjak",
+          20
+        ]
+      ]
+    },
+    {
+      "id": "rc-fis-paprikas",
+      "name": "Fiš paprikaš",
+      "cat": "Meso i riba",
+      "cuisine": "hrvatska",
+      "servings": 5,
+      "yieldFactor": 0.9,
+      "note": "Baranjski riblji paprikaš od šarana.",
+      "drink": [
+        "Vino bijelo (Rizling)",
+        150
+      ],
+      "items": [
+        [
+          "Šaran",
+          1200
+        ],
+        [
+          "Luk",
+          400
+        ],
+        [
+          "Crvena mljevena paprika",
+          30
+        ],
+        [
+          "Ljuta paprika",
+          15
+        ],
+        [
+          "Pelati (guljene rajčice)",
+          200
+        ],
+        [
+          "Suncokretovo ulje",
+          40
+        ]
+      ]
+    },
+    {
+      "id": "rc-krumpir-paprikas",
+      "name": "Krumpir paprikaš",
+      "cat": "Žitarice i kruh",
+      "cuisine": "hrvatska",
+      "servings": 4,
+      "note": "Jednostavan slavonski ručak s kobasicom.",
+      "items": [
+        [
+          "Krumpir (kuhani)",
+          900
+        ],
+        [
+          "Kobasica",
+          250
+        ],
+        [
+          "Luk",
+          200
+        ],
+        [
+          "Crvena mljevena paprika",
+          12
+        ],
+        [
+          "Svinjska mast",
+          30
+        ],
+        [
+          "Paprika crvena",
+          150
+        ]
+      ]
+    },
+    {
+      "id": "rc-perkelt",
+      "name": "Perkelt od piletine",
+      "cat": "Meso i riba",
+      "cuisine": "hrvatska",
+      "servings": 4,
+      "yieldFactor": 0.85,
+      "note": "Piletina u umaku od paprike i luka.",
+      "items": [
+        [
+          "Pileći batak",
+          800
+        ],
+        [
+          "Luk",
+          300
+        ],
+        [
+          "Crvena mljevena paprika",
+          18
+        ],
+        [
+          "Paprika crvena",
+          200
+        ],
+        [
+          "Pelati (guljene rajčice)",
+          200
+        ],
+        [
+          "Svinjska mast",
+          35
+        ]
+      ]
+    },
+    {
+      "id": "rc-strukli",
+      "name": "Zagorski štrukli",
+      "cat": "Žitarice i kruh",
+      "cuisine": "hrvatska",
+      "servings": 6,
+      "yieldFactor": 0.9,
+      "note": "Vučeno tijesto sa svježim sirom.",
+      "items": [
+        [
+          "Brašno glatko (pšenično)",
+          350
+        ],
+        [
+          "Svježi sir (posni)",
+          700
+        ],
+        [
+          "Jaje (cijelo)",
+          150
+        ],
+        [
+          "Vrhnje za šlag",
+          200
+        ],
+        [
+          "Maslac",
+          60
+        ]
+      ]
+    },
+    {
+      "id": "rc-zagrebacki-odrezak",
+      "name": "Zagrebački odrezak",
+      "cat": "Meso i riba",
+      "cuisine": "hrvatska",
+      "servings": 4,
+      "yieldFactor": 0.9,
+      "note": "Teletina punjena šunkom i sirom, pohana.",
+      "items": [
+        [
+          "Teletina",
+          700
+        ],
+        [
+          "Šunka (pileća)",
+          150
+        ],
+        [
+          "Sir (gauda/edamer)",
+          150
+        ],
+        [
+          "Jaje (cijelo)",
+          100
+        ],
+        [
+          "Krušne mrvice",
+          120
+        ],
+        [
+          "Brašno glatko (pšenično)",
+          60
+        ],
+        [
+          "Suncokretovo ulje",
+          80
+        ]
+      ]
+    },
+    {
+      "id": "rc-purica-mlinci",
+      "name": "Purica s tjesteninom",
+      "cat": "Meso i riba",
+      "cuisine": "hrvatska",
+      "servings": 6,
+      "yieldFactor": 0.85,
+      "note": "Zagorska pečena purica; mlinci zamijenjeni tjesteninom.",
+      "drink": [
+        "Vino bijelo (suho)",
+        150
+      ],
+      "items": [
+        [
+          "Pureća prsa",
+          1200
+        ],
+        [
+          "Tjestenina (kuhana)",
+          700
+        ],
+        [
+          "Svinjska mast",
+          50
+        ],
+        [
+          "Luk",
+          150
+        ],
+        [
+          "Češnjak",
+          15
+        ]
+      ]
+    },
+    {
+      "id": "rc-buncek-grah",
+      "name": "Buncek s grahom",
+      "cat": "Mahunarke",
+      "cuisine": "hrvatska",
+      "servings": 5,
+      "note": "Dimljeno meso s grahom i kiselim kupusom.",
+      "items": [
+        [
+          "Svinjetina (but)",
+          600
+        ],
+        [
+          "Grah (kuhani)",
+          600
+        ],
+        [
+          "Kupus",
+          400
+        ],
+        [
+          "Luk",
+          150
+        ],
+        [
+          "Crvena mljevena paprika",
+          10
+        ],
+        [
+          "Češnjak",
+          15
+        ]
+      ]
+    },
+    {
+      "id": "rc-kotlovina",
+      "name": "Kotlovina",
+      "cat": "Meso i riba",
+      "cuisine": "hrvatska",
+      "servings": 6,
+      "yieldFactor": 0.8,
+      "note": "Kotleti i kobasice u umaku od vina i rajčice.",
+      "drink": [
+        "Pivo svijetlo (5%)",
+        500
+      ],
+      "items": [
+        [
+          "Svinjski kotlet",
+          900
+        ],
+        [
+          "Kobasica",
+          400
+        ],
+        [
+          "Luk",
+          300
+        ],
+        [
+          "Pelati (guljene rajčice)",
+          400
+        ],
+        [
+          "Paprika crvena",
+          200
+        ],
+        [
+          "Vino bijelo (suho)",
+          200
+        ],
+        [
+          "Svinjska mast",
+          40
+        ]
+      ]
+    },
+    {
+      "id": "rc-licki-lonac",
+      "name": "Lički lonac",
+      "cat": "Meso i riba",
+      "cuisine": "hrvatska",
+      "servings": 6,
+      "yieldFactor": 0.85,
+      "note": "Meso i povrće slagano u lonac, dugo kuhano.",
+      "items": [
+        [
+          "Janjetina",
+          600
+        ],
+        [
+          "Svinjetina (but)",
+          400
+        ],
+        [
+          "Krumpir (kuhani)",
+          700
+        ],
+        [
+          "Kupus",
+          400
+        ],
+        [
+          "Mrkva",
+          200
+        ],
+        [
+          "Luk",
+          200
+        ],
+        [
+          "Paprika crvena",
+          150
+        ],
+        [
+          "Svinjska mast",
+          40
+        ]
+      ]
+    },
+    {
+      "id": "rc-kiseli-kupus-rebra",
+      "name": "Kiseli kupus s rebrima",
+      "cat": "Meso i riba",
+      "cuisine": "hrvatska",
+      "servings": 5,
+      "yieldFactor": 0.85,
+      "note": "Zimsko jelo, poslužuje se s krumpirom.",
+      "items": [
+        [
+          "Svinjska rebra",
+          900
+        ],
+        [
+          "Kupus",
+          800
+        ],
+        [
+          "Luk",
+          200
+        ],
+        [
+          "Crvena mljevena paprika",
+          12
+        ],
+        [
+          "Lovorov list",
+          1
+        ],
+        [
+          "Svinjska mast",
+          30
+        ]
+      ]
+    },
+    {
+      "id": "rc-begova-corba",
+      "name": "Begova čorba",
+      "cat": "Meso i riba",
+      "cuisine": "regionalna",
+      "servings": 5,
+      "note": "Bosanska juha od piletine i povrća, zgusnuta.",
+      "items": [
+        [
+          "Pileća prsa (pečena)",
+          500
+        ],
+        [
+          "Grašak",
+          200
+        ],
+        [
+          "Mrkva",
+          200
+        ],
+        [
+          "Celer korijen",
+          100
+        ],
+        [
+          "Krumpir (kuhani)",
+          300
+        ],
+        [
+          "Vrhnje za šlag",
+          150
+        ],
+        [
+          "Brašno glatko (pšenično)",
+          40
+        ],
+        [
+          "Maslac",
+          40
+        ],
+        [
+          "Peršin",
+          20
+        ]
+      ]
+    },
+    {
+      "id": "rc-bosanski-lonac",
+      "name": "Bosanski lonac",
+      "cat": "Meso i riba",
+      "cuisine": "regionalna",
+      "servings": 6,
+      "yieldFactor": 0.85,
+      "note": "Meso i povrće slagano u slojevima, dugo kuhano.",
+      "items": [
+        [
+          "Junetina za gulaš",
+          600
+        ],
+        [
+          "Janjetina",
+          400
+        ],
+        [
+          "Krumpir (kuhani)",
+          700
+        ],
+        [
+          "Kupus",
+          400
+        ],
+        [
+          "Mrkva",
+          250
+        ],
+        [
+          "Luk",
+          250
+        ],
+        [
+          "Paprika crvena",
+          200
+        ],
+        [
+          "Rajčica",
+          300
+        ],
+        [
+          "Češnjak",
+          20
+        ]
+      ]
+    },
+    {
+      "id": "rc-japrak",
+      "name": "Japrak",
+      "cat": "Meso i riba",
+      "cuisine": "regionalna",
+      "servings": 5,
+      "yieldFactor": 0.9,
+      "note": "Punjeni listovi zelja s mesom i rižom.",
+      "items": [
+        [
+          "Blitva",
+          600
+        ],
+        [
+          "Mljeveno meso (miješano)",
+          600
+        ],
+        [
+          "Riža bijela (kuhana)",
+          350
+        ],
+        [
+          "Luk",
+          200
+        ],
+        [
+          "Jogurt (obični)",
+          200
+        ],
+        [
+          "Svinjska mast",
+          30
+        ]
+      ]
+    },
+    {
+      "id": "rc-sogan-dolma",
+      "name": "Sogan dolma",
+      "cat": "Meso i riba",
+      "cuisine": "regionalna",
+      "servings": 5,
+      "yieldFactor": 0.9,
+      "note": "Punjeni luk s mljevenim mesom.",
+      "items": [
+        [
+          "Luk",
+          900
+        ],
+        [
+          "Mljeveno meso (miješano)",
+          500
+        ],
+        [
+          "Riža bijela (kuhana)",
+          300
+        ],
+        [
+          "Pelati (guljene rajčice)",
+          200
+        ],
+        [
+          "Svinjska mast",
+          30
+        ]
+      ]
+    },
+    {
+      "id": "rc-klepe",
+      "name": "Klepe",
+      "cat": "Žitarice i kruh",
+      "cuisine": "regionalna",
+      "servings": 5,
+      "yieldFactor": 0.9,
+      "note": "Punjeni tjesteninski jastučići s češnjakom i jogurtom.",
+      "items": [
+        [
+          "Brašno glatko (pšenično)",
+          350
+        ],
+        [
+          "Jaje (cijelo)",
+          100
+        ],
+        [
+          "Mljeveno meso (miješano)",
+          400
+        ],
+        [
+          "Luk",
+          150
+        ],
+        [
+          "Jogurt (obični)",
+          350
+        ],
+        [
+          "Češnjak",
+          20
+        ],
+        [
+          "Maslac",
+          40
+        ]
+      ]
+    },
+    {
+      "id": "rc-karadordeva",
+      "name": "Karađorđeva šnicla",
+      "cat": "Meso i riba",
+      "cuisine": "regionalna",
+      "servings": 4,
+      "yieldFactor": 0.9,
+      "note": "Rolana teletina punjena vrhnjem, pohana.",
+      "items": [
+        [
+          "Teletina",
+          700
+        ],
+        [
+          "Vrhnje za šlag",
+          200
+        ],
+        [
+          "Jaje (cijelo)",
+          100
+        ],
+        [
+          "Krušne mrvice",
+          130
+        ],
+        [
+          "Brašno glatko (pšenično)",
+          60
+        ],
+        [
+          "Suncokretovo ulje",
+          90
+        ]
+      ]
+    },
+    {
+      "id": "rc-podvarak",
+      "name": "Podvarak",
+      "cat": "Meso i riba",
+      "cuisine": "regionalna",
+      "servings": 5,
+      "yieldFactor": 0.8,
+      "note": "Kiseli kupus zapečen s mesom.",
+      "items": [
+        [
+          "Kupus",
+          900
+        ],
+        [
+          "Svinjetina (but)",
+          500
+        ],
+        [
+          "Kobasica",
+          200
+        ],
+        [
+          "Luk",
+          250
+        ],
+        [
+          "Crvena mljevena paprika",
+          12
+        ],
+        [
+          "Svinjska mast",
+          40
+        ]
+      ]
+    },
+    {
+      "id": "rc-gibanica",
+      "name": "Gibanica sa sirom",
+      "cat": "Žitarice i kruh",
+      "cuisine": "regionalna",
+      "servings": 8,
+      "yieldFactor": 0.9,
+      "note": "Slojevita pita sa sirom i jajima.",
+      "items": [
+        [
+          "Brašno glatko (pšenično)",
+          400
+        ],
+        [
+          "Svježi sir (posni)",
+          800
+        ],
+        [
+          "Jaje (cijelo)",
+          300
+        ],
+        [
+          "Jogurt (obični)",
+          300
+        ],
+        [
+          "Suncokretovo ulje",
+          120
+        ]
+      ]
+    },
+    {
+      "id": "rc-prebranac",
+      "name": "Prebranac",
+      "cat": "Mahunarke",
+      "cuisine": "regionalna",
+      "servings": 5,
+      "note": "Zapečeni bijeli grah s puno luka.",
+      "items": [
+        [
+          "Bijeli grah (kuhani)",
+          800
+        ],
+        [
+          "Luk",
+          600
+        ],
+        [
+          "Crvena mljevena paprika",
+          15
+        ],
+        [
+          "Suncokretovo ulje",
+          70
+        ],
+        [
+          "Lovorov list",
+          1
+        ]
+      ]
+    },
+    {
+      "id": "rc-muckalica",
+      "name": "Mućkalica",
+      "cat": "Meso i riba",
+      "cuisine": "regionalna",
+      "servings": 5,
+      "yieldFactor": 0.85,
+      "note": "Svinjetina s pečenim paprikama i rajčicom.",
+      "items": [
+        [
+          "Svinjetina (but)",
+          800
+        ],
+        [
+          "Paprika crvena",
+          500
+        ],
+        [
+          "Rajčica",
+          400
+        ],
+        [
+          "Luk",
+          250
+        ],
+        [
+          "Ljuta paprika",
+          20
+        ],
+        [
+          "Suncokretovo ulje",
+          40
+        ],
+        [
+          "Češnjak",
+          20
+        ]
+      ]
+    },
+    {
+      "id": "rc-ricet",
+      "name": "Ričet",
+      "cat": "Žitarice i kruh",
+      "cuisine": "regionalna",
+      "servings": 5,
+      "note": "Slovenski ječam s grahom i suhim mesom.",
+      "items": [
+        [
+          "Ječam (kuhani)",
+          600
+        ],
+        [
+          "Grah (kuhani)",
+          400
+        ],
+        [
+          "Mrkva",
+          200
+        ],
+        [
+          "Krumpir (kuhani)",
+          300
+        ],
+        [
+          "Kobasica",
+          200
+        ],
+        [
+          "Luk",
+          150
+        ],
+        [
+          "Svinjska mast",
+          25
+        ]
+      ]
+    },
+    {
+      "id": "rc-obara",
+      "name": "Obara",
+      "cat": "Meso i riba",
+      "cuisine": "regionalna",
+      "servings": 5,
+      "note": "Slovenski lonac s piletinom i povrćem.",
+      "items": [
+        [
+          "Pileći batak",
+          700
+        ],
+        [
+          "Krumpir (kuhani)",
+          500
+        ],
+        [
+          "Mrkva",
+          250
+        ],
+        [
+          "Poriluk",
+          200
+        ],
+        [
+          "Celer korijen",
+          100
+        ],
+        [
+          "Brašno glatko (pšenično)",
+          30
+        ],
+        [
+          "Maslac",
+          30
+        ]
+      ]
+    },
+    {
+      "id": "rc-kranjska-zelje",
+      "name": "Kobasica s kiselim kupusom",
+      "cat": "Meso i riba",
+      "cuisine": "regionalna",
+      "servings": 4,
+      "note": "Kranjska kobasica s kupusom i krumpirom.",
+      "drink": [
+        "Pivo svijetlo (5%)",
+        500
+      ],
+      "items": [
+        [
+          "Kobasica",
+          500
+        ],
+        [
+          "Kupus",
+          600
+        ],
+        [
+          "Krumpir (kuhani)",
+          500
+        ],
+        [
+          "Senf",
+          30
+        ],
+        [
+          "Luk",
+          150
+        ],
+        [
+          "Svinjska mast",
+          25
+        ]
+      ]
+    },
+    {
+      "id": "rc-gulas",
+      "name": "Gulaš",
+      "cat": "Meso i riba",
+      "cuisine": "regionalna",
+      "servings": 5,
+      "yieldFactor": 0.85,
+      "note": "Mađarski gulaš s puno luka i paprike.",
+      "drink": [
+        "Vino crno",
+        150
+      ],
+      "items": [
+        [
+          "Junetina za gulaš",
+          900
+        ],
+        [
+          "Luk",
+          500
+        ],
+        [
+          "Crvena mljevena paprika",
+          25
+        ],
+        [
+          "Paprika crvena",
+          200
+        ],
+        [
+          "Pelati (guljene rajčice)",
+          250
+        ],
+        [
+          "Krumpir (kuhani)",
+          400
+        ],
+        [
+          "Svinjska mast",
+          45
+        ],
+        [
+          "Češnjak",
+          20
+        ]
+      ]
+    },
+    {
+      "id": "rc-djuvec",
+      "name": "Đuveč",
+      "cat": "Povrće",
+      "cuisine": "regionalna",
+      "servings": 5,
+      "yieldFactor": 0.85,
+      "note": "Povrće i riža zapečeni s mesom.",
+      "items": [
+        [
+          "Paprika crvena",
+          400
+        ],
+        [
+          "Patlidžan",
+          300
+        ],
+        [
+          "Tikvica",
+          300
+        ],
+        [
+          "Rajčica",
+          400
+        ],
+        [
+          "Riža bijela (kuhana)",
+          400
+        ],
+        [
+          "Svinjetina (but)",
+          400
+        ],
+        [
+          "Luk",
+          200
+        ],
+        [
+          "Suncokretovo ulje",
+          50
+        ]
+      ]
+    },
+    {
+      "id": "rc-lecso",
+      "name": "Lečo",
+      "cat": "Povrće",
+      "cuisine": "regionalna",
+      "servings": 4,
+      "yieldFactor": 0.85,
+      "note": "Paprika i rajčica pirjane s kobasicom.",
+      "items": [
+        [
+          "Paprika crvena",
+          600
+        ],
+        [
+          "Paprika zelena",
+          300
+        ],
+        [
+          "Rajčica",
+          400
+        ],
+        [
+          "Luk",
+          200
+        ],
+        [
+          "Kobasica",
+          250
+        ],
+        [
+          "Suncokretovo ulje",
+          35
+        ],
+        [
+          "Crvena mljevena paprika",
+          10
+        ]
+      ]
+    },
+    {
+      "id": "rc-rizot-gljive",
+      "name": "Rižot s gljivama",
+      "cat": "Žitarice i kruh",
+      "cuisine": "regionalna",
+      "servings": 4,
+      "note": "Kremasti rižot sa šampinjonima i parmezanom.",
+      "drink": [
+        "Vino bijelo (Chardonnay)",
+        150
+      ],
+      "items": [
+        [
+          "Riža bijela (kuhana)",
+          700
+        ],
+        [
+          "Šampinjoni",
+          400
+        ],
+        [
+          "Bukovače",
+          150
+        ],
+        [
+          "Luk",
+          120
+        ],
+        [
+          "Parmezan",
+          80
+        ],
+        [
+          "Maslac",
+          50
+        ],
+        [
+          "Vino bijelo (suho)",
+          120
+        ],
+        [
+          "Maslinovo ulje",
+          20
+        ]
+      ]
+    },
+    {
+      "id": "rc-njoki-umak",
+      "name": "Njoki s umakom od rajčice",
+      "cat": "Žitarice i kruh",
+      "cuisine": "regionalna",
+      "servings": 4,
+      "note": "Krumpirovi njoki; tijesto od krumpira i brašna.",
+      "items": [
+        [
+          "Krumpir (kuhani)",
+          800
+        ],
+        [
+          "Brašno glatko (pšenično)",
+          250
+        ],
+        [
+          "Jaje (cijelo)",
+          50
+        ],
+        [
+          "Pelati (guljene rajčice)",
+          400
+        ],
+        [
+          "Parmezan",
+          60
+        ],
+        [
+          "Maslinovo ulje",
+          30
+        ],
+        [
+          "Češnjak",
+          10
+        ]
+      ]
+    },
+    {
+      "id": "rc-minestrone",
+      "name": "Minestrone",
+      "cat": "Povrće",
+      "cuisine": "regionalna",
+      "servings": 5,
+      "note": "Gusta juha od sezonskog povrća i tjestenine.",
+      "items": [
+        [
+          "Mrkva",
+          200
+        ],
+        [
+          "Celer (stabljika)",
+          150
+        ],
+        [
+          "Tikvica",
+          200
+        ],
+        [
+          "Grah (kuhani)",
+          300
+        ],
+        [
+          "Tjestenina (kuhana)",
+          250
+        ],
+        [
+          "Pelati (guljene rajčice)",
+          300
+        ],
+        [
+          "Luk",
+          150
+        ],
+        [
+          "Maslinovo ulje",
+          40
+        ],
+        [
+          "Parmezan",
+          50
+        ]
+      ]
+    },
+    {
+      "id": "rc-frittata",
+      "name": "Frittata s povrćem",
+      "cat": "Mliječno i jaja",
+      "cuisine": "regionalna",
+      "servings": 3,
+      "yieldFactor": 0.9,
+      "note": "Zapečena jaja s tikvicom i sirom.",
+      "items": [
+        [
+          "Jaje (cijelo)",
+          400
+        ],
+        [
+          "Tikvica",
+          250
+        ],
+        [
+          "Paprika crvena",
+          150
+        ],
+        [
+          "Sir (gauda/edamer)",
+          100
+        ],
+        [
+          "Maslinovo ulje",
+          25
+        ],
+        [
+          "Luk",
+          80
+        ]
+      ]
+    },
+    {
+      "id": "rc-lazanje",
+      "name": "Lazanje",
+      "cat": "Žitarice i kruh",
+      "cuisine": "regionalna",
+      "servings": 6,
+      "yieldFactor": 0.9,
+      "note": "Slojevi tjestenine, mesnog umaka i bešamela.",
+      "items": [
+        [
+          "Tjestenina (kuhana)",
+          500
+        ],
+        [
+          "Mljeveno meso (miješano)",
+          600
+        ],
+        [
+          "Pelati (guljene rajčice)",
+          500
+        ],
+        [
+          "Mlijeko 2.8%",
+          400
+        ],
+        [
+          "Brašno glatko (pšenično)",
+          50
+        ],
+        [
+          "Maslac",
+          60
+        ],
+        [
+          "Parmezan",
+          100
+        ],
+        [
+          "Luk",
+          150
+        ],
+        [
+          "Mrkva",
+          100
+        ]
+      ]
+    },
+    {
+      "id": "rc-carbonara",
+      "name": "Carbonara",
+      "cat": "Žitarice i kruh",
+      "cuisine": "regionalna",
+      "servings": 4,
+      "note": "Tjestenina s jajima, sirom i suhomesnatim.",
+      "items": [
+        [
+          "Tjestenina (kuhana)",
+          700
+        ],
+        [
+          "Jaje (cijelo)",
+          200
+        ],
+        [
+          "Parmezan",
+          120
+        ],
+        [
+          "Šunka (pileća)",
+          200
+        ],
+        [
+          "Maslinovo ulje",
+          20
+        ]
+      ]
+    },
+    {
+      "id": "rc-pasta-tuna",
+      "name": "Tjestenina s tunom",
+      "cat": "Žitarice i kruh",
+      "cuisine": "regionalna",
+      "servings": 4,
+      "note": "Brz ručak s tunom, rajčicom i maslinama.",
+      "items": [
+        [
+          "Tjestenina (kuhana)",
+          700
+        ],
+        [
+          "Tuna (konzerva u vodi)",
+          300
+        ],
+        [
+          "Pelati (guljene rajčice)",
+          300
+        ],
+        [
+          "Masline zelene",
+          80
+        ],
+        [
+          "Češnjak",
+          15
+        ],
+        [
+          "Maslinovo ulje",
+          35
+        ],
+        [
+          "Peršin",
+          15
+        ]
+      ]
+    },
+    {
+      "id": "rc-pasta-skampi",
+      "name": "Tjestenina sa škampima",
+      "cat": "Žitarice i kruh",
+      "cuisine": "hrvatska",
+      "servings": 4,
+      "note": "Škampi, rajčica i vino.",
+      "drink": [
+        "Vino bijelo (Sauvignon)",
+        150
+      ],
+      "items": [
+        [
+          "Tjestenina (kuhana)",
+          700
+        ],
+        [
+          "Škampi",
+          350
+        ],
+        [
+          "Pelati (guljene rajčice)",
+          250
+        ],
+        [
+          "Češnjak",
+          20
+        ],
+        [
+          "Vino bijelo (suho)",
+          120
+        ],
+        [
+          "Maslinovo ulje",
+          40
+        ],
+        [
+          "Peršin",
+          15
+        ]
+      ]
+    },
+    {
+      "id": "rc-fuzi-gulas",
+      "name": "Tjestenina s istarskim gulašom",
+      "cat": "Žitarice i kruh",
+      "cuisine": "hrvatska",
+      "servings": 4,
+      "yieldFactor": 0.9,
+      "note": "Fuži s gulašom od junetine.",
+      "items": [
+        [
+          "Tjestenina (kuhana)",
+          600
+        ],
+        [
+          "Junetina za gulaš",
+          500
+        ],
+        [
+          "Luk",
+          200
+        ],
+        [
+          "Pelati (guljene rajčice)",
+          250
+        ],
+        [
+          "Vino crno",
+          120
+        ],
+        [
+          "Maslinovo ulje",
+          30
+        ],
+        [
+          "Parmezan",
+          50
+        ]
+      ]
+    },
+    {
+      "id": "rc-sarma-klasik",
+      "name": "Sarma s dimljenim mesom",
+      "cat": "Meso i riba",
+      "cuisine": "hrvatska",
+      "servings": 6,
+      "yieldFactor": 0.9,
+      "note": "Kiseli kupus punjen mesom i rižom.",
+      "items": [
+        [
+          "Kupus",
+          900
+        ],
+        [
+          "Mljeveno meso (miješano)",
+          700
+        ],
+        [
+          "Riža bijela (kuhana)",
+          350
+        ],
+        [
+          "Svinjetina (but)",
+          250
+        ],
+        [
+          "Luk",
+          200
+        ],
+        [
+          "Crvena mljevena paprika",
+          12
+        ],
+        [
+          "Svinjska mast",
+          30
+        ]
+      ]
+    },
+    {
+      "id": "rc-punjene-tikvice",
+      "name": "Punjene tikvice",
+      "cat": "Povrće",
+      "cuisine": "hrvatska",
+      "servings": 4,
+      "yieldFactor": 0.9,
+      "note": "Tikvice punjene mesom i rižom u umaku.",
+      "items": [
+        [
+          "Tikvica",
+          900
+        ],
+        [
+          "Mljeveno meso (miješano)",
+          400
+        ],
+        [
+          "Riža bijela (kuhana)",
+          250
+        ],
+        [
+          "Luk",
+          150
+        ],
+        [
+          "Pelati (guljene rajčice)",
+          300
+        ],
+        [
+          "Jogurt (obični)",
+          150
+        ],
+        [
+          "Maslinovo ulje",
+          25
+        ]
+      ]
+    },
+    {
+      "id": "rc-punjeni-patlidzan",
+      "name": "Punjeni patlidžan",
+      "cat": "Povrće",
+      "cuisine": "regionalna",
+      "servings": 4,
+      "yieldFactor": 0.85,
+      "note": "Patlidžan s mesom i sirom.",
+      "items": [
+        [
+          "Patlidžan",
+          900
+        ],
+        [
+          "Mljeveno meso (miješano)",
+          400
+        ],
+        [
+          "Rajčica",
+          300
+        ],
+        [
+          "Luk",
+          150
+        ],
+        [
+          "Sir (gauda/edamer)",
+          120
+        ],
+        [
+          "Maslinovo ulje",
+          40
+        ]
+      ]
+    },
+    {
+      "id": "rc-grah-varivo",
+      "name": "Varivo od graha",
+      "cat": "Mahunarke",
+      "cuisine": "hrvatska",
+      "servings": 5,
+      "note": "Osnovno zimsko varivo.",
+      "items": [
+        [
+          "Grah (kuhani)",
+          700
+        ],
+        [
+          "Mrkva",
+          200
+        ],
+        [
+          "Krumpir (kuhani)",
+          300
+        ],
+        [
+          "Luk",
+          150
+        ],
+        [
+          "Češnjak",
+          15
+        ],
+        [
+          "Crvena mljevena paprika",
+          10
+        ],
+        [
+          "Suncokretovo ulje",
+          30
+        ]
+      ]
+    },
+    {
+      "id": "rc-leca-varivo",
+      "name": "Varivo od leće",
+      "cat": "Mahunarke",
+      "cuisine": "hrvatska",
+      "servings": 4,
+      "note": "Leća s mrkvom i lovorom.",
+      "items": [
+        [
+          "Leća (kuhana)",
+          600
+        ],
+        [
+          "Mrkva",
+          200
+        ],
+        [
+          "Luk",
+          150
+        ],
+        [
+          "Celer (stabljika)",
+          100
+        ],
+        [
+          "Lovorov list",
+          1
+        ],
+        [
+          "Maslinovo ulje",
+          30
+        ],
+        [
+          "Češnjak",
+          15
+        ]
+      ]
+    },
+    {
+      "id": "rc-grasak-varivo",
+      "name": "Varivo od graška",
+      "cat": "Mahunarke",
+      "cuisine": "hrvatska",
+      "servings": 4,
+      "note": "Grašak s mrkvom i mesnim okruglicama.",
+      "items": [
+        [
+          "Grašak",
+          600
+        ],
+        [
+          "Mrkva",
+          200
+        ],
+        [
+          "Krumpir (kuhani)",
+          250
+        ],
+        [
+          "Mljeveno meso (miješano)",
+          250
+        ],
+        [
+          "Luk",
+          120
+        ],
+        [
+          "Suncokretovo ulje",
+          25
+        ]
+      ]
+    },
+    {
+      "id": "rc-mahune-varivo",
+      "name": "Varivo od mahuna",
+      "cat": "Mahunarke",
+      "cuisine": "hrvatska",
+      "servings": 4,
+      "note": "Mahune s krumpirom i vrhnjem.",
+      "items": [
+        [
+          "Mahune (kuhane)",
+          700
+        ],
+        [
+          "Krumpir (kuhani)",
+          350
+        ],
+        [
+          "Luk",
+          120
+        ],
+        [
+          "Vrhnje za šlag",
+          100
+        ],
+        [
+          "Brašno glatko (pšenično)",
+          20
+        ],
+        [
+          "Češnjak",
+          12
+        ],
+        [
+          "Suncokretovo ulje",
+          25
+        ]
+      ]
+    },
+    {
+      "id": "rc-kelj-varivo",
+      "name": "Varivo od kelja",
+      "cat": "Povrće",
+      "cuisine": "hrvatska",
+      "servings": 4,
+      "note": "Kelj s krumpirom i suhim mesom.",
+      "items": [
+        [
+          "Kelj",
+          700
+        ],
+        [
+          "Krumpir (kuhani)",
+          400
+        ],
+        [
+          "Svinjetina (but)",
+          250
+        ],
+        [
+          "Luk",
+          120
+        ],
+        [
+          "Češnjak",
+          15
+        ],
+        [
+          "Svinjska mast",
+          25
+        ]
+      ]
+    },
+    {
+      "id": "rc-cvjetaca-zapecena",
+      "name": "Zapečena cvjetača",
+      "cat": "Povrće",
+      "cuisine": "hrvatska",
+      "servings": 4,
+      "yieldFactor": 0.9,
+      "note": "Cvjetača s jajima, vrhnjem i sirom.",
+      "items": [
+        [
+          "Cvjetača",
+          800
+        ],
+        [
+          "Jaje (cijelo)",
+          200
+        ],
+        [
+          "Vrhnje za šlag",
+          200
+        ],
+        [
+          "Sir (gauda/edamer)",
+          120
+        ],
+        [
+          "Krušne mrvice",
+          40
+        ],
+        [
+          "Maslac",
+          30
+        ]
+      ]
+    },
+    {
+      "id": "rc-punjena-paprika-klasik",
+      "name": "Punjena paprika u umaku",
+      "cat": "Povrće",
+      "cuisine": "hrvatska",
+      "servings": 5,
+      "yieldFactor": 0.9,
+      "note": "Paprike punjene mesom i rižom.",
+      "items": [
+        [
+          "Paprika crvena",
+          800
+        ],
+        [
+          "Mljeveno meso (miješano)",
+          500
+        ],
+        [
+          "Riža bijela (kuhana)",
+          300
+        ],
+        [
+          "Luk",
+          150
+        ],
+        [
+          "Pelati (guljene rajčice)",
+          400
+        ],
+        [
+          "Suncokretovo ulje",
+          30
+        ]
+      ]
+    },
+    {
+      "id": "rc-musaka-krumpir",
+      "name": "Musaka s krumpirom",
+      "cat": "Meso i riba",
+      "cuisine": "regionalna",
+      "servings": 6,
+      "yieldFactor": 0.85,
+      "note": "Slojevi krumpira i mesa, preliveni jajima.",
+      "items": [
+        [
+          "Krumpir (kuhani)",
+          1100
+        ],
+        [
+          "Mljeveno meso (miješano)",
+          550
+        ],
+        [
+          "Jaje (cijelo)",
+          200
+        ],
+        [
+          "Mlijeko 2.8%",
+          300
+        ],
+        [
+          "Luk",
+          150
+        ],
+        [
+          "Suncokretovo ulje",
+          35
+        ]
+      ]
+    },
+    {
+      "id": "rc-pileca-juha-rezanci",
+      "name": "Pileća juha s rezancima",
+      "cat": "Meso i riba",
+      "cuisine": "hrvatska",
+      "servings": 5,
+      "note": "Bistra juha s mrkvom i tjesteninom.",
+      "items": [
+        [
+          "Pileći batak",
+          600
+        ],
+        [
+          "Mrkva",
+          250
+        ],
+        [
+          "Celer korijen",
+          100
+        ],
+        [
+          "Pastrnjak",
+          100
+        ],
+        [
+          "Luk",
+          100
+        ],
+        [
+          "Tjestenina (kuhana)",
+          250
+        ],
+        [
+          "Peršin",
+          15
+        ]
+      ]
+    },
+    {
+      "id": "rc-govedska-juha",
+      "name": "Goveđa juha",
+      "cat": "Meso i riba",
+      "cuisine": "hrvatska",
+      "servings": 5,
+      "note": "Bistra juha s korjenastim povrćem.",
+      "items": [
+        [
+          "Junetina za gulaš",
+          600
+        ],
+        [
+          "Mrkva",
+          250
+        ],
+        [
+          "Celer korijen",
+          120
+        ],
+        [
+          "Pastrnjak",
+          100
+        ],
+        [
+          "Luk",
+          120
+        ],
+        [
+          "Griz (pšenična krupica)",
+          80
+        ],
+        [
+          "Jaje (cijelo)",
+          50
+        ],
+        [
+          "Peršin",
+          15
+        ]
+      ]
+    },
+    {
+      "id": "rc-juha-rajcica",
+      "name": "Juha od rajčice",
+      "cat": "Povrće",
+      "cuisine": "regionalna",
+      "servings": 4,
+      "note": "Kremasta juha s rižom i vrhnjem.",
+      "items": [
+        [
+          "Pelati (guljene rajčice)",
+          700
+        ],
+        [
+          "Riža bijela (kuhana)",
+          200
+        ],
+        [
+          "Luk",
+          120
+        ],
+        [
+          "Vrhnje za šlag",
+          120
+        ],
+        [
+          "Maslinovo ulje",
+          25
+        ],
+        [
+          "Češnjak",
+          10
+        ]
+      ]
+    },
+    {
+      "id": "rc-juha-bundeva",
+      "name": "Juha od bundeve",
+      "cat": "Povrće",
+      "cuisine": "regionalna",
+      "servings": 4,
+      "note": "Kremasta juha s đumbirom i sjemenkama.",
+      "items": [
+        [
+          "Bundeva",
+          900
+        ],
+        [
+          "Mrkva",
+          200
+        ],
+        [
+          "Luk",
+          120
+        ],
+        [
+          "Vrhnje za šlag",
+          120
+        ],
+        [
+          "Đumbir",
+          10
+        ],
+        [
+          "Sjemenke bundeve",
+          40
+        ],
+        [
+          "Maslinovo ulje",
+          25
+        ]
+      ]
+    },
+    {
+      "id": "rc-juha-gljive",
+      "name": "Juha od gljiva",
+      "cat": "Povrće",
+      "cuisine": "hrvatska",
+      "servings": 4,
+      "note": "Šampinjoni i bukovače s vrhnjem.",
+      "items": [
+        [
+          "Šampinjoni",
+          500
+        ],
+        [
+          "Bukovače",
+          200
+        ],
+        [
+          "Krumpir (kuhani)",
+          250
+        ],
+        [
+          "Luk",
+          120
+        ],
+        [
+          "Vrhnje za šlag",
+          150
+        ],
+        [
+          "Maslac",
+          30
+        ],
+        [
+          "Peršin",
+          15
+        ]
+      ]
+    },
+    {
+      "id": "rc-riblja-juha",
+      "name": "Riblja juha",
+      "cat": "Meso i riba",
+      "cuisine": "hrvatska",
+      "servings": 4,
+      "note": "Bijela riba s rižom i povrćem.",
+      "items": [
+        [
+          "Oslić",
+          500
+        ],
+        [
+          "Riža bijela (kuhana)",
+          200
+        ],
+        [
+          "Mrkva",
+          150
+        ],
+        [
+          "Celer korijen",
+          80
+        ],
+        [
+          "Luk",
+          100
+        ],
+        [
+          "Maslinovo ulje",
+          25
+        ],
+        [
+          "Peršin",
+          15
+        ]
+      ]
+    },
+    {
+      "id": "rc-bakalar-bijeli",
+      "name": "Bakalar na bijelo",
+      "cat": "Meso i riba",
+      "cuisine": "hrvatska",
+      "servings": 5,
+      "yieldFactor": 0.85,
+      "note": "Badnjačko jelo s krumpirom i češnjakom.",
+      "drink": [
+        "Vino bijelo (suho)",
+        150
+      ],
+      "items": [
+        [
+          "Bakalar (suhi)",
+          400
+        ],
+        [
+          "Krumpir (kuhani)",
+          700
+        ],
+        [
+          "Češnjak",
+          30
+        ],
+        [
+          "Maslinovo ulje",
+          100
+        ],
+        [
+          "Peršin",
+          20
+        ]
+      ]
+    },
+    {
+      "id": "rc-srdele-gradele",
+      "name": "Srdele na gradele",
+      "cat": "Meso i riba",
+      "cuisine": "hrvatska",
+      "servings": 4,
+      "yieldFactor": 0.85,
+      "note": "Pečene srdele s uljem i češnjakom.",
+      "drink": [
+        "Vino bijelo (suho)",
+        150
+      ],
+      "items": [
+        [
+          "Srdele",
+          700
+        ],
+        [
+          "Maslinovo ulje",
+          40
+        ],
+        [
+          "Češnjak",
+          15
+        ],
+        [
+          "Peršin",
+          15
+        ],
+        [
+          "Limun",
+          60
+        ]
+      ]
+    },
+    {
+      "id": "rc-lignje-punjene",
+      "name": "Punjene lignje",
+      "cat": "Meso i riba",
+      "cuisine": "hrvatska",
+      "servings": 4,
+      "yieldFactor": 0.85,
+      "note": "Lignje punjene mrvicama i pršutom.",
+      "drink": [
+        "Vino bijelo (Chardonnay)",
+        150
+      ],
+      "items": [
+        [
+          "Lignje",
+          700
+        ],
+        [
+          "Krušne mrvice",
+          100
+        ],
+        [
+          "Šunka (pileća)",
+          120
+        ],
+        [
+          "Parmezan",
+          60
+        ],
+        [
+          "Jaje (cijelo)",
+          50
+        ],
+        [
+          "Češnjak",
+          15
+        ],
+        [
+          "Maslinovo ulje",
+          40
+        ],
+        [
+          "Peršin",
+          20
+        ]
+      ]
+    },
+    {
+      "id": "rc-tuna-salata",
+      "name": "Salata s tunom i grahom",
+      "cat": "Mahunarke",
+      "cuisine": "hrvatska",
+      "servings": 3,
+      "note": "Hladno predjelo ili lagan ručak.",
+      "items": [
+        [
+          "Tuna (konzerva u vodi)",
+          250
+        ],
+        [
+          "Bijeli grah (kuhani)",
+          350
+        ],
+        [
+          "Luk",
+          80
+        ],
+        [
+          "Maslinovo ulje",
+          30
+        ],
+        [
+          "Ocat (jabučni)",
+          15
+        ],
+        [
+          "Peršin",
+          15
+        ]
+      ]
+    },
+    {
+      "id": "rc-hobotnica-salata",
+      "name": "Salata od hobotnice",
+      "cat": "Meso i riba",
+      "cuisine": "hrvatska",
+      "servings": 4,
+      "note": "Hobotnica s krumpirom i uljem.",
+      "items": [
+        [
+          "Hobotnica",
+          500
+        ],
+        [
+          "Krumpir (kuhani)",
+          400
+        ],
+        [
+          "Luk",
+          100
+        ],
+        [
+          "Peršin",
+          20
+        ],
+        [
+          "Maslinovo ulje",
+          45
+        ],
+        [
+          "Ocat (jabučni)",
+          20
+        ],
+        [
+          "Češnjak",
+          10
+        ]
+      ]
+    },
+    {
+      "id": "rc-francuska-salata",
+      "name": "Francuska salata",
+      "cat": "Povrće",
+      "cuisine": "regionalna",
+      "servings": 6,
+      "note": "Kuhano povrće s majonezom; blagdanski prilog.",
+      "items": [
+        [
+          "Krumpir (kuhani)",
+          500
+        ],
+        [
+          "Mrkva",
+          300
+        ],
+        [
+          "Grašak",
+          250
+        ],
+        [
+          "Krastavac",
+          150
+        ],
+        [
+          "Jaje (kuhano)",
+          150
+        ],
+        [
+          "Vrhnje za šlag",
+          150
+        ]
+      ]
+    },
+    {
+      "id": "rc-sopska-salata",
+      "name": "Šopska salata",
+      "cat": "Povrće",
+      "cuisine": "regionalna",
+      "servings": 4,
+      "note": "Rajčica, krastavac i sir.",
+      "items": [
+        [
+          "Rajčica",
+          500
+        ],
+        [
+          "Krastavac",
+          300
+        ],
+        [
+          "Paprika zelena",
+          200
+        ],
+        [
+          "Feta sir",
+          150
+        ],
+        [
+          "Luk",
+          80
+        ],
+        [
+          "Maslinovo ulje",
+          30
+        ]
+      ]
+    },
+    {
+      "id": "rc-salata-cikla",
+      "name": "Salata od cikle",
+      "cat": "Povrće",
+      "cuisine": "hrvatska",
+      "servings": 4,
+      "note": "Zimski prilog uz pečenje.",
+      "items": [
+        [
+          "Cikla",
+          600
+        ],
+        [
+          "Hren",
+          30
+        ],
+        [
+          "Ocat (jabučni)",
+          25
+        ],
+        [
+          "Suncokretovo ulje",
+          25
+        ],
+        [
+          "Češnjak",
+          8
+        ]
+      ]
+    },
+    {
+      "id": "rc-salata-krastavac",
+      "name": "Salata od krastavaca s vrhnjem",
+      "cat": "Povrće",
+      "cuisine": "hrvatska",
+      "servings": 4,
+      "note": "Ljetni prilog.",
+      "items": [
+        [
+          "Krastavac",
+          700
+        ],
+        [
+          "Vrhnje za šlag",
+          150
+        ],
+        [
+          "Češnjak",
+          10
+        ],
+        [
+          "Ocat (jabučni)",
+          15
+        ]
+      ]
+    },
+    {
+      "id": "rc-salata-kupus",
+      "name": "Salata od kiselog kupusa",
+      "cat": "Povrće",
+      "cuisine": "hrvatska",
+      "servings": 4,
+      "note": "Zimska salata s uljem i paprikom.",
+      "items": [
+        [
+          "Kupus",
+          600
+        ],
+        [
+          "Luk",
+          100
+        ],
+        [
+          "Suncokretovo ulje",
+          35
+        ],
+        [
+          "Crvena mljevena paprika",
+          5
+        ]
+      ]
+    },
+    {
+      "id": "rc-ajvar-domaci",
+      "name": "Ajvar",
+      "cat": "Povrće",
+      "cuisine": "regionalna",
+      "servings": 10,
+      "yieldFactor": 0.55,
+      "note": "Pečena paprika i patlidžan, dugo kuhani.",
+      "items": [
+        [
+          "Paprika crvena",
+          2000
+        ],
+        [
+          "Patlidžan",
+          500
+        ],
+        [
+          "Češnjak",
+          30
+        ],
+        [
+          "Suncokretovo ulje",
+          200
+        ],
+        [
+          "Ocat (jabučni)",
+          40
+        ]
+      ]
+    },
+    {
+      "id": "rc-lecso-namaz",
+      "name": "Namaz od pečene paprike",
+      "cat": "Povrće",
+      "cuisine": "regionalna",
+      "servings": 8,
+      "yieldFactor": 0.7,
+      "note": "Blaži namaz od pečene paprike i sira.",
+      "items": [
+        [
+          "Paprika crvena",
+          1000
+        ],
+        [
+          "Svježi sir (posni)",
+          300
+        ],
+        [
+          "Češnjak",
+          15
+        ],
+        [
+          "Maslinovo ulje",
+          60
+        ]
+      ]
+    },
+    {
+      "id": "rc-humus-domaci",
+      "name": "Humus",
+      "cat": "Mahunarke",
+      "cuisine": "regionalna",
+      "servings": 6,
+      "note": "Slanutak s tahinijem i limunom.",
+      "items": [
+        [
+          "Slanutak (kuhani)",
+          500
+        ],
+        [
+          "Tahini",
+          80
+        ],
+        [
+          "Limun",
+          60
+        ],
+        [
+          "Češnjak",
+          12
+        ],
+        [
+          "Maslinovo ulje",
+          50
+        ]
+      ]
+    },
+    {
+      "id": "rc-punjena-rajcica",
+      "name": "Punjene rajčice",
+      "cat": "Povrće",
+      "cuisine": "regionalna",
+      "servings": 4,
+      "yieldFactor": 0.9,
+      "note": "Rajčice punjene rižom i sirom.",
+      "items": [
+        [
+          "Rajčica",
+          900
+        ],
+        [
+          "Riža bijela (kuhana)",
+          300
+        ],
+        [
+          "Feta sir",
+          150
+        ],
+        [
+          "Luk",
+          100
+        ],
+        [
+          "Maslinovo ulje",
+          30
+        ],
+        [
+          "Peršin",
+          15
+        ]
+      ]
+    },
+    {
+      "id": "rc-sataras",
+      "name": "Sataraš",
+      "cat": "Povrće",
+      "cuisine": "regionalna",
+      "servings": 4,
+      "yieldFactor": 0.85,
+      "note": "Paprika, rajčica i luk s jajima.",
+      "items": [
+        [
+          "Paprika crvena",
+          500
+        ],
+        [
+          "Rajčica",
+          400
+        ],
+        [
+          "Luk",
+          200
+        ],
+        [
+          "Jaje (cijelo)",
+          200
+        ],
+        [
+          "Suncokretovo ulje",
+          30
+        ]
+      ]
+    },
+    {
+      "id": "rc-grah-salata-luk",
+      "name": "Grah salata",
+      "cat": "Mahunarke",
+      "cuisine": "hrvatska",
+      "servings": 4,
+      "note": "Kuhani grah s lukom i uljem.",
+      "items": [
+        [
+          "Grah (kuhani)",
+          600
+        ],
+        [
+          "Luk",
+          150
+        ],
+        [
+          "Maslinovo ulje",
+          40
+        ],
+        [
+          "Ocat (jabučni)",
+          20
+        ],
+        [
+          "Peršin",
+          15
+        ]
+      ]
+    },
+    {
+      "id": "rc-palenta-sir",
+      "name": "Palenta sa sirom",
+      "cat": "Žitarice i kruh",
+      "cuisine": "hrvatska",
+      "servings": 4,
+      "note": "Palenta s dimljenim sirom i vrhnjem.",
+      "items": [
+        [
+          "Palenta (kukuruzna krupica)",
+          800
+        ],
+        [
+          "Dimljeni sir",
+          150
+        ],
+        [
+          "Vrhnje za šlag",
+          150
+        ],
+        [
+          "Maslac",
+          40
+        ]
+      ]
+    },
+    {
+      "id": "rc-zganci",
+      "name": "Žganci s čvarcima",
+      "cat": "Žitarice i kruh",
+      "cuisine": "hrvatska",
+      "servings": 4,
+      "note": "Kukuruzni žganci sa svinjskom masti.",
+      "items": [
+        [
+          "Palenta (kukuruzna krupica)",
+          700
+        ],
+        [
+          "Svinjska mast",
+          60
+        ],
+        [
+          "Kobasica",
+          150
+        ]
+      ]
+    },
+    {
+      "id": "rc-krumpir-pecen",
+      "name": "Pečeni krumpir s ružmarinom",
+      "cat": "Žitarice i kruh",
+      "cuisine": "hrvatska",
+      "servings": 4,
+      "yieldFactor": 0.85,
+      "note": "Prilog uz meso i ribu.",
+      "items": [
+        [
+          "Krumpir (kuhani)",
+          900
+        ],
+        [
+          "Maslinovo ulje",
+          45
+        ],
+        [
+          "Češnjak",
+          15
+        ],
+        [
+          "Origano (suhi)",
+          3
+        ]
+      ]
+    },
+    {
+      "id": "rc-krumpir-salata",
+      "name": "Krumpir salata",
+      "cat": "Žitarice i kruh",
+      "cuisine": "hrvatska",
+      "servings": 4,
+      "note": "Topla salata s lukom i uljem.",
+      "items": [
+        [
+          "Krumpir (kuhani)",
+          800
+        ],
+        [
+          "Luk",
+          150
+        ],
+        [
+          "Suncokretovo ulje",
+          40
+        ],
+        [
+          "Ocat (jabučni)",
+          25
+        ],
+        [
+          "Peršin",
+          15
+        ]
+      ]
+    },
+    {
+      "id": "rc-omlet-sir-sunka",
+      "name": "Omlet sa sirom i šunkom",
+      "cat": "Mliječno i jaja",
+      "cuisine": "regionalna",
+      "servings": 2,
+      "yieldFactor": 0.9,
+      "note": "Brz doručak.",
+      "items": [
+        [
+          "Jaje (cijelo)",
+          250
+        ],
+        [
+          "Sir (gauda/edamer)",
+          60
+        ],
+        [
+          "Šunka (pileća)",
+          80
+        ],
+        [
+          "Maslac",
+          20
+        ]
+      ]
+    },
+    {
+      "id": "rc-kajgana-rajcica",
+      "name": "Kajgana s rajčicom",
+      "cat": "Mliječno i jaja",
+      "cuisine": "hrvatska",
+      "servings": 2,
+      "yieldFactor": 0.9,
+      "note": "Jaja s rajčicom i lukom.",
+      "items": [
+        [
+          "Jaje (cijelo)",
+          250
+        ],
+        [
+          "Rajčica",
+          250
+        ],
+        [
+          "Luk",
+          80
+        ],
+        [
+          "Maslinovo ulje",
+          20
+        ]
+      ]
+    },
+    {
+      "id": "rc-palacinke",
+      "name": "Palačinke",
+      "cat": "Žitarice i kruh",
+      "cuisine": "hrvatska",
+      "servings": 5,
+      "yieldFactor": 0.9,
+      "note": "Tanke palačinke; nadjev po želji.",
+      "items": [
+        [
+          "Brašno glatko (pšenično)",
+          250
+        ],
+        [
+          "Mlijeko 2.8%",
+          500
+        ],
+        [
+          "Jaje (cijelo)",
+          150
+        ],
+        [
+          "Suncokretovo ulje",
+          40
+        ],
+        [
+          "Šećer (bijeli)",
+          30
+        ]
+      ]
+    },
+    {
+      "id": "rc-palacinke-orasi",
+      "name": "Palačinke s orasima",
+      "cat": "Ostalo",
+      "cuisine": "hrvatska",
+      "servings": 5,
+      "yieldFactor": 0.9,
+      "note": "Palačinke s nadjevom od oraha.",
+      "items": [
+        [
+          "Brašno glatko (pšenično)",
+          250
+        ],
+        [
+          "Mlijeko 2.8%",
+          500
+        ],
+        [
+          "Jaje (cijelo)",
+          150
+        ],
+        [
+          "Orasi",
+          200
+        ],
+        [
+          "Šećer (bijeli)",
+          100
+        ],
+        [
+          "Suncokretovo ulje",
+          40
+        ]
+      ]
+    },
+    {
+      "id": "rc-fritule",
+      "name": "Fritule",
+      "cat": "Ostalo",
+      "cuisine": "hrvatska",
+      "servings": 8,
+      "yieldFactor": 0.9,
+      "note": "Male pržene krafnice s grožđicama.",
+      "items": [
+        [
+          "Brašno glatko (pšenično)",
+          500
+        ],
+        [
+          "Jaje (cijelo)",
+          150
+        ],
+        [
+          "Grožđice",
+          120
+        ],
+        [
+          "Šećer (bijeli)",
+          100
+        ],
+        [
+          "Kvasac (suhi)",
+          10
+        ],
+        [
+          "Suncokretovo ulje",
+          150
+        ],
+        [
+          "Mlijeko 2.8%",
+          250
+        ]
+      ]
+    },
+    {
+      "id": "rc-strudla-jabuka",
+      "name": "Savijača s jabukama",
+      "cat": "Ostalo",
+      "cuisine": "hrvatska",
+      "servings": 8,
+      "yieldFactor": 0.85,
+      "note": "Vučeno tijesto s jabukama i cimetom.",
+      "items": [
+        [
+          "Brašno glatko (pšenično)",
+          400
+        ],
+        [
+          "Jabuka",
+          900
+        ],
+        [
+          "Šećer (bijeli)",
+          120
+        ],
+        [
+          "Cimet",
+          5
+        ],
+        [
+          "Krušne mrvice",
+          60
+        ],
+        [
+          "Maslac",
+          80
+        ],
+        [
+          "Grožđice",
+          80
+        ]
+      ]
+    },
+    {
+      "id": "rc-strudla-sir",
+      "name": "Savijača sa sirom",
+      "cat": "Ostalo",
+      "cuisine": "hrvatska",
+      "servings": 8,
+      "yieldFactor": 0.85,
+      "note": "Savijača sa svježim sirom.",
+      "items": [
+        [
+          "Brašno glatko (pšenično)",
+          400
+        ],
+        [
+          "Svježi sir (posni)",
+          700
+        ],
+        [
+          "Jaje (cijelo)",
+          150
+        ],
+        [
+          "Šećer (bijeli)",
+          100
+        ],
+        [
+          "Vrhnje za šlag",
+          150
+        ],
+        [
+          "Maslac",
+          60
+        ]
+      ]
+    },
+    {
+      "id": "rc-knedle-sljive",
+      "name": "Knedle sa šljivama",
+      "cat": "Ostalo",
+      "cuisine": "hrvatska",
+      "servings": 6,
+      "yieldFactor": 0.95,
+      "note": "Krumpirovo tijesto sa šljivama.",
+      "items": [
+        [
+          "Krumpir (kuhani)",
+          700
+        ],
+        [
+          "Brašno glatko (pšenično)",
+          250
+        ],
+        [
+          "Jaje (cijelo)",
+          50
+        ],
+        [
+          "Šljiva",
+          600
+        ],
+        [
+          "Krušne mrvice",
+          100
+        ],
+        [
+          "Maslac",
+          60
+        ],
+        [
+          "Šećer (bijeli)",
+          60
+        ]
+      ]
+    },
+    {
+      "id": "rc-orehnjaca",
+      "name": "Orehnjača",
+      "cat": "Ostalo",
+      "cuisine": "hrvatska",
+      "servings": 12,
+      "yieldFactor": 0.9,
+      "note": "Dizano tijesto s nadjevom od oraha.",
+      "items": [
+        [
+          "Brašno glatko (pšenično)",
+          600
+        ],
+        [
+          "Orasi",
+          400
+        ],
+        [
+          "Šećer (bijeli)",
+          250
+        ],
+        [
+          "Mlijeko 2.8%",
+          250
+        ],
+        [
+          "Maslac",
+          120
+        ],
+        [
+          "Jaje (cijelo)",
+          100
+        ],
+        [
+          "Kvasac (suhi)",
+          12
+        ]
+      ]
+    },
+    {
+      "id": "rc-makovnjaca",
+      "name": "Makovnjača",
+      "cat": "Ostalo",
+      "cuisine": "hrvatska",
+      "servings": 12,
+      "yieldFactor": 0.9,
+      "note": "Dizano tijesto s nadjevom; mak zamijenjen sezamom.",
+      "items": [
+        [
+          "Brašno glatko (pšenično)",
+          600
+        ],
+        [
+          "Sezam",
+          300
+        ],
+        [
+          "Šećer (bijeli)",
+          250
+        ],
+        [
+          "Mlijeko 2.8%",
+          250
+        ],
+        [
+          "Maslac",
+          120
+        ],
+        [
+          "Jaje (cijelo)",
+          100
+        ],
+        [
+          "Kvasac (suhi)",
+          12
+        ]
+      ]
+    },
+    {
+      "id": "rc-rozata",
+      "name": "Rožata",
+      "cat": "Ostalo",
+      "cuisine": "hrvatska",
+      "servings": 6,
+      "note": "Dubrovački karamel kremasti desert.",
+      "items": [
+        [
+          "Mlijeko punomasno 3,2 %",
+          700
+        ],
+        [
+          "Jaje (cijelo)",
+          300
+        ],
+        [
+          "Šećer (bijeli)",
+          180
+        ]
+      ]
+    },
+    {
+      "id": "rc-krempita",
+      "name": "Kremšnita",
+      "cat": "Ostalo",
+      "cuisine": "hrvatska",
+      "servings": 10,
+      "note": "Lisnato tijesto s kremom od jaja i mlijeka.",
+      "items": [
+        [
+          "Brašno glatko (pšenično)",
+          300
+        ],
+        [
+          "Mlijeko punomasno 3,2 %",
+          900
+        ],
+        [
+          "Jaje (cijelo)",
+          300
+        ],
+        [
+          "Šećer (bijeli)",
+          250
+        ],
+        [
+          "Maslac",
+          150
+        ],
+        [
+          "Vrhnje za šlag",
+          250
+        ]
+      ]
+    },
+    {
+      "id": "rc-tufahije",
+      "name": "Tufahije",
+      "cat": "Ostalo",
+      "cuisine": "regionalna",
+      "servings": 6,
+      "note": "Kuhane jabuke punjene orasima.",
+      "items": [
+        [
+          "Jabuka",
+          900
+        ],
+        [
+          "Orasi",
+          250
+        ],
+        [
+          "Šećer (bijeli)",
+          200
+        ],
+        [
+          "Vrhnje za šlag",
+          150
+        ]
+      ]
+    },
+    {
+      "id": "rc-kolac-jabuke",
+      "name": "Kolač s jabukama",
+      "cat": "Ostalo",
+      "cuisine": "hrvatska",
+      "servings": 10,
+      "yieldFactor": 0.9,
+      "note": "Mrvičasti kolač s jabukama i cimetom.",
+      "items": [
+        [
+          "Brašno glatko (pšenično)",
+          450
+        ],
+        [
+          "Jabuka",
+          900
+        ],
+        [
+          "Šećer (bijeli)",
+          200
+        ],
+        [
+          "Maslac",
+          200
+        ],
+        [
+          "Jaje (cijelo)",
+          100
+        ],
+        [
+          "Cimet",
+          5
+        ]
+      ]
+    },
+    {
+      "id": "rc-cokoladni-kolac",
+      "name": "Čokoladni kolač",
+      "cat": "Ostalo",
+      "cuisine": "regionalna",
+      "servings": 10,
+      "yieldFactor": 0.9,
+      "note": "Vlažni kolač s kakaom.",
+      "items": [
+        [
+          "Brašno glatko (pšenično)",
+          300
+        ],
+        [
+          "Kakao prah (nezaslađen)",
+          80
+        ],
+        [
+          "Šećer (bijeli)",
+          250
+        ],
+        [
+          "Jaje (cijelo)",
+          200
+        ],
+        [
+          "Maslac",
+          180
+        ],
+        [
+          "Mlijeko 2.8%",
+          200
+        ]
+      ]
+    },
+    {
+      "id": "rc-pileca-krilca-pecena",
+      "name": "Pečena pileća krilca",
+      "cat": "Meso i riba",
+      "cuisine": "regionalna",
+      "servings": 4,
+      "yieldFactor": 0.85,
+      "note": "Krilca s medom i paprikom.",
+      "drink": [
+        "Pivo svijetlo (5%)",
+        500
+      ],
+      "items": [
+        [
+          "Pileća krilca",
+          900
+        ],
+        [
+          "Med",
+          60
+        ],
+        [
+          "Crvena mljevena paprika",
+          10
+        ],
+        [
+          "Umak od soje",
+          40
+        ],
+        [
+          "Češnjak",
+          15
+        ],
+        [
+          "Suncokretovo ulje",
+          30
+        ]
+      ]
+    },
+    {
+      "id": "rc-jetrica",
+      "name": "Pileća jetrica na lukovima",
+      "cat": "Meso i riba",
+      "cuisine": "hrvatska",
+      "servings": 4,
+      "yieldFactor": 0.85,
+      "note": "Jetrica pirjana s lukom.",
+      "items": [
+        [
+          "Pileća jetra",
+          700
+        ],
+        [
+          "Luk",
+          350
+        ],
+        [
+          "Crvena mljevena paprika",
+          10
+        ],
+        [
+          "Svinjska mast",
+          35
+        ],
+        [
+          "Vino crno",
+          100
+        ]
+      ]
+    },
+    {
+      "id": "rc-patka-mlinci",
+      "name": "Pečena patka s tjesteninom",
+      "cat": "Meso i riba",
+      "cuisine": "hrvatska",
+      "servings": 5,
+      "yieldFactor": 0.75,
+      "note": "Pačja prsa s tjesteninom.",
+      "drink": [
+        "Vino crno",
+        150
+      ],
+      "items": [
+        [
+          "Pačja prsa",
+          900
+        ],
+        [
+          "Tjestenina (kuhana)",
+          600
+        ],
+        [
+          "Luk",
+          150
+        ],
+        [
+          "Češnjak",
+          15
+        ],
+        [
+          "Svinjska mast",
+          30
+        ]
+      ]
+    },
+    {
+      "id": "rc-punjena-piletina",
+      "name": "Punjena piletina",
+      "cat": "Meso i riba",
+      "cuisine": "hrvatska",
+      "servings": 4,
+      "yieldFactor": 0.85,
+      "note": "Pileća prsa punjena sirom i špinatom.",
+      "items": [
+        [
+          "Pileća prsa (pečena)",
+          700
+        ],
+        [
+          "Špinat",
+          250
+        ],
+        [
+          "Sir (gauda/edamer)",
+          120
+        ],
+        [
+          "Češnjak",
+          12
+        ],
+        [
+          "Maslinovo ulje",
+          30
+        ]
+      ]
+    },
+    {
+      "id": "rc-piletina-povrce-wok",
+      "name": "Piletina s povrćem",
+      "cat": "Meso i riba",
+      "cuisine": "ostalo",
+      "servings": 4,
+      "note": "Brzo pirjana piletina s povrćem i sojom.",
+      "items": [
+        [
+          "Pileća prsa (pečena)",
+          500
+        ],
+        [
+          "Paprika crvena",
+          250
+        ],
+        [
+          "Mrkva",
+          200
+        ],
+        [
+          "Mahune (kuhane)",
+          200
+        ],
+        [
+          "Umak od soje",
+          40
+        ],
+        [
+          "Đumbir",
+          15
+        ],
+        [
+          "Repičino ulje",
+          30
+        ],
+        [
+          "Riža bijela (kuhana)",
+          500
+        ]
+      ]
+    },
+    {
+      "id": "rc-cufte-umak",
+      "name": "Ćufte u umaku od rajčice",
+      "cat": "Meso i riba",
+      "cuisine": "regionalna",
+      "servings": 5,
+      "yieldFactor": 0.85,
+      "note": "Mesne okruglice u umaku.",
+      "items": [
+        [
+          "Mljeveno meso (miješano)",
+          700
+        ],
+        [
+          "Riža bijela (kuhana)",
+          200
+        ],
+        [
+          "Jaje (cijelo)",
+          100
+        ],
+        [
+          "Luk",
+          200
+        ],
+        [
+          "Pelati (guljene rajčice)",
+          500
+        ],
+        [
+          "Krušne mrvice",
+          60
+        ],
+        [
+          "Suncokretovo ulje",
+          35
+        ]
+      ]
+    },
+    {
+      "id": "rc-pljeskavica",
+      "name": "Pljeskavica",
+      "cat": "Meso i riba",
+      "cuisine": "regionalna",
+      "servings": 4,
+      "yieldFactor": 0.8,
+      "note": "Mljeveno meso s lukom, na žaru.",
+      "drink": [
+        "Pivo svijetlo (5%)",
+        500
+      ],
+      "items": [
+        [
+          "Mljeveno meso (miješano)",
+          800
+        ],
+        [
+          "Luk",
+          150
+        ],
+        [
+          "Češnjak",
+          12
+        ],
+        [
+          "Somun / pita kruh",
+          320
+        ]
+      ]
+    },
+    {
+      "id": "rc-rostilj-mix",
+      "name": "Miješano meso s roštilja",
+      "cat": "Meso i riba",
+      "cuisine": "regionalna",
+      "servings": 4,
+      "yieldFactor": 0.8,
+      "note": "Ćevapi, kotlet i kobasica.",
+      "drink": [
+        "Pivo svijetlo (5%)",
+        500
+      ],
+      "items": [
+        [
+          "Mljeveno meso (miješano)",
+          400
+        ],
+        [
+          "Svinjski kotlet",
+          400
+        ],
+        [
+          "Kobasica",
+          250
+        ],
+        [
+          "Luk",
+          150
+        ],
+        [
+          "Kruh bijeli",
+          200
+        ]
+      ]
+    },
+    {
+      "id": "rc-teleci-medaljoni",
+      "name": "Teleći medaljoni u umaku od gljiva",
+      "cat": "Meso i riba",
+      "cuisine": "regionalna",
+      "servings": 4,
+      "yieldFactor": 0.85,
+      "note": "Teletina s vrhnjem i šampinjonima.",
+      "drink": [
+        "Vino crno",
+        150
+      ],
+      "items": [
+        [
+          "Teletina",
+          700
+        ],
+        [
+          "Šampinjoni",
+          350
+        ],
+        [
+          "Vrhnje za šlag",
+          200
+        ],
+        [
+          "Luk",
+          120
+        ],
+        [
+          "Maslac",
+          40
+        ],
+        [
+          "Vino bijelo (suho)",
+          100
+        ]
+      ]
+    },
+    {
+      "id": "rc-svinjetina-pecena",
+      "name": "Svinjsko pečenje",
+      "cat": "Meso i riba",
+      "cuisine": "hrvatska",
+      "servings": 6,
+      "yieldFactor": 0.75,
+      "note": "But pečen s krumpirom.",
+      "drink": [
+        "Vino crno",
+        150
+      ],
+      "items": [
+        [
+          "Svinjetina (but)",
+          1300
+        ],
+        [
+          "Krumpir (kuhani)",
+          900
+        ],
+        [
+          "Luk",
+          200
+        ],
+        [
+          "Češnjak",
+          20
+        ],
+        [
+          "Svinjska mast",
+          40
+        ],
+        [
+          "Origano (suhi)",
+          4
+        ]
+      ]
+    },
+    {
+      "id": "rc-riba-pecena-povrce",
+      "name": "Riba pečena s povrćem",
+      "cat": "Meso i riba",
+      "cuisine": "hrvatska",
+      "servings": 4,
+      "yieldFactor": 0.85,
+      "note": "Oslić s tikvicom i rajčicom.",
+      "drink": [
+        "Vino bijelo (Rizling)",
+        150
+      ],
+      "items": [
+        [
+          "Oslić",
+          700
+        ],
+        [
+          "Tikvica",
+          300
+        ],
+        [
+          "Rajčica",
+          300
+        ],
+        [
+          "Krumpir (kuhani)",
+          400
+        ],
+        [
+          "Maslinovo ulje",
+          45
+        ],
+        [
+          "Češnjak",
+          15
+        ],
+        [
+          "Peršin",
+          15
+        ]
+      ]
+    },
+    {
+      "id": "rc-pastrva-pecena",
+      "name": "Pečena pastrva",
+      "cat": "Meso i riba",
+      "cuisine": "hrvatska",
+      "servings": 4,
+      "yieldFactor": 0.85,
+      "note": "Pastrva s limunom i peršinom.",
+      "drink": [
+        "Vino bijelo (suho)",
+        150
+      ],
+      "items": [
+        [
+          "Pastrva",
+          800
+        ],
+        [
+          "Limun",
+          80
+        ],
+        [
+          "Peršin",
+          20
+        ],
+        [
+          "Maslinovo ulje",
+          40
+        ],
+        [
+          "Češnjak",
+          15
+        ]
+      ]
+    },
+    {
+      "id": "rc-tofu-povrce",
+      "name": "Tofu s povrćem",
+      "cat": "Mahunarke",
+      "cuisine": "ostalo",
+      "servings": 3,
+      "note": "Biljni obrok s tofuom i rižom.",
+      "items": [
+        [
+          "Tofu",
+          400
+        ],
+        [
+          "Brokula",
+          250
+        ],
+        [
+          "Mrkva",
+          150
+        ],
+        [
+          "Paprika crvena",
+          150
+        ],
+        [
+          "Umak od soje",
+          35
+        ],
+        [
+          "Riža smeđa (kuhana)",
+          400
+        ],
+        [
+          "Repičino ulje",
+          25
+        ],
+        [
+          "Đumbir",
+          10
+        ]
+      ]
+    },
+    {
+      "id": "rc-slanutak-curry",
+      "name": "Slanutak u umaku",
+      "cat": "Mahunarke",
+      "cuisine": "ostalo",
+      "servings": 4,
+      "note": "Slanutak s rajčicom i začinima.",
+      "items": [
+        [
+          "Slanutak (kuhani)",
+          600
+        ],
+        [
+          "Pelati (guljene rajčice)",
+          400
+        ],
+        [
+          "Luk",
+          150
+        ],
+        [
+          "Češnjak",
+          15
+        ],
+        [
+          "Đumbir",
+          12
+        ],
+        [
+          "Maslinovo ulje",
+          30
+        ],
+        [
+          "Riža bijela (kuhana)",
+          400
+        ]
+      ]
+    },
+    {
+      "id": "rc-punjeni-krumpir",
+      "name": "Punjeni krumpir",
+      "cat": "Žitarice i kruh",
+      "cuisine": "hrvatska",
+      "servings": 4,
+      "yieldFactor": 0.9,
+      "note": "Pečeni krumpir sa sirom i vrhnjem.",
+      "items": [
+        [
+          "Krumpir (kuhani)",
+          1000
+        ],
+        [
+          "Sir (gauda/edamer)",
+          150
+        ],
+        [
+          "Vrhnje za šlag",
+          150
+        ],
+        [
+          "Šunka (pileća)",
+          150
+        ],
+        [
+          "Mladi luk",
+          60
+        ]
+      ]
+    },
+    {
+      "id": "rc-tikvice-pohane",
+      "name": "Pohane tikvice",
+      "cat": "Povrće",
+      "cuisine": "hrvatska",
+      "servings": 4,
+      "yieldFactor": 0.85,
+      "note": "Tikvice u pohanju, uz umak od češnjaka.",
+      "items": [
+        [
+          "Tikvica",
+          800
+        ],
+        [
+          "Brašno glatko (pšenično)",
+          100
+        ],
+        [
+          "Jaje (cijelo)",
+          100
+        ],
+        [
+          "Krušne mrvice",
+          120
+        ],
+        [
+          "Suncokretovo ulje",
+          100
+        ],
+        [
+          "Jogurt (obični)",
+          200
+        ],
+        [
+          "Češnjak",
+          15
+        ]
+      ]
+    },
+    {
+      "id": "rc-gljive-pohane",
+      "name": "Pohane gljive",
+      "cat": "Povrće",
+      "cuisine": "hrvatska",
+      "servings": 4,
+      "yieldFactor": 0.85,
+      "note": "Šampinjoni u pohanju.",
+      "items": [
+        [
+          "Šampinjoni",
+          700
+        ],
+        [
+          "Brašno glatko (pšenično)",
+          90
+        ],
+        [
+          "Jaje (cijelo)",
+          100
+        ],
+        [
+          "Krušne mrvice",
+          110
+        ],
+        [
+          "Suncokretovo ulje",
+          100
+        ]
+      ]
+    },
+    {
+      "id": "rc-sir-pohani",
+      "name": "Pohani sir",
+      "cat": "Mliječno i jaja",
+      "cuisine": "hrvatska",
+      "servings": 4,
+      "yieldFactor": 0.9,
+      "note": "Trapist u pohanju, uz tartar.",
+      "items": [
+        [
+          "Trapist",
+          500
+        ],
+        [
+          "Brašno glatko (pšenično)",
+          80
+        ],
+        [
+          "Jaje (cijelo)",
+          100
+        ],
+        [
+          "Krušne mrvice",
+          120
+        ],
+        [
+          "Suncokretovo ulje",
+          90
+        ]
+      ]
+    },
+    {
+      "id": "rc-zapecena-tjestenina-sunka",
+      "name": "Zapečena tjestenina sa šunkom",
+      "cat": "Žitarice i kruh",
+      "cuisine": "regionalna",
+      "servings": 5,
+      "yieldFactor": 0.9,
+      "note": "Tjestenina s jajima, sirom i šunkom.",
+      "items": [
+        [
+          "Tjestenina (kuhana)",
+          700
+        ],
+        [
+          "Šunka (pileća)",
+          250
+        ],
+        [
+          "Sir (gauda/edamer)",
+          180
+        ],
+        [
+          "Jaje (cijelo)",
+          150
+        ],
+        [
+          "Mlijeko 2.8%",
+          250
+        ],
+        [
+          "Maslac",
+          30
+        ]
+      ]
+    },
+    {
+      "id": "rc-rizot-morski",
+      "name": "Rižot s plodovima mora",
+      "cat": "Meso i riba",
+      "cuisine": "hrvatska",
+      "servings": 4,
+      "note": "Škampi, dagnje i lignje s rižom.",
+      "drink": [
+        "Vino bijelo (Sauvignon)",
+        150
+      ],
+      "items": [
+        [
+          "Riža bijela (kuhana)",
+          650
+        ],
+        [
+          "Škampi",
+          250
+        ],
+        [
+          "Dagnje",
+          250
+        ],
+        [
+          "Lignje",
+          250
+        ],
+        [
+          "Luk",
+          120
+        ],
+        [
+          "Češnjak",
+          15
+        ],
+        [
+          "Vino bijelo (suho)",
+          120
+        ],
+        [
+          "Maslinovo ulje",
+          40
+        ],
+        [
+          "Peršin",
+          15
+        ]
+      ]
+    },
+    {
+      "id": "rc-kus-kus-povrce",
+      "name": "Kus-kus s povrćem",
+      "cat": "Žitarice i kruh",
+      "cuisine": "ostalo",
+      "servings": 4,
+      "note": "Lagan obrok s pečenim povrćem.",
+      "items": [
+        [
+          "Kus-kus (kuhani)",
+          600
+        ],
+        [
+          "Tikvica",
+          250
+        ],
+        [
+          "Paprika crvena",
+          200
+        ],
+        [
+          "Patlidžan",
+          200
+        ],
+        [
+          "Maslinovo ulje",
+          40
+        ],
+        [
+          "Limun",
+          40
+        ],
+        [
+          "Peršin",
+          20
+        ]
+      ]
+    },
+    {
+      "id": "rc-bulgur-salata",
+      "name": "Salata od bulgura",
+      "cat": "Žitarice i kruh",
+      "cuisine": "ostalo",
+      "servings": 4,
+      "note": "Bulgur s rajčicom, peršinom i limunom.",
+      "items": [
+        [
+          "Bulgur (kuhani)",
+          500
+        ],
+        [
+          "Rajčica",
+          300
+        ],
+        [
+          "Peršin",
+          60
+        ],
+        [
+          "Mladi luk",
+          80
+        ],
+        [
+          "Limun",
+          60
+        ],
+        [
+          "Maslinovo ulje",
+          40
+        ]
+      ]
+    },
+    {
+      "id": "rc-kvinoja-salata",
+      "name": "Salata od kvinoje",
+      "cat": "Žitarice i kruh",
+      "cuisine": "ostalo",
+      "servings": 4,
+      "note": "Kvinoja s povrćem i fetom.",
+      "items": [
+        [
+          "Kvinoja (kuhana)",
+          500
+        ],
+        [
+          "Krastavac",
+          200
+        ],
+        [
+          "Rajčica",
+          250
+        ],
+        [
+          "Feta sir",
+          120
+        ],
+        [
+          "Masline zelene",
+          60
+        ],
+        [
+          "Maslinovo ulje",
+          35
+        ],
+        [
+          "Limun",
+          40
+        ]
+      ]
+    },
+    {
+      "id": "rc-heljda-gljive",
+      "name": "Heljda s gljivama",
+      "cat": "Žitarice i kruh",
+      "cuisine": "regionalna",
+      "servings": 4,
+      "note": "Heljda pirjana sa šampinjonima i lukom.",
+      "items": [
+        [
+          "Heljda (kuhana)",
+          600
+        ],
+        [
+          "Šampinjoni",
+          300
+        ],
+        [
+          "Luk",
+          150
+        ],
+        [
+          "Maslac",
+          40
+        ],
+        [
+          "Peršin",
+          15
+        ]
+      ]
+    },
+    {
+      "id": "rc-zobena-kasa",
+      "name": "Zobena kaša s voćem",
+      "cat": "Žitarice i kruh",
+      "cuisine": "ostalo",
+      "servings": 2,
+      "note": "Doručak sa zobi, mlijekom i voćem.",
+      "items": [
+        [
+          "Zobene pahuljice",
+          120
+        ],
+        [
+          "Mlijeko 2.8%",
+          400
+        ],
+        [
+          "Banana",
+          150
+        ],
+        [
+          "Borovnice",
+          100
+        ],
+        [
+          "Med",
+          30
+        ],
+        [
+          "Orasi",
+          30
+        ]
+      ]
+    },
+    {
+      "id": "rc-jogurt-granola",
+      "name": "Jogurt s muslijem i voćem",
+      "cat": "Mliječno i jaja",
+      "cuisine": "ostalo",
+      "servings": 2,
+      "note": "Brz doručak.",
+      "items": [
+        [
+          "Grčki jogurt",
+          400
+        ],
+        [
+          "Musli",
+          120
+        ],
+        [
+          "Jagode",
+          150
+        ],
+        [
+          "Med",
+          30
+        ],
+        [
+          "Sjemenke lana",
+          20
+        ]
+      ]
+    },
+    {
+      "id": "rc-smoothie-zeleni",
+      "name": "Zeleni smoothie",
+      "cat": "Pića",
+      "cuisine": "ostalo",
+      "servings": 2,
+      "note": "Špinat, banana i jabuka.",
+      "items": [
+        [
+          "Špinat",
+          100
+        ],
+        [
+          "Banana",
+          200
+        ],
+        [
+          "Jabuka",
+          200
+        ],
+        [
+          "Zobeno mlijeko",
+          300
+        ],
+        [
+          "Chia sjemenke",
+          15
+        ]
+      ]
+    },
+    {
+      "id": "rc-namaz-tuna",
+      "name": "Namaz od tune",
+      "cat": "Meso i riba",
+      "cuisine": "ostalo",
+      "servings": 4,
+      "note": "Tuna sa svježim sirom i lukom.",
+      "items": [
+        [
+          "Tuna (konzerva u vodi)",
+          300
+        ],
+        [
+          "Svježi sir (posni)",
+          250
+        ],
+        [
+          "Mladi luk",
+          60
+        ],
+        [
+          "Limun",
+          30
+        ]
+      ]
+    },
+    {
+      "id": "rc-namaz-jaje",
+      "name": "Namaz od jaja",
+      "cat": "Mliječno i jaja",
+      "cuisine": "ostalo",
+      "servings": 4,
+      "note": "Kuhana jaja sa senfom i vrhnjem.",
+      "items": [
+        [
+          "Jaje (kuhano)",
+          400
+        ],
+        [
+          "Vrhnje za šlag",
+          100
+        ],
+        [
+          "Senf",
+          25
+        ],
+        [
+          "Mladi luk",
+          50
+        ]
+      ]
+    }
+  ]
+}

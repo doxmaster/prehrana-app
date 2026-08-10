@@ -77,6 +77,12 @@ export interface Recipe {
   /** Gubitak/dobitak mase pri pripremi (npr. 0.85 za kuhanje). 1 = bez promjene. */
   yieldFactor?: number
   note?: string
+  cuisine?: Cuisine
+  /**
+   * Preporuceno pice uz jelo. Dodaje se na klik kao zasebna stavka i NE ulazi u
+   * hranjive vrijednosti jela — pice je izbor, ne sastojak.
+   */
+  drink?: FoodRefItem
 }
 
 export interface Measurement {

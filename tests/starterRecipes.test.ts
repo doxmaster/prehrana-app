@@ -73,8 +73,11 @@ describe('ugrađeni recepti — vrijednosti', () => {
       expect(per100.kcal).toBeGreaterThan(20)
       expect(per100.kcal).toBeLessThan(600)
 
+      // Donja granica je niska jer su namazi i posipi legitimno mali —
+      // "Ribani sir i vlasac" je 11 g priloga, ne obrok. Grube greske u
+      // gramazama hvataju gornja granica i raspon kcal/100 g iznad.
       const food = recipeAsFood(recipe, foods)
-      expect(food.serv).toBeGreaterThan(40)
+      expect(food.serv).toBeGreaterThanOrEqual(10)
       expect(food.serv).toBeLessThan(900)
     },
   )

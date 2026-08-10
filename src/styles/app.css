@@ -511,6 +511,34 @@ th {
   text-transform: uppercase;
   letter-spacing: 0.4px;
 }
+/*
+  Duga tablica dobiva vlastito skrolanje s ljepljivim zaglavljem. Ljepljenje za
+  vrh stranice ovdje ne radi jer je traka s karticama i sama ljepljiva, a na
+  uskom zaslonu se prelama u dva reda pa joj visina nije stalna.
+*/
+.table-scroll {
+  max-height: 70vh;
+  overflow: auto;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+}
+.table-scroll thead th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: var(--panel);
+  /* Obrub se ne lijepi zajedno s celijom, pa granicu crta sjena. */
+  box-shadow: inset 0 -1px 0 var(--line);
+}
+.table-scroll table {
+  border-collapse: separate;
+  border-spacing: 0;
+}
+.table-scroll th,
+.table-scroll td {
+  border-bottom: 1px solid var(--line);
+}
+
 th button.sort {
   background: none;
   border: none;

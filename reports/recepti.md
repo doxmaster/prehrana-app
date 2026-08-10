@@ -1,6 +1,6 @@
 # Ugrađeni recepti
 
-Ukupno: 142
+Ukupno: 186
 
 Jela su tradicionalni repertoar hrvatske i susjednih kuhinja. Popisi sastojaka i gramaže su vlastiti; iz kuharica nije preuzet nikakav tekst.
 
@@ -148,3 +148,55 @@ Jela su tradicionalni repertoar hrvatske i susjednih kuhinja. Popisi sastojaka i
 | Zeleni smoothie | ostalo | 408 g | 67 | — |
 | Namaz od tune | ostalo | 160 g | 86 | — |
 | Namaz od jaja | ostalo | 144 g | 178 | — |
+| Kukuruzni žganci sa sirom | hrvatska | 250 g | 88 | — |
+| Zobene pahuljice sa cimetom i medom | hrvatska | 51 g | 396 | — |
+| Namaz od graha, slanutka i tune | hrvatska | 51 g | 193 | — |
+| Sirni namaz sa sjemenkama | hrvatska | 32 g | 131 | — |
+| Sirni namaz s maslinama | hrvatska | 60 g | 93 | — |
+| Sirni namaz s vlascem | hrvatska | 62 g | 96 | — |
+| Ribani sir i vlasac | hrvatska | 11 g | 361 | — |
+| Juha minestrone | hrvatska | 144 g | 90 | — |
+| Juha od povrća s prosom | hrvatska | 60 g | 78 | — |
+| Krem juha od povrća | hrvatska | 87 g | 139 | — |
+| Juneća šnicla u umaku | hrvatska | 117 g | 179 | — |
+| Kosani odrezak | hrvatska | 117 g | 214 | — |
+| Pureća prsa u umaku | hrvatska | 121 g | 159 | — |
+| Pureći rižoto sa sezonskim povrćem | hrvatska | 362 g | 129 | — |
+| Sekeli gulaš | hrvatska | 239 g | 113 | — |
+| Zapečena tjestenina s piletinom i rajčicom | hrvatska | 342 g | 177 | — |
+| Miješano varivo s bijelim mesom i noklicama | hrvatska | 397 g | 122 | — |
+| Varivo od graha s puretinom | hrvatska | 233 g | 176 | — |
+| Varivo od ječmene kaše s miješanim mesom | hrvatska | 345 g | 104 | — |
+| Varivo od korabice s mrkvom i graškom | hrvatska | 347 g | 102 | — |
+| Varivo od mahuna s junećim mesom | hrvatska | 279 g | 148 | — |
+| Blitva lešo s krumpirom | hrvatska | 205 g | 40 | — |
+| Kelj lešo | hrvatska | 311 g | 87 | — |
+| Kuhani krumpir | hrvatska | 156 g | 106 | — |
+| Pire krumpir | hrvatska | 203 g | 95 | — |
+| Pire špinat | hrvatska | 181 g | 62 | — |
+| Povrće lešo s kukuruzom | hrvatska | 68 g | 116 | — |
+| Tunjevina u graham pecivu | hrvatska | 130 g | 160 | — |
+| Riža s graškom i kukuruzom | hrvatska | 226 g | 127 | — |
+| Kupus salata | hrvatska | 107 g | 53 | — |
+| Zelena salata | hrvatska | 93 g | 88 | — |
+| Zelena salata s kukuruzom | hrvatska | 76 g | 47 | — |
+| Zelena salata s mrkvom | hrvatska | 88 g | 72 | — |
+| Zelena salata s rotkvicom | hrvatska | 68 g | 79 | — |
+| Buhtla s jabukom i marmeladom | hrvatska | 113 g | 197 | — |
+| Kolač od mrkve i jabuke | hrvatska | 121 g | 194 | — |
+| Pita s jabukama | hrvatska | 150 g | 206 | — |
+| Savijača s višnjama | hrvatska | 22 g | 408 | — |
+| Savijača sa sirom i bućama | hrvatska | 80 g | 221 | — |
+| Zlevanka s orasima i kruškom | hrvatska | 140 g | 118 | — |
+| Integralni šareni sendvič | hrvatska | 110 g | 221 | — |
+| Đački integralni sendvič | hrvatska | 145 g | 190 | — |
+| Savijača od špinata | hrvatska | 135 g | 186 | — |
+| Voćna salata s grožđicama | hrvatska | 167 g | 104 | — |
+
+## Za pregled
+
+- Zobene pahuljice sa cimetom i medom: porcija je samo 51 g
+- Namaz od graha, slanutka i tune: porcija je samo 51 g
+- Sirni namaz sa sjemenkama: porcija je samo 32 g
+- Ribani sir i vlasac: porcija je samo 11 g
+- Savijača s višnjama: porcija je samo 22 g

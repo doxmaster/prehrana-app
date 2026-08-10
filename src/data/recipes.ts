@@ -2,7 +2,7 @@
  * GENERIRANO — ne uređivati ručno.
  * Izvor: scripts/recipes-source.json, generator: scripts/generate-recipes.mjs
  *
- * 142 tradicionalnih jela hrvatske i susjednih kuhinja. Vrijednosti se
+ * 186 tradicionalnih jela hrvatske i susjednih kuhinja. Vrijednosti se
  * računaju iz sastojaka provjerenih prema USDA, pa nijedna brojka nije procijenjena.
  *
  * `drink` je preporučeno piće uz jelo — dodaje se posebno i NE ulazi u
@@ -2397,6 +2397,709 @@ export const STARTER_RECIPES: Recipe[] = [
       { foodId: 'u:vrhnje-za-šlag', g: 100 }, // Vrhnje za šlag
       { foodId: 'off:senf', g: 25 }, // Senf
       { foodId: 'u:mladi-luk', g: 50 }, // Mladi luk
+    ],
+  },
+  {
+    id: 'rc-hr-kukuruzni-žganci-sa-sirom',
+    name: 'Kukuruzni žganci sa sirom',
+    cat: 'Pića',
+    cuisine: 'hrvatska',
+    servings: 1,
+    note: 'Službeni normativ za školsku prehranu (233 kcal po porciji).',
+    items: [
+      { foodId: 'b17', g: 50 }, // Svježi sir (posni)
+      { foodId: 'b27', g: 200 }, // Palenta (kukuruzna krupica)
+    ],
+  },
+  {
+    id: 'rc-hr-zobene-pahuljice-sa-cimetom-i-medom',
+    name: 'Zobene pahuljice sa cimetom i medom',
+    cat: 'Pića',
+    cuisine: 'hrvatska',
+    servings: 1,
+    note: 'Službeni normativ za školsku prehranu (195 kcal po porciji).',
+    items: [
+      { foodId: 'b25', g: 40 }, // Zobene pahuljice
+      { foodId: 'b63', g: 5 }, // Med
+      { foodId: 'b56', g: 5 }, // Bademi
+      { foodId: 'u:cimet', g: 0.5 }, // Cimet
+    ],
+  },
+  {
+    id: 'rc-hr-namaz-od-graha-slanutka-i-tune',
+    name: 'Namaz od graha, slanutka i tune',
+    cat: 'Voće',
+    cuisine: 'hrvatska',
+    servings: 1,
+    note: 'Službeni normativ za školsku prehranu (111 kcal po porciji).',
+    items: [
+      { foodId: 'b32', g: 25 }, // Slanutak (kuhani)
+      { foodId: 'b30', g: 10 }, // Grah (kuhani)
+      { foodId: 'b7', g: 10 }, // Tuna (konzerva u vodi)
+      { foodId: 'b19', g: 5 }, // Maslac
+      { foodId: 'u:peršin', g: 1 }, // Peršin
+    ],
+  },
+  {
+    id: 'rc-hr-sirni-namaz-sa-sjemenkama',
+    name: 'Sirni namaz sa sjemenkama',
+    cat: 'Voće',
+    cuisine: 'hrvatska',
+    servings: 1,
+    note: 'Službeni normativ za školsku prehranu (40 kcal po porciji).',
+    items: [
+      { foodId: 'b17', g: 30 }, // Svježi sir (posni)
+      { foodId: 'u:sezam', g: 2 }, // Sezam
+    ],
+  },
+  {
+    id: 'rc-hr-sirni-namaz-s-maslinama',
+    name: 'Sirni namaz s maslinama',
+    cat: 'Voće',
+    cuisine: 'hrvatska',
+    servings: 1,
+    note: 'Službeni normativ za školsku prehranu (52 kcal po porciji).',
+    items: [
+      { foodId: 'b17', g: 40 }, // Svježi sir (posni)
+      { foodId: 'b40', g: 10 }, // Krastavac
+      { foodId: 'off:masline-zelene', g: 10 }, // Masline zelene
+    ],
+  },
+  {
+    id: 'rc-hr-sirni-namaz-s-vlascem',
+    name: 'Sirni namaz s vlascem',
+    cat: 'Voće',
+    cuisine: 'hrvatska',
+    servings: 1,
+    note: 'Službeni normativ za školsku prehranu (49 kcal po porciji).',
+    items: [
+      { foodId: 'b17', g: 60 }, // Svježi sir (posni)
+      { foodId: 'u:mladi-luk', g: 2 }, // Mladi luk
+    ],
+  },
+  {
+    id: 'rc-hr-ribani-sir-i-vlasac',
+    name: 'Ribani sir i vlasac',
+    cat: 'Voće',
+    cuisine: 'hrvatska',
+    servings: 1,
+    note: 'Službeni normativ za školsku prehranu (39 kcal po porciji).',
+    items: [
+      { foodId: 'u:ementaler', g: 10 }, // Ementaler
+      { foodId: 'u:mladi-luk', g: 1 }, // Mladi luk
+    ],
+  },
+  {
+    id: 'rc-hr-juha-minestrone',
+    name: 'Juha minestrone',
+    cat: 'Meso i riba',
+    cuisine: 'hrvatska',
+    servings: 1,
+    note: 'Službeni normativ za školsku prehranu (139 kcal po porciji).',
+    items: [
+      { foodId: 'b3', g: 30 }, // Junetina (nemasna)
+      { foodId: 'b24', g: 21.6 }, // Tjestenina (kuhana)
+      { foodId: 'b41', g: 10 }, // Kupus
+      { foodId: 'u:peršin', g: 1 }, // Peršin
+      { foodId: 'b33', g: 20 }, // Grašak
+      { foodId: 'b43', g: 20 }, // Tikvica
+      { foodId: 'b44', g: 10 }, // Luk
+      { foodId: 'u:celer-korijen', g: 15 }, // Celer korijen
+      { foodId: 'b37', g: 15 }, // Mrkva
+      { foodId: 'u:origano-suhi', g: 1 }, // Origano (suhi)
+    ],
+  },
+  {
+    id: 'rc-hr-juha-od-povrća-s-prosom',
+    name: 'Juha od povrća s prosom',
+    cat: 'Meso i riba',
+    cuisine: 'hrvatska',
+    servings: 1,
+    note: 'Službeni normativ za školsku prehranu (46 kcal po porciji).',
+    items: [
+      { foodId: 'u:celer-korijen', g: 10 }, // Celer korijen
+      { foodId: 'b37', g: 15 }, // Mrkva
+      { foodId: 'b26', g: 10 }, // Krumpir (kuhani)
+      { foodId: 'u:pastrnjak', g: 10 }, // Pastrnjak
+      { foodId: 'u:proso-kuhano', g: 15 }, // Proso (kuhano)
+    ],
+  },
+  {
+    id: 'rc-hr-krem-juha-od-povrća',
+    name: 'Krem juha od povrća',
+    cat: 'Meso i riba',
+    cuisine: 'hrvatska',
+    servings: 1,
+    note: 'Službeni normativ za školsku prehranu (127 kcal po porciji).',
+    items: [
+      { foodId: 'u:brašno-glatko-pšenično', g: 10 }, // Brašno glatko (pšenično)
+      { foodId: 'u:peršin', g: 1 }, // Peršin
+      { foodId: 'b42', g: 15 }, // Cvjetača
+      { foodId: 'b33', g: 15 }, // Grašak
+      { foodId: 'b44', g: 3 }, // Luk
+      { foodId: 'u:celer-korijen', g: 5 }, // Celer korijen
+      { foodId: 'b37', g: 15 }, // Mrkva
+      { foodId: 'b26', g: 10 }, // Krumpir (kuhani)
+      { foodId: 'u:pastrnjak', g: 8 }, // Pastrnjak
+      { foodId: 'off:suncokretovo-ulje', g: 5 }, // Suncokretovo ulje
+    ],
+  },
+  {
+    id: 'rc-hr-juneća-šnicla-u-umaku',
+    name: 'Juneća šnicla u umaku',
+    cat: 'Meso i riba',
+    cuisine: 'hrvatska',
+    servings: 1,
+    note: 'Službeni normativ za školsku prehranu (265 kcal po porciji).',
+    items: [
+      { foodId: 'b3', g: 80 }, // Junetina (nemasna)
+      { foodId: 'off:suncokretovo-ulje', g: 5 }, // Suncokretovo ulje
+      { foodId: 'u:brašno-glatko-pšenično', g: 5 }, // Brašno glatko (pšenično)
+      { foodId: 'b44', g: 10 }, // Luk
+      { foodId: 'u:celer-korijen', g: 3 }, // Celer korijen
+      { foodId: 'b37', g: 10 }, // Mrkva
+      { foodId: 'u:pastrnjak', g: 3 }, // Pastrnjak
+      { foodId: 'u:lovorov-list', g: 0.1 }, // Lovorov list
+      { foodId: 'off:senf', g: 1 }, // Senf
+    ],
+  },
+  {
+    id: 'rc-hr-kosani-odrezak',
+    name: 'Kosani odrezak',
+    cat: 'Meso i riba',
+    cuisine: 'hrvatska',
+    servings: 1,
+    note: 'Službeni normativ za školsku prehranu (307 kcal po porciji).',
+    items: [
+      { foodId: 'b3', g: 40 }, // Junetina (nemasna)
+      { foodId: 'b4', g: 30 }, // Svinjetina (but)
+      { foodId: 'b11', g: 20 }, // Jaje (cijelo)
+      { foodId: 'off:suncokretovo-ulje', g: 5 }, // Suncokretovo ulje
+      { foodId: 'u:brašno-glatko-pšenično', g: 5 }, // Brašno glatko (pšenično)
+      { foodId: 'u:krušne-mrvice', g: 10 }, // Krušne mrvice
+      { foodId: 'u:peršin', g: 1 }, // Peršin
+      { foodId: 'u:češnjak', g: 1 }, // Češnjak
+      { foodId: 'b44', g: 5 }, // Luk
+    ],
+  },
+  {
+    id: 'rc-hr-pureća-prsa-u-umaku',
+    name: 'Pureća prsa u umaku',
+    cat: 'Meso i riba',
+    cuisine: 'hrvatska',
+    servings: 1,
+    note: 'Službeni normativ za školsku prehranu (180 kcal po porciji).',
+    items: [
+      { foodId: 'b2', g: 80 }, // Pureća prsa
+      { foodId: 'off:suncokretovo-ulje', g: 5 }, // Suncokretovo ulje
+      { foodId: 'u:brašno-glatko-pšenično', g: 5 }, // Brašno glatko (pšenično)
+      { foodId: 'b44', g: 20 }, // Luk
+      { foodId: 'b37', g: 10 }, // Mrkva
+      { foodId: 'u:crvena-mljevena-paprika', g: 0.2 }, // Crvena mljevena paprika
+      { foodId: 'u:lovorov-list', g: 0.1 }, // Lovorov list
+      { foodId: 'off:senf', g: 1 }, // Senf
+    ],
+  },
+  {
+    id: 'rc-hr-pureći-rižoto-sa-sezonskim-povrćem',
+    name: 'Pureći rižoto sa sezonskim povrćem',
+    cat: 'Meso i riba',
+    cuisine: 'hrvatska',
+    servings: 1,
+    note: 'Službeni normativ za školsku prehranu (429 kcal po porciji).',
+    items: [
+      { foodId: 'b2', g: 60 }, // Pureća prsa
+      { foodId: 'b62', g: 5 }, // Maslinovo ulje
+      { foodId: 'off:suncokretovo-ulje', g: 5 }, // Suncokretovo ulje
+      { foodId: 'b22', g: 180 }, // Riža bijela (kuhana)
+      { foodId: 'u:celer-stabljika', g: 1 }, // Celer (stabljika)
+      { foodId: 'u:peršin', g: 1 }, // Peršin
+      { foodId: 'b39', g: 10 }, // Paprika crvena
+      { foodId: 'b43', g: 30 }, // Tikvica
+      { foodId: 'b44', g: 15 }, // Luk
+      { foodId: 'u:celer-korijen', g: 5 }, // Celer korijen
+      { foodId: 'b37', g: 20 }, // Mrkva
+      { foodId: 'b30', g: 20 }, // Grah (kuhani)
+      { foodId: 'u:kukuruz-šećerac', g: 10 }, // Kukuruz šećerac
+    ],
+  },
+  {
+    id: 'rc-hr-sekeli-gulaš',
+    name: 'Sekeli gulaš',
+    cat: 'Meso i riba',
+    cuisine: 'hrvatska',
+    servings: 1,
+    note: 'Službeni normativ za školsku prehranu (293 kcal po porciji).',
+    items: [
+      { foodId: 'b4', g: 80 }, // Svinjetina (but)
+      { foodId: 'off:suncokretovo-ulje', g: 5 }, // Suncokretovo ulje
+      { foodId: 'u:brašno-glatko-pšenično', g: 3 }, // Brašno glatko (pšenično)
+      { foodId: 'u:peršin', g: 1 }, // Peršin
+      { foodId: 'b44', g: 10 }, // Luk
+      { foodId: 'b41', g: 140 }, // Kupus
+      { foodId: 'u:crvena-mljevena-paprika', g: 0.2 }, // Crvena mljevena paprika
+      { foodId: 'u:lovorov-list', g: 0.1 }, // Lovorov list
+    ],
+  },
+  {
+    id: 'rc-hr-zapečena-tjestenina-s-piletinom-i-rajčicom',
+    name: 'Zapečena tjestenina s piletinom i rajčicom',
+    cat: 'Meso i riba',
+    cuisine: 'hrvatska',
+    servings: 1,
+    note: 'Službeni normativ za školsku prehranu (538 kcal po porciji).',
+    items: [
+      { foodId: 'b16', g: 40 }, // Sir (gauda/edamer)
+      { foodId: 'u:vrhnje-za-šlag', g: 15 }, // Vrhnje za šlag
+      { foodId: 'b0', g: 70 }, // Pileća prsa (pečena)
+      { foodId: 'b62', g: 5 }, // Maslinovo ulje
+      { foodId: 'u:tjestenina-integralna-kuhana', g: 162 }, // Tjestenina integralna (kuhana)
+      { foodId: 'off:pelati-guljene-rajčice', g: 50 }, // Pelati (guljene rajčice)
+    ],
+  },
+  {
+    id: 'rc-hr-miješano-varivo-s-bijelim-mesom-i-noklicama',
+    name: 'Miješano varivo s bijelim mesom i noklicama',
+    cat: 'Mahunarke',
+    cuisine: 'hrvatska',
+    servings: 1,
+    note: 'Službeni normativ za školsku prehranu (398 kcal po porciji).',
+    items: [
+      { foodId: 'b0', g: 70 }, // Pileća prsa (pečena)
+      { foodId: 'b11', g: 10 }, // Jaje (cijelo)
+      { foodId: 'off:suncokretovo-ulje', g: 15 }, // Suncokretovo ulje
+      { foodId: 'u:brašno-glatko-pšenično', g: 10 }, // Brašno glatko (pšenično)
+      { foodId: 'u:peršin', g: 1 }, // Peršin
+      { foodId: 'b42', g: 50 }, // Cvjetača
+      { foodId: 'b33', g: 70 }, // Grašak
+      { foodId: 'u:češnjak', g: 1 }, // Češnjak
+      { foodId: 'u:celer-korijen', g: 15 }, // Celer korijen
+      { foodId: 'b37', g: 50 }, // Mrkva
+      { foodId: 'b26', g: 100 }, // Krumpir (kuhani)
+      { foodId: 'u:pastrnjak', g: 5 }, // Pastrnjak
+      { foodId: 'u:crvena-mljevena-paprika', g: 0.2 }, // Crvena mljevena paprika
+      { foodId: 'u:lovorov-list', g: 0.1 }, // Lovorov list
+    ],
+  },
+  {
+    id: 'rc-hr-varivo-od-graha-s-puretinom',
+    name: 'Varivo od graha s puretinom',
+    cat: 'Mahunarke',
+    cuisine: 'hrvatska',
+    servings: 1,
+    note: 'Službeni normativ za školsku prehranu (342 kcal po porciji).',
+    items: [
+      { foodId: 'u:svinjska-mast', g: 10 }, // Svinjska mast
+      { foodId: 'b2', g: 60 }, // Pureća prsa
+      { foodId: 'off:suncokretovo-ulje', g: 5 }, // Suncokretovo ulje
+      { foodId: 'b30', g: 100 }, // Grah (kuhani)
+      { foodId: 'u:ječam-kuhani', g: 30 }, // Ječam (kuhani)
+      { foodId: 'u:brašno-glatko-pšenično', g: 5 }, // Brašno glatko (pšenično)
+      { foodId: 'u:češnjak', g: 1 }, // Češnjak
+      { foodId: 'b44', g: 10 }, // Luk
+      { foodId: 'u:celer-korijen', g: 2 }, // Celer korijen
+      { foodId: 'b37', g: 10 }, // Mrkva
+    ],
+  },
+  {
+    id: 'rc-hr-varivo-od-ječmene-kaše-s-miješanim-mesom',
+    name: 'Varivo od ječmene kaše s miješanim mesom',
+    cat: 'Mahunarke',
+    cuisine: 'hrvatska',
+    servings: 1,
+    note: 'Službeni normativ za školsku prehranu (432 kcal po porciji).',
+    items: [
+      { foodId: 'b3', g: 45 }, // Junetina (nemasna)
+      { foodId: 'off:suncokretovo-ulje', g: 10 }, // Suncokretovo ulje
+      { foodId: 'u:ječam-kuhani', g: 90 }, // Ječam (kuhani)
+      { foodId: 'u:celer-korijen', g: 4 }, // Celer korijen
+      { foodId: 'b41', g: 80 }, // Kupus
+      { foodId: 'u:pastrnjak', g: 6 }, // Pastrnjak
+      { foodId: 'b44', g: 10 }, // Luk
+      { foodId: 'u:poriluk', g: 30 }, // Poriluk
+      { foodId: 'b37', g: 70 }, // Mrkva
+    ],
+  },
+  {
+    id: 'rc-hr-varivo-od-korabice-s-mrkvom-i-graškom',
+    name: 'Varivo od korabice s mrkvom i graškom',
+    cat: 'Mahunarke',
+    cuisine: 'hrvatska',
+    servings: 1,
+    note: 'Službeni normativ za školsku prehranu (306 kcal po porciji).',
+    items: [
+      { foodId: 'b2', g: 60 }, // Pureća prsa
+      { foodId: 'off:suncokretovo-ulje', g: 5 }, // Suncokretovo ulje
+      { foodId: 'u:brašno-glatko-pšenično', g: 5 }, // Brašno glatko (pšenično)
+      { foodId: 'u:peršin', g: 1 }, // Peršin
+      { foodId: 'b42', g: 15 }, // Cvjetača
+      { foodId: 'b33', g: 30 }, // Grašak
+      { foodId: 'u:češnjak', g: 1 }, // Češnjak
+      { foodId: 'u:celer-korijen', g: 5 }, // Celer korijen
+      { foodId: 'b37', g: 50 }, // Mrkva
+      { foodId: 'b26', g: 170 }, // Krumpir (kuhani)
+      { foodId: 'u:pastrnjak', g: 5 }, // Pastrnjak
+      { foodId: 'u:crvena-mljevena-paprika', g: 0.2 }, // Crvena mljevena paprika
+      { foodId: 'u:lovorov-list', g: 0.1 }, // Lovorov list
+    ],
+  },
+  {
+    id: 'rc-hr-varivo-od-mahuna-s-junećim-mesom',
+    name: 'Varivo od mahuna s junećim mesom',
+    cat: 'Mahunarke',
+    cuisine: 'hrvatska',
+    servings: 1,
+    note: 'Službeni normativ za školsku prehranu (490 kcal po porciji).',
+    items: [
+      { foodId: 'b3', g: 90 }, // Junetina (nemasna)
+      { foodId: 'off:suncokretovo-ulje', g: 10 }, // Suncokretovo ulje
+      { foodId: 'u:brašno-glatko-pšenično', g: 10 }, // Brašno glatko (pšenično)
+      { foodId: 'u:peršin', g: 1 }, // Peršin
+      { foodId: 'u:češnjak', g: 2 }, // Češnjak
+      { foodId: 'b44', g: 15 }, // Luk
+      { foodId: 'b26', g: 150 }, // Krumpir (kuhani)
+      { foodId: 'u:crvena-mljevena-paprika', g: 1 }, // Crvena mljevena paprika
+    ],
+  },
+  {
+    id: 'rc-hr-blitva-lešo-s-krumpirom',
+    name: 'Blitva lešo s krumpirom',
+    cat: 'Žitarice i kruh',
+    cuisine: 'hrvatska',
+    servings: 1,
+    note: 'Službeni normativ za školsku prehranu (66 kcal po porciji).',
+    items: [
+      { foodId: 'b62', g: 3 }, // Maslinovo ulje
+      { foodId: 'off:suncokretovo-ulje', g: 2 }, // Suncokretovo ulje
+      { foodId: 'u:blitva', g: 200 }, // Blitva
+    ],
+  },
+  {
+    id: 'rc-hr-kelj-lešo',
+    name: 'Kelj lešo',
+    cat: 'Žitarice i kruh',
+    cuisine: 'hrvatska',
+    servings: 1,
+    note: 'Službeni normativ za školsku prehranu (222 kcal po porciji).',
+    items: [
+      { foodId: 'b62', g: 10 }, // Maslinovo ulje
+      { foodId: 'u:kelj', g: 150 }, // Kelj
+      { foodId: 'u:češnjak', g: 1 }, // Češnjak
+      { foodId: 'b26', g: 150 }, // Krumpir (kuhani)
+    ],
+  },
+  {
+    id: 'rc-hr-kuhani-krumpir',
+    name: 'Kuhani krumpir',
+    cat: 'Žitarice i kruh',
+    cuisine: 'hrvatska',
+    servings: 1,
+    note: 'Službeni normativ za školsku prehranu (191 kcal po porciji).',
+    items: [
+      { foodId: 'u:peršin', g: 1 }, // Peršin
+      { foodId: 'b19', g: 5 }, // Maslac
+      { foodId: 'b26', g: 150 }, // Krumpir (kuhani)
+    ],
+  },
+  {
+    id: 'rc-hr-pire-krumpir',
+    name: 'Pire krumpir',
+    cat: 'Žitarice i kruh',
+    cuisine: 'hrvatska',
+    servings: 1,
+    note: 'Službeni normativ za školsku prehranu (179 kcal po porciji).',
+    items: [
+      { foodId: 'b19', g: 3 }, // Maslac
+      { foodId: 'b26', g: 200 }, // Krumpir (kuhani)
+    ],
+  },
+  {
+    id: 'rc-hr-pire-špinat',
+    name: 'Pire špinat',
+    cat: 'Žitarice i kruh',
+    cuisine: 'hrvatska',
+    servings: 1,
+    note: 'Službeni normativ za školsku prehranu (119 kcal po porciji).',
+    items: [
+      { foodId: 'b19', g: 5 }, // Maslac
+      { foodId: 'u:brašno-glatko-pšenično', g: 10 }, // Brašno glatko (pšenično)
+      { foodId: 'b36', g: 165 }, // Špinat
+      { foodId: 'u:češnjak', g: 1 }, // Češnjak
+    ],
+  },
+  {
+    id: 'rc-hr-povrće-lešo-s-kukuruzom',
+    name: 'Povrće lešo s kukuruzom',
+    cat: 'Žitarice i kruh',
+    cuisine: 'hrvatska',
+    servings: 1,
+    note: 'Službeni normativ za školsku prehranu (70 kcal po porciji).',
+    items: [
+      { foodId: 'b62', g: 5 }, // Maslinovo ulje
+      { foodId: 'off:suncokretovo-ulje', g: 2 }, // Suncokretovo ulje
+      { foodId: 'u:peršin', g: 1 }, // Peršin
+      { foodId: 'b35', g: 30 }, // Brokula
+      { foodId: 'b42', g: 30 }, // Cvjetača
+    ],
+  },
+  {
+    id: 'rc-hr-tunjevina-u-graham-pecivu',
+    name: 'Tunjevina u graham pecivu',
+    cat: 'Žitarice i kruh',
+    cuisine: 'hrvatska',
+    servings: 1,
+    note: 'Službeni normativ za školsku prehranu (247 kcal po porciji).',
+    items: [
+      { foodId: 'b7', g: 20 }, // Tuna (konzerva u vodi)
+      { foodId: 'b11', g: 25 }, // Jaje (cijelo)
+      { foodId: 'b21', g: 60 }, // Kruh integralni
+      { foodId: 'b45', g: 10 }, // Salata (zelena)
+      { foodId: 'b38', g: 15 }, // Rajčica
+    ],
+  },
+  {
+    id: 'rc-hr-riža-s-graškom-i-kukuruzom',
+    name: 'Riža s graškom i kukuruzom',
+    cat: 'Povrće',
+    cuisine: 'hrvatska',
+    servings: 1,
+    note: 'Službeni normativ za školsku prehranu (243 kcal po porciji).',
+    items: [
+      { foodId: 'off:suncokretovo-ulje', g: 5 }, // Suncokretovo ulje
+      { foodId: 'b22', g: 150 }, // Riža bijela (kuhana)
+      { foodId: 'u:peršin', g: 1 }, // Peršin
+      { foodId: 'b33', g: 30 }, // Grašak
+      { foodId: 'u:celer-korijen', g: 10 }, // Celer korijen
+      { foodId: 'b37', g: 10 }, // Mrkva
+      { foodId: 'u:pastrnjak', g: 10 }, // Pastrnjak
+      { foodId: 'u:kukuruz-šećerac', g: 10 }, // Kukuruz šećerac
+    ],
+  },
+  {
+    id: 'rc-hr-kupus-salata',
+    name: 'Kupus salata',
+    cat: 'Povrće',
+    cuisine: 'hrvatska',
+    servings: 1,
+    note: 'Službeni normativ za školsku prehranu (47 kcal po porciji).',
+    items: [
+      { foodId: 'off:suncokretovo-ulje', g: 3 }, // Suncokretovo ulje
+      { foodId: 'b41', g: 100 }, // Kupus
+      { foodId: 'u:peršin', g: 1 }, // Peršin
+      { foodId: 'u:ocat-jabučni', g: 3 }, // Ocat (jabučni)
+    ],
+  },
+  {
+    id: 'rc-hr-zelena-salata',
+    name: 'Zelena salata',
+    cat: 'Povrće',
+    cuisine: 'hrvatska',
+    servings: 1,
+    note: 'Službeni normativ za školsku prehranu (82 kcal po porciji).',
+    items: [
+      { foodId: 'b62', g: 5 }, // Maslinovo ulje
+      { foodId: 'off:suncokretovo-ulje', g: 3 }, // Suncokretovo ulje
+      { foodId: 'b45', g: 80 }, // Salata (zelena)
+      { foodId: 'u:ocat-jabučni', g: 5 }, // Ocat (jabučni)
+    ],
+  },
+  {
+    id: 'rc-hr-zelena-salata-s-kukuruzom',
+    name: 'Zelena salata s kukuruzom',
+    cat: 'Povrće',
+    cuisine: 'hrvatska',
+    servings: 1,
+    note: 'Službeni normativ za školsku prehranu (43 kcal po porciji).',
+    items: [
+      { foodId: 'off:suncokretovo-ulje', g: 3 }, // Suncokretovo ulje
+      { foodId: 'b45', g: 70 }, // Salata (zelena)
+      { foodId: 'u:ocat-jabučni', g: 3 }, // Ocat (jabučni)
+    ],
+  },
+  {
+    id: 'rc-hr-zelena-salata-s-mrkvom',
+    name: 'Zelena salata s mrkvom',
+    cat: 'Povrće',
+    cuisine: 'hrvatska',
+    servings: 1,
+    note: 'Službeni normativ za školsku prehranu (58 kcal po porciji).',
+    items: [
+      { foodId: 'b62', g: 5 }, // Maslinovo ulje
+      { foodId: 'b45', g: 60 }, // Salata (zelena)
+      { foodId: 'b37', g: 20 }, // Mrkva
+      { foodId: 'u:ocat-jabučni', g: 3 }, // Ocat (jabučni)
+    ],
+  },
+  {
+    id: 'rc-hr-zelena-salata-s-rotkvicom',
+    name: 'Zelena salata s rotkvicom',
+    cat: 'Povrće',
+    cuisine: 'hrvatska',
+    servings: 1,
+    note: 'Službeni normativ za školsku prehranu (54 kcal po porciji).',
+    items: [
+      { foodId: 'b62', g: 5 }, // Maslinovo ulje
+      { foodId: 'b45', g: 60 }, // Salata (zelena)
+      { foodId: 'u:ocat-jabučni', g: 3 }, // Ocat (jabučni)
+    ],
+  },
+  {
+    id: 'rc-hr-buhtla-s-jabukom-i-marmeladom',
+    name: 'Buhtla s jabukom i marmeladom',
+    cat: 'Ostalo',
+    cuisine: 'hrvatska',
+    servings: 1,
+    note: 'Službeni normativ za školsku prehranu (220 kcal po porciji).',
+    items: [
+      { foodId: 'b11', g: 10 }, // Jaje (cijelo)
+      { foodId: 'off:suncokretovo-ulje', g: 5 }, // Suncokretovo ulje
+      { foodId: 'u:brašno-glatko-pšenično', g: 20 }, // Brašno glatko (pšenično)
+      { foodId: 'u:šećer-bijeli', g: 1 }, // Šećer (bijeli)
+      { foodId: 'u:smeđi-šećer', g: 5 }, // Smeđi šećer
+      { foodId: 'u:šećer-bijeli', g: 0.5 }, // Šećer (bijeli)
+      { foodId: 'u:džem-od-marelice', g: 10 }, // Džem od marelice
+      { foodId: 'u:limun', g: 1 }, // Limun
+      { foodId: 'b47', g: 60 }, // Jabuka
+    ],
+  },
+  {
+    id: 'rc-hr-kolač-od-mrkve-i-jabuke',
+    name: 'Kolač od mrkve i jabuke',
+    cat: 'Voće',
+    cuisine: 'hrvatska',
+    servings: 1,
+    note: 'Službeni normativ za školsku prehranu (215 kcal po porciji).',
+    items: [
+      { foodId: 'b11', g: 20 }, // Jaje (cijelo)
+      { foodId: 'off:suncokretovo-ulje', g: 5 }, // Suncokretovo ulje
+      { foodId: 'u:brašno-glatko-pšenično', g: 30 }, // Brašno glatko (pšenično)
+      { foodId: 'u:šećer-bijeli', g: 5 }, // Šećer (bijeli)
+      { foodId: 'u:šećer-bijeli', g: 0.5 }, // Šećer (bijeli)
+      { foodId: 'b37', g: 40 }, // Mrkva
+      { foodId: 'b47', g: 20 }, // Jabuka
+    ],
+  },
+  {
+    id: 'rc-hr-pita-s-jabukama',
+    name: 'Pita s jabukama',
+    cat: 'Voće',
+    cuisine: 'hrvatska',
+    servings: 1,
+    note: 'Službeni normativ za školsku prehranu (283 kcal po porciji).',
+    items: [
+      { foodId: 'b11', g: 10 }, // Jaje (cijelo)
+      { foodId: 'b19', g: 10 }, // Maslac
+      { foodId: 'u:brašno-glatko-pšenično', g: 30 }, // Brašno glatko (pšenično)
+      { foodId: 'u:krušne-mrvice', g: 3 }, // Krušne mrvice
+      { foodId: 'u:šećer-bijeli', g: 5 }, // Šećer (bijeli)
+      { foodId: 'u:šećer-bijeli', g: 1 }, // Šećer (bijeli)
+      { foodId: 'u:šećer-bijeli', g: 1 }, // Šećer (bijeli)
+      { foodId: 'b63', g: 3 }, // Med
+      { foodId: 'u:limun', g: 1 }, // Limun
+      { foodId: 'b47', g: 80 }, // Jabuka
+      { foodId: 'u:grožđice', g: 5 }, // Grožđice
+      { foodId: 'u:cimet', g: 0.5 }, // Cimet
+    ],
+  },
+  {
+    id: 'rc-hr-savijača-s-višnjama',
+    name: 'Savijača s višnjama',
+    cat: 'Voće',
+    cuisine: 'hrvatska',
+    servings: 1,
+    note: 'Službeni normativ za školsku prehranu (88 kcal po porciji).',
+    items: [
+      { foodId: 'off:suncokretovo-ulje', g: 2 }, // Suncokretovo ulje
+      { foodId: 'u:brašno-glatko-pšenično', g: 20 }, // Brašno glatko (pšenično)
+    ],
+  },
+  {
+    id: 'rc-hr-savijača-sa-sirom-i-bućama',
+    name: 'Savijača sa sirom i bućama',
+    cat: 'Ostalo',
+    cuisine: 'hrvatska',
+    servings: 1,
+    note: 'Službeni normativ za školsku prehranu (183 kcal po porciji).',
+    items: [
+      { foodId: 'b17', g: 30 }, // Svježi sir (posni)
+      { foodId: 'b11', g: 10 }, // Jaje (cijelo)
+      { foodId: 'off:suncokretovo-ulje', g: 5 }, // Suncokretovo ulje
+      { foodId: 'u:brašno-glatko-pšenično', g: 20 }, // Brašno glatko (pšenično)
+      { foodId: 'u:proso-kuhano', g: 15 }, // Proso (kuhano)
+    ],
+  },
+  {
+    id: 'rc-hr-zlevanka-s-orasima-i-kruškom',
+    name: 'Zlevanka s orasima i kruškom',
+    cat: 'Ostalo',
+    cuisine: 'hrvatska',
+    servings: 1,
+    note: 'Službeni normativ za školsku prehranu (175 kcal po porciji).',
+    items: [
+      { foodId: 'b11', g: 15 }, // Jaje (cijelo)
+      { foodId: 'off:suncokretovo-ulje', g: 5 }, // Suncokretovo ulje
+      { foodId: 'b27', g: 120 }, // Palenta (kukuruzna krupica)
+    ],
+  },
+  {
+    id: 'rc-hr-integralni-šareni-sendvič',
+    name: 'Integralni šareni sendvič',
+    cat: 'Ostalo',
+    cuisine: 'hrvatska',
+    servings: 1,
+    note: 'Službeni normativ za školsku prehranu (259 kcal po porciji).',
+    items: [
+      { foodId: 'b16', g: 20 }, // Sir (gauda/edamer)
+      { foodId: 'b10', g: 20 }, // Šunka (pileća)
+      { foodId: 'b21', g: 60 }, // Kruh integralni
+      { foodId: 'b45', g: 10 }, // Salata (zelena)
+    ],
+  },
+  {
+    id: 'rc-hr-đački-integralni-sendvič',
+    name: 'Đački integralni sendvič',
+    cat: 'Ostalo',
+    cuisine: 'hrvatska',
+    servings: 1,
+    note: 'Službeni normativ za školsku prehranu (292 kcal po porciji).',
+    items: [
+      { foodId: 'b16', g: 20 }, // Sir (gauda/edamer)
+      { foodId: 'b10', g: 20 }, // Šunka (pileća)
+      { foodId: 'b21', g: 70 }, // Kruh integralni
+      { foodId: 'b45', g: 10 }, // Salata (zelena)
+      { foodId: 'b40', g: 20 }, // Krastavac
+      { foodId: 'off:kečap', g: 5 }, // Kečap
+    ],
+  },
+  {
+    id: 'rc-hr-savijača-od-špinata',
+    name: 'Savijača od špinata',
+    cat: 'Ostalo',
+    cuisine: 'hrvatska',
+    servings: 1,
+    note: 'Službeni normativ za školsku prehranu (241 kcal po porciji).',
+    items: [
+      { foodId: 'b17', g: 40 }, // Svježi sir (posni)
+      { foodId: 'b11', g: 10 }, // Jaje (cijelo)
+      { foodId: 'off:suncokretovo-ulje', g: 5 }, // Suncokretovo ulje
+      { foodId: 'u:brašno-glatko-pšenično', g: 40 }, // Brašno glatko (pšenično)
+      { foodId: 'b36', g: 40 }, // Špinat
+    ],
+  },
+  {
+    id: 'rc-hr-voćna-salata-s-grožđicama',
+    name: 'Voćna salata s grožđicama',
+    cat: 'Voće',
+    cuisine: 'hrvatska',
+    servings: 1,
+    note: 'Službeni normativ za školsku prehranu (169 kcal po porciji).',
+    items: [
+      { foodId: 'u:limun', g: 2 }, // Limun
+      { foodId: 'b47', g: 50 }, // Jabuka
+      { foodId: 'b48', g: 50 }, // Banana
+      { foodId: 'u:grožđice', g: 5 }, // Grožđice
+      { foodId: 'b56', g: 10 }, // Bademi
+      { foodId: 'u:breskva', g: 50 }, // Breskva
     ],
   },
 ]

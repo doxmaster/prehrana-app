@@ -185,7 +185,7 @@ export function Namirnice() {
           ))}
         </div>
 
-        <div style={{ overflowX: 'auto' }}>
+        <div className="table-scroll">
           <table>
             <thead>
               <tr>

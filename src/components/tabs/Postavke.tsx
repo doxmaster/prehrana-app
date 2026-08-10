@@ -1,6 +1,9 @@
 import { useRef, useState } from 'react'
 import { BASE_FOODS } from '../../data/foods'
 import { confirmDialog, toast } from '../../store/dialogs'
+import { RESET_PARTS, describeReset, resetParts, restoreStarterContent, type ResetKey } from '../../domain/reset'
+import { STARTER_MENUS, STARTER_WEEKS } from '../../data/menus'
+import { STARTER_RECIPES } from '../../data/recipes'
 import { downloadBlob, exportState, ImportError, parseImport } from '../../store/storage'
 import { useAppStore } from '../../store/useAppStore'
 import { fmt } from '../../lib/format'
@@ -84,6 +87,37 @@ export function Postavke() {
       </div>
 
       <div className="card">
+        <h2>Ugrađeni sadržaj</h2>
+        <p className="muted small" style={{ margin: '-6px 0 10px' }}>
+          Recepti, dnevni jelovnici i sezonski tjedni dolaze samo pri prvom pokretanju. Ako su ti
+          obrisani ili je aplikacija u međuvremenu dobila novi sadržaj, ovime se vraća ono što
+          nedostaje — postojeće se ne dira.
+        </p>
+        <button
+          className="btn secondary small"
+          onClick={() => {
+            const { state: next, added } = restoreStarterContent(state, {
+              recipes: STARTER_RECIPES,
+              menus: STARTER_MENUS,
+              weeks: STARTER_WEEKS,
+            })
+            const parts = [
+              added.recipes && `${added.recipes} recepata`,
+              added.menus && `${added.menus} jelovnika`,
+              added.weeks && `${added.weeks} tjedana`,
+            ].filter(Boolean)
+            if (!parts.length) return toast('Sve je već na mjestu.')
+            replaceAll(next)
+            toast(`Vraćeno: ${parts.join(', ')}.`)
+          }}
+        >
+          ↺ Vrati ugrađene jelovnike i recepte
+        </button>
+      </div>
+
+      <ResetPanel />
+
+      <div className="card">
         <h2>O podacima</h2>
         <p className="muted small">
           Hranjive vrijednosti ugrađene baze provjerene su prema USDA FoodData Central. Namirnice
@@ -95,6 +129,79 @@ export function Postavke() {
         </p>
       </div>
     </>
+  )
+}
+
+/**
+ * Selektivno brisanje. Namjerno nije jedno "obrisi sve" dugme: najcesce smeta
+ * samo jedan dio (testni dnevnik, probni jelovnici), a ostatak se zeli zadrzati.
+ */
+function ResetPanel() {
+  const state = useAppStore((s) => s.data)
+  const replaceAll = useAppStore((s) => s.replaceAll)
+  const [selected, setSelected] = useState<ResetKey[]>([])
+
+  const toggle = (key: ResetKey) =>
+    setSelected((prev) => (prev.includes(key) ? prev.filter((k) => k !== key) : [...prev, key]))
+
+  const summary = describeReset(state, selected)
+
+  const run = async () => {
+    if (!selected.length) return toast('Odaberi barem jedan dio za brisanje.')
+    const question =
+      `Obrisati:\n\n${summary.map((l) => `• ${l}`).join('\n')}\n\n` +
+      'Ovo se ne može poništiti. Ako nisi izvezao sigurnosnu kopiju, odustani i prvo je napravi.'
+    if (!(await confirmDialog(question, 'Obriši'))) return
+    replaceAll(resetParts(state, selected))
+    setSelected([])
+    toast('Obrisano.')
+  }
+
+  return (
+    <div className="card">
+      <h2>Brisanje podataka</h2>
+      <p className="muted small" style={{ margin: '-6px 0 12px' }}>
+        Odaberi samo ono što želiš maknuti — ostalo ostaje netaknuto. Prije brisanja izvezi
+        sigurnosnu kopiju gore.
+      </p>
+
+      {RESET_PARTS.map((part) => (
+        <label
+          key={part.key}
+          className="item"
+          style={{ alignItems: 'flex-start', cursor: 'pointer', paddingLeft: 0 }}
+        >
+          <input
+            type="checkbox"
+            style={{ width: 'auto', marginTop: 3 }}
+            checked={selected.includes(part.key)}
+            onChange={() => toggle(part.key)}
+          />
+          <span style={{ flex: 1, minWidth: 0 }}>
+            <b>{part.label}</b>
+            <br />
+            <span className="muted small">{part.description}</span>
+          </span>
+        </label>
+      ))}
+
+      {summary.length > 0 && (
+        <div className="banner warn" style={{ marginTop: 12, marginBottom: 0 }}>
+          Bit će obrisano: {summary.join(', ')}.
+        </div>
+      )}
+
+      <div className="row" style={{ marginTop: 12 }}>
+        <button className="btn danger small" disabled={!selected.length} onClick={() => void run()}>
+          Obriši odabrano
+        </button>
+        {selected.length > 0 && (
+          <button className="btn secondary small" onClick={() => setSelected([])}>
+            Poništi odabir
+          </button>
+        )}
+      </div>
+    </div>
   )
 }
 

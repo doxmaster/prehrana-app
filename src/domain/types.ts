@@ -112,12 +112,20 @@ export interface Person {
   portionFactor?: number
 }
 
+/**
+ * Podrijetlo jela. Generator tjedana drzi se domace i regionalne kuhinje, a
+ * `ostalo` pusta najvise jednom tjedno kao izuzetak.
+ */
+export const CUISINES = ['hrvatska', 'regionalna', 'ostalo'] as const
+export type Cuisine = (typeof CUISINES)[number]
+
 /** Jedan dan jelovnika — gradivni element tjednog plana. */
 export interface Menu {
   id: string
   title?: string
   desc?: string
   meals: DayMeals
+  cuisine?: Cuisine
 }
 
 export interface Household {

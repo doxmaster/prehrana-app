@@ -12,6 +12,7 @@ import type { Menu, WeekPlan } from '../domain/types'
 export const STARTER_MENUS: Menu[] = [
   {
     id: 'mn-piletina-riza',
+    cuisine: 'hrvatska',
     title: 'Piletina s rižom',
     desc: 'Uobičajen radni dan',
     meals: [
@@ -33,6 +34,7 @@ export const STARTER_MENUS: Menu[] = [
   },
   {
     id: 'mn-sarma',
+    cuisine: 'hrvatska',
     title: 'Sarma',
     desc: 'Zimski klasik',
     meals: [
@@ -59,6 +61,7 @@ export const STARTER_MENUS: Menu[] = [
   },
   {
     id: 'mn-riblji-petak',
+    cuisine: 'hrvatska',
     title: 'Riblji petak',
     desc: 'Losos s krumpirom i brokulom',
     meals: [
@@ -84,6 +87,7 @@ export const STARTER_MENUS: Menu[] = [
   },
   {
     id: 'mn-grah',
+    cuisine: 'hrvatska',
     title: 'Grah s kobasicom',
     desc: 'Zasitan zimski ručak',
     meals: [
@@ -103,6 +107,7 @@ export const STARTER_MENUS: Menu[] = [
   },
   {
     id: 'mn-bolognese',
+    cuisine: 'regionalna',
     title: 'Tjestenina bolognese',
     desc: 'Brz obiteljski ručak',
     meals: [
@@ -124,6 +129,7 @@ export const STARTER_MENUS: Menu[] = [
   },
   {
     id: 'mn-punjena-paprika',
+    cuisine: 'hrvatska',
     title: 'Punjena paprika',
     desc: 'Jesenski ručak',
     meals: [
@@ -147,6 +153,7 @@ export const STARTER_MENUS: Menu[] = [
   },
   {
     id: 'mn-musaka',
+    cuisine: 'regionalna',
     title: 'Musaka',
     desc: 'Krumpir s mljevenim mesom',
     meals: [
@@ -172,6 +179,7 @@ export const STARTER_MENUS: Menu[] = [
   },
   {
     id: 'mn-cevapi',
+    cuisine: 'regionalna',
     title: 'Ćevapi',
     desc: 'Roštilj s prilogom',
     meals: [
@@ -199,6 +207,7 @@ export const STARTER_MENUS: Menu[] = [
   },
   {
     id: 'mn-pileca-juha',
+    cuisine: 'hrvatska',
     title: 'Pileća juha',
     desc: 'Lagan dan',
     meals: [
@@ -217,6 +226,7 @@ export const STARTER_MENUS: Menu[] = [
   },
   {
     id: 'mn-ljetni-lagani',
+    cuisine: 'hrvatska',
     title: 'Ljetni lagani dan',
     desc: 'Salate i svježe voće',
     meals: [
@@ -248,6 +258,7 @@ export const STARTER_MENUS: Menu[] = [
   },
   {
     id: 'mn-proljetni-povrce',
+    cuisine: 'hrvatska',
     title: 'Proljetno povrće',
     desc: 'Mlado povrće i riba',
     meals: [
@@ -275,6 +286,7 @@ export const STARTER_MENUS: Menu[] = [
   },
   {
     id: 'mn-nedjeljni-rucak',
+    cuisine: 'hrvatska',
     title: 'Nedjeljni ručak',
     desc: 'Pečenje s prilogom',
     meals: [
@@ -300,6 +312,7 @@ export const STARTER_MENUS: Menu[] = [
   },
   {
     id: 'mn-vegetarijanski',
+    cuisine: 'regionalna',
     title: 'Bez mesa',
     desc: 'Mahunarke i sir',
     meals: [
@@ -320,6 +333,7 @@ export const STARTER_MENUS: Menu[] = [
   },
   {
     id: 'mn-zimski-jaki',
+    cuisine: 'hrvatska',
     title: 'Zimski zasitan dan',
     desc: 'Palenta i gulaš od junetine',
     meals: [

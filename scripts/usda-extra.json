@@ -1,0 +1,2184 @@
+{
+  "_opis": "Namirnice koje se dodaju uz ugradenu bazu iz legacy datoteke. Rezultat je src/data/extraFoods.ts s identifikatorima 'u:<slug>', pa ugradena baza zadrzava invarijantu b0..b92.",
+  "_avoidGlobal": [
+    "baby food",
+    "infant",
+    "restaurant",
+    "fast food",
+    "school lunch",
+    "babyfood"
+  ],
+  "foods": [
+    {
+      "name": "Janjetina",
+      "cat": "Meso i riba",
+      "serv": 150,
+      "query": "lamb domestic separable lean only cooked roasted",
+      "must": [
+        "lamb",
+        "cooked"
+      ],
+      "avoid": [
+        "ground",
+        "new zealand",
+        "raw",
+        "variety"
+      ],
+      "fdcId": 174320,
+      "description": "Lamb, loin, separable lean only, trimmed to 1/4\" fat, choice, cooked, roasted"
+    },
+    {
+      "name": "Teletina",
+      "cat": "Meso i riba",
+      "serv": 150,
+      "query": "veal separable lean only cooked roasted",
+      "must": [
+        "veal",
+        "cooked"
+      ],
+      "avoid": [
+        "ground",
+        "raw",
+        "variety",
+        "breaded"
+      ],
+      "fdcId": 175265,
+      "description": "Veal, composite of trimmed retail cuts, separable lean only, cooked"
+    },
+    {
+      "name": "Pačja prsa",
+      "cat": "Meso i riba",
+      "serv": 150,
+      "query": "duck domesticated meat only cooked roasted",
+      "must": [
+        "duck",
+        "cooked"
+      ],
+      "avoid": [
+        "skin",
+        "raw",
+        "wild",
+        "liver"
+      ],
+      "fdcId": 172411,
+      "description": "Duck, domesticated, meat only, cooked, roasted"
+    },
+    {
+      "name": "Pileća jetra",
+      "cat": "Meso i riba",
+      "serv": 100,
+      "query": "chicken liver all classes cooked simmered",
+      "must": [
+        "chicken",
+        "liver",
+        "cooked"
+      ],
+      "avoid": [
+        "raw",
+        "pate"
+      ],
+      "fdcId": 171061,
+      "description": "Chicken, liver, all classes, cooked, simmered"
+    },
+    {
+      "name": "Pileća krilca",
+      "cat": "Meso i riba",
+      "serv": 150,
+      "query": "chicken broilers wing meat only cooked roasted",
+      "must": [
+        "chicken",
+        "wing",
+        "cooked"
+      ],
+      "avoid": [
+        "skin",
+        "battered",
+        "fried",
+        "raw",
+        "sauce"
+      ],
+      "fdcId": 172392,
+      "description": "Chicken, broilers or fryers, wing, meat only, cooked, roasted"
+    },
+    {
+      "name": "Svinjski kotlet",
+      "cat": "Meso i riba",
+      "serv": 180,
+      "query": "pork loin chop separable lean only cooked broiled",
+      "must": [
+        "pork",
+        "loin",
+        "cooked"
+      ],
+      "avoid": [
+        "raw",
+        "breaded",
+        "cured",
+        "ground"
+      ],
+      "fdcId": 168313,
+      "description": "Pork, fresh, loin, tenderloin, separable lean only, cooked, broiled"
+    },
+    {
+      "name": "Svinjska rebra",
+      "cat": "Meso i riba",
+      "serv": 200,
+      "query": "pork spareribs separable lean and fat cooked braised",
+      "must": [
+        "pork",
+        "cooked"
+      ],
+      "avoid": [
+        "raw",
+        "sauce",
+        "cured"
+      ],
+      "fdcId": 167854,
+      "description": "Pork, fresh, spareribs, separable lean and fat, cooked, braised"
+    },
+    {
+      "name": "Juneći odrezak",
+      "cat": "Meso i riba",
+      "serv": 180,
+      "query": "beef loin top sirloin separable lean only cooked broiled",
+      "must": [
+        "beef",
+        "lean",
+        "cooked"
+      ],
+      "avoid": [
+        "ground",
+        "raw",
+        "cured",
+        "new zealand",
+        "australian"
+      ],
+      "fdcId": 168635,
+      "description": "Beef, top sirloin, steak, separable lean only, trimmed to 0\" fat, choice, cooked, broiled"
+    },
+    {
+      "name": "Junetina za gulaš",
+      "cat": "Meso i riba",
+      "serv": 180,
+      "query": "beef chuck separable lean only cooked braised",
+      "must": [
+        "beef",
+        "chuck",
+        "cooked"
+      ],
+      "avoid": [
+        "ground",
+        "raw",
+        "australian",
+        "new zealand"
+      ],
+      "fdcId": 171205,
+      "description": "Beef, chuck for stew, separable lean and fat, choice, cooked, braised"
+    },
+    {
+      "name": "Oslić",
+      "cat": "Meso i riba",
+      "serv": 180,
+      "query": "fish cod atlantic cooked dry heat",
+      "must": [
+        "cod",
+        "cooked"
+      ],
+      "avoid": [
+        "raw",
+        "dried",
+        "salted",
+        "canned"
+      ],
+      "fdcId": 171956,
+      "description": "Fish, cod, Atlantic, cooked, dry heat"
+    },
+    {
+      "name": "Brancin",
+      "cat": "Meso i riba",
+      "serv": 180,
+      "query": "fish bass fresh water cooked dry heat",
+      "must": [
+        "bass",
+        "cooked"
+      ],
+      "avoid": [
+        "raw",
+        "striped",
+        "sea"
+      ],
+      "fdcId": 171989,
+      "description": "Fish, bass, freshwater, mixed species, cooked, dry heat"
+    },
+    {
+      "name": "Orada",
+      "cat": "Meso i riba",
+      "serv": 180,
+      "query": "fish sea bass cooked dry heat",
+      "must": [
+        "bass",
+        "cooked"
+      ],
+      "avoid": [
+        "raw",
+        "freshwater"
+      ],
+      "fdcId": 173694,
+      "description": "Fish, sea bass, mixed species, cooked, dry heat"
+    },
+    {
+      "name": "Pastrva",
+      "cat": "Meso i riba",
+      "serv": 180,
+      "query": "fish trout rainbow farmed cooked dry heat",
+      "must": [
+        "trout",
+        "cooked"
+      ],
+      "avoid": [
+        "raw",
+        "smoked"
+      ],
+      "fdcId": 172004,
+      "description": "Fish, trout, mixed species, cooked, dry heat"
+    },
+    {
+      "name": "Šaran",
+      "cat": "Meso i riba",
+      "serv": 180,
+      "query": "fish carp cooked dry heat",
+      "must": [
+        "carp",
+        "cooked"
+      ],
+      "avoid": [
+        "raw"
+      ],
+      "fdcId": 174185,
+      "description": "Fish, carp, cooked, dry heat"
+    },
+    {
+      "name": "Lignje",
+      "cat": "Meso i riba",
+      "serv": 150,
+      "query": "mollusks squid mixed species cooked fried",
+      "must": [
+        "squid"
+      ],
+      "avoid": [
+        "raw"
+      ],
+      "fdcId": 171982,
+      "description": "Mollusks, squid, mixed species, cooked, fried"
+    },
+    {
+      "name": "Hobotnica",
+      "cat": "Meso i riba",
+      "serv": 150,
+      "query": "mollusks octopus common cooked moist heat",
+      "must": [
+        "octopus"
+      ],
+      "avoid": [
+        "raw"
+      ],
+      "fdcId": 174249,
+      "description": "Mollusks, octopus, common, cooked, moist heat"
+    },
+    {
+      "name": "Škampi",
+      "cat": "Meso i riba",
+      "serv": 150,
+      "query": "crustaceans shrimp cooked moist heat",
+      "must": [
+        "shrimp"
+      ],
+      "avoid": [
+        "raw",
+        "breaded",
+        "imitation",
+        "canned"
+      ],
+      "fdcId": 175180,
+      "description": "Crustaceans, shrimp, cooked"
+    },
+    {
+      "name": "Dagnje",
+      "cat": "Meso i riba",
+      "serv": 150,
+      "query": "mollusks mussel blue cooked moist heat",
+      "must": [
+        "mussel"
+      ],
+      "avoid": [
+        "raw"
+      ],
+      "fdcId": 174217,
+      "description": "Mollusks, mussel, blue, cooked, moist heat"
+    },
+    {
+      "name": "Bakalar (suhi)",
+      "cat": "Meso i riba",
+      "serv": 100,
+      "query": "fish cod atlantic dried and salted",
+      "must": [
+        "cod",
+        "dried"
+      ],
+      "avoid": [
+        "cooked",
+        "raw"
+      ],
+      "fdcId": 174190,
+      "description": "Fish, cod, Atlantic, dried and salted"
+    },
+    {
+      "name": "Mlijeko punomasno 3,2 %",
+      "cat": "Mliječno i jaja",
+      "serv": 250,
+      "query": "milk whole 3.25% milkfat",
+      "must": [
+        "milk",
+        "whole"
+      ],
+      "avoid": [
+        "cheese",
+        "dry",
+        "evaporated",
+        "condensed",
+        "chocolate",
+        "buttermilk",
+        "goat",
+        "sheep"
+      ],
+      "fdcId": 2259793,
+      "description": "Yogurt, plain, whole milk"
+    },
+    {
+      "name": "Mlijeko bez laktoze",
+      "cat": "Mliječno i jaja",
+      "serv": 250,
+      "query": "milk lactose free",
+      "must": [
+        "milk"
+      ],
+      "avoid": [
+        "cheese",
+        "dry",
+        "evaporated",
+        "chocolate"
+      ],
+      "fdcId": 746776,
+      "description": "Milk, nonfat, fluid, with added vitamin A and vitamin D (fat free or skim)"
+    },
+    {
+      "name": "Vrhnje za šlag",
+      "cat": "Mliječno i jaja",
+      "serv": 30,
+      "query": "cream heavy whipping",
+      "must": [
+        "cream",
+        "whipping"
+      ],
+      "avoid": [
+        "sour",
+        "topping",
+        "imitation"
+      ],
+      "fdcId": 170859,
+      "description": "Cream, fluid, heavy whipping"
+    },
+    {
+      "name": "Parmezan",
+      "cat": "Mliječno i jaja",
+      "serv": 30,
+      "query": "cheese parmesan hard",
+      "must": [
+        "cheese",
+        "parmesan"
+      ],
+      "avoid": [
+        "grated",
+        "low sodium",
+        "shredded"
+      ],
+      "fdcId": 172206,
+      "description": "Parmesan cheese topping, fat free"
+    },
+    {
+      "name": "Ementaler",
+      "cat": "Mliječno i jaja",
+      "serv": 40,
+      "query": "cheese swiss",
+      "must": [
+        "cheese",
+        "swiss"
+      ],
+      "avoid": [
+        "processed",
+        "low fat",
+        "low sodium"
+      ],
+      "fdcId": 746767,
+      "description": "Cheese, swiss"
+    },
+    {
+      "name": "Camembert",
+      "cat": "Mliječno i jaja",
+      "serv": 40,
+      "query": "cheese camembert",
+      "must": [
+        "cheese",
+        "camembert"
+      ],
+      "avoid": [],
+      "fdcId": 172178,
+      "description": "Cheese, camembert"
+    },
+    {
+      "name": "Trapist",
+      "cat": "Mliječno i jaja",
+      "serv": 40,
+      "query": "cheese cheddar",
+      "must": [
+        "cheese",
+        "cheddar"
+      ],
+      "avoid": [
+        "low fat",
+        "low sodium",
+        "processed",
+        "shredded"
+      ],
+      "fdcId": 328637,
+      "description": "Cheese, cheddar"
+    },
+    {
+      "name": "Kravlji sir (mladi)",
+      "cat": "Mliječno i jaja",
+      "serv": 100,
+      "query": "cheese cottage creamed large or small curd",
+      "must": [
+        "cottage"
+      ],
+      "avoid": [
+        "lowfat",
+        "nonfat",
+        "fruit"
+      ],
+      "fdcId": 2346384,
+      "description": "Cottage cheese, full fat, large or small curd"
+    },
+    {
+      "name": "Jaje (kuhano)",
+      "cat": "Mliječno i jaja",
+      "serv": 100,
+      "query": "egg whole cooked hard boiled",
+      "must": [
+        "egg",
+        "cooked"
+      ],
+      "avoid": [
+        "fried",
+        "scrambled",
+        "omelet",
+        "dried"
+      ],
+      "fdcId": 173424,
+      "description": "Egg, whole, cooked, hard-boiled"
+    },
+    {
+      "name": "Žumanjak",
+      "cat": "Mliječno i jaja",
+      "serv": 50,
+      "query": "egg yolk raw fresh",
+      "must": [
+        "egg",
+        "yolk"
+      ],
+      "avoid": [
+        "dried",
+        "cooked"
+      ],
+      "fdcId": 748236,
+      "description": "Eggs, Grade A, Large, egg yolk"
+    },
+    {
+      "name": "Kruh raženi",
+      "cat": "Žitarice i kruh",
+      "serv": 60,
+      "query": "bread rye",
+      "must": [
+        "bread",
+        "rye"
+      ],
+      "avoid": [
+        "toasted",
+        "crumbs",
+        "pumpernickel",
+        "reduced calorie"
+      ],
+      "fdcId": 172684,
+      "description": "Bread, rye"
+    },
+    {
+      "name": "Kruh kukuruzni",
+      "cat": "Žitarice i kruh",
+      "serv": 60,
+      "query": "bread cornbread prepared from recipe",
+      "must": [
+        "cornbread"
+      ],
+      "avoid": [
+        "mix",
+        "dry"
+      ],
+      "fdcId": 174910,
+      "description": "Bread, cornbread, prepared from recipe, made with low fat (2%) milk"
+    },
+    {
+      "name": "Somun / pita kruh",
+      "cat": "Žitarice i kruh",
+      "serv": 80,
+      "query": "bread pita white enriched",
+      "must": [
+        "pita"
+      ],
+      "avoid": [
+        "whole wheat",
+        "toasted"
+      ],
+      "fdcId": 174916,
+      "description": "Bread, pita, whole-wheat"
+    },
+    {
+      "name": "Tortilja (pšenična)",
+      "cat": "Žitarice i kruh",
+      "serv": 60,
+      "query": "tortillas ready to bake or fry flour",
+      "must": [
+        "tortillas",
+        "flour"
+      ],
+      "avoid": [
+        "corn",
+        "fried"
+      ],
+      "fdcId": 175037,
+      "description": "Tortillas, ready-to-bake or -fry, flour, refrigerated"
+    },
+    {
+      "name": "Tjestenina integralna (kuhana)",
+      "cat": "Žitarice i kruh",
+      "serv": 200,
+      "query": "pasta whole wheat cooked",
+      "must": [
+        "pasta",
+        "whole",
+        "cooked"
+      ],
+      "avoid": [
+        "dry",
+        "spinach",
+        "corn"
+      ],
+      "fdcId": 168910,
+      "description": "Pasta, whole-wheat, cooked (Includes foods for USDA's Food Distribution Program)"
+    },
+    {
+      "name": "Ječam (kuhani)",
+      "cat": "Žitarice i kruh",
+      "serv": 200,
+      "query": "barley pearled cooked",
+      "must": [
+        "barley",
+        "cooked"
+      ],
+      "avoid": [
+        "raw",
+        "flour",
+        "malt"
+      ],
+      "fdcId": 170285,
+      "description": "Barley, pearled, cooked"
+    },
+    {
+      "name": "Bulgur (kuhani)",
+      "cat": "Žitarice i kruh",
+      "serv": 200,
+      "query": "bulgur cooked",
+      "must": [
+        "bulgur",
+        "cooked"
+      ],
+      "avoid": [
+        "dry"
+      ],
+      "fdcId": 170287,
+      "description": "Bulgur, cooked"
+    },
+    {
+      "name": "Kus-kus (kuhani)",
+      "cat": "Žitarice i kruh",
+      "serv": 200,
+      "query": "couscous cooked",
+      "must": [
+        "couscous",
+        "cooked"
+      ],
+      "avoid": [
+        "dry"
+      ],
+      "fdcId": 169700,
+      "description": "Couscous, cooked"
+    },
+    {
+      "name": "Proso (kuhano)",
+      "cat": "Žitarice i kruh",
+      "serv": 200,
+      "query": "millet cooked",
+      "must": [
+        "millet",
+        "cooked"
+      ],
+      "avoid": [
+        "raw",
+        "flour"
+      ],
+      "fdcId": 168871,
+      "description": "Millet, cooked"
+    },
+    {
+      "name": "Brašno glatko (pšenično)",
+      "cat": "Žitarice i kruh",
+      "serv": 100,
+      "query": "wheat flour white all-purpose enriched bleached",
+      "must": [
+        "flour",
+        "wheat"
+      ],
+      "avoid": [
+        "whole grain",
+        "self-rising",
+        "cake",
+        "bread flour"
+      ],
+      "fdcId": 789890,
+      "description": "Flour, wheat, all-purpose, enriched, bleached"
+    },
+    {
+      "name": "Brašno integralno",
+      "cat": "Žitarice i kruh",
+      "serv": 100,
+      "query": "wheat flour whole grain",
+      "must": [
+        "flour",
+        "whole"
+      ],
+      "avoid": [
+        "white",
+        "self-rising"
+      ],
+      "fdcId": 790085,
+      "description": "Flour, whole wheat, unenriched"
+    },
+    {
+      "name": "Krušne mrvice",
+      "cat": "Žitarice i kruh",
+      "serv": 30,
+      "query": "bread crumbs dry grated plain",
+      "must": [
+        "crumbs"
+      ],
+      "avoid": [
+        "seasoned"
+      ],
+      "fdcId": 174924,
+      "description": "Bread, white, commercially prepared (includes soft bread crumbs)"
+    },
+    {
+      "name": "Batat (pečeni)",
+      "cat": "Žitarice i kruh",
+      "serv": 200,
+      "query": "sweet potato cooked baked in skin",
+      "must": [
+        "sweet potato",
+        "cooked"
+      ],
+      "avoid": [
+        "canned",
+        "candied",
+        "raw",
+        "fried"
+      ],
+      "fdcId": 168484,
+      "description": "Sweet potato, cooked, boiled, without skin"
+    },
+    {
+      "name": "Mahune",
+      "cat": "Mahunarke",
+      "serv": 200,
+      "query": "beans snap green raw",
+      "must": [
+        "snap",
+        "green",
+        "raw"
+      ],
+      "avoid": [
+        "canned",
+        "frozen",
+        "cooked"
+      ],
+      "fdcId": 2346400,
+      "description": "Beans, snap, green, raw"
+    },
+    {
+      "name": "Mahune (kuhane)",
+      "cat": "Mahunarke",
+      "serv": 200,
+      "query": "beans snap green cooked boiled drained without salt",
+      "must": [
+        "snap",
+        "green",
+        "cooked"
+      ],
+      "avoid": [
+        "canned",
+        "frozen"
+      ],
+      "fdcId": 169141,
+      "description": "Beans, snap, green, cooked, boiled, drained, without salt"
+    },
+    {
+      "name": "Bob",
+      "cat": "Mahunarke",
+      "serv": 200,
+      "query": "broadbeans fava mature seeds cooked boiled",
+      "must": [
+        "broadbeans",
+        "cooked"
+      ],
+      "avoid": [
+        "canned",
+        "raw",
+        "immature"
+      ],
+      "fdcId": 173798,
+      "description": "Broadbeans (fava beans), mature seeds, cooked, boiled, with salt"
+    },
+    {
+      "name": "Bijeli grah (kuhani)",
+      "cat": "Mahunarke",
+      "serv": 200,
+      "query": "beans white mature seeds cooked boiled without salt",
+      "must": [
+        "beans",
+        "white",
+        "cooked"
+      ],
+      "avoid": [
+        "canned",
+        "small"
+      ],
+      "fdcId": 175203,
+      "description": "Beans, white, mature seeds, cooked, boiled, without salt"
+    },
+    {
+      "name": "Soja (kuhana)",
+      "cat": "Mahunarke",
+      "serv": 150,
+      "query": "soybeans mature seeds cooked boiled without salt",
+      "must": [
+        "soybeans",
+        "cooked"
+      ],
+      "avoid": [
+        "roasted",
+        "raw",
+        "green",
+        "dry"
+      ],
+      "fdcId": 174271,
+      "description": "Soybeans, mature cooked, boiled, without salt"
+    },
+    {
+      "name": "Crvena leća (kuhana)",
+      "cat": "Mahunarke",
+      "serv": 200,
+      "query": "lentils pink or red cooked boiled without salt",
+      "must": [
+        "lentils",
+        "cooked"
+      ],
+      "avoid": [
+        "canned",
+        "raw",
+        "sprouted"
+      ],
+      "fdcId": 172421,
+      "description": "Lentils, mature seeds, cooked, boiled, without salt"
+    },
+    {
+      "name": "Suha slanutkova pasta (humus)",
+      "cat": "Mahunarke",
+      "serv": 60,
+      "query": "hummus commercial",
+      "must": [
+        "hummus"
+      ],
+      "avoid": [
+        "home"
+      ],
+      "fdcId": 321358,
+      "description": "Hummus, commercial"
+    },
+    {
+      "name": "Blitva",
+      "cat": "Povrće",
+      "serv": 200,
+      "query": "chard swiss raw",
+      "must": [
+        "chard",
+        "raw"
+      ],
+      "avoid": [
+        "cooked"
+      ],
+      "fdcId": 169991,
+      "description": "Chard, swiss, raw"
+    },
+    {
+      "name": "Kelj",
+      "cat": "Povrće",
+      "serv": 200,
+      "query": "kale raw",
+      "must": [
+        "kale",
+        "raw"
+      ],
+      "avoid": [
+        "cooked",
+        "frozen",
+        "scotch",
+        "chinese"
+      ],
+      "fdcId": 323505,
+      "description": "Kale, raw"
+    },
+    {
+      "name": "Prokulica",
+      "cat": "Povrće",
+      "serv": 150,
+      "query": "brussels sprouts raw",
+      "must": [
+        "brussels",
+        "raw"
+      ],
+      "avoid": [
+        "cooked",
+        "frozen"
+      ],
+      "fdcId": 2685575,
+      "description": "Brussels sprouts, raw"
+    },
+    {
+      "name": "Poriluk",
+      "cat": "Povrće",
+      "serv": 100,
+      "query": "leeks bulb and lower leaf portion raw",
+      "must": [
+        "leeks",
+        "raw"
+      ],
+      "avoid": [
+        "cooked",
+        "freeze-dried"
+      ],
+      "fdcId": 169246,
+      "description": "Leeks, (bulb and lower leaf-portion), raw"
+    },
+    {
+      "name": "Celer (stabljika)",
+      "cat": "Povrće",
+      "serv": 100,
+      "query": "celery raw",
+      "must": [
+        "celery",
+        "raw"
+      ],
+      "avoid": [
+        "cooked",
+        "seed",
+        "flakes"
+      ],
+      "fdcId": 2346405,
+      "description": "Celery, raw"
+    },
+    {
+      "name": "Celer korijen",
+      "cat": "Povrće",
+      "serv": 150,
+      "query": "celeriac raw",
+      "must": [
+        "celeriac",
+        "raw"
+      ],
+      "avoid": [
+        "cooked"
+      ],
+      "fdcId": 170400,
+      "description": "Celeriac, raw"
+    },
+    {
+      "name": "Peršin",
+      "cat": "Povrće",
+      "serv": 20,
+      "query": "parsley fresh",
+      "must": [
+        "parsley"
+      ],
+      "avoid": [
+        "dried",
+        "freeze"
+      ],
+      "fdcId": 170416,
+      "description": "Parsley, fresh"
+    },
+    {
+      "name": "Pastrnjak",
+      "cat": "Povrće",
+      "serv": 150,
+      "query": "parsnips raw",
+      "must": [
+        "parsnips",
+        "raw"
+      ],
+      "avoid": [
+        "cooked"
+      ],
+      "fdcId": 2747659,
+      "description": "Parsnips, raw"
+    },
+    {
+      "name": "Cikla",
+      "cat": "Povrće",
+      "serv": 150,
+      "query": "beets raw",
+      "must": [
+        "beets",
+        "raw"
+      ],
+      "avoid": [
+        "cooked",
+        "canned",
+        "greens",
+        "harvard",
+        "pickled"
+      ],
+      "fdcId": 2685576,
+      "description": "Beets, raw"
+    },
+    {
+      "name": "Rotkvica",
+      "cat": "Povrće",
+      "serv": 100,
+      "query": "radishes raw",
+      "must": [
+        "radishes",
+        "raw"
+      ],
+      "avoid": [
+        "oriental",
+        "white icicle",
+        "cooked"
+      ],
+      "fdcId": 2747665,
+      "description": "Radishes, red, raw"
+    },
+    {
+      "name": "Patlidžan",
+      "cat": "Povrće",
+      "serv": 200,
+      "query": "eggplant raw",
+      "must": [
+        "eggplant",
+        "raw"
+      ],
+      "avoid": [
+        "cooked",
+        "pickled"
+      ],
+      "fdcId": 2685577,
+      "description": "Eggplant, raw"
+    },
+    {
+      "name": "Šampinjoni",
+      "cat": "Povrće",
+      "serv": 150,
+      "query": "mushrooms white raw",
+      "must": [
+        "mushrooms",
+        "raw"
+      ],
+      "avoid": [
+        "cooked",
+        "canned",
+        "shiitake",
+        "portabella",
+        "crimini",
+        "enoki",
+        "maitake",
+        "oyster"
+      ],
+      "fdcId": 169251,
+      "description": "Mushrooms, white, raw"
+    },
+    {
+      "name": "Bukovače",
+      "cat": "Povrće",
+      "serv": 150,
+      "query": "mushrooms oyster raw",
+      "must": [
+        "mushrooms",
+        "oyster"
+      ],
+      "avoid": [
+        "cooked"
+      ],
+      "fdcId": 168580,
+      "description": "Mushrooms, oyster, raw"
+    },
+    {
+      "name": "Kukuruz šećerac",
+      "cat": "Povrće",
+      "serv": 150,
+      "query": "corn sweet yellow raw",
+      "must": [
+        "corn",
+        "sweet",
+        "raw"
+      ],
+      "avoid": [
+        "canned",
+        "frozen",
+        "cooked",
+        "cream style"
+      ],
+      "fdcId": 2710826,
+      "description": "Corn, sweet, yellow and white kernels,  fresh, raw"
+    },
+    {
+      "name": "Bundeva",
+      "cat": "Povrće",
+      "serv": 200,
+      "query": "pumpkin raw",
+      "must": [
+        "pumpkin",
+        "raw"
+      ],
+      "avoid": [
+        "canned",
+        "cooked",
+        "pie",
+        "seeds",
+        "leaves",
+        "flowers"
+      ],
+      "fdcId": 168448,
+      "description": "Pumpkin, raw"
+    },
+    {
+      "name": "Šparoge",
+      "cat": "Povrće",
+      "serv": 150,
+      "query": "asparagus raw",
+      "must": [
+        "asparagus",
+        "raw"
+      ],
+      "avoid": [
+        "cooked",
+        "canned",
+        "frozen"
+      ],
+      "fdcId": 2710823,
+      "description": "Asparagus, green, raw"
+    },
+    {
+      "name": "Artičoka",
+      "cat": "Povrće",
+      "serv": 150,
+      "query": "artichokes globe or french raw",
+      "must": [
+        "artichokes",
+        "raw"
+      ],
+      "avoid": [
+        "cooked",
+        "canned",
+        "jerusalem"
+      ],
+      "fdcId": 169205,
+      "description": "Artichokes, (globe or french), raw"
+    },
+    {
+      "name": "Rikola",
+      "cat": "Povrće",
+      "serv": 50,
+      "query": "arugula raw",
+      "must": [
+        "arugula"
+      ],
+      "avoid": [
+        "cooked"
+      ],
+      "fdcId": 2710822,
+      "description": "Arugula, baby, raw"
+    },
+    {
+      "name": "Matovilac",
+      "cat": "Povrće",
+      "serv": 50,
+      "query": "cornsalad raw",
+      "must": [
+        "cornsalad"
+      ],
+      "avoid": [
+        "cooked"
+      ],
+      "fdcId": 169219,
+      "description": "Cornsalad, raw"
+    },
+    {
+      "name": "Radič",
+      "cat": "Povrće",
+      "serv": 80,
+      "query": "chicory greens raw",
+      "must": [
+        "chicory",
+        "raw"
+      ],
+      "avoid": [
+        "cooked",
+        "roots",
+        "witloof"
+      ],
+      "fdcId": 169992,
+      "description": "Chicory greens, raw"
+    },
+    {
+      "name": "Mladi luk",
+      "cat": "Povrće",
+      "serv": 50,
+      "query": "onions spring or scallions raw",
+      "must": [
+        "onions",
+        "raw"
+      ],
+      "avoid": [
+        "cooked",
+        "dehydrated",
+        "canned",
+        "welsh"
+      ],
+      "fdcId": 790577,
+      "description": "Onions, red, raw"
+    },
+    {
+      "name": "Češnjak",
+      "cat": "Povrće",
+      "serv": 10,
+      "query": "garlic raw",
+      "must": [
+        "garlic",
+        "raw"
+      ],
+      "avoid": [
+        "powder",
+        "cooked",
+        "salt"
+      ],
+      "fdcId": 1104647,
+      "description": "Garlic, raw"
+    },
+    {
+      "name": "Đumbir",
+      "cat": "Povrće",
+      "serv": 10,
+      "query": "ginger root raw",
+      "must": [
+        "ginger",
+        "raw"
+      ],
+      "avoid": [
+        "ground",
+        "pickled",
+        "candied"
+      ],
+      "fdcId": 169231,
+      "description": "Ginger root, raw"
+    },
+    {
+      "name": "Hren",
+      "cat": "Povrće",
+      "serv": 15,
+      "query": "horseradish prepared",
+      "must": [
+        "horseradish"
+      ],
+      "avoid": [
+        "sauce",
+        "tree"
+      ],
+      "fdcId": 173472,
+      "description": "Horseradish, prepared"
+    },
+    {
+      "name": "Ljuta paprika",
+      "cat": "Povrće",
+      "serv": 20,
+      "query": "peppers hot chili red raw",
+      "must": [
+        "peppers",
+        "hot",
+        "raw"
+      ],
+      "avoid": [
+        "canned",
+        "sun-dried",
+        "sauce",
+        "green"
+      ],
+      "fdcId": 170106,
+      "description": "Peppers, hot chili, red, raw"
+    },
+    {
+      "name": "Paprika zelena",
+      "cat": "Povrće",
+      "serv": 150,
+      "query": "peppers sweet green raw",
+      "must": [
+        "peppers",
+        "green",
+        "raw"
+      ],
+      "avoid": [
+        "cooked",
+        "canned",
+        "frozen",
+        "hot",
+        "chili"
+      ],
+      "fdcId": 2258588,
+      "description": "Peppers, bell, green, raw"
+    },
+    {
+      "name": "Tikva (butternut)",
+      "cat": "Povrće",
+      "serv": 200,
+      "query": "squash winter butternut raw",
+      "must": [
+        "squash",
+        "butternut"
+      ],
+      "avoid": [
+        "cooked",
+        "frozen"
+      ],
+      "fdcId": 2685570,
+      "description": "Squash, winter, butternut, raw"
+    },
+    {
+      "name": "Kelj pupčar (kuhani)",
+      "cat": "Povrće",
+      "serv": 150,
+      "query": "brussels sprouts cooked boiled drained without salt",
+      "must": [
+        "brussels",
+        "cooked"
+      ],
+      "avoid": [
+        "frozen",
+        "raw"
+      ],
+      "fdcId": 169971,
+      "description": "Brussels sprouts, cooked, boiled, drained, without salt"
+    },
+    {
+      "name": "Marelica",
+      "cat": "Voće",
+      "serv": 150,
+      "query": "apricots raw",
+      "must": [
+        "apricots",
+        "raw"
+      ],
+      "avoid": [
+        "dried",
+        "canned",
+        "frozen"
+      ],
+      "fdcId": 171697,
+      "description": "Apricots, raw"
+    },
+    {
+      "name": "Breskva",
+      "cat": "Voće",
+      "serv": 150,
+      "query": "peaches raw",
+      "must": [
+        "peaches",
+        "raw"
+      ],
+      "avoid": [
+        "dried",
+        "canned",
+        "frozen",
+        "spiced"
+      ],
+      "fdcId": 325430,
+      "description": "Peaches, yellow, raw"
+    },
+    {
+      "name": "Nektarina",
+      "cat": "Voće",
+      "serv": 150,
+      "query": "nectarines raw",
+      "must": [
+        "nectarines",
+        "raw"
+      ],
+      "avoid": [
+        "canned",
+        "dried"
+      ],
+      "fdcId": 327357,
+      "description": "Nectarines, raw"
+    },
+    {
+      "name": "Šljiva",
+      "cat": "Voće",
+      "serv": 150,
+      "query": "plums raw",
+      "must": [
+        "plums",
+        "raw"
+      ],
+      "avoid": [
+        "dried",
+        "canned",
+        "wild"
+      ],
+      "fdcId": 169949,
+      "description": "Plums, raw"
+    },
+    {
+      "name": "Suhe šljive",
+      "cat": "Voće",
+      "serv": 40,
+      "query": "plums dried prunes uncooked",
+      "must": [
+        "dried"
+      ],
+      "avoid": [
+        "stewed",
+        "cooked",
+        "juice"
+      ],
+      "fdcId": 746768,
+      "description": "Figs, dried, uncooked"
+    },
+    {
+      "name": "Trešnja",
+      "cat": "Voće",
+      "serv": 150,
+      "query": "cherries sweet raw",
+      "must": [
+        "cherries",
+        "sweet",
+        "raw"
+      ],
+      "avoid": [
+        "canned",
+        "frozen",
+        "sour",
+        "maraschino",
+        "dried"
+      ],
+      "fdcId": 2346399,
+      "description": "Cherries, sweet, dark red, raw"
+    },
+    {
+      "name": "Višnja",
+      "cat": "Voće",
+      "serv": 150,
+      "query": "cherries sour red raw",
+      "must": [
+        "cherries",
+        "sour",
+        "raw"
+      ],
+      "avoid": [
+        "canned",
+        "frozen",
+        "sweet"
+      ],
+      "fdcId": 173954,
+      "description": "Cherries, sour, red, raw"
+    },
+    {
+      "name": "Smokva",
+      "cat": "Voće",
+      "serv": 100,
+      "query": "figs raw",
+      "must": [
+        "figs",
+        "raw"
+      ],
+      "avoid": [
+        "dried",
+        "canned"
+      ],
+      "fdcId": 173021,
+      "description": "Figs, raw"
+    },
+    {
+      "name": "Suhe smokve",
+      "cat": "Voće",
+      "serv": 40,
+      "query": "figs dried uncooked",
+      "must": [
+        "figs",
+        "dried"
+      ],
+      "avoid": [
+        "stewed"
+      ],
+      "fdcId": 746768,
+      "description": "Figs, dried, uncooked"
+    },
+    {
+      "name": "Dinja",
+      "cat": "Voće",
+      "serv": 200,
+      "query": "melons cantaloupe raw",
+      "must": [
+        "melons",
+        "raw"
+      ],
+      "avoid": [
+        "honeydew",
+        "casaba",
+        "frozen"
+      ],
+      "fdcId": 746770,
+      "description": "Melons, cantaloupe, raw"
+    },
+    {
+      "name": "Mandarina",
+      "cat": "Voće",
+      "serv": 150,
+      "query": "tangerines mandarin oranges raw",
+      "must": [
+        "tangerines",
+        "raw"
+      ],
+      "avoid": [
+        "canned",
+        "juice"
+      ],
+      "fdcId": 169105,
+      "description": "Tangerines, (mandarin oranges), raw"
+    },
+    {
+      "name": "Limun",
+      "cat": "Voće",
+      "serv": 30,
+      "query": "lemons raw without peel",
+      "must": [
+        "lemons",
+        "raw"
+      ],
+      "avoid": [
+        "juice",
+        "peel, raw",
+        "zest"
+      ],
+      "fdcId": 167746,
+      "description": "Lemons, raw, without peel"
+    },
+    {
+      "name": "Ananas",
+      "cat": "Voće",
+      "serv": 150,
+      "query": "pineapple raw all varieties",
+      "must": [
+        "pineapple",
+        "raw"
+      ],
+      "avoid": [
+        "canned",
+        "juice",
+        "frozen"
+      ],
+      "fdcId": 2346398,
+      "description": "Pineapple, raw"
+    },
+    {
+      "name": "Mango",
+      "cat": "Voće",
+      "serv": 150,
+      "query": "mangos raw",
+      "must": [
+        "mangos",
+        "raw"
+      ],
+      "avoid": [
+        "dried",
+        "canned",
+        "juice"
+      ],
+      "fdcId": 169910,
+      "description": "Mangos, raw"
+    },
+    {
+      "name": "Nar",
+      "cat": "Voće",
+      "serv": 150,
+      "query": "pomegranates raw",
+      "must": [
+        "pomegranates",
+        "raw"
+      ],
+      "avoid": [
+        "juice"
+      ],
+      "fdcId": 169134,
+      "description": "Pomegranates, raw"
+    },
+    {
+      "name": "Malina",
+      "cat": "Voće",
+      "serv": 125,
+      "query": "raspberries raw",
+      "must": [
+        "raspberries",
+        "raw"
+      ],
+      "avoid": [
+        "frozen",
+        "canned"
+      ],
+      "fdcId": 2346410,
+      "description": "Raspberries, raw"
+    },
+    {
+      "name": "Kupina",
+      "cat": "Voće",
+      "serv": 125,
+      "query": "blackberries raw",
+      "must": [
+        "blackberries",
+        "raw"
+      ],
+      "avoid": [
+        "frozen",
+        "canned"
+      ],
+      "fdcId": 173946,
+      "description": "Blackberries, raw"
+    },
+    {
+      "name": "Ribiz",
+      "cat": "Voće",
+      "serv": 100,
+      "query": "currants european black raw",
+      "must": [
+        "currants",
+        "raw"
+      ],
+      "avoid": [
+        "dried",
+        "zante"
+      ],
+      "fdcId": 173963,
+      "description": "Currants, european black, raw"
+    },
+    {
+      "name": "Grožđice",
+      "cat": "Voće",
+      "serv": 40,
+      "query": "raisins seedless",
+      "must": [
+        "raisins"
+      ],
+      "avoid": [
+        "golden",
+        "cooked"
+      ],
+      "fdcId": 168166,
+      "description": "Raisins, seeded"
+    },
+    {
+      "name": "Datulja",
+      "cat": "Voće",
+      "serv": 40,
+      "query": "dates medjool",
+      "must": [
+        "dates"
+      ],
+      "avoid": [
+        "deglet"
+      ],
+      "fdcId": 168191,
+      "description": "Dates, medjool"
+    },
+    {
+      "name": "Pistacije",
+      "cat": "Orašasti i masti",
+      "serv": 30,
+      "query": "nuts pistachio nuts raw",
+      "must": [
+        "pistachio"
+      ],
+      "avoid": [
+        "roasted",
+        "salted"
+      ],
+      "fdcId": 2515379,
+      "description": "Nuts, pistachio nuts, raw"
+    },
+    {
+      "name": "Indijski oraščići",
+      "cat": "Orašasti i masti",
+      "serv": 30,
+      "query": "nuts cashew nuts raw",
+      "must": [
+        "cashew"
+      ],
+      "avoid": [
+        "roasted",
+        "butter",
+        "salted"
+      ],
+      "fdcId": 2515374,
+      "description": "Nuts, cashew nuts, raw"
+    },
+    {
+      "name": "Sjemenke suncokreta",
+      "cat": "Orašasti i masti",
+      "serv": 30,
+      "query": "seeds sunflower seed kernels dried",
+      "must": [
+        "sunflower"
+      ],
+      "avoid": [
+        "roasted",
+        "salted",
+        "butter",
+        "oil"
+      ],
+      "fdcId": 2515381,
+      "description": "Seeds, sunflower seed, kernel, raw"
+    },
+    {
+      "name": "Sjemenke lana",
+      "cat": "Orašasti i masti",
+      "serv": 15,
+      "query": "seeds flaxseed",
+      "must": [
+        "flaxseed"
+      ],
+      "avoid": [
+        "oil"
+      ],
+      "fdcId": 2262075,
+      "description": "Flaxseed, ground"
+    },
+    {
+      "name": "Sezam",
+      "cat": "Orašasti i masti",
+      "serv": 15,
+      "query": "seeds sesame seeds whole dried",
+      "must": [
+        "sesame"
+      ],
+      "avoid": [
+        "roasted",
+        "butter",
+        "flour",
+        "oil",
+        "paste"
+      ],
+      "fdcId": 169412,
+      "description": "Seeds, sesame seed kernels, dried (decorticated)"
+    },
+    {
+      "name": "Tahini",
+      "cat": "Orašasti i masti",
+      "serv": 20,
+      "query": "seeds sesame butter tahini",
+      "must": [
+        "tahini"
+      ],
+      "avoid": [],
+      "fdcId": 168604,
+      "description": "Seeds, sesame butter, tahini, type of kernels unspecified"
+    },
+    {
+      "name": "Kokosovo brašno / naribani kokos",
+      "cat": "Orašasti i masti",
+      "serv": 20,
+      "query": "nuts coconut meat dried desiccated",
+      "must": [
+        "coconut"
+      ],
+      "avoid": [
+        "water",
+        "milk",
+        "cream",
+        "raw",
+        "oil"
+      ],
+      "fdcId": 168585,
+      "description": "Nuts, coconut meat, dried (desiccated), creamed"
+    },
+    {
+      "name": "Kokosovo ulje",
+      "cat": "Orašasti i masti",
+      "serv": 10,
+      "query": "oil coconut",
+      "must": [
+        "oil",
+        "coconut"
+      ],
+      "avoid": [
+        "milk",
+        "cream"
+      ],
+      "fdcId": 330458,
+      "description": "Oil, coconut"
+    },
+    {
+      "name": "Repičino ulje",
+      "cat": "Orašasti i masti",
+      "serv": 10,
+      "query": "oil canola",
+      "must": [
+        "oil",
+        "canola"
+      ],
+      "avoid": [
+        "blend",
+        "spread",
+        "shortening",
+        "high oleic"
+      ],
+      "fdcId": 172336,
+      "description": "Oil, canola"
+    },
+    {
+      "name": "Svinjska mast",
+      "cat": "Orašasti i masti",
+      "serv": 10,
+      "query": "lard",
+      "must": [
+        "lard"
+      ],
+      "avoid": [
+        "shortening"
+      ],
+      "fdcId": 171401,
+      "description": "Lard"
+    },
+    {
+      "name": "Vino bijelo (suho)",
+      "cat": "Pića",
+      "serv": 150,
+      "query": "alcoholic beverage wine table white",
+      "must": [
+        "wine",
+        "white"
+      ],
+      "avoid": [
+        "red",
+        "dessert",
+        "cooking",
+        "sparkling",
+        "chardonnay",
+        "riesling",
+        "muscat",
+        "sauvignon",
+        "gewurztraminer",
+        "pinot",
+        "fume"
+      ],
+      "fdcId": 174837,
+      "description": "Alcoholic beverage, wine, table, white"
+    },
+    {
+      "name": "Vino bijelo (Chardonnay)",
+      "cat": "Pića",
+      "serv": 150,
+      "query": "alcoholic beverage wine table white chardonnay",
+      "must": [
+        "wine",
+        "chardonnay"
+      ],
+      "avoid": [
+        "red"
+      ],
+      "fdcId": 174110,
+      "description": "Alcoholic beverage, wine, table, white, Chardonnay"
+    },
+    {
+      "name": "Vino bijelo (Sauvignon)",
+      "cat": "Pića",
+      "serv": 150,
+      "query": "alcoholic beverage wine table white sauvignon blanc",
+      "must": [
+        "wine",
+        "sauvignon"
+      ],
+      "avoid": [
+        "red",
+        "cabernet"
+      ],
+      "fdcId": 173201,
+      "description": "Alcoholic beverage, wine, table, white, Sauvignon Blanc"
+    },
+    {
+      "name": "Vino bijelo (Rizling)",
+      "cat": "Pića",
+      "serv": 150,
+      "query": "alcoholic beverage wine table white riesling",
+      "must": [
+        "wine",
+        "riesling"
+      ],
+      "avoid": [
+        "red"
+      ],
+      "fdcId": 173200,
+      "description": "Alcoholic beverage, wine, table, white, Riesling"
+    },
+    {
+      "name": "Vino bijelo (Pinot gris)",
+      "cat": "Pića",
+      "serv": 150,
+      "query": "alcoholic beverage wine table white pinot gris grigio",
+      "must": [
+        "wine",
+        "pinot"
+      ],
+      "avoid": [
+        "red",
+        "noir"
+      ],
+      "fdcId": 174841,
+      "description": "Alcoholic beverage, wine, table, white, Pinot Gris (Grigio)"
+    },
+    {
+      "name": "Vino desertno (slatko)",
+      "cat": "Pića",
+      "serv": 100,
+      "query": "alcoholic beverage wine dessert sweet",
+      "must": [
+        "wine",
+        "dessert"
+      ],
+      "avoid": [
+        "dry",
+        "table"
+      ],
+      "fdcId": 173176,
+      "description": "Alcoholic beverage, wine, dessert, sweet"
+    },
+    {
+      "name": "Pjenušavo vino",
+      "cat": "Pića",
+      "serv": 150,
+      "query": "alcoholic beverage wine sparkling",
+      "must": [
+        "wine"
+      ],
+      "avoid": [
+        "table",
+        "dessert",
+        "cooking"
+      ],
+      "fdcId": 169071,
+      "description": "Alcoholic beverage, wine, light"
+    },
+    {
+      "name": "Rakija / žestoko piće",
+      "cat": "Pića",
+      "serv": 50,
+      "query": "alcoholic beverage distilled all 80 proof",
+      "must": [
+        "distilled"
+      ],
+      "avoid": [
+        "liqueur",
+        "daiquiri",
+        "cocktail"
+      ],
+      "fdcId": 174817,
+      "description": "Alcoholic beverage, distilled, rum, 80 proof"
+    },
+    {
+      "name": "Sok od jabuke i mrkve",
+      "cat": "Pića",
+      "serv": 200,
+      "query": "carrot juice canned",
+      "must": [
+        "carrot juice"
+      ],
+      "avoid": [
+        "cocktail"
+      ],
+      "fdcId": 170491,
+      "description": "Carrot juice, canned"
+    },
+    {
+      "name": "Sok od rajčice",
+      "cat": "Pića",
+      "serv": 200,
+      "query": "tomato juice canned without salt added",
+      "must": [
+        "tomato juice"
+      ],
+      "avoid": [
+        "cocktail",
+        "clam"
+      ],
+      "fdcId": 170545,
+      "description": "Tomato juice, canned, without salt added"
+    },
+    {
+      "name": "Limunada",
+      "cat": "Pića",
+      "serv": 250,
+      "query": "lemonade prepared from concentrate",
+      "must": [
+        "lemonade"
+      ],
+      "avoid": [
+        "powder",
+        "low calorie",
+        "fruit punch"
+      ],
+      "fdcId": 173217,
+      "description": "Lemonade, frozen concentrate, white, prepared with water"
+    },
+    {
+      "name": "Sojino mlijeko (nezaslađeno)",
+      "cat": "Pića",
+      "serv": 250,
+      "query": "beverages soymilk unsweetened",
+      "must": [
+        "soymilk"
+      ],
+      "avoid": [
+        "sweetened",
+        "chocolate",
+        "vanilla"
+      ],
+      "fdcId": 175223,
+      "description": "SILK Unsweetened, soymilk"
+    },
+    {
+      "name": "Zobeno mlijeko",
+      "cat": "Pića",
+      "serv": 250,
+      "query": "beverages oat milk unsweetened",
+      "must": [
+        "oat"
+      ],
+      "avoid": [
+        "sweetened",
+        "chocolate"
+      ],
+      "fdcId": 2257046,
+      "description": "Oat milk, unsweetened, plain, refrigerated"
+    },
+    {
+      "name": "Šećer (bijeli)",
+      "cat": "Ostalo",
+      "serv": 10,
+      "query": "sugars granulated",
+      "must": [
+        "sugars",
+        "granulated"
+      ],
+      "avoid": [
+        "brown",
+        "powdered",
+        "substitute"
+      ],
+      "fdcId": 746784,
+      "description": "Sugars, granulated"
+    },
+    {
+      "name": "Smeđi šećer",
+      "cat": "Ostalo",
+      "serv": 10,
+      "query": "sugars brown",
+      "must": [
+        "sugars",
+        "brown"
+      ],
+      "avoid": [
+        "granulated",
+        "powdered"
+      ],
+      "fdcId": 168833,
+      "description": "Sugars, brown"
+    },
+    {
+      "name": "Džem od marelice",
+      "cat": "Ostalo",
+      "serv": 25,
+      "query": "jams and preserves",
+      "must": [
+        "jams"
+      ],
+      "avoid": [
+        "dietetic",
+        "reduced sugar",
+        "apple butter"
+      ],
+      "fdcId": 169641,
+      "description": "Jams and preserves"
+    },
+    {
+      "name": "Kakao prah (nezaslađen)",
+      "cat": "Ostalo",
+      "serv": 10,
+      "query": "cocoa dry powder unsweetened",
+      "must": [
+        "cocoa",
+        "unsweetened"
+      ],
+      "avoid": [
+        "processed with alkali",
+        "mix",
+        "hot"
+      ],
+      "fdcId": 169593,
+      "description": "Cocoa, dry powder, unsweetened"
+    },
+    {
+      "name": "Ocat (jabučni)",
+      "cat": "Ostalo",
+      "serv": 15,
+      "query": "vinegar cider",
+      "must": [
+        "vinegar"
+      ],
+      "avoid": [
+        "balsamic",
+        "red wine",
+        "distilled"
+      ],
+      "fdcId": 173469,
+      "description": "Vinegar, cider"
+    },
+    {
+      "name": "Umak od soje",
+      "cat": "Ostalo",
+      "serv": 15,
+      "query": "soy sauce made from soy and wheat shoyu",
+      "must": [
+        "soy sauce"
+      ],
+      "avoid": [
+        "low sodium",
+        "tamari"
+      ],
+      "fdcId": 174277,
+      "description": "Soy sauce made from soy and wheat (shoyu)"
+    },
+    {
+      "name": "Sol",
+      "cat": "Ostalo",
+      "serv": 2,
+      "query": "salt table",
+      "must": [
+        "salt",
+        "table"
+      ],
+      "avoid": [
+        "substitute",
+        "seasoned"
+      ],
+      "fdcId": 173468,
+      "description": "Salt, table"
+    },
+    {
+      "name": "Kvasac (suhi)",
+      "cat": "Ostalo",
+      "serv": 7,
+      "query": "leavening agents yeast baker's active dry",
+      "must": [
+        "yeast"
+      ],
+      "avoid": [
+        "brewer",
+        "compressed"
+      ],
+      "fdcId": 167717,
+      "description": "Yeast extract spread"
+    },
+    {
+      "name": "Cimet",
+      "cat": "Ostalo",
+      "serv": 3,
+      "query": "spices cinnamon ground",
+      "must": [
+        "cinnamon"
+      ],
+      "avoid": [],
+      "fdcId": 171320,
+      "description": "Spices, cinnamon, ground"
+    },
+    {
+      "name": "Crvena mljevena paprika",
+      "cat": "Ostalo",
+      "serv": 3,
+      "query": "spices paprika",
+      "must": [
+        "paprika"
+      ],
+      "avoid": [],
+      "fdcId": 171329,
+      "description": "Spices, paprika"
+    },
+    {
+      "name": "Lovorov list",
+      "cat": "Ostalo",
+      "serv": 1,
+      "query": "spices bay leaf",
+      "must": [
+        "bay"
+      ],
+      "avoid": [],
+      "fdcId": 170917,
+      "description": "Spices, bay leaf"
+    },
+    {
+      "name": "Origano (suhi)",
+      "cat": "Ostalo",
+      "serv": 2,
+      "query": "spices oregano dried",
+      "must": [
+        "oregano"
+      ],
+      "avoid": [
+        "fresh"
+      ],
+      "fdcId": 171328,
+      "description": "Spices, oregano, dried"
+    }
+  ]
+}

@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react'
-import { fmtDate, todayISO } from '../../domain/dates'
+import { addDays, dayName, fmtDate, todayISO } from '../../domain/dates'
 import {
   RANGES,
   kcalSeries,
@@ -23,6 +23,7 @@ export function Napredak() {
   const foods = useFoods()
   const update = useUpdate()
   const selectedDate = useAppStore((s) => s.selectedDate)
+  const setSelectedDate = useAppStore((s) => s.setSelectedDate)
   const [days, setDays] = useState<number>(90)
   const [showTable, setShowTable] = useState(false)
 
@@ -77,7 +78,7 @@ export function Napredak() {
   return (
     <>
       <div className="card">
-        <div className="row" style={{ justifyContent: 'space-between' }}>
+        <div className="row" style={{ justifyContent: 'space-between', marginBottom: 10 }}>
           <div className="row">
             <PersonPicker />
           </div>
@@ -93,6 +94,34 @@ export function Napredak() {
               </button>
             ))}
           </div>
+        </div>
+
+        {/* Dan za koji se biljezi mora biti vidljiv odmah — inace se lako upise
+            mjerenje na krivi datum. */}
+        <div className="row" style={{ justifyContent: 'space-between' }}>
+          <div className="row">
+            <button
+              className="btn secondary small"
+              aria-label="Prethodni dan"
+              onClick={() => setSelectedDate(addDays(selectedDate, -1))}
+            >
+              ◀
+            </button>
+            <b style={{ minWidth: 210, textAlign: 'center' }} aria-live="polite">
+              📅 {dayName(selectedDate)}, {fmtDate(selectedDate)}
+            </b>
+            <button
+              className="btn secondary small"
+              aria-label="Sljedeći dan"
+              onClick={() => setSelectedDate(addDays(selectedDate, 1))}
+            >
+              ▶
+            </button>
+            <button className="btn small" onClick={() => setSelectedDate(todayISO())}>
+              Danas
+            </button>
+          </div>
+          <span className="small muted">dan za koji se bilježi mjerenje</span>
         </div>
       </div>
 

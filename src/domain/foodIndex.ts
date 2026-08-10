@@ -1,4 +1,5 @@
 import { BASE_FOODS } from '../data/foods'
+import { EXTRA_FOODS } from '../data/extraFoods'
 import { OFF_FOODS } from '../data/offFoods'
 import type { AppState, BaseFoodOverrides, Food, MealItem } from './types'
 import { NUTRIENT_KEYS, isFoodRef } from './types'
@@ -43,7 +44,7 @@ export function buildFoodIndex(state: AppState): FoodIndex {
   const hidden = new Set(state.overrides.hidden)
 
   const ingredients: Food[] = []
-  for (const food of [...BASE_FOODS, ...OFF_FOODS]) {
+  for (const food of [...BASE_FOODS, ...EXTRA_FOODS, ...OFF_FOODS]) {
     if (hidden.has(food.id)) continue
     ingredients.push(applyOverrides(food, state.overrides))
   }

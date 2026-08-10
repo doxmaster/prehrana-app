@@ -1,6 +1,7 @@
 import { useMemo } from 'react'
 import { WEEKDAY_NAMES } from '../../domain/types'
-import { emptyWeekDays, weekDescription, weekShoppingList, weekSummary } from '../../domain/weeks'
+import { WEEK_LENGTH, emptyWeekDays, weekDescription, weekShoppingList, weekSummary } from '../../domain/weeks'
+import { NO_REPEAT_WEEKS, generateWeek } from '../../domain/generateWeek'
 import { householdFactor, memberShares } from '../../domain/household'
 import { mealsTotals } from '../../domain/nutrients'
 import { computeTargets } from '../../domain/targets'
@@ -122,6 +123,25 @@ export function Tjedni() {
               }
             >
               + Novi
+            </button>
+            <button
+              className="btn small"
+              title="Automatski rasporedi jelovnike po danima"
+              onClick={() => {
+                // Ostali tjedni, od najnovijeg — iz njih se cita sto se ne smije ponoviti.
+                const others = state.weeks.filter((w) => w.id !== week.id).reverse()
+                const result = generateWeek(state.menus, { recentWeeks: others })
+                update((draft) => {
+                  const target = draft.weeks.find((w) => w.id === week.id)
+                  if (target) target.days = result.days
+                })
+                toast(
+                  result.note ??
+                    `Tjedan složen — ${WEEK_LENGTH} dana bez ponavljanja iz zadnja ${NO_REPEAT_WEEKS} tjedna.`,
+                )
+              }}
+            >
+              🎲 Složi tjedan
             </button>
             <button
               className="btn secondary small"

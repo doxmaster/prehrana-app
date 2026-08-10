@@ -4,6 +4,7 @@ import { Dnevnik } from './components/tabs/Dnevnik'
 import { Jelovnik } from './components/tabs/Jelovnik'
 import { Namirnice } from './components/tabs/Namirnice'
 import { Osobe } from './components/tabs/Osobe'
+import { Napredak } from './components/tabs/Napredak'
 import { Postavke } from './components/tabs/Postavke'
 import { Tjedni } from './components/tabs/Tjedni'
 import { useAppStore } from './store/useAppStore'
@@ -12,6 +13,7 @@ const TABS = [
   { id: 'dnevnik', label: '📊 Dnevnik' },
   { id: 'tjedni', label: '📅 Tjedni i nabava' },
   { id: 'jelovnik', label: '🍽️ Jelovnici' },
+  { id: 'napredak', label: '📈 Napredak' },
   { id: 'osobe', label: '👨‍👩‍👧 Obitelj i ciljevi' },
   { id: 'namirnice', label: '🍎 Namirnice' },
   { id: 'postavke', label: '⚙️ Postavke' },
@@ -63,6 +65,7 @@ export default function App() {
           {tab === 'dnevnik' && <Dnevnik />}
           {tab === 'tjedni' && <Tjedni />}
           {tab === 'jelovnik' && <Jelovnik />}
+          {tab === 'napredak' && <Napredak />}
           {tab === 'osobe' && <Osobe />}
           {tab === 'namirnice' && <Namirnice />}
           {tab === 'postavke' && <Postavke />}

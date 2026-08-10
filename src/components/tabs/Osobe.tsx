@@ -120,6 +120,11 @@ export function Osobe() {
               update((draft) => {
                 draft.profiles = draft.profiles.filter((p) => p.id !== person.id)
                 draft.activeProfileId = draft.profiles[0]!.id
+                // Bez ovoga id obrisane osobe ostaje u kucanstvu do sljedeceg
+                // ucitavanja, pa se u podacima nose clanovi kojih nema.
+                for (const household of draft.households) {
+                  household.memberIds = household.memberIds.filter((id) => id !== person.id)
+                }
               })
             }}
           >

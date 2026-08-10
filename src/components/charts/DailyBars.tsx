@@ -50,14 +50,13 @@ export function DailyBars({
 
   return (
     <div>
+      {/* Vidi napomenu u TrendLine: fiksna visina bi ostavila prazne rubove. */}
       <svg
         viewBox={`0 0 ${WIDTH} ${height}`}
-        width="100%"
-        height={height}
         role="img"
         aria-labelledby={titleId}
         onMouseLeave={() => setHover(null)}
-        style={{ display: 'block', overflow: 'visible' }}
+        style={{ display: 'block', width: '100%', height: 'auto', overflow: 'visible' }}
       >
         <title id={titleId}>
           {label} kroz {points.length} {points.length === 1 ? 'dan' : 'dana'}

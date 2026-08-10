@@ -50,14 +50,18 @@ export function TrendLine({
 
   return (
     <div>
+      {/*
+        Visina se NE zadaje atributom: uz fiksnu visinu i preserveAspectRatio
+        sadrzaj se skalira na min(sirina/640, visina/200), pa u siroj kartici
+        ostaje 640 px sirok i centrira se s praznim rubovima. Sirina 100 % uz
+        automatsku visinu pusta viewBox da odredi omjer.
+      */}
       <svg
         viewBox={`0 0 ${WIDTH} ${height}`}
-        width="100%"
-        height={height}
         role="img"
         aria-labelledby={titleId}
         onMouseLeave={() => setHover(null)}
-        style={{ display: 'block', overflow: 'visible' }}
+        style={{ display: 'block', width: '100%', height: 'auto', overflow: 'visible' }}
       >
         <title id={titleId}>
           {label}: od {fmt(points[0]!.value, decimals)} do {fmt(last.value, decimals)} {unit}

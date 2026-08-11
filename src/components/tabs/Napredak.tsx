@@ -205,7 +205,7 @@ export function Napredak() {
 
       <Bilanca date={selectedDate} />
 
-      <div className="card">
+      <div className="card span-all">
         <div className="flexsplit">
           <h2 style={{ margin: 0 }}>Težina — {person.name}</h2>
           {weightStats.change !== null && (
@@ -230,7 +230,7 @@ export function Napredak() {
         )}
       </div>
 
-      <div className="card">
+      <div className="card span-all">
         <div className="flexsplit">
           <h2 style={{ margin: 0 }}>Unesene kalorije</h2>
           <span className="small muted">

@@ -6,6 +6,7 @@ import './styles/app.css'
 import './styles/modern.css'
 import './styles/header.css'
 import './styles/motion.css'
+import './styles/layout.css'
 
 const root = document.getElementById('root')
 if (!root) throw new Error('Nedostaje #root element')

@@ -1,0 +1,109 @@
+/**
+ * Raspored po velicini zaslona.
+ *
+ * Do sada je sve stajalo u jednom stupcu, pa je na sirokom monitoru pola
+ * povrsine bilo prazno, a citanje je trazilo skrolanje kroz kartice koje bi
+ * stale jedna do druge.
+ *
+ * Pravilo je jednostavno: kartice koje nose SIROK sadrzaj (tablica, kalendar,
+ * obroci, graf) uvijek uzimaju cijeli redak, a ostale se slazu u stupce.
+ * Sirina se odreduje sadrzajem, ne nabrajanjem kartica po karticama — tako
+ * nova kartica sama upada na pravo mjesto.
+ */
+
+.wrap {
+  max-width: min(1180px, 100%);
+  transition: max-width var(--dur) var(--ease);
+}
+
+/* ---------- veliki zaslon: dva stupca ---------- */
+
+@media (min-width: 1180px) {
+  .wrap {
+    max-width: min(1440px, 96vw);
+    padding-inline: clamp(16px, 2.5vw, 32px);
+  }
+
+  [role='tabpanel'] {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    align-items: start;
+    /* Manja kartica smije popuniti rupu iza sire — inace ostaju praznine. */
+    grid-auto-flow: dense;
+  }
+  [role='tabpanel'] > .card,
+  [role='tabpanel'] > .hero {
+    margin-bottom: 0;
+  }
+
+  /* Sadrzaj koji trazi sirinu. */
+  [role='tabpanel'] > .hero,
+  [role='tabpanel'] > .span-all,
+  [role='tabpanel'] > .card:has(table),
+  [role='tabpanel'] > .card:has(.cal),
+  [role='tabpanel'] > .card:has(.meal) {
+    grid-column: 1 / -1;
+  }
+}
+
+/* ---------- vrlo siroki zaslon: tri stupca ---------- */
+
+@media (min-width: 1700px) {
+  .wrap {
+    max-width: min(1760px, 94vw);
+  }
+  [role='tabpanel'] {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  /* Kalendar i obroci i dalje traze prostor, ali ne cijeli redak od tri. */
+  [role='tabpanel'] > .card:has(.cal),
+  [role='tabpanel'] > .card:has(.meal) {
+    grid-column: span 2;
+  }
+}
+
+/* ---------- tablet ---------- */
+
+@media (min-width: 900px) and (max-width: 1179px) {
+  .wrap {
+    max-width: 96vw;
+  }
+  /* Statistike u karticama podnose vise stupaca i na srednjem zaslonu. */
+  .grid.g4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+/* ---------- uski zaslon ---------- */
+
+@media (max-width: 560px) {
+  .card {
+    border-radius: var(--radius);
+  }
+  /* Tablica namirnica na mobitelu klize vodoravno umjesto da se lomi. */
+  .table-scroll {
+    max-height: 60vh;
+  }
+  .hero {
+    min-height: 132px;
+  }
+  .kcalbig {
+    font-size: 24px;
+  }
+  .modal-box {
+    max-height: 88vh;
+    overflow: auto;
+  }
+}
+
+/* Preglednici bez :has() (stariji Firefox) dobivaju jedan stupac —
+   raspored je tada kakav je i bio, bez ijedne pokvarene kartice. */
+@supports not selector(:has(*)) {
+  [role='tabpanel'] {
+    display: block;
+  }
+  [role='tabpanel'] > .card {
+    margin-bottom: 16px;
+  }
+}

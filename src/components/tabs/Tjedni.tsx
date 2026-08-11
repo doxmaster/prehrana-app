@@ -284,7 +284,7 @@ export function Tjedni() {
         )}
       </div>
 
-      <div className="card">
+      <div className="card span-all">
         <h2>Raspored po danima</h2>
         <p className="muted small" style={{ margin: '-6px 0 10px' }}>
           Svaki dan dobiva jedan jelovnik iz knjižnice. Izmjena jelovnika odražava se na sve tjedne
@@ -366,7 +366,7 @@ export function Tjedni() {
         </div>
       )}
 
-      <div className="card">
+      <div className="card span-all">
         <div className="flexsplit">
           <h2 style={{ margin: 0 }}>🛒 Nabava za tjedan</h2>
           <button

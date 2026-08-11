@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 import { WEEKDAY_NAMES } from '../../domain/types'
+import { fmtDate, mondayOf, todayISO } from '../../domain/dates'
 import { WEEK_LENGTH, emptyWeekDays, weekDescription, weekShoppingList, weekSummary } from '../../domain/weeks'
 import { NO_REPEAT_WEEKS, generateWeek } from '../../domain/generateWeek'
 import { householdFactor, memberShares } from '../../domain/household'
@@ -137,7 +138,7 @@ export function Tjedni() {
                   recentWeeks: others,
                   // Dan koji se kosi sa stanjem odabrane osobe uzima se tek kad
                   // drugoga nema — ne izbacuje se, jer prazan dan nije bolji.
-                  discouraged: (menu) => check.meals(menu.meals).some((f) => f.level === 'izbjegavaj'),
+                  discouraged: (menu) => check.day(menu.meals).worst?.level === 'izbjegavaj',
                 })
                 update((draft) => {
                   const target = draft.weeks.find((w) => w.id === week.id)
@@ -161,6 +162,9 @@ export function Tjedni() {
                     title: `${week.title ?? 'Tjedan'} (kopija)`,
                   }
                   delete copy.season
+                  // Kopija ne preuzima datum: dva tjedna na isti ponedjeljak
+                  // znacila bi da Dnevnik ne zna koji plan nudi.
+                  delete copy.startDate
                   draft.weeks.push(copy)
                   setActiveWeekId(copy.id)
                   toast('Tjedan kopiran — sad ga možeš mijenjati.')
@@ -220,6 +224,48 @@ export function Tjedni() {
           </span>
         </div>
 
+        <div className="row" style={{ marginTop: 10 }}>
+          <label htmlFor="week-start" style={{ margin: 0 }}>
+            Vrijedi od:
+          </label>
+          <input
+            id="week-start"
+            type="date"
+            style={{ width: 'auto' }}
+            value={week.startDate ?? ''}
+            onChange={(e) =>
+              editWeek((draft) => {
+                // Datum se svodi na ponedjeljak — tjedan uvijek počinje ondje.
+                if (e.target.value) draft.startDate = mondayOf(e.target.value)
+                else delete draft.startDate
+              })
+            }
+          />
+          <button
+            className="btn secondary small"
+            onClick={() => editWeek((draft) => void (draft.startDate = mondayOf(todayISO())))}
+          >
+            Ovaj tjedan
+          </button>
+          {week.startDate && (
+            <button className="btn secondary small" onClick={() => editWeek((draft) => void delete draft.startDate)}>
+              Ukloni datum
+            </button>
+          )}
+        </div>
+        <p className="hint" style={{ marginBottom: 0 }}>
+          {week.startDate ? (
+            <>
+              Dnevnik za dane od <b>{fmtDate(week.startDate)}</b> nudi ovaj plan na potvrdu.
+            </>
+          ) : (
+            <>
+              Bez datuma je ovo samo obrazac — dodijeli mu tjedan da se u Dnevniku može potvrđivati
+              jednim klikom.
+            </>
+          )}
+        </p>
+
         {shares.length > 0 && (
           <div className="catlegend" style={{ marginTop: 6 }}>
             {shares.map((s) => (
@@ -265,7 +311,7 @@ export function Tjedni() {
                   </option>
                 ))}
               </select>
-              <FlagBadge flag={menu ? check.meals(menu.meals)[0] : undefined} />
+              <FlagBadge flag={menu ? check.day(menu.meals).worst : undefined} />
               <span className="small muted" style={{ minWidth: 90, textAlign: 'right' }}>
                 {menu ? `${fmt(kcal)} kcal` : ''}
               </span>

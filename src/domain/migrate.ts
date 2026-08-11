@@ -240,6 +240,9 @@ function migrateWeekPlan(v: unknown): WeekPlan | null {
   if (typeof d.householdId === 'string' && d.householdId) week.householdId = d.householdId
   const season = SEASONS.find((s) => s === d.season)
   if (season) week.season = season
+  // Datum se svodi na ponedjeljak da tjedan uvijek pocinje na istom mjestu,
+  // bez obzira koji je dan upisan.
+  if (isISODate(d.startDate)) week.startDate = mondayOf(d.startDate)
   return week
 }
 

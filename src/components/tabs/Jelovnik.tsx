@@ -42,7 +42,11 @@ export function Jelovnik() {
   const totals = mealsTotals(meals, foods)
   const targets = targetsFor(person, todayISO())
   const plan = conditionPlan(targets, person, weightOn(person, todayISO()))
-  const flags = check.meals(meals)
+  const dayCheck = check.day(meals)
+  // Granica se javlja po zbroju dana, a stanja bez brojke po sastojku.
+  const flags = dayCheck.breaches.length && dayCheck.worst
+    ? [dayCheck.worst, ...dayCheck.flags]
+    : dayCheck.flags
 
   const editMeals = (mutate: (draft: DayMeals) => void) => {
     update((draft) => {

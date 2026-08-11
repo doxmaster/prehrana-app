@@ -172,6 +172,11 @@ export interface WeekPlan {
   householdId?: string
   /** Oznaka sezone kod ugrađenih jelovnika. */
   season?: 'proljeće' | 'ljeto' | 'jesen' | 'zima'
+  /**
+   * ISO datum ponedjeljka na koji tjedan pada. Bez njega je tjedan samo obrazac
+   * (npr. sezonski), pa se ne veže ni uz jedan datum u dnevniku.
+   */
+  startDate?: string
 }
 
 /** Izmjene nad ugrađenim namirnicama, ključ je id namirnice. */

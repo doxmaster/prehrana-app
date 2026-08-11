@@ -11,6 +11,7 @@ import { Calendar } from '../Calendar'
 import { MealEditor } from '../MealEditor'
 import { NutrientBars } from '../NutrientBars'
 import { PersonPicker } from '../PersonPicker'
+import { PlanTraka } from '../PlanTraka'
 import { fmt } from '../../lib/format'
 import type { DayMeals } from '../../domain/types'
 
@@ -113,6 +114,8 @@ export function Dnevnik() {
         <Calendar month={month} selected={selectedDate} kcalByDate={kcalByDate} onPick={setSelectedDate} />
         <p className="hint">Klikni dan za prikaz; brojka u ćeliji su pojedene kalorije tog dana.</p>
       </div>
+
+      <PlanTraka date={selectedDate} meals={meals} onChange={editMeals} />
 
       <AiUnos onChange={editMeals} />
 

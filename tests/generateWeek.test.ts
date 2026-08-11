@@ -113,11 +113,27 @@ describe('pravilo o kuhinji', () => {
     expect(domaci).toBe(WEEK_LENGTH)
   })
 
-  it('jelovnik bez oznake kuhinje broji se kao strani', () => {
-    const bezOznake: Menu = { id: 'x', meals: [[{ foodId: 'b0', g: 100 }], [], [], []] }
-    const r = generateWeek([bezOznake], { random: seeded() })
-    expect(r.days.filter((d) => d === 'x')).toHaveLength(MAX_FOREIGN_PER_WEEK)
-    expect(r.unfilled).toBe(WEEK_LENGTH - MAX_FOREIGN_PER_WEEK)
+  it('jelovnik bez oznake kuhinje NIJE ograničen', () => {
+    // Takvi su svi koje korisnik sam napravi. Kad bi se brojali kao strani,
+    // granica od jednog stranog jela ostavila bi šest dana praznih.
+    const bezOznake = Array.from(
+      { length: 8 },
+      (_, i): Menu => ({ id: `x${i}`, meals: [[{ foodId: 'b0', g: 100 }], [], [], []] }),
+    )
+    const r = generateWeek(bezOznake, { random: seeded() })
+    expect(r.unfilled).toBe(0)
+    expect(r.note).toBeUndefined()
+  })
+
+  it('knjižnica bez ijedne oznake složi puni tjedan', () => {
+    // Točno stanje koje nastane kad su jelovnici stariji od uvođenja oznaka.
+    const stari = Array.from({ length: 14 }, (_, i): Menu => {
+      const menu: Menu = { id: `mn${i}`, title: `Jelovnik ${i}`, meals: [[{ foodId: 'b0', g: 100 }], [], [], []] }
+      return menu
+    })
+    const r = generateWeek(stari, { random: seeded(17) })
+    expect(r.unfilled).toBe(0)
+    expect(new Set(r.days).size).toBe(WEEK_LENGTH)
   })
 
   it('radije ostavi dan prazan nego prekrši granicu stranih jela', () => {

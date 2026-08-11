@@ -1,5 +1,5 @@
 import { WEEK_LENGTH } from './weeks'
-import type { Cuisine, Menu, WeekPlan } from './types'
+import type { Menu, WeekPlan } from './types'
 
 /** Koliko unatrag tjedan ne smije ponoviti jelovnik iz prethodnih tjedana. */
 export const NO_REPEAT_WEEKS = 2
@@ -22,8 +22,14 @@ export interface GenerateResult {
   note?: string
 }
 
-const cuisineOf = (menu: Menu): Cuisine => menu.cuisine ?? 'ostalo'
-const isDomestic = (menu: Menu) => cuisineOf(menu) !== 'ostalo'
+/**
+ * Ograniceni su SAMO jelovnici izricito oznaceni kao 'ostalo'.
+ *
+ * Jelovnik bez oznake nije stran — takvi su svi koje korisnik sam napravi, kao i
+ * oni nastali prije nego sto su oznake uvedene. Kad bi se brojali kao strani,
+ * granica od jednog stranog jela tjedno ostavila bi sest dana praznih.
+ */
+const isForeign = (menu: Menu) => menu.cuisine === 'ostalo'
 
 /** Jelovnici koje treba izbjeci jer su vec bili u zadnjih NO_REPEAT_WEEKS tjedana. */
 export function recentlyUsed(weeks: WeekPlan[], lookback = NO_REPEAT_WEEKS): Set<string> {
@@ -68,8 +74,8 @@ export function generateWeek(menus: Menu[], options: GenerateOptions = {}): Gene
   }
 
   const avoid = recentlyUsed(recentWeeks)
-  const domestic = shuffle(usable.filter(isDomestic), random)
-  const foreign = shuffle(usable.filter((m) => !isDomestic(m)), random)
+  const domestic = shuffle(usable.filter((m) => !isForeign(m)), random)
+  const foreign = shuffle(usable.filter(isForeign), random)
 
   const days: (string | null)[] = []
   const usedThisWeek = new Set<string>()

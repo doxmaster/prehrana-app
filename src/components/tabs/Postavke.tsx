@@ -96,7 +96,7 @@ export function Postavke() {
         <button
           className="btn secondary small"
           onClick={() => {
-            const { state: next, added } = restoreStarterContent(state, {
+            const { state: next, added, tagged } = restoreStarterContent(state, {
               recipes: STARTER_RECIPES,
               menus: STARTER_MENUS,
               weeks: STARTER_WEEKS,
@@ -105,6 +105,7 @@ export function Postavke() {
               added.recipes && `${added.recipes} recepata`,
               added.menus && `${added.menus} jelovnika`,
               added.weeks && `${added.weeks} tjedana`,
+              tagged && `oznaka kuhinje na ${tagged} jelovnika`,
             ].filter(Boolean)
             if (!parts.length) return toast('Sve je već na mjestu.')
             replaceAll(next)

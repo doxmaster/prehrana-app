@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { RESET_PARTS, describeReset, resetParts, restoreStarterContent } from '../src/domain/reset'
 import { migrateState } from '../src/domain/migrate'
 import { STARTER_MENUS, STARTER_WEEKS } from '../src/data/menus'
+import { generateWeek } from '../src/domain/generateWeek'
 import { STARTER_RECIPES } from '../src/data/recipes'
 import type { AppState } from '../src/domain/types'
 
@@ -157,5 +158,63 @@ describe('restoreStarterContent', () => {
     const snapshot = JSON.stringify(original)
     restoreStarterContent(original, starter)
     expect(JSON.stringify(original)).toBe(snapshot)
+  })
+
+  it('dopunjava oznaku kuhinje jelovnicima koji je nemaju', () => {
+    // Stanje nastalo prije uvođenja oznaka: jelovnici postoje, ali bez cuisine.
+    const base = populated()
+    base.menus = STARTER_MENUS.map((m) => {
+      const copy = structuredClone(m)
+      delete copy.cuisine
+      return copy
+    })
+
+    const { state, tagged } = restoreStarterContent(base, starter)
+    expect(tagged).toBe(STARTER_MENUS.filter((m) => m.cuisine).length)
+    expect(state.menus.every((m) => m.cuisine)).toBe(true)
+  })
+
+  it('ne mijenja oznaku koju je korisnik već postavio', () => {
+    const base = populated()
+    base.menus = [{ ...structuredClone(STARTER_MENUS[0]!), cuisine: 'ostalo' }]
+    const { state, tagged } = restoreStarterContent(base, starter)
+    expect(tagged).toBe(0)
+    expect(state.menus.find((m) => m.id === STARTER_MENUS[0]!.id)?.cuisine).toBe('ostalo')
+  })
+
+  it('dopuna oznaka ne dira obroke', () => {
+    const base = populated()
+    base.menus = STARTER_MENUS.map((m) => {
+      const copy = structuredClone(m)
+      delete copy.cuisine
+      return copy
+    })
+    const before = JSON.stringify(base.menus.map((m) => m.meals))
+    const { state } = restoreStarterContent(base, starter)
+    const after = JSON.stringify(
+      STARTER_MENUS.map((m) => state.menus.find((x) => x.id === m.id)!.meals),
+    )
+    expect(after).toBe(before)
+  })
+})
+
+describe('generator nakon obnove', () => {
+  it('jelovnici bez oznake nakon obnove daju puni tjedan', () => {
+    const base = populated()
+    base.menus = STARTER_MENUS.map((m) => {
+      const copy = structuredClone(m)
+      delete copy.cuisine
+      return copy
+    })
+
+    // Prije obnove — svi su neoznačeni, ali generator ih više ne kažnjava.
+    expect(generateWeek(base.menus).unfilled).toBe(0)
+
+    const { state } = restoreStarterContent(base, {
+      recipes: STARTER_RECIPES,
+      menus: STARTER_MENUS,
+      weeks: STARTER_WEEKS,
+    })
+    expect(generateWeek(state.menus).unfilled).toBe(0)
   })
 })

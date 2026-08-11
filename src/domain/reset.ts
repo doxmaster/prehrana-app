@@ -110,6 +110,8 @@ export function resetParts(state: AppState, keys: readonly ResetKey[]): AppState
 export interface RestoreResult {
   state: AppState
   added: { recipes: number; menus: number; weeks: number }
+  /** Postojeci jelovnici kojima je dopunjena oznaka kuhinje. */
+  tagged: number
 }
 
 /**
@@ -134,9 +136,22 @@ export function restoreStarterContent(
     added.recipes++
   }
 
-  const haveMenus = new Set(next.menus.map((m) => m.id))
+  let tagged = 0
+  const byId = new Map(next.menus.map((m) => [m.id, m]))
   for (const menu of starter.menus) {
-    if (haveMenus.has(menu.id)) continue
+    const existing = byId.get(menu.id)
+    if (existing) {
+      /**
+       * Jelovnik postoji, ali mu moze nedostajati oznaka kuhinje jer je nastao
+       * prije nego sto je uvedena. Bez nje ga generator tjedana tretira kao
+       * neoznacenog, pa se dopunjava — obroci se NE diraju.
+       */
+      if (!existing.cuisine && menu.cuisine) {
+        existing.cuisine = menu.cuisine
+        tagged++
+      }
+      continue
+    }
     next.menus.push(structuredClone(menu))
     added.menus++
   }
@@ -165,7 +180,7 @@ export function restoreStarterContent(
   }
 
   next.updatedAt = Date.now()
-  return { state: next, added }
+  return { state: next, added, tagged }
 }
 
 /** Kratak opis onoga sto ce nestati — za potvrdu prije brisanja. */

@@ -23,16 +23,33 @@ function read(key: string): unknown {
 }
 
 /**
+ * Dopunjava katalog jela receptima koje aplikacija u međuvremenu dobila.
+ *
+ * Katalog je sadržaj aplikacije, ne korisnički unos — nema načina da se recept
+ * obriše pojedinačno. Zato se, za razliku od jelovnika, smije dopuniti sam:
+ * inače bi stanje složeno prije nekog izdanja zauvijek ostalo na starom broju
+ * jela. Postojeći recept s istim id-om se ne dira.
+ */
+function mergeStarterRecipes(state: AppState): AppState {
+  const have = new Set(state.recipes.map((r) => r.id))
+  const missing = STARTER_RECIPES.filter((r) => !have.has(r.id))
+  if (missing.length) state.recipes.push(...structuredClone(missing))
+  return state
+}
+
+/**
  * Učitava stanje: prvo v3, pa redom stari ključevi. Stari se ne brišu — ostaju
  * kao sigurnosna kopija dok korisnik sam ne odluči drukčije.
  */
 export function loadState(): LoadResult {
   const current = read(STORAGE_KEY)
-  if (current) return { state: migrateState(current), from: STORAGE_KEY, migrated: false }
+  if (current) {
+    return { state: mergeStarterRecipes(migrateState(current)), from: STORAGE_KEY, migrated: false }
+  }
 
   for (const key of LEGACY_KEYS) {
     const legacy = read(key)
-    if (legacy) return { state: migrateState(legacy), from: key, migrated: true }
+    if (legacy) return { state: mergeStarterRecipes(migrateState(legacy)), from: key, migrated: true }
   }
 
   // Prvi start: ponudi domaca jela, dnevne jelovnike i sezonske tjedne. Postojeci

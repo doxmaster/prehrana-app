@@ -30,7 +30,7 @@ export const RESET_PARTS = [
   {
     key: 'recipes',
     label: 'Recepti',
-    description: 'Vlastita jela složena od sastojaka.',
+    description: 'Katalog jela. Ugrađena jela vraćaju se pri sljedećem pokretanju.',
   },
   {
     key: 'customFoods',

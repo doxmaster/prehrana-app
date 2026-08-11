@@ -192,21 +192,16 @@ header {
   .chip {
     max-width: 40vw;
   }
+  /*
+   * Izbornik ostaje ODMAH ISPOD pilule i na uskom zaslonu.
+   *
+   * Prije je ovdje postajao "list odozdo", pa se otvarao na dnu zaslona,
+   * daleko od mjesta klika — a odgovor na klik mora doci ondje gdje se
+   * kliknulo. Sirina se samo ogranici da ne izade iz zaslona.
+   */
   .pop-panel {
-    position: fixed;
-    left: 10px;
-    right: 10px;
-    top: auto;
-    /* Iznad donje navigacije, ne preko nje — inace se cini da je nesto zaslo
-       ispod trake i da se izbornik ne moze zatvoriti. */
-    bottom: calc(74px + env(safe-area-inset-bottom));
-    max-width: none;
-    animation: sheetIn var(--dur) var(--ease-spring);
-  }
-  @keyframes sheetIn {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
+    min-width: min(244px, calc(100vw - 20px));
+    max-width: calc(100vw - 20px);
+    max-height: min(60vh, 420px);
   }
 }

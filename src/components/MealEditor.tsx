@@ -1,5 +1,7 @@
 import { useId, useState } from 'react'
+import { FlagBadge } from './FlagBadge'
 import { JeloPicker } from './JeloPicker'
+import { useConditionCheck } from '../hooks/useConditionCheck'
 import { MEALS } from '../domain/constants'
 import { catColor } from '../domain/constants'
 import {
@@ -225,10 +227,12 @@ function Item({
   onCopy: () => void
 }) {
   const foods = useFoods()
+  const check = useConditionCheck()
   const per100 = itemPer100(item, foods)
   const name = itemName(item, foods)
   const color = catColor(itemCategory(item, foods))
   const scaled: Nutrients | null = per100 ? scale(per100, item.g) : null
+  const flag = check.item(item)
 
   return (
     <div className="item" style={{ borderLeft: `3px solid ${color}` }}>
@@ -241,6 +245,7 @@ function Item({
             🤖
           </span>
         )}{' '}
+        <FlagBadge flag={flag} />{' '}
         {scaled ? (
           <span className="muted small">
             · <span className="kcal-c">{fmt(scaled.kcal)} kcal</span> · B {fmt(scaled.p, 1)} g · UH{' '}

@@ -9,7 +9,9 @@ import { uid } from '../../domain/id'
 import { confirmDialog, promptDialog, toast } from '../../store/dialogs'
 import { downloadBlob } from '../../store/storage'
 import { useAppStore, useFoods, useUpdate } from '../../store/useAppStore'
+import { FlagBadge } from '../FlagBadge'
 import { NutrientBars } from '../NutrientBars'
+import { useConditionCheck } from '../../hooks/useConditionCheck'
 import { fmt } from '../../lib/format'
 import type { Menu, WeekPlan } from '../../domain/types'
 
@@ -18,6 +20,7 @@ const menuTitle = (menu: Menu | undefined, index: number) =>
 
 export function Tjedni() {
   const foods = useFoods()
+  const check = useConditionCheck()
   const update = useUpdate()
   const state = useAppStore((s) => s.data)
   const activeWeekId = useAppStore((s) => s.activeWeekId)
@@ -130,7 +133,12 @@ export function Tjedni() {
               onClick={() => {
                 // Ostali tjedni, od najnovijeg — iz njih se cita sto se ne smije ponoviti.
                 const others = state.weeks.filter((w) => w.id !== week.id).reverse()
-                const result = generateWeek(state.menus, { recentWeeks: others })
+                const result = generateWeek(state.menus, {
+                  recentWeeks: others,
+                  // Dan koji se kosi sa stanjem odabrane osobe uzima se tek kad
+                  // drugoga nema — ne izbacuje se, jer prazan dan nije bolji.
+                  discouraged: (menu) => check.meals(menu.meals).some((f) => f.level === 'izbjegavaj'),
+                })
                 update((draft) => {
                   const target = draft.weeks.find((w) => w.id === week.id)
                   if (target) target.days = result.days
@@ -257,6 +265,7 @@ export function Tjedni() {
                   </option>
                 ))}
               </select>
+              <FlagBadge flag={menu ? check.meals(menu.meals)[0] : undefined} />
               <span className="small muted" style={{ minWidth: 90, textAlign: 'right' }}>
                 {menu ? `${fmt(kcal)} kcal` : ''}
               </span>

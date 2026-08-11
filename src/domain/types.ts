@@ -116,6 +116,12 @@ export interface Person {
    * naspram referentnog odraslog unosa (2000 kcal).
    */
   portionFactor?: number
+  /**
+   * Zdravstvena stanja koja mijenjaju prehranu — vidi src/domain/conditions.ts.
+   * Oznake su slobodan niz jer stanje može nestati iz kataloga, a stari zapis
+   * to ne smije srušiti; pri korištenju se filtrira na poznata.
+   */
+  conditions?: string[]
 }
 
 /**

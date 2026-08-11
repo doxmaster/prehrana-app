@@ -7,7 +7,9 @@ import { isRecipeFoodId } from '../../domain/recipes'
 import { uid } from '../../domain/id'
 import { confirmDialog, toast } from '../../store/dialogs'
 import { useAppStore, useFoods, useUpdate } from '../../store/useAppStore'
+import { FlagBadge } from '../FlagBadge'
 import { FoodEditor } from '../FoodEditor'
+import { useConditionCheck } from '../../hooks/useConditionCheck'
 import { fmt } from '../../lib/format'
 import type { Category, Food, Nutrients } from '../../domain/types'
 
@@ -29,6 +31,7 @@ const emptyForm = () => ({
 
 export function Namirnice() {
   const foods = useFoods()
+  const check = useConditionCheck()
   const update = useUpdate()
   const state = useAppStore((s) => s.data)
   const [filter, setFilter] = useState('')
@@ -240,7 +243,7 @@ export function Namirnice() {
                 <tr key={food.id}>
                   <td>
                     <span className="cdot" aria-hidden="true" style={{ background: catColor(food.cat) }} />
-                    {food.name}
+                    {food.name} <FlagBadge flag={check.food(food)} />
                   </td>
                   <td className="small" style={{ color: catColor(food.cat), fontWeight: 600 }}>
                     {food.cat}

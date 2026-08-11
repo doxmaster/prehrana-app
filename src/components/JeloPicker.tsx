@@ -1,4 +1,6 @@
 import { useMemo, useState } from 'react'
+import { FlagBadge } from './FlagBadge'
+import { useConditionCheck } from '../hooks/useConditionCheck'
 import { CUISINES } from '../domain/types'
 import { catColor } from '../domain/constants'
 import { recipeAsFood } from '../domain/recipes'
@@ -20,6 +22,7 @@ interface Props {
  */
 export function JeloPicker({ mealIndex, onChange, onClose }: Props) {
   const foods = useFoods()
+  const check = useConditionCheck()
   const recipes = useAppStore((s) => s.data.recipes)
   const [query, setQuery] = useState('')
   const [cuisine, setCuisine] = useState<Cuisine | 'sve'>('sve')
@@ -99,7 +102,8 @@ export function JeloPicker({ mealIndex, onChange, onClose }: Props) {
                   <span className="muted small">
                     · {fmt(food.serv)} g porcija · {fmt(food.kcal * (food.serv / 100))} kcal
                     {recipe.cuisine ? ` · ${recipe.cuisine}` : ''}
-                  </span>
+                  </span>{' '}
+                  <FlagBadge flag={check.food(food)} />
                   {recipe.note && (
                     <>
                       <br />

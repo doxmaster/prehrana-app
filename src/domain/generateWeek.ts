@@ -12,6 +12,12 @@ export interface GenerateOptions {
   recentWeeks?: WeekPlan[]
   /** Izvor slucajnosti; predaje se radi ponovljivosti u testovima. */
   random?: () => number
+  /**
+   * Jelovnici koje treba ostaviti za kraj — npr. oni koji se kose sa
+   * zdravstvenim stanjem ukucana. Ne izbacuju se: bolje ponuditi sporan dan
+   * nego ostaviti prazno, a upozorenje se ionako vidi uz taj dan.
+   */
+  discouraged?: (menu: Menu) => boolean
 }
 
 export interface GenerateResult {
@@ -62,7 +68,7 @@ function shuffle<T>(items: T[], random: () => number): T[] {
  * Dan koji se ne moze popuniti ostaje slobodan, uz obrazlozenje.
  */
 export function generateWeek(menus: Menu[], options: GenerateOptions = {}): GenerateResult {
-  const { recentWeeks = [], random = Math.random } = options
+  const { recentWeeks = [], random = Math.random, discouraged } = options
 
   const usable = menus.filter((m) => m.meals.some((meal) => meal.length > 0))
   if (!usable.length) {
@@ -74,8 +80,14 @@ export function generateWeek(menus: Menu[], options: GenerateOptions = {}): Gene
   }
 
   const avoid = recentlyUsed(recentWeeks)
-  const domestic = shuffle(usable.filter((m) => !isForeign(m)), random)
-  const foreign = shuffle(usable.filter(isForeign), random)
+  /** Sporni jelovnici idu na kraj svakog spremnika, a ne van njega. */
+  const order = (list: Menu[]) => {
+    const mixed = shuffle(list, random)
+    if (!discouraged) return mixed
+    return [...mixed.filter((m) => !discouraged(m)), ...mixed.filter(discouraged)]
+  }
+  const domestic = order(usable.filter((m) => !isForeign(m)))
+  const foreign = order(usable.filter(isForeign))
 
   const days: (string | null)[] = []
   const usedThisWeek = new Set<string>()

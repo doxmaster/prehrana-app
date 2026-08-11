@@ -170,3 +170,31 @@ describe('nad ugrađenim jelovnicima', () => {
     expect(presjek).toEqual([])
   })
 })
+
+describe('jelovnici koji se kose sa zdravstvenim stanjem', () => {
+  it('sporni se uzimaju tek kad drugih nema', () => {
+    const menus = [...domestic(4), ...Array.from({ length: 6 }, (_, i) => menu(`s${i}`, 'hrvatska'))]
+    const r = generateWeek(menus, {
+      random: seeded(31),
+      discouraged: (m) => m.id.startsWith('s'),
+    })
+
+    // Sva četiri neproblematična moraju ući prije bilo kojeg spornog.
+    const prviSporni = r.days.findIndex((id) => id?.startsWith('s'))
+    expect(prviSporni).toBe(4)
+    expect(r.unfilled).toBe(0)
+  })
+
+  it('kad su svi sporni, tjedan se ipak složi — prazan dan nije bolji', () => {
+    const menus = domestic(8)
+    const r = generateWeek(menus, { random: seeded(33), discouraged: () => true })
+    expect(r.unfilled).toBe(0)
+  })
+
+  it('bez opcije ponašanje je nepromijenjeno', () => {
+    const menus = domestic(10)
+    const bez = generateWeek(menus, { random: seeded(41) })
+    const sa = generateWeek(menus, { random: seeded(41), discouraged: () => false })
+    expect(sa.days).toEqual(bez.days)
+  })
+})

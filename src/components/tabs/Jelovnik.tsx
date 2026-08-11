@@ -1,17 +1,20 @@
 import { MEALS } from '../../domain/constants'
 import { emptyMeals, foodUnit, isEmptyMeals, itemName, mealsFluid, mealsTotals, sumItems } from '../../domain/nutrients'
-import { targetsFor } from '../../domain/targets'
+import { conditionPlan } from '../../domain/conditions'
+import { targetsFor, weightOn } from '../../domain/targets'
 import { uid } from '../../domain/id'
 import { confirmDialog, promptDialog, toast } from '../../store/dialogs'
 import { useActivePerson, useAppStore, useFoods, useUpdate } from '../../store/useAppStore'
 import { MealEditor } from '../MealEditor'
 import { NutrientBars } from '../NutrientBars'
+import { useConditionCheck } from '../../hooks/useConditionCheck'
 import { fmt } from '../../lib/format'
 import { todayISO } from '../../domain/dates'
 import type { DayMeals, Menu } from '../../domain/types'
 
 export function Jelovnik() {
   const foods = useFoods()
+  const check = useConditionCheck()
   const update = useUpdate()
   const person = useActivePerson()
   const menus = useAppStore((s) => s.data.menus)
@@ -38,6 +41,8 @@ export function Jelovnik() {
   const meals: DayMeals = menu?.meals ?? emptyMeals()
   const totals = mealsTotals(meals, foods)
   const targets = targetsFor(person, todayISO())
+  const plan = conditionPlan(targets, person, weightOn(person, todayISO()))
+  const flags = check.meals(meals)
 
   const editMeals = (mutate: (draft: DayMeals) => void) => {
     update((draft) => {
@@ -172,8 +177,20 @@ export function Jelovnik() {
             <div className="small muted">tekućina (pića)</div>
           </div>
         </div>
+        {flags.length > 0 && (
+          <div className="banner warn" style={{ marginTop: 12, marginBottom: 0 }}>
+            {flags.map((f) => (
+              <div key={f.condition}>
+                <b>
+                  {f.level === 'izbjegavaj' ? '⛔' : '⚠'} {f.conditionName}
+                </b>{' '}
+                — {f.why}
+              </div>
+            ))}
+          </div>
+        )}
         <div style={{ marginTop: 14 }}>
-          <NutrientBars totals={totals} targets={targets} />
+          <NutrientBars totals={totals} targets={plan.targets} caps={plan.caps} />
         </div>
       </div>
 

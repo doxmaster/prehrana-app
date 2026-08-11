@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { ACTIVITY_LEVELS, ADULT_AGE, GOALS, PROFILE_LIMITS, computeTargets, isMinor, targetsFor, weightOn } from '../../domain/targets'
 import { REFERENCE_KCAL, householdFactor, householdKcal, memberShares } from '../../domain/household'
+import { CONDITIONS, conditionPlan, conflictsIn, personConditions } from '../../domain/conditions'
 import { proteinPerKg } from '../../domain/dri'
 import { uid } from '../../domain/id'
 import { todayISO } from '../../domain/dates'
@@ -8,7 +9,8 @@ import { confirmDialog, promptDialog, toast } from '../../store/dialogs'
 import { newPerson, useActivePerson, useAppStore, useUpdate } from '../../store/useAppStore'
 import { PersonPicker } from '../PersonPicker'
 import { fmt } from '../../lib/format'
-import type { Profile } from '../../domain/types'
+import type { ConditionId } from '../../domain/conditions'
+import type { NutrientKey, Profile } from '../../domain/types'
 
 /** Vraća broj samo ako je unutar dopuštenog raspona — inače null. */
 function inRange(raw: string, limits: { min: number; max: number }): number | null {
@@ -52,6 +54,12 @@ export function Osobe() {
   const targets = targetsFor(person, todayISO())
   const measuredWeight = weightOn(person, todayISO())
   const usesMeasurement = measuredWeight !== person.profile.weight
+
+  const plan = conditionPlan(targets, person, measuredWeight)
+  const capNote = (key: NutrientKey) => {
+    const cap = plan.caps.find((c) => c.key === key)
+    return cap ? `najviše ${fmt(cap.max)} — ${cap.conditionName}` : null
+  }
 
   const save = () => {
     if (age === null || weight === null || height === null) {
@@ -238,27 +246,46 @@ export function Osobe() {
         )}
       </div>
 
+      <Zdravlje />
+
       <div className="card">
         <h2>Dnevni ciljevi — {person.name}</h2>
+        {plan.caps.length > 0 && (
+          <p className="muted small" style={{ margin: '-6px 0 10px' }}>
+            Vrijednosti označene s <b>najviše</b> nisu cilj nego gornja granica — kod njih više nije
+            bolje.
+          </p>
+        )}
         <div className="grid g4">
           <TargetCard
             label="Kalorije"
-            value={`${fmt(targets.kcal)} kcal`}
+            value={`${fmt(plan.targets.kcal)} kcal`}
             note={`BMR ${fmt(targets.bmr)} · TDEE ${fmt(targets.tdee)} · ${maloljetnik ? 'Schofield' : 'Mifflin-St Jeor'}`}
           />
           <TargetCard
             label="Bjelančevine"
-            value={`${fmt(targets.p)} g`}
-            note={`≈${fmt(proteinPerKg(person.profile.age), 2)} g/kg`}
+            value={`${fmt(plan.targets.p)} g`}
+            note={capNote('p') ?? `≈${fmt(proteinPerKg(person.profile.age), 2)} g/kg`}
+            capped={!!capNote('p')}
           />
-          <TargetCard label="Ugljikohidrati" value={`${fmt(targets.c)} g`} note="ostatak energije" />
-          <TargetCard label="Masti" value={`${fmt(targets.f)} g`} note="≈25 % energije" />
-          <TargetCard label="Vlakna" value={`${fmt(targets.fib)} g`} note="14 g/1000 kcal" />
-          <TargetCard label="Željezo" value={`${fmt(targets.fe)} mg`} note="DRI za dob" />
-          <TargetCard label="Kalcij" value={`${fmt(targets.ca)} mg`} note="DRI za dob" />
-          <TargetCard label="Magnezij" value={`${fmt(targets.mg)} mg`} note="DRI za dob" />
-          <TargetCard label="Vitamin C" value={`${fmt(targets.vc)} mg`} note="DRI za dob" />
-          <TargetCard label="Vitamin D" value={`${fmt(targets.vd)} µg`} note="DRI za dob" />
+          <TargetCard
+            label="Ugljikohidrati"
+            value={`${fmt(plan.targets.c)} g`}
+            note={capNote('c') ?? 'ostatak energije'}
+            capped={!!capNote('c')}
+          />
+          <TargetCard label="Masti" value={`${fmt(plan.targets.f)} g`} note="≈25 % energije" />
+          <TargetCard label="Vlakna" value={`${fmt(plan.targets.fib)} g`} note="14 g/1000 kcal" />
+          <TargetCard
+            label="Željezo"
+            value={`${fmt(plan.targets.fe)} mg`}
+            note={capNote('fe') ?? 'DRI za dob'}
+            capped={!!capNote('fe')}
+          />
+          <TargetCard label="Kalcij" value={`${fmt(plan.targets.ca)} mg`} note="DRI za dob" />
+          <TargetCard label="Magnezij" value={`${fmt(plan.targets.mg)} mg`} note="DRI za dob" />
+          <TargetCard label="Vitamin C" value={`${fmt(plan.targets.vc)} mg`} note="DRI za dob" />
+          <TargetCard label="Vitamin D" value={`${fmt(plan.targets.vd)} µg`} note="DRI za dob" />
           <TargetCard
             label="Voda"
             value={`${fmt(targets.water, 1)} L`}
@@ -432,12 +459,109 @@ function Obitelji() {
   )
 }
 
-function TargetCard({ label, value, note }: { label: string; value: string; note?: string }) {
+function TargetCard({
+  label,
+  value,
+  note,
+  capped,
+}: {
+  label: string
+  value: string
+  note?: string
+  /** Vrijednost je gornja granica, ne cilj — mora se razlikovati na prvi pogled. */
+  capped?: boolean
+}) {
   return (
-    <div className="card" style={{ margin: 0, background: 'var(--panel2)' }}>
-      <div className="muted small">{label}</div>
+    <div
+      className="card"
+      style={{
+        margin: 0,
+        background: 'var(--panel2)',
+        ...(capped ? { borderLeft: '3px solid var(--warn, #d97706)' } : {}),
+      }}
+    >
+      <div className="muted small">
+        {label} {capped && <span title="Gornja granica">⛔</span>}
+      </div>
       <div style={{ fontSize: 20, fontWeight: 700, margin: '2px 0' }}>{value}</div>
       {note && <div className="muted small">{note}</div>}
+    </div>
+  )
+}
+
+/**
+ * Zdravstvena stanja osobe. Namjerno je odvojeno od profila: ovo nije mjera
+ * nego odluka koja mijenja i ciljeve i ocjenu namirnica, pa mora biti vidljivo
+ * sto je ukljuceno i sto to konkretno mijenja.
+ */
+function Zdravlje() {
+  const person = useActivePerson()
+  const update = useUpdate()
+  const chosen = personConditions(person)
+  const conflicts = conflictsIn(chosen)
+
+  const toggle = (id: ConditionId) =>
+    update((draft) => {
+      const target = draft.profiles.find((p) => p.id === person.id)
+      if (!target) return
+      const list = new Set(target.conditions ?? [])
+      if (list.has(id)) list.delete(id)
+      else list.add(id)
+      if (list.size) target.conditions = [...list]
+      else delete target.conditions
+    })
+
+  return (
+    <div className="card">
+      <h2>Zdravstvena stanja — {person.name}</h2>
+      <p className="muted small" style={{ margin: '-6px 0 12px' }}>
+        Odabrano stanje mijenja dnevne ciljeve i označava namirnice i jela koja se uz njega
+        ograničavaju. Ovo je pomoć pri planiranju, <b>ne liječnički savjet</b> — osobne granice
+        zadaje liječnik.
+      </p>
+
+      {conflicts.map((c) => (
+        <div className="banner warn" key={`${c.a}-${c.b}`} style={{ marginBottom: 10 }}>
+          {c.why}
+        </div>
+      ))}
+
+      {CONDITIONS.map((c) => {
+        const on = chosen.includes(c.id)
+        return (
+          <label
+            key={c.id}
+            className="item"
+            style={{ alignItems: 'flex-start', cursor: 'pointer', paddingLeft: 0 }}
+          >
+            <input
+              type="checkbox"
+              style={{ width: 'auto', marginTop: 3 }}
+              checked={on}
+              onChange={() => toggle(c.id)}
+            />
+            <span style={{ flex: 1, minWidth: 0 }}>
+              <b>{c.name}</b>
+              <br />
+              <span className="muted small">{c.short}</span>
+              {on && (
+                <span className="small" style={{ display: 'block', marginTop: 6 }}>
+                  <ul style={{ margin: '0 0 0 16px', padding: 0 }}>
+                    {CONDITIONS.find((x) => x.id === c.id)!.advice.map((line) => (
+                      <li key={line}>{line}</li>
+                    ))}
+                  </ul>
+                  {c.blind && (
+                    <span className="muted" style={{ display: 'block', marginTop: 4 }}>
+                      ⓘ {c.blind}
+                    </span>
+                  )}
+                </span>
+              )}
+            </span>
+          </label>
+        )
+      })}
     </div>
   )
 }

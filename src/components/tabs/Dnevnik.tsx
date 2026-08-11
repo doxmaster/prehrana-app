@@ -1,8 +1,10 @@
 import { useMemo } from 'react'
 import { MONTHS, addDays, dayName, fmtDate, firstOfMonth, iso, monthDates, parseISO, todayISO, weekDates } from '../../domain/dates'
 import { NUTRIENT_KEYS } from '../../domain/types'
+import { NUTRIENTS } from '../../domain/constants'
+import { capBreaches, conditionPlan } from '../../domain/conditions'
 import { emptyMeals, mealsFluid, mealsTotals, zeroNutrients } from '../../domain/nutrients'
-import { targetsFor } from '../../domain/targets'
+import { targetsFor, weightOn } from '../../domain/targets'
 import { ensureDay, useActivePerson, useAppStore, useFoods, useUpdate } from '../../store/useAppStore'
 import { AiUnos } from '../AiUnos'
 import { Calendar } from '../Calendar'
@@ -24,6 +26,9 @@ export function Dnevnik() {
   const targets = targetsFor(person, selectedDate)
   const totals = mealsTotals(meals, foods)
   const fluid = mealsFluid(meals, foods)
+
+  const plan = conditionPlan(targets, person, weightOn(person, selectedDate))
+  const breaches = capBreaches(totals, plan.caps)
 
   const kcalByDate = useMemo(() => {
     const out: Record<string, number> = {}
@@ -137,8 +142,21 @@ export function Dnevnik() {
             <div className="small muted">tekućina (pića)</div>
           </div>
         </div>
+        {breaches.length > 0 && (
+          <div className="banner warn" style={{ marginTop: 12, marginBottom: 0 }}>
+            {breaches.map((b) => (
+              <div key={b.cap.key}>
+                <b>
+                  {NUTRIENTS.find((n) => n.key === b.cap.key)?.label}: {fmt(b.value, 1)} / najviše{' '}
+                  {fmt(b.cap.max)}
+                </b>{' '}
+                — {b.cap.why}
+              </div>
+            ))}
+          </div>
+        )}
         <div style={{ marginTop: 14 }}>
-          <NutrientBars totals={totals} targets={targets} />
+          <NutrientBars totals={totals} targets={plan.targets} caps={plan.caps} />
         </div>
       </div>
 

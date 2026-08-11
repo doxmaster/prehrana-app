@@ -146,6 +146,12 @@ function migratePerson(v: unknown, index: number): Person {
     log: migrateDayMap(d.log),
     measurements: migrateMeasurements(d.measurements),
   }
+  // Rucno zadan udio u nabavi i zdravstvena stanja nisu dio starijih zapisa;
+  // kad postoje, moraju prezivjeti ucitavanje jer se migracija vrti pri svakom.
+  const factor = num(d.portionFactor, 0)
+  if (factor > 0) person.portionFactor = factor
+  const conditions = asArray(d.conditions).filter((c): c is string => typeof c === 'string')
+  if (conditions.length) person.conditions = [...new Set(conditions)]
   // v1: tjedan bez datuma
   if (d.week) migrateWeek(d.week, person.log)
   // v2: planovi po danu — zadržavaju se privremeno da bi se pretvorili u jelovnike

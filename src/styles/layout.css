@@ -16,11 +16,18 @@
   transition: max-width var(--dur) var(--ease);
 }
 
-/* ---------- veliki zaslon: dva stupca ---------- */
+/* ---------- sve sto nije telefon: dva stupca ---------- */
 
-@media (min-width: 1180px) {
+/*
+ * Prag je namjerno nizak (1000 px): svaki laptop i tablet u vodoravnom
+ * polozaju ima mjesta za dva stupca, a telefon i uzak prozor nemaju. Granicu
+ * mjeri preglednik sam i mijenja je u trenutku kad se prozor razvuce ili
+ * uredaj okrene — bez skripte, pa nema ni bljeska krivog rasporeda pri
+ * ucitavanju.
+ */
+@media (min-width: 1000px) {
   .wrap {
-    max-width: min(1440px, 96vw);
+    max-width: min(1440px, 97vw);
     padding-inline: clamp(16px, 2.5vw, 32px);
   }
 
@@ -65,7 +72,7 @@
 
 /* ---------- tablet ---------- */
 
-@media (min-width: 900px) and (max-width: 1179px) {
+@media (min-width: 760px) and (max-width: 999px) {
   .wrap {
     max-width: 96vw;
   }

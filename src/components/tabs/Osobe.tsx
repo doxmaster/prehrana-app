@@ -8,7 +8,6 @@ import { uid } from '../../domain/id'
 import { todayISO } from '../../domain/dates'
 import { confirmDialog, promptDialog, toast } from '../../store/dialogs'
 import { newPerson, useActivePerson, useAppStore, useUpdate } from '../../store/useAppStore'
-import { PersonPicker } from '../PersonPicker'
 import { fmt } from '../../lib/format'
 import type { ConditionId } from '../../domain/conditions'
 import type { NutrientKey, Profile } from '../../domain/types'
@@ -90,8 +89,10 @@ export function Osobe() {
     <>
       <div className="card">
         <h2>Osobe</h2>
+        <p className="muted small" style={{ margin: '-6px 0 10px' }}>
+          Osoba se bira u zaglavlju, gore desno — odabir vrijedi na svim karticama.
+        </p>
         <div className="row" style={{ marginBottom: 12 }}>
-          <PersonPicker />
           <button
             className="btn small"
             onClick={async () => {

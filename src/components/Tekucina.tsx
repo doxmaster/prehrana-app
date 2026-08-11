@@ -76,6 +76,30 @@ export function Tekucina({ date, meals, onChange }: Props) {
             {b.label} {b.ml} ml
           </button>
         ))}
+        {fluid > 0 && (
+          <button
+            className="btn danger small"
+            title="Miče sva pića iz međuobroka za ovaj dan"
+            onClick={() => {
+              onChange((draft) => {
+                const meal = draft[MEAL_INDEX['Međuobrok']]
+                if (!meal) return
+                // Brise se samo ono sto je ovaj brzi unos i mogao dodati — hrana
+                // u meduobroku ostaje netaknuta.
+                const before = meal.length
+                const ids = new Set(BRZI.map((b) => b.foodId))
+                for (let i = meal.length - 1; i >= 0; i--) {
+                  const item = meal[i]!
+                  if ('foodId' in item && ids.has(item.foodId)) meal.splice(i, 1)
+                }
+                if (before === meal.length) toast('Nema brzog unosa tekućine za ovaj dan.')
+                else toast('Brzi unos tekućine poništen.')
+              })
+            }}
+          >
+            ↺ Poništi
+          </button>
+        )}
       </div>
       <p className="hint" style={{ marginBottom: 0 }}>
         Upisuje se u međuobrok i zbraja s pićima iz ostalih obroka. Cilj se računa iz tjelesne mase.

@@ -1,27 +1,149 @@
-/* Vizualni identitet prenesen iz legacy/index.html — boje i mjere ostaju iste. */
+/**
+ * Vrijednosti dizajna na jednom mjestu.
+ *
+ * Svjetla i tamna tema dijele ISTA imena, pa nijedna komponenta ne mora znati
+ * koja je tema aktivna. Tamna se ukljucuje sama prema postavci sustava, a
+ * korisnikov izbor (data-theme na <html>) je nadjacava.
+ */
 :root {
   color-scheme: light;
 
+  /* Podloge */
   --bg: #eef4f0;
+  --bg-mesh-1: rgba(31, 157, 99, 0.16);
+  --bg-mesh-2: rgba(58, 134, 196, 0.12);
+  --bg-mesh-3: rgba(224, 116, 42, 0.1);
   --panel: #ffffff;
-  --panel2: #f1f6f2;
-  --line: #e3eae5;
+  --panel2: #f4f8f5;
+  --panel-glass: rgba(255, 255, 255, 0.72);
+  --line: #e2eae5;
+  --line-strong: #cdd9d2;
 
-  --txt: #1c2a23;
-  --muted: #6a7a71;
+  /* Tekst */
+  --txt: #14231c;
+  --fg: #14231c;
+  --muted: #64756c;
 
-  --accent: #1f9d63;
-  --accent-d: #17824f;
-  --accent2: #3a86c4;
+  /* Naglasci */
+  --accent: #16a34a;
+  --accent-d: #0f7a37;
+  --accent2: #2f7fd4;
+  --accent-soft: rgba(22, 163, 74, 0.12);
 
-  --warn: #d29529;
-  --bad: #d15a52;
-  --good: #1f9d63;
-  --kcal: #e0742a;
+  --warn: #c2810f;
+  --bad: #d0453e;
+  --good: #16a34a;
+  --kcal: #dd6b20;
 
-  --shadow: 0 2px 12px rgba(24, 52, 38, 0.06);
-  --shadow-lg: 0 12px 34px rgba(24, 52, 38, 0.16);
+  /* Sjene — dvoslojne, da rub ostane mekan a dubina citljiva */
+  --shadow-xs: 0 1px 2px rgba(16, 40, 28, 0.05);
+  --shadow: 0 1px 2px rgba(16, 40, 28, 0.05), 0 6px 20px -8px rgba(16, 40, 28, 0.12);
+  --shadow-md: 0 2px 4px rgba(16, 40, 28, 0.06), 0 12px 32px -10px rgba(16, 40, 28, 0.18);
+  --shadow-lg: 0 8px 16px rgba(16, 40, 28, 0.08), 0 30px 60px -20px rgba(16, 40, 28, 0.28);
+  --ring: 0 0 0 3px rgba(22, 163, 74, 0.18);
+
+  /* Oblik */
+  --radius-sm: 10px;
   --radius: 16px;
+  --radius-lg: 22px;
+  --radius-full: 999px;
 
-  --font: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  /* Gibanje */
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --dur-fast: 120ms;
+  --dur: 220ms;
+  --dur-slow: 420ms;
+
+  --font: 'Inter var', 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-num: ui-monospace, 'SF Mono', 'Cascadia Mono', 'Segoe UI Mono', monospace;
+}
+
+/* Tamna tema: prati sustav dok korisnik ne odluci drukcije. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    color-scheme: dark;
+
+    --bg: #0e1512;
+    --bg-mesh-1: rgba(22, 163, 74, 0.22);
+    --bg-mesh-2: rgba(47, 127, 212, 0.16);
+    --bg-mesh-3: rgba(221, 107, 32, 0.12);
+    --panel: #16201b;
+    --panel2: #1d2a23;
+    --panel-glass: rgba(22, 32, 27, 0.72);
+    --line: #253328;
+    --line-strong: #33463a;
+
+    --txt: #e8f1eb;
+    --fg: #e8f1eb;
+    --muted: #93a89c;
+
+    --accent: #34d17c;
+    --accent-d: #22a75f;
+    --accent2: #5fa8f0;
+    --accent-soft: rgba(52, 209, 124, 0.16);
+
+    --warn: #e9b23c;
+    --bad: #f0736a;
+    --good: #34d17c;
+    --kcal: #f5a04a;
+
+    --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.4);
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 6px 20px -8px rgba(0, 0, 0, 0.6);
+    --shadow-md: 0 2px 4px rgba(0, 0, 0, 0.45), 0 12px 32px -10px rgba(0, 0, 0, 0.7);
+    --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.5), 0 30px 60px -20px rgba(0, 0, 0, 0.8);
+    --ring: 0 0 0 3px rgba(52, 209, 124, 0.25);
+  }
+}
+
+/* Rucno odabrana tamna tema — ista pravila, bez obzira na postavku sustava. */
+:root[data-theme='dark'] {
+  color-scheme: dark;
+
+  --bg: #0e1512;
+  --bg-mesh-1: rgba(22, 163, 74, 0.22);
+  --bg-mesh-2: rgba(47, 127, 212, 0.16);
+  --bg-mesh-3: rgba(221, 107, 32, 0.12);
+  --panel: #16201b;
+  --panel2: #1d2a23;
+  --panel-glass: rgba(22, 32, 27, 0.72);
+  --line: #253328;
+  --line-strong: #33463a;
+
+  --txt: #e8f1eb;
+  --fg: #e8f1eb;
+  --muted: #93a89c;
+
+  --accent: #34d17c;
+  --accent-d: #22a75f;
+  --accent2: #5fa8f0;
+  --accent-soft: rgba(52, 209, 124, 0.16);
+
+  --warn: #e9b23c;
+  --bad: #f0736a;
+  --good: #34d17c;
+  --kcal: #f5a04a;
+
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 6px 20px -8px rgba(0, 0, 0, 0.6);
+  --shadow-md: 0 2px 4px rgba(0, 0, 0, 0.45), 0 12px 32px -10px rgba(0, 0, 0, 0.7);
+  --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.5), 0 30px 60px -20px rgba(0, 0, 0, 0.8);
+  --ring: 0 0 0 3px rgba(52, 209, 124, 0.25);
+}
+
+/* Tko je u postavkama sustava iskljucio animacije, ne dobiva ih ni ovdje. */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur-fast: 1ms;
+    --dur: 1ms;
+    --dur-slow: 1ms;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+    scroll-behavior: auto !important;
+  }
 }

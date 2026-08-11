@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Dialogs } from './components/Dialogs'
 import { PersonPicker } from './components/PersonPicker'
+import { ThemeToggle } from './components/ThemeToggle'
 import { Dnevnik } from './components/tabs/Dnevnik'
 import { Jelovnik } from './components/tabs/Jelovnik'
 import { Namirnice } from './components/tabs/Namirnice'
@@ -41,8 +42,11 @@ export default function App() {
           je bila samo u Dnevniku, na ostalim se karticama nije vidjelo za koga
           se gleda.
         */}
-        <div className="row header-person">
-          <PersonPicker />
+        <div className="row header-tools">
+          <div className="row header-person">
+            <PersonPicker />
+          </div>
+          <ThemeToggle />
         </div>
       </header>
 

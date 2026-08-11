@@ -41,14 +41,12 @@ header {
   white-space: nowrap;
 }
 .header-person select {
-  background: rgba(255, 255, 255, 0.16);
-  border-color: rgba(255, 255, 255, 0.35);
-  color: #fff;
-  font-weight: 650;
-}
-.header-person select option {
-  color: var(--fg);
-  background: var(--panel);
+  /* Puna podloga, ne prozirna: otvoreni popup crta OS, pa se prozirnost i
+     bijeli tekst ondje pretvore u bijelo na bijelom. */
+  background: #fff;
+  border-color: rgba(255, 255, 255, 0.5);
+  color: #123;
+  font-weight: 700;
 }
 header::after {
   content: '';

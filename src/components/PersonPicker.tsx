@@ -7,8 +7,13 @@ export function PersonPicker() {
   const update = useAppStore((s) => s.update)
   const id = useId()
 
+  const active = people.find((p) => p.id === activeId)
+
   return (
     <>
+      <span className="avatar" aria-hidden="true">
+        {(active?.name ?? '?').trim().charAt(0).toUpperCase()}
+      </span>
       <label htmlFor={id} style={{ margin: 0 }}>
         Osoba:
       </label>

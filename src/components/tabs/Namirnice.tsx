@@ -6,7 +6,7 @@ import { foodUsage, removeFoodReferences } from '../../domain/foodIndex'
 import { isRecipeFoodId } from '../../domain/recipes'
 import { uid } from '../../domain/id'
 import { confirmDialog, toast } from '../../store/dialogs'
-import { useAppStore, useFoods, useUpdate } from '../../store/useAppStore'
+import { useActivePerson, useAppStore, useFoods, useUpdate } from '../../store/useAppStore'
 import { FlagBadge } from '../FlagBadge'
 import { FoodEditor } from '../FoodEditor'
 import { useConditionCheck } from '../../hooks/useConditionCheck'
@@ -32,6 +32,7 @@ const emptyForm = () => ({
 export function Namirnice() {
   const foods = useFoods()
   const check = useConditionCheck()
+  const personName = useActivePerson().name
   const update = useUpdate()
   const state = useAppStore((s) => s.data)
   const [filter, setFilter] = useState('')
@@ -188,6 +189,12 @@ export function Namirnice() {
             <>Oznaka izvora pokazuje je li vrijednost provjerena prema vanjskoj bazi.</>
           )}
         </p>
+        {check.active && (
+          <p className="small" style={{ margin: '0 0 8px' }}>
+            ⛔/⚠ oznake vrijede za <b>{personName}</b> i stanja odabrana u kartici Obitelj i ciljevi.
+            Promijeni osobu u zaglavlju da vidiš njezine.
+          </p>
+        )}
         <div className="row" style={{ marginBottom: 8 }}>
           <input
             value={filter}

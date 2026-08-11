@@ -24,18 +24,20 @@ header {
   top: 0;
   z-index: 30;
   padding: 12px clamp(16px, 4vw, 28px);
-  background: linear-gradient(120deg, var(--accent-d) 0%, var(--accent) 55%, #14b8a6 100%);
+  /*
+   * Svjetlo u kutu je sada DIO pozadine, a ne zasebni krug koji strsi van.
+   * Time zaglavlje vise ne treba `overflow: hidden`, pa skocni izbornici osobe
+   * i kucanstva ne zavrsavaju odrezani ispod njega.
+   */
+  background:
+    radial-gradient(220px 220px at calc(100% - 40px) -40px, rgba(255, 255, 255, 0.24), transparent 70%),
+    linear-gradient(120deg, var(--accent-d) 0%, var(--accent) 55%, #14b8a6 100%);
   box-shadow: var(--shadow);
   border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  overflow: visible;
 }
 header::after {
-  /* Dekoracija ne smije hvatati klikove. */
-  pointer-events: none;
-  right: -60px;
-  top: -90px;
-  width: 260px;
-  height: 260px;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.22), transparent 65%);
+  content: none;
 }
 header h1 {
   font-size: clamp(18px, 2.4vw, 23px);

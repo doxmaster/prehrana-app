@@ -197,7 +197,9 @@ header {
     left: 10px;
     right: 10px;
     top: auto;
-    bottom: 12px;
+    /* Iznad donje navigacije, ne preko nje — inace se cini da je nesto zaslo
+       ispod trake i da se izbornik ne moze zatvoriti. */
+    bottom: calc(74px + env(safe-area-inset-bottom));
     max-width: none;
     animation: sheetIn var(--dur) var(--ease-spring);
   }

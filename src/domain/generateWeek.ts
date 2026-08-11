@@ -18,7 +18,16 @@ export interface GenerateOptions {
    * nego ostaviti prazno, a upozorenje se ionako vidi uz taj dan.
    */
   discouraged?: (menu: Menu) => boolean
+  /**
+   * Koliko jelovnik odgovara ukucanima (vise je bolje) — vidi domain/menuFit.ts.
+   * Bolji idu prvi, ali samo kad je razlika stvarna: bliske ocjene ostaju u
+   * slucajnom redoslijedu da tjedan ne bi svaki put ispao isti.
+   */
+  score?: (menu: Menu) => number
 }
+
+/** Sirina razreda ocjene; unutar razreda odlucuje slucajnost, ne desetinke. */
+const SCORE_BUCKET = 25
 
 export interface GenerateResult {
   days: (string | null)[]
@@ -68,7 +77,7 @@ function shuffle<T>(items: T[], random: () => number): T[] {
  * Dan koji se ne moze popuniti ostaje slobodan, uz obrazlozenje.
  */
 export function generateWeek(menus: Menu[], options: GenerateOptions = {}): GenerateResult {
-  const { recentWeeks = [], random = Math.random, discouraged } = options
+  const { recentWeeks = [], random = Math.random, discouraged, score } = options
 
   const usable = menus.filter((m) => m.meals.some((meal) => meal.length > 0))
   if (!usable.length) {
@@ -80,11 +89,22 @@ export function generateWeek(menus: Menu[], options: GenerateOptions = {}): Gene
   }
 
   const avoid = recentlyUsed(recentWeeks)
-  /** Sporni jelovnici idu na kraj svakog spremnika, a ne van njega. */
+  /**
+   * Redoslijed biranja: prvo oni bez prigovora, unutar toga bolje ocijenjeni,
+   * a unutar istog razreda ocjene ostaje slucajan poredak.
+   */
   const order = (list: Menu[]) => {
     const mixed = shuffle(list, random)
-    if (!discouraged) return mixed
-    return [...mixed.filter((m) => !discouraged(m)), ...mixed.filter(discouraged)]
+    if (!discouraged && !score) return mixed
+    return mixed
+      .map((menu, index) => ({
+        menu,
+        index,
+        bad: discouraged ? discouraged(menu) : false,
+        bucket: score ? Math.round(score(menu) / SCORE_BUCKET) : 0,
+      }))
+      .sort((a, b) => Number(a.bad) - Number(b.bad) || b.bucket - a.bucket || a.index - b.index)
+      .map((x) => x.menu)
   }
   const domestic = order(usable.filter((m) => !isForeign(m)))
   const foreign = order(usable.filter(isForeign))

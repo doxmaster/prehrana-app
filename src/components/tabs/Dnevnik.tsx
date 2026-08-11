@@ -3,12 +3,14 @@ import { MONTHS, addDays, dayName, fmtDate, firstOfMonth, iso, monthDates, parse
 import { NUTRIENT_KEYS } from '../../domain/types'
 import { NUTRIENTS } from '../../domain/constants'
 import { capBreaches, conditionPlan } from '../../domain/conditions'
+import { energyBreakdown } from '../../domain/energy'
 import { emptyMeals, mealsFluid, mealsTotals, zeroNutrients } from '../../domain/nutrients'
 import { targetsFor, weightOn } from '../../domain/targets'
 import { ensureDay, useActivePerson, useAppStore, useFoods, useUpdate } from '../../store/useAppStore'
 import { AiUnos } from '../AiUnos'
 import { Calendar } from '../Calendar'
 import { MealEditor } from '../MealEditor'
+import { KcalRing } from '../KcalRing'
 import { NutrientBars } from '../NutrientBars'
 import { PlanTraka } from '../PlanTraka'
 import { Tekucina } from '../Tekucina'
@@ -29,6 +31,7 @@ export function Dnevnik() {
   const fluid = mealsFluid(meals, foods)
 
   const plan = conditionPlan(targets, person, weightOn(person, selectedDate))
+  const sleepOn = person.measurements.find((m) => m.date === selectedDate)?.sleep
   const breaches = capBreaches(totals, plan.caps)
 
   const kcalByDate = useMemo(() => {
@@ -130,15 +133,11 @@ export function Dnevnik() {
           Pregled dana <span className="muted small">({person.name})</span>
         </h2>
         <div className="flexsplit">
-          <div>
-            <div className="kcalbig">
-              <span className="kcal-c">{fmt(totals.kcal)}</span>{' '}
-              <span className="muted" style={{ fontSize: 14 }}>
-                / {fmt(targets.kcal)} kcal
-              </span>
-            </div>
-            <div className="small muted">Preostalo: {fmt(targets.kcal - totals.kcal)} kcal</div>
-          </div>
+          <KcalRing
+            value={Math.round(totals.kcal)}
+            target={plan.targets.kcal}
+            spent={energyBreakdown(person.profile, weightOn(person, selectedDate), sleepOn).total}
+          />
           <div>
             <div style={{ fontSize: 18, fontWeight: 650 }}>
               💧 {fmt(fluid, 1)} / {fmt(targets.water, 1)} L

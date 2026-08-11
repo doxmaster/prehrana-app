@@ -4,6 +4,7 @@ import App from './App'
 import './styles/tokens.css'
 import './styles/app.css'
 import './styles/modern.css'
+import './styles/header.css'
 
 const root = document.getElementById('root')
 if (!root) throw new Error('Nedostaje #root element')

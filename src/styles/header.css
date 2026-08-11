@@ -1,0 +1,210 @@
+/**
+ * Zaglavlje i skocni izbornici.
+ *
+ * Sve sto vrijedi na svim karticama zivi ovdje, pa i izgled ide odvojeno od
+ * ostatka — zaglavlje je jedina traka koja se nikad ne mijenja s karticom.
+ */
+
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  position: relative;
+  z-index: 1;
+}
+.brand-mark {
+  width: 40px;
+  height: 40px;
+  border-radius: 13px;
+  display: grid;
+  place-items: center;
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(8px);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  animation: markIn 700ms var(--ease-spring) both;
+}
+@keyframes markIn {
+  from {
+    opacity: 0;
+    transform: scale(0.7) rotate(-12deg);
+  }
+}
+.brand h1 {
+  margin: 0;
+  line-height: 1.1;
+}
+.brand p {
+  margin: 2px 0 0;
+}
+
+/* ---------- pilule i skocni izbornici ---------- */
+
+.header-tools {
+  position: relative;
+  z-index: 2;
+  gap: 8px;
+}
+
+.pop {
+  position: relative;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 12px 5px 6px;
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #fff;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 650;
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+  transition:
+    background var(--dur) var(--ease),
+    transform var(--dur-fast) var(--ease);
+  max-width: 46vw;
+}
+.chip:hover {
+  background: rgba(255, 255, 255, 0.26);
+}
+.chip:active {
+  transform: scale(0.97);
+}
+.chip-text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.chip-sub {
+  opacity: 0.7;
+  font-weight: 600;
+  font-size: 11.5px;
+}
+.caret {
+  font-size: 12px;
+  opacity: 0.85;
+  transition: transform var(--dur) var(--ease);
+}
+.caret.up {
+  transform: rotate(180deg);
+}
+
+.avatar.sm {
+  width: 24px;
+  height: 24px;
+  font-size: 11px;
+  background: var(--accent-soft);
+  color: var(--accent-d);
+  box-shadow: none;
+}
+
+.pop-panel {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 10px);
+  min-width: 244px;
+  max-height: 70vh;
+  overflow: auto;
+  padding: 6px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-lg);
+  z-index: 60;
+  animation: popIn var(--dur) var(--ease-spring);
+  transform-origin: top right;
+}
+@keyframes popIn {
+  from {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.96);
+  }
+}
+
+.pop-title {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  font-weight: 700;
+  padding: 8px 10px 6px;
+}
+
+.pop-item {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  width: 100%;
+  padding: 9px 10px;
+  border: none;
+  background: transparent;
+  color: var(--txt);
+  font: inherit;
+  font-size: 13.5px;
+  font-weight: 600;
+  text-align: left;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background var(--dur-fast) var(--ease);
+}
+.pop-item:hover {
+  background: var(--panel2);
+}
+.pop-item.on {
+  background: var(--accent-soft);
+  color: var(--accent-d);
+}
+.pop-item.danger {
+  color: var(--bad);
+}
+.pop-check {
+  margin-left: auto;
+  font-weight: 800;
+}
+.pop-sep {
+  height: 1px;
+  background: var(--line);
+  margin: 6px 4px;
+}
+
+@media (max-width: 640px) {
+  .brand p {
+    display: none;
+  }
+  .brand-mark {
+    width: 34px;
+    height: 34px;
+    border-radius: 11px;
+  }
+  .chip {
+    max-width: 40vw;
+  }
+  .pop-panel {
+    position: fixed;
+    left: 10px;
+    right: 10px;
+    top: auto;
+    bottom: 12px;
+    max-width: none;
+    animation: sheetIn var(--dur) var(--ease-spring);
+  }
+  @keyframes sheetIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+  }
+}

@@ -443,3 +443,86 @@ tbody tr:hover {
 .cell .dn {
   color: var(--txt);
 }
+
+/* ---------- prsten kalorija ---------- */
+
+.ring-wrap {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+.ring {
+  --arc: 0;
+  --ring-color: var(--kcal);
+  width: 132px;
+  height: 132px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  position: relative;
+  flex: none;
+  background:
+    conic-gradient(var(--ring-color) calc(var(--arc) * 1%), var(--panel2) 0),
+    var(--panel2);
+  transition: background var(--dur-slow) var(--ease);
+  animation: ringIn 700ms var(--ease) both;
+}
+@keyframes ringIn {
+  from {
+    transform: scale(0.9) rotate(-8deg);
+    opacity: 0;
+  }
+}
+.ring::after {
+  content: '';
+  position: absolute;
+  inset: 11px;
+  border-radius: 50%;
+  background: var(--panel);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+/* Prekoracenje: tanak prsten koji pulsira preko punog kruga. */
+.ring-over {
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 2px solid var(--bad);
+  opacity: 0.55;
+  animation: pulse 2s var(--ease) infinite;
+}
+@keyframes pulse {
+  50% {
+    transform: scale(1.05);
+    opacity: 0.2;
+  }
+}
+.ring-mid {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  line-height: 1.15;
+}
+.ring-val {
+  font-size: 27px;
+  font-weight: 850;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+  color: var(--txt);
+}
+.ring-unit {
+  font-size: 11.5px;
+  color: var(--muted);
+  font-weight: 600;
+}
+.ring-side {
+  display: grid;
+  gap: 4px;
+}
+.ring-line {
+  font-size: 15px;
+  font-weight: 700;
+}
+.ring-line.bad {
+  color: var(--bad);
+}

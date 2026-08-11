@@ -16,6 +16,11 @@ interface StoreState {
   activeMenuIndex: number
   /** Odabrani tjedni plan; null kad ih nema. */
   activeWeekId: string | null
+  /**
+   * Kucanstvo odabrano u zaglavlju. Tjedan ima svoje, pa ovo vrijedi kao izbor
+   * dok se ne otvori tjedan koji je vec vezan uz neko drugo.
+   */
+  activeHouseholdId: string | null
   /** Poruka o neuspjelom spremanju, npr. puna memorija preglednika. */
   saveError: string | null
   /** Podaci su pri prvom pokretanju preuzeti iz stare verzije. */
@@ -28,6 +33,7 @@ interface StoreState {
   setSelectedDate: (date: string) => void
   setActiveMenuIndex: (index: number) => void
   setActiveWeekId: (id: string | null) => void
+  setActiveHouseholdId: (id: string | null) => void
   dismissMigrationNotice: () => void
 }
 
@@ -37,6 +43,7 @@ export const useAppStore = create<StoreState>()((set, get) => ({
   selectedDate: todayISO(),
   activeMenuIndex: 0,
   activeWeekId: initial.state.weeks[0]?.id ?? null,
+  activeHouseholdId: initial.state.households[0]?.id ?? null,
   saveError: null,
   migratedFrom: initial.migrated ? initial.from : null,
 
@@ -63,6 +70,7 @@ export const useAppStore = create<StoreState>()((set, get) => ({
       foods: buildFoodIndex(next),
       activeMenuIndex: 0,
       activeWeekId: next.weeks[0]?.id ?? null,
+      activeHouseholdId: next.households[0]?.id ?? null,
       saveError: null,
     })
   },
@@ -70,6 +78,7 @@ export const useAppStore = create<StoreState>()((set, get) => ({
   setSelectedDate: (selectedDate) => set({ selectedDate }),
   setActiveMenuIndex: (activeMenuIndex) => set({ activeMenuIndex }),
   setActiveWeekId: (activeWeekId) => set({ activeWeekId }),
+  setActiveHouseholdId: (activeHouseholdId) => set({ activeHouseholdId }),
   dismissMigrationNotice: () => set({ migratedFrom: null }),
 }))
 

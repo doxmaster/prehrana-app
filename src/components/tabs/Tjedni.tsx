@@ -3,6 +3,7 @@ import { WEEKDAY_NAMES } from '../../domain/types'
 import { fmtDate, mondayOf, todayISO } from '../../domain/dates'
 import { WEEK_LENGTH, emptyWeekDays, weekDescription, weekShoppingList, weekSummary } from '../../domain/weeks'
 import { NO_REPEAT_WEEKS, generateWeek } from '../../domain/generateWeek'
+import { rankMenus } from '../../domain/menuFit'
 import { householdFactor, memberShares } from '../../domain/household'
 import { mealsTotals } from '../../domain/nutrients'
 import { computeTargets } from '../../domain/targets'
@@ -134,11 +135,16 @@ export function Tjedni() {
               onClick={() => {
                 // Ostali tjedni, od najnovijeg — iz njih se cita sto se ne smije ponoviti.
                 const others = state.weeks.filter((w) => w.id !== week.id).reverse()
+                /**
+                 * Ocjena gleda SVE ukucane: njihove bolesti, granice i ciljeve.
+                 * Dan koji nekome probija granicu ide na kraj, a ne van izbora —
+                 * prazan dan nije bolji od spornog, a upozorenje stoji uz njega.
+                 */
+                const fit = rankMenus(state.menus, household, state.profiles, foods, todayISO())
                 const result = generateWeek(state.menus, {
                   recentWeeks: others,
-                  // Dan koji se kosi sa stanjem odabrane osobe uzima se tek kad
-                  // drugoga nema — ne izbacuje se, jer prazan dan nije bolji.
-                  discouraged: (menu) => check.day(menu.meals).worst?.level === 'izbjegavaj',
+                  score: (menu) => fit.byId.get(menu.id)?.score ?? 0,
+                  discouraged: (menu) => fit.byId.get(menu.id)?.blocked ?? false,
                 })
                 update((draft) => {
                   const target = draft.weeks.find((w) => w.id === week.id)

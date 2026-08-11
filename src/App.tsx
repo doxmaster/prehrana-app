@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { Dialogs } from './components/Dialogs'
-import { PersonPicker } from './components/PersonPicker'
-import { ThemeToggle } from './components/ThemeToggle'
+import { HeaderBar } from './components/HeaderBar'
 import { Dnevnik } from './components/tabs/Dnevnik'
 import { Jelovnik } from './components/tabs/Jelovnik'
 import { Namirnice } from './components/tabs/Namirnice'
@@ -31,24 +30,7 @@ export default function App() {
 
   return (
     <>
-      <header>
-        <div>
-          <h1>🥗 Prehrana</h1>
-          <p>Jelovnici, dnevnik i praćenje hranjivih tvari</p>
-        </div>
-        {/*
-          Odabrana osoba stoji u zaglavlju jer vrijedi na SVIM karticama: prema
-          njoj se racunaju ciljevi, ocjenjuju namirnice i skaliraju porcije. Dok
-          je bila samo u Dnevniku, na ostalim se karticama nije vidjelo za koga
-          se gleda.
-        */}
-        <div className="row header-tools">
-          <div className="row header-person">
-            <PersonPicker />
-          </div>
-          <ThemeToggle />
-        </div>
-      </header>
+      <HeaderBar />
 
       <div className="wrap">
         {migratedFrom && (

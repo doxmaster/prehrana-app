@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { ThemeToggle } from './ThemeToggle'
 import { confirmDialog, promptDialog, toast } from '../store/dialogs'
 import { newPerson, useAppStore, usePeople } from '../store/useAppStore'
@@ -63,7 +63,22 @@ function Popover({
   children: (close: () => void) => React.ReactNode
 }) {
   const [open, setOpen] = useState(false)
+  /**
+   * Izbornik se poravnava po LIJEVOM rubu pilule — ondje gdje je klik i pao.
+   * Prebacuje se na desni rub samo kad bi inace izasao iz zaslona, sto se
+   * dogada pilulama uz sam desni rub zaglavlja.
+   */
+  const [alignRight, setAlignRight] = useState(false)
   const box = useRef<HTMLDivElement>(null)
+  const panel = useRef<HTMLDivElement>(null)
+
+  useLayoutEffect(() => {
+    if (!open || !panel.current || !box.current) return
+    // Mjeri se dok je jos poravnat lijevo; prelijevanje se vidi odmah.
+    const chip = box.current.getBoundingClientRect()
+    const width = panel.current.offsetWidth
+    setAlignRight(chip.left + width > window.innerWidth - 8)
+  }, [open])
 
   useEffect(() => {
     if (!open) return
@@ -96,7 +111,7 @@ function Popover({
         </span>
       </button>
       {open && (
-        <div className="pop-panel" role="menu">
+        <div className={`pop-panel${alignRight ? ' right' : ''}`} role="menu" ref={panel}>
           {children(() => setOpen(false))}
         </div>
       )}

@@ -113,7 +113,9 @@ header {
 
 .pop-panel {
   position: absolute;
-  right: 0;
+  /* Zadano se otvara UDESNO od lijevog ruba pilule — ondje gdje je klik pao. */
+  left: 0;
+  right: auto;
   top: calc(100% + 10px);
   min-width: 244px;
   max-height: 70vh;
@@ -125,6 +127,13 @@ header {
   box-shadow: var(--shadow-lg);
   z-index: 60;
   animation: popIn var(--dur) var(--ease-spring);
+  transform-origin: top left;
+}
+
+/* Pilula uz sam desni rub: izbornik se prebacuje da ne izade iz zaslona. */
+.pop-panel.right {
+  left: auto;
+  right: 0;
   transform-origin: top right;
 }
 @keyframes popIn {

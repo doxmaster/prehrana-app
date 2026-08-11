@@ -1,7 +1,8 @@
+import { GENERATED_MENUS } from './generatedMenus'
 import type { Menu, WeekPlan } from '../domain/types'
 
 /**
- * Dnevni jelovnici i sezonski tjedni koji dolaze s praznom bazom.
+ * Ručno složeni dnevni jelovnici — oni na koje se pozivaju sezonski tjedni.
  *
  * Količine su za JEDNU referentnu odraslu osobu (oko 2000 kcal). Za kućanstvo
  * se množe zbrojem udjela članova — vidi src/domain/household.ts.
@@ -9,7 +10,7 @@ import type { Menu, WeekPlan } from '../domain/types'
  * Jela su hrvatska i regionalna, a vrijednosti dolaze iz recepata i namirnica
  * provjerenih prema USDA, pa nijedna brojka nije procijenjena napamet.
  */
-export const STARTER_MENUS: Menu[] = [
+const HAND_MENUS: Menu[] = [
   {
     id: 'mn-piletina-riza',
     cuisine: 'hrvatska',
@@ -358,6 +359,16 @@ export const STARTER_MENUS: Menu[] = [
     ],
   },
 ]
+
+/**
+ * Sve što aplikacija nudi: ručno složeni dani plus oni složeni iz kataloga jela.
+ *
+ * Ručni idu prvi jer se sezonski tjedni pozivaju na njih, a i provjereni su
+ * pojedinačno. Ostatak dolazi iz generatora — bez njih bi dana bilo taman za
+ * dvije rotacije, pa se u pravilu o neponavljanju kroz dva tjedna ne bi imalo
+ * čime birati.
+ */
+export const STARTER_MENUS: Menu[] = [...HAND_MENUS, ...GENERATED_MENUS]
 
 /** Sezonski tjedni, od ponedjeljka do nedjelje. */
 export const STARTER_WEEKS: WeekPlan[] = [

@@ -32,13 +32,21 @@ export function Namirnice() {
   const update = useUpdate()
   const state = useAppStore((s) => s.data)
   const [filter, setFilter] = useState('')
+  const [show, setShow] = useState<'namirnice' | 'jela' | 'sve'>('namirnice')
   const [sort, setSort] = useState<{ key: SortKey; dir: 1 | -1 }>({ key: 'name', dir: 1 })
   const [form, setForm] = useState(emptyForm)
   const [editing, setEditing] = useState<Food | null>(null)
 
   const rows = useMemo(() => {
     const needle = filter.trim().toLowerCase()
-    const list = foods.all().filter((f) => f.name.toLowerCase().includes(needle))
+    /**
+     * Jela iz kataloga ponasaju se kao namirnice (vrijednosti na 100 g), ali su
+     * druga vrsta zapisa: ne uredjuju se ovdje i ne kupuju se kao takva. Zato su
+     * zadano izvan popisa — inace ih je vise nego pravih namirnica, pa se u
+     * "bazi namirnica" tesko nade sastojak.
+     */
+    const source = show === 'jela' ? foods.dishes() : show === 'sve' ? foods.all() : foods.ingredients()
+    const list = source.filter((f) => f.name.toLowerCase().includes(needle))
     const { key, dir } = sort
     return [...list].sort((a, b) => {
       const av = a[key as keyof Food]
@@ -48,7 +56,7 @@ export function Namirnice() {
       }
       return ((Number(av) || 0) - (Number(bv) || 0)) * dir
     })
-  }, [foods, filter, sort])
+  }, [foods, filter, sort, show])
 
   const addFood = () => {
     const name = form.name.trim()
@@ -163,19 +171,36 @@ export function Namirnice() {
 
       <div className="card">
         <h2>
-          Baza namirnica <span className="muted small">({rows.length})</span>
+          {show === 'jela' ? 'Katalog jela' : 'Baza namirnica'}{' '}
+          <span className="muted small">({rows.length})</span>
         </h2>
         <p className="muted small" style={{ margin: '-4px 0 8px' }}>
-          Vrijednosti su na <b>100 g</b> (za pića 100 ml). Oznaka izvora pokazuje je li vrijednost
-          provjerena prema vanjskoj bazi.
+          Vrijednosti su na <b>100 g</b> (za pića 100 ml).{' '}
+          {show === 'jela' ? (
+            <>Jela se računaju iz sastojaka i uređuju u kartici Jelovnici.</>
+          ) : (
+            <>Oznaka izvora pokazuje je li vrijednost provjerena prema vanjskoj bazi.</>
+          )}
         </p>
-        <input
-          value={filter}
-          placeholder="🔍 Pretraži namirnice..."
-          aria-label="Pretraži namirnice"
-          onChange={(e) => setFilter(e.target.value)}
-          style={{ marginBottom: 8 }}
-        />
+        <div className="row" style={{ marginBottom: 8 }}>
+          <input
+            value={filter}
+            placeholder={show === 'jela' ? '🔍 Pretraži jela...' : '🔍 Pretraži namirnice...'}
+            aria-label="Pretraži"
+            onChange={(e) => setFilter(e.target.value)}
+            style={{ flex: 1, minWidth: 160 }}
+          />
+          <select
+            value={show}
+            aria-label="Što se prikazuje"
+            style={{ width: 'auto' }}
+            onChange={(e) => setShow(e.target.value as typeof show)}
+          >
+            <option value="namirnice">Namirnice</option>
+            <option value="jela">Gotova jela</option>
+            <option value="sve">Sve zajedno</option>
+          </select>
+        </div>
         <div className="catlegend">
           {Object.keys(CAT_COLORS).map((c) => (
             <span key={c}>

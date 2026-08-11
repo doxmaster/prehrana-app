@@ -10,6 +10,8 @@ export interface FoodIndex extends FoodLookup {
   all(): Food[]
   /** Samo prave namirnice — bez jela izvedenih iz recepata. */
   ingredients(): Food[]
+  /** Samo jela izvedena iz recepata. */
+  dishes(): Food[]
 }
 
 function applyOverrides(food: Food, ov: BaseFoodOverrides): Food {
@@ -60,6 +62,7 @@ export function buildFoodIndex(state: AppState): FoodIndex {
   return {
     all: () => all,
     ingredients: () => ingredients,
+    dishes: () => derived,
     byId: allIndex.byId,
     byName: allIndex.byName,
   }

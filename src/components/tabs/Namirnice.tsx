@@ -7,6 +7,7 @@ import { isRecipeFoodId } from '../../domain/recipes'
 import { uid } from '../../domain/id'
 import { confirmDialog, toast } from '../../store/dialogs'
 import { useActivePerson, useAppStore, useFoods, useUpdate } from '../../store/useAppStore'
+import { CatIcon } from '../CatIcon'
 import { FlagBadge } from '../FlagBadge'
 import { FoodEditor } from '../FoodEditor'
 import { useConditionCheck } from '../../hooks/useConditionCheck'
@@ -265,8 +266,11 @@ export function Namirnice() {
               {rows.map((food) => (
                 <tr key={food.id}>
                   <td>
-                    <span className="cdot" aria-hidden="true" style={{ background: catColor(food.cat) }} />
-                    {food.name} <FlagBadge flag={check.food(food)} />
+                    <span className="name-cell">
+                      <CatIcon cat={food.cat} />
+                      <span>{food.name}</span>
+                      <FlagBadge flag={check.food(food)} />
+                    </span>
                   </td>
                   <td className="small" style={{ color: catColor(food.cat), fontWeight: 600 }}>
                     {food.cat}

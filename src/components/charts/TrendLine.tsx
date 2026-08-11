@@ -100,6 +100,7 @@ export function TrendLine({
           strokeWidth={2}
           strokeLinejoin="round"
           strokeLinecap="round"
+          className="line-draw"
         />
 
         {/* Tocke se crtaju samo kad ih je malo — inace se crta pretvara u niz kruzica. */}

@@ -9,6 +9,7 @@ import { targetsFor, weightOn } from '../../domain/targets'
 import { ensureDay, useActivePerson, useAppStore, useFoods, useUpdate } from '../../store/useAppStore'
 import { AiUnos } from '../AiUnos'
 import { Calendar } from '../Calendar'
+import { Hero } from '../Hero'
 import { MealEditor } from '../MealEditor'
 import { KcalRing } from '../KcalRing'
 import { NutrientBars } from '../NutrientBars'
@@ -67,6 +68,14 @@ export function Dnevnik() {
 
   return (
     <>
+      <Hero
+        date={selectedDate}
+        name={person.name}
+        kcal={Math.round(totals.kcal)}
+        target={plan.targets.kcal}
+        meals={meals.filter((m) => m.length > 0).length}
+      />
+
       <div className="card">
         <div className="row" style={{ justifyContent: 'space-between', marginBottom: 10 }}>
           <div className="row">

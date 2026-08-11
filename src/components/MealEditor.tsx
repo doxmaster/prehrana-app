@@ -1,4 +1,5 @@
 import { useId, useState } from 'react'
+import { CatIcon } from './CatIcon'
 import { FlagBadge } from './FlagBadge'
 import { JeloPicker } from './JeloPicker'
 import { useConditionCheck } from '../hooks/useConditionCheck'
@@ -237,7 +238,7 @@ function Item({
   return (
     <div className="item" style={{ borderLeft: `3px solid ${color}` }}>
       <span style={{ flex: 1, minWidth: 0 }}>
-        <span className="cdot" aria-hidden="true" style={{ background: color }} />
+        <CatIcon cat={itemCategory(item, foods)} />{' '}
         {name}
         {!isFoodRef(item) && (
           <span className="tag" title="AI stavka — nije spremljena u bazu">

@@ -98,6 +98,8 @@ export function DailyBars({
               height={Math.max(1, base - top)}
               rx={2}
               fill={color}
+              className="bar-grow"
+              style={{ transformOrigin: `0 ${base}px`, animationDelay: `${Math.min(i * 12, 360)}ms` }}
               opacity={hover === null || hover === i ? 1 : 0.45}
             />
           )

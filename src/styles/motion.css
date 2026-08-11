@@ -1,0 +1,248 @@
+/**
+ * Slike, gibanje i mobilni raspored.
+ *
+ * Ilustracije dolaze iz src/data/art.ts (izracunate, ne preuzete), pa se ovdje
+ * samo postavljaju. Sve animacije prestaju kad korisnik u sustavu iskljuci
+ * gibanje — pravilo za to je u tokens.css.
+ */
+
+/* ---------- zrno preko pozadine ---------- */
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.035;
+  /* Sum iz SVG filtra: nema datoteke, a ploha prestaje izgledati plasticno. */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+.wrap,
+header {
+  position: relative;
+  z-index: 1;
+}
+
+/* ---------- baner ---------- */
+
+.hero {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  margin-bottom: 16px;
+  min-height: 148px;
+  display: flex;
+  align-items: flex-end;
+  background-size: cover;
+  background-position: center;
+  box-shadow: var(--shadow-md);
+  animation: cardIn var(--dur-slow) var(--ease) both;
+  /* Polagano disanje pozadine — jedva primjetno, ali ploha nije mrtva. */
+  animation-composition: replace;
+}
+.hero::after {
+  content: '';
+  position: absolute;
+  inset: -10%;
+  background: inherit;
+  background-size: cover;
+  filter: blur(26px) saturate(1.2);
+  opacity: 0.5;
+  animation: drift 26s ease-in-out infinite alternate;
+  z-index: 0;
+}
+@keyframes drift {
+  from {
+    transform: scale(1) translate3d(0, 0, 0);
+  }
+  to {
+    transform: scale(1.12) translate3d(-2%, -2%, 0);
+  }
+}
+.hero-shade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(6, 20, 13, 0.12) 0%, rgba(6, 20, 13, 0.62) 100%);
+  z-index: 1;
+}
+.hero-body {
+  position: relative;
+  z-index: 2;
+  padding: clamp(14px, 2.4vw, 22px);
+  color: #fff;
+  width: 100%;
+}
+.hero-day {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 700;
+  opacity: 0.85;
+}
+.hero-title {
+  font-size: clamp(20px, 3.2vw, 28px);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin: 2px 0 10px;
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.3);
+}
+.hero-stats {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.hero-pill {
+  background: rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(10px);
+  border-radius: var(--radius-full);
+  padding: 5px 12px;
+  font-size: 12.5px;
+  font-weight: 600;
+}
+
+/* ---------- plocice kategorija ---------- */
+
+.dish-art {
+  width: 44px;
+  height: 44px;
+  border-radius: 13px;
+  display: grid;
+  place-items: center;
+  background-size: cover;
+  flex: none;
+  margin-right: 10px;
+  border: 1px solid var(--line);
+  transition: transform var(--dur) var(--ease-spring);
+}
+.item:hover .dish-art {
+  transform: scale(1.07) rotate(-3deg);
+}
+
+.name-cell {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.cat-icon {
+  opacity: 0.95;
+}
+
+/* ---------- grafovi ---------- */
+
+.bar-grow {
+  transform-box: fill-box;
+  animation: barGrow 600ms var(--ease) both;
+}
+@keyframes barGrow {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+.line-draw {
+  stroke-dasharray: 3000;
+  stroke-dashoffset: 3000;
+  animation: draw 1400ms var(--ease) forwards;
+}
+@keyframes draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* ---------- prijelaz izmedu kartica ---------- */
+
+@view-transition {
+  navigation: auto;
+}
+::view-transition-old(root) {
+  animation: vtOut 160ms var(--ease) both;
+}
+::view-transition-new(root) {
+  animation: vtIn 260ms var(--ease) both;
+}
+@keyframes vtOut {
+  to {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+}
+@keyframes vtIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+
+/* ---------- navigacija ---------- */
+
+.tab-icon {
+  font-size: 15px;
+  line-height: 1;
+}
+.tab-short {
+  display: none;
+}
+.tabs button {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+@media (max-width: 720px) {
+  /* Na mobitelu navigacija ide dolje, gdje je palac — kao u aplikacijama
+     s trgovine. Gore ostaje samo zaglavlje s osobom i kucanstvom. */
+  .tabs {
+    position: fixed;
+    top: auto;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: 0;
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+    border-bottom: none;
+    padding: 6px 4px calc(6px + env(safe-area-inset-bottom));
+    justify-content: space-between;
+    background: var(--panel-glass);
+    backdrop-filter: blur(18px) saturate(1.4);
+    box-shadow: 0 -6px 24px -12px rgba(0, 0, 0, 0.35);
+    z-index: 40;
+  }
+  .tabs button {
+    flex-direction: column;
+    gap: 3px;
+    padding: 6px 2px;
+    font-size: 9.5px;
+    letter-spacing: -0.01em;
+    flex: 1 1 0;
+    min-width: 0;
+    border-radius: 12px;
+  }
+  .tabs button .tab-short {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 100%;
+  }
+  .tabs button[aria-selected='true'] {
+    box-shadow: none;
+  }
+  .tab-icon {
+    font-size: 17px;
+  }
+  .tab-label {
+    display: none;
+  }
+  .tab-short {
+    display: inline;
+  }
+  .wrap {
+    padding-bottom: 86px;
+  }
+}

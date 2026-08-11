@@ -1,4 +1,6 @@
 import { useMemo, useState } from 'react'
+import { CATEGORY_ART } from '../data/art'
+import { CatIcon } from './CatIcon'
 import { FlagBadge } from './FlagBadge'
 import { useConditionCheck } from '../hooks/useConditionCheck'
 import { CUISINES } from '../domain/types'
@@ -118,6 +120,13 @@ export function JeloPicker({ mealIndex, onChange, onClose }: Props) {
             const drink = recipe.drink ? foods.byId(recipe.drink.foodId) : null
             return (
               <div className="item" key={recipe.id} style={{ borderLeft: `3px solid ${catColor(recipe.cat)}` }}>
+                <span
+                  className="dish-art"
+                  aria-hidden="true"
+                  style={{ backgroundImage: `url("${CATEGORY_ART[recipe.cat]}")` }}
+                >
+                  <CatIcon cat={recipe.cat} size={22} />
+                </span>
                 <span style={{ flex: 1, minWidth: 0 }}>
                   <b>{recipe.name}</b>{' '}
                   <span className="muted small">

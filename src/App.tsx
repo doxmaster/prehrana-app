@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { flushSync } from 'react-dom'
 import { Dialogs } from './components/Dialogs'
 import { HeaderBar } from './components/HeaderBar'
 import { Dnevnik } from './components/tabs/Dnevnik'
@@ -11,13 +12,13 @@ import { Tjedni } from './components/tabs/Tjedni'
 import { useAppStore } from './store/useAppStore'
 
 const TABS = [
-  { id: 'dnevnik', label: '📊 Dnevnik' },
-  { id: 'tjedni', label: '📅 Tjedni i nabava' },
-  { id: 'jelovnik', label: '🍽️ Jelovnici' },
-  { id: 'napredak', label: '📈 Napredak' },
-  { id: 'osobe', label: '👨‍👩‍👧 Obitelj i ciljevi' },
-  { id: 'namirnice', label: '🍎 Namirnice' },
-  { id: 'postavke', label: '⚙️ Postavke' },
+  { id: 'dnevnik', icon: '📊', label: 'Dnevnik' },
+  { id: 'tjedni', icon: '📅', label: 'Tjedni i nabava', short: 'Tjedni' },
+  { id: 'jelovnik', icon: '🍽️', label: 'Jelovnici' },
+  { id: 'napredak', icon: '📈', label: 'Napredak' },
+  { id: 'osobe', icon: '👨‍👩‍👧', label: 'Obitelj i ciljevi', short: 'Obitelj' },
+  { id: 'namirnice', icon: '🍎', label: 'Namirnice', short: 'Hrana' },
+  { id: 'postavke', icon: '⚙️', label: 'Postavke', short: 'Više' },
 ] as const
 
 type TabId = (typeof TABS)[number]['id']
@@ -27,6 +28,17 @@ export default function App() {
   const saveError = useAppStore((s) => s.saveError)
   const migratedFrom = useAppStore((s) => s.migratedFrom)
   const dismiss = useAppStore((s) => s.dismissMigrationNotice)
+
+  /**
+   * Prijelaz izmedu kartica preko View Transitions API-ja gdje postoji.
+   * Ondje gdje ga nema (Safari, stariji preglednici) mijenja se odmah — pa se
+   * na tome nista ne lomi, samo izostane animacija.
+   */
+  const switchTab = (id: TabId) => {
+    const doc = document as Document & { startViewTransition?: (cb: () => void) => void }
+    if (typeof doc.startViewTransition === 'function') doc.startViewTransition(() => flushSync(() => setTab(id)))
+    else setTab(id)
+  }
 
   return (
     <>
@@ -52,9 +64,13 @@ export default function App() {
               id={`tab-${t.id}`}
               aria-selected={tab === t.id}
               aria-controls={`panel-${t.id}`}
-              onClick={() => setTab(t.id)}
+              onClick={() => switchTab(t.id)}
             >
-              {t.label}
+              <span className="tab-icon" aria-hidden="true">
+                {t.icon}
+              </span>
+              <span className="tab-label">{t.label}</span>
+              <span className="tab-short">{'short' in t ? t.short : t.label}</span>
             </button>
           ))}
         </div>

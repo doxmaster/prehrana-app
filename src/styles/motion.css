@@ -198,9 +198,15 @@ body::before {
   gap: 7px;
 }
 
-@media (max-width: 720px) {
-  /* Na mobitelu navigacija ide dolje, gdje je palac — kao u aplikacijama
-     s trgovine. Gore ostaje samo zaglavlje s osobom i kucanstvom. */
+/*
+ * Navigacija dolje SAMO na uredaju kojim se upravlja prstom.
+ *
+ * Uz samu sirinu prozora nije dovoljno: suzen prozor na racunalu nije mobitel,
+ * a mis nema palac koji ne dohvaca vrh zaslona. `pointer: coarse` je istina o
+ * uredaju — telefon i tablet je imaju, racunalo s misem nema — pa se na PC-u
+ * navigacija drzi gore bez obzira koliko se prozor suzi.
+ */
+@media (max-width: 720px) and (pointer: coarse) {
   .tabs {
     position: fixed;
     top: auto;

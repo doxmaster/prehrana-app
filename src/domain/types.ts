@@ -90,6 +90,8 @@ export interface Measurement {
   date: string
   weight?: number
   waist?: number
+  /** Sati sna te noci — ulaze u racun dnevne potrosnje. */
+  sleep?: number
   note?: string
 }
 

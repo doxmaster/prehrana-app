@@ -27,15 +27,25 @@ export function JeloPicker({ mealIndex, onChange, onClose }: Props) {
   const [query, setQuery] = useState('')
   const [cuisine, setCuisine] = useState<Cuisine | 'sve'>('sve')
   const [withDrink, setWithDrink] = useState(true)
+  const [onlySuitable, setOnlySuitable] = useState(false)
 
   const matches = useMemo(() => {
     const needle = query.trim().toLowerCase()
+    const rank = (flag: ReturnType<typeof check.food>) =>
+      flag?.level === 'izbjegavaj' ? 2 : flag?.level === 'oprez' ? 1 : 0
+
     return recipes
       .filter((r) => cuisine === 'sve' || (r.cuisine ?? 'ostalo') === cuisine)
       .filter((r) => !needle || r.name.toLowerCase().includes(needle) || (r.note ?? '').toLowerCase().includes(needle))
-      .map((recipe) => ({ recipe, food: recipeAsFood(recipe, foods) }))
-      .sort((a, b) => a.recipe.name.localeCompare(b.recipe.name, 'hr'))
-  }, [recipes, foods, query, cuisine])
+      .map((recipe) => {
+        const food = recipeAsFood(recipe, foods)
+        return { recipe, food, flag: check.food(food) }
+      })
+      .filter((m) => !onlySuitable || rank(m.flag) === 0)
+      // Prikladna jela idu prva: kod odabira je bitno sto SE MOZE jesti, a
+      // sporna se ne skrivaju jer odluka ostaje na korisniku.
+      .sort((a, b) => rank(a.flag) - rank(b.flag) || a.recipe.name.localeCompare(b.recipe.name, 'hr'))
+  }, [recipes, foods, query, cuisine, check, onlySuitable])
 
   const add = (recipe: Recipe) => {
     const food = recipeAsFood(recipe, foods)
@@ -89,11 +99,22 @@ export function JeloPicker({ mealIndex, onChange, onClose }: Props) {
             />
             <span className="small">uz piće</span>
           </label>
+          {check.active && (
+            <label className="row" style={{ gap: 6, margin: 0, whiteSpace: 'nowrap' }}>
+              <input
+                type="checkbox"
+                style={{ width: 'auto' }}
+                checked={onlySuitable}
+                onChange={(e) => setOnlySuitable(e.target.checked)}
+              />
+              <span className="small">samo prikladno</span>
+            </label>
+          )}
         </div>
 
         <div style={{ overflowY: 'auto', flex: 1, minHeight: 0 }}>
           {matches.length === 0 && <p className="muted small">Nema jela za taj pojam.</p>}
-          {matches.map(({ recipe, food }) => {
+          {matches.map(({ recipe, food, flag }) => {
             const drink = recipe.drink ? foods.byId(recipe.drink.foodId) : null
             return (
               <div className="item" key={recipe.id} style={{ borderLeft: `3px solid ${catColor(recipe.cat)}` }}>
@@ -103,7 +124,7 @@ export function JeloPicker({ mealIndex, onChange, onClose }: Props) {
                     · {fmt(food.serv)} g porcija · {fmt(food.kcal * (food.serv / 100))} kcal
                     {recipe.cuisine ? ` · ${recipe.cuisine}` : ''}
                   </span>{' '}
-                  <FlagBadge flag={check.food(food)} />
+                  <FlagBadge flag={flag} />
                   {recipe.note && (
                     <>
                       <br />

@@ -36,6 +36,7 @@ export function Namirnice() {
   const state = useAppStore((s) => s.data)
   const [filter, setFilter] = useState('')
   const [show, setShow] = useState<'namirnice' | 'jela' | 'sve'>('namirnice')
+  const [cat, setCat] = useState<Category | 'sve'>('sve')
   const [sort, setSort] = useState<{ key: SortKey; dir: 1 | -1 }>({ key: 'name', dir: 1 })
   const [form, setForm] = useState(emptyForm)
   const [editing, setEditing] = useState<Food | null>(null)
@@ -49,7 +50,9 @@ export function Namirnice() {
      * "bazi namirnica" tesko nade sastojak.
      */
     const source = show === 'jela' ? foods.dishes() : show === 'sve' ? foods.all() : foods.ingredients()
-    const list = source.filter((f) => f.name.toLowerCase().includes(needle))
+    const list = source
+      .filter((f) => cat === 'sve' || f.cat === cat)
+      .filter((f) => f.name.toLowerCase().includes(needle))
     const { key, dir } = sort
     return [...list].sort((a, b) => {
       const av = a[key as keyof Food]
@@ -59,7 +62,7 @@ export function Namirnice() {
       }
       return ((Number(av) || 0) - (Number(bv) || 0)) * dir
     })
-  }, [foods, filter, sort, show])
+  }, [foods, filter, sort, show, cat])
 
   const addFood = () => {
     const name = form.name.trim()
@@ -193,6 +196,19 @@ export function Namirnice() {
             onChange={(e) => setFilter(e.target.value)}
             style={{ flex: 1, minWidth: 160 }}
           />
+          <select
+            value={cat}
+            aria-label="Kategorija"
+            style={{ width: 'auto' }}
+            onChange={(e) => setCat(e.target.value as Category | 'sve')}
+          >
+            <option value="sve">Sve kategorije</option>
+            {CATEGORIES.map((c) => (
+              <option value={c} key={c}>
+                {c}
+              </option>
+            ))}
+          </select>
           <select
             value={show}
             aria-label="Što se prikazuje"

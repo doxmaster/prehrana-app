@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Dialogs } from './components/Dialogs'
+import { PersonPicker } from './components/PersonPicker'
 import { Dnevnik } from './components/tabs/Dnevnik'
 import { Jelovnik } from './components/tabs/Jelovnik'
 import { Namirnice } from './components/tabs/Namirnice'
@@ -30,8 +31,19 @@ export default function App() {
   return (
     <>
       <header>
-        <h1>🥗 Prehrana</h1>
-        <p>Jelovnici, dnevnik i praćenje hranjivih tvari</p>
+        <div>
+          <h1>🥗 Prehrana</h1>
+          <p>Jelovnici, dnevnik i praćenje hranjivih tvari</p>
+        </div>
+        {/*
+          Odabrana osoba stoji u zaglavlju jer vrijedi na SVIM karticama: prema
+          njoj se racunaju ciljevi, ocjenjuju namirnice i skaliraju porcije. Dok
+          je bila samo u Dnevniku, na ostalim se karticama nije vidjelo za koga
+          se gleda.
+        */}
+        <div className="row header-person">
+          <PersonPicker />
+        </div>
       </header>
 
       <div className="wrap">

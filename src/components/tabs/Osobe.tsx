@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import { ACTIVITY_LEVELS, ADULT_AGE, GOALS, PROFILE_LIMITS, computeTargets, isMinor, targetsFor, weightOn } from '../../domain/targets'
 import { REFERENCE_KCAL, householdFactor, householdKcal, memberShares } from '../../domain/household'
-import { CONDITIONS, conditionPlan, conflictsIn, personConditions } from '../../domain/conditions'
+import { CONDITIONS, capsForCondition, conditionPlan, conflictsIn, personConditions, raisesForCondition } from '../../domain/conditions'
+import { NUTRIENTS } from '../../domain/constants'
 import { proteinPerKg } from '../../domain/dri'
 import { uid } from '../../domain/id'
 import { todayISO } from '../../domain/dates'
@@ -500,6 +501,17 @@ function Zdravlje() {
   const chosen = personConditions(person)
   const conflicts = conflictsIn(chosen)
 
+  const today = todayISO()
+  const targets = targetsFor(person, today)
+  const weight = weightOn(person, today)
+  const plan = conditionPlan(targets, person, weight)
+
+  const nutrientLabel = (key: NutrientKey) => NUTRIENTS.find((n) => n.key === key)
+  const capLine = (cap: (typeof plan.caps)[number]) => {
+    const meta = nutrientLabel(cap.key)
+    return `${meta?.label}: najviše ${fmt(cap.max)} ${meta?.unit}/dan`
+  }
+
   const toggle = (id: ConditionId) =>
     update((draft) => {
       const target = draft.profiles.find((p) => p.id === person.id)
@@ -526,8 +538,23 @@ function Zdravlje() {
         </div>
       ))}
 
+      {plan.caps.length > 0 && (
+        <div className="banner warn" style={{ marginBottom: 12 }}>
+          <b>⛔ Dnevne granice za {person.name}</b>
+          <ul style={{ margin: '6px 0 0 18px', padding: 0 }}>
+            {plan.caps.map((cap) => (
+              <li key={cap.key}>
+                {capLine(cap)} <span className="muted small">({cap.conditionName})</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
       {CONDITIONS.map((c) => {
         const on = chosen.includes(c.id)
+        const caps = capsForCondition(c.id, targets, weight)
+        const raises = Object.entries(raisesForCondition(c.id, targets)) as [NutrientKey, number][]
         return (
           <label
             key={c.id}
@@ -541,7 +568,22 @@ function Zdravlje() {
               onChange={() => toggle(c.id)}
             />
             <span style={{ flex: 1, minWidth: 0 }}>
-              <b>{c.name}</b>
+              <b>{c.name}</b>{' '}
+              {caps.map((cap) => (
+                <span
+                  key={cap.key}
+                  className="tag"
+                  style={{ color: 'var(--bad)', whiteSpace: 'nowrap' }}
+                  title="Gornja granica koju ovo stanje postavlja"
+                >
+                  ⛔ {capLine(cap)}
+                </span>
+              ))}
+              {raises.map(([key, value]) => (
+                <span key={key} className="tag" style={{ color: 'var(--good)', whiteSpace: 'nowrap' }}>
+                  ↑ {nutrientLabel(key)?.label} {fmt(value)} {nutrientLabel(key)?.unit}
+                </span>
+              ))}
               <br />
               <span className="muted small">{c.short}</span>
               {on && (

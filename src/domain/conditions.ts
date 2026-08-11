@@ -23,6 +23,12 @@ export const CONDITION_IDS = [
   'bubrezi',
   'osteoporoza',
   'anemija',
+  'hasimoto',
+  'autoimuno',
+  'refluks',
+  'ibs',
+  'masna-jetra',
+  'stitnjaca-povisena',
 ] as const
 
 export type ConditionId = (typeof CONDITION_IDS)[number]
@@ -314,6 +320,149 @@ const DEFS: ConditionDef[] = [
     ],
     blind: 'Tablica ne razlikuje hem od nehem željeza.',
   },
+  {
+    id: 'hasimoto',
+    name: 'Hashimoto / snižena štitnjača',
+    short: 'Pazi se na jod, selen i razmak od terapije.',
+    raise: (t) => ({ vd: Math.max(20, t.vd) }),
+    rate: (food) => {
+      if (named(food, 'soja', 'sojin', 'tofu', 'edamam')) {
+        return { level: 'oprez', why: 'Soja može smetati apsorpciji hormona štitnjače — ne uzimati blizu terapije.' }
+      }
+      if (named(food, 'alga', 'nori', 'wakame', 'kelp')) {
+        return { level: 'oprez', why: 'Alge imaju vrlo visok jod, a višak joda kod Hashimota može pogoršati upalu.' }
+      }
+      return null
+    },
+    advice: [
+      'Levotiroksin se uzima natašte, a kalcij, željezo, magnezij i kava tek dva sata poslije.',
+      'Selen (orasi, riba, jaja) i cink podupiru štitnjaču; jod ni premalo ni previše.',
+      'Sirove krstašice (kupus, brokula, cvjetača) u velikim količinama smetaju štitnjači — kuhane ne.',
+      'Vitamin D je kod Hashimota često snižen i vrijedi ga izmjeriti.',
+    ],
+    blind: 'Jod i selen nisu u tablici hranjivih tvari — ocjena ide po vrsti namirnice.',
+  },
+  {
+    id: 'autoimuno',
+    name: 'Autoimuna / upalna bolest',
+    short: 'Manje ultraprerađenog, više omega-3 i vitamina D.',
+    raise: (t) => ({ vd: Math.max(20, t.vd), fib: Math.max(30, t.fib) }),
+    rate: (food) => {
+      if (named(food, ...SUHOMESNATO) || named(food, 'cips', 'gazir', 'energetsk')) {
+        return { level: 'oprez', why: 'Ultraprerađena hrana povezuje se s pojačanom upalom.' }
+      }
+      if (named(food, 'secer', 'sirup') && food.c >= 50) {
+        return { level: 'oprez', why: 'Veliki unos šećera podiže upalne pokazatelje.' }
+      }
+      return null
+    },
+    advice: [
+      'Masna riba dva puta tjedno — omega-3 masne kiseline smanjuju upalu.',
+      'Mediteranski obrazac (povrće, maslinovo ulje, riba, mahunarke) najbolje je istražen kod upalnih bolesti.',
+      'Vitamin D je kod autoimunih bolesti često snižen; vrijedi ga izmjeriti prije nadoknade.',
+      'Eliminacijske dijete rade se s liječnikom — same po sebi nose rizik od manjkova.',
+    ],
+    blind: 'Upalni potencijal hrane nije mjerljiv iz tablice; ovo su opće smjernice, ne ocjena namirnice.',
+  },
+  {
+    id: 'refluks',
+    name: 'Refluks / žgaravica',
+    short: 'Manje masno, ljuto, kiselo i kava.',
+    rate: (food) => {
+      if (named(food, 'kava', 'ljut', 'cili', 'papric ljut', 'menta', 'cokolad')) {
+        return { level: 'oprez', why: 'Popušta donji ezofagealni sfinkter, pa kiselina lakše vraća.' }
+      }
+      if (named(food, 'rajcic', 'kecap', 'limun', 'naranc', 'ocat', 'kiseli kupus')) {
+        return { level: 'oprez', why: 'Kiselo — kod refluksa često izaziva tegobe.' }
+      }
+      if (food.f >= 30) {
+        return { level: 'oprez', why: 'Vrlo masno usporava pražnjenje želuca i pogoršava refluks.' }
+      }
+      return null
+    },
+    advice: [
+      'Manji i češći obroci; zadnji obrok tri sata prije spavanja.',
+      'Alkohol, gazirano i cigarete pogoršavaju tegobe više od bilo koje namirnice.',
+      'Podignuto uzglavlje pomaže kod noćnih tegoba.',
+    ],
+    blind: 'Što izaziva refluks jako se razlikuje od osobe do osobe — ovo su najčešći okidači, ne pravilo.',
+  },
+  {
+    id: 'ibs',
+    name: 'Sindrom iritabilnog crijeva (IBS)',
+    short: 'Izbjegavaju se namirnice bogate FODMAP-ima.',
+    rate: (food) => {
+      if (named(food, 'luk', 'cesnjak', 'poriluk')) {
+        return { level: 'izbjegavaj', why: 'Luk i češnjak su najčešći okidači — bogati fruktanima.' }
+      }
+      if (isCat(food, 'Mahunarke') || named(food, 'grah', 'leca', 'slanutak', 'bob')) {
+        return { level: 'oprez', why: 'Mahunarke su bogate galaktanima; manje porcije se često podnose.' }
+      }
+      if (named(food, 'mlijek', 'vrhnj', 'sladoled')) {
+        return { level: 'oprez', why: 'Laktoza je FODMAP — fermentirano i bez laktoze obično prolazi.' }
+      }
+      if (named(food, 'jabuk', 'krusk', 'lubenic', 'med ', 'suhe sljiv')) {
+        return { level: 'oprez', why: 'Bogato fruktozom i poliolima.' }
+      }
+      return null
+    },
+    advice: [
+      'Niski FODMAP je privremen (4–6 tjedana) pa se namirnice vraćaju jedna po jedna — nije doživotan režim.',
+      'Vodi dnevnik tegoba; okidači su vrlo osobni.',
+      'Redoviti obroci i dovoljno tekućine često pomažu koliko i izbacivanje.',
+    ],
+    blind: 'FODMAP-i se ne vode kao podatak; ocjena ide po vrsti namirnice.',
+  },
+  {
+    id: 'masna-jetra',
+    name: 'Masna jetra (NAFLD)',
+    short: 'Bez alkohola, manje šećera i fruktoze.',
+    caps: (t) => [
+      {
+        key: 'c',
+        max: Math.round((0.45 * t.kcal) / 4),
+        why: 'Kod masne jetre ugljikohidrati, a posebno šećeri, drže se nisko.',
+      },
+    ],
+    rate: (food) => {
+      if (named(food, 'pivo', 'vino', 'rakij', 'viski', 'liker', 'votk')) {
+        return { level: 'izbjegavaj', why: 'Alkohol izravno opterećuje jetru.' }
+      }
+      if (isCat(food, 'Pića') && food.c >= 5) {
+        return { level: 'izbjegavaj', why: 'Slatka pića s fruktozom najizravnije talože mast u jetri.' }
+      }
+      if (named(food, ...SLATKO) && food.c >= 30) {
+        return { level: 'oprez', why: 'Koncentrirani šećer.' }
+      }
+      return null
+    },
+    advice: [
+      'Gubitak 7–10 % tjelesne mase najučinkovitija je mjera — bolji od bilo koje pojedine namirnice.',
+      'Kava (nezaslađena) povezuje se s boljim nalazima jetre.',
+      'Kretanje djeluje na masnoću u jetri i prije nego što se težina promijeni.',
+    ],
+  },
+  {
+    id: 'stitnjaca-povisena',
+    name: 'Povišena štitnjača (hipertireoza)',
+    short: 'Veća potreba za energijom, manje joda.',
+    raise: (t) => ({ ca: Math.max(1200, t.ca), vd: Math.max(20, t.vd) }),
+    rate: (food) => {
+      if (named(food, 'alga', 'nori', 'wakame', 'kelp')) {
+        return { level: 'izbjegavaj', why: 'Jod iz algi može dodatno ubrzati štitnjaču.' }
+      }
+      if (named(food, 'kava', 'energetsk')) {
+        return { level: 'oprez', why: 'Kofein pojačava lupanje srca i nemir kod ubrzane štitnjače.' }
+      }
+      return null
+    },
+    advice: [
+      'Ubrzan metabolizam troši više energije — gubitak mase se nadoknađuje većim unosom, ne manjim.',
+      'Kosti su kod hipertireoze ugrožene, pa kalcij i vitamin D dobivaju prednost.',
+      'Jodirana sol i alge se ograničavaju dok se štitnjača ne smiri.',
+    ],
+    blind: 'Jod nije u tablici hranjivih tvari — ocjena ide po vrsti namirnice.',
+  },
 ]
 
 const BY_ID = new Map(DEFS.map((d) => [d.id, d]))
@@ -331,7 +480,29 @@ export const CONDITION_CONFLICTS: { a: ConditionId; b: ConditionId; why: string 
     b: 'anemija',
     why: 'Hemokromatoza traži manje željeza, anemija više. Zajedno se poništavaju — koje vrijedi, zna samo liječnik.',
   },
+  {
+    a: 'hasimoto',
+    b: 'stitnjaca-povisena',
+    why: 'Snižena i povišena štitnjača traže suprotno. Ako se stanje mijenja kroz liječenje, ostavi uključeno samo ono koje vrijedi sada.',
+  },
 ]
+
+/**
+ * Granice koje pojedino stanje postavlja — za prikaz uz sam odabir stanja.
+ *
+ * Bez ovoga se granica vidi tek u ciljevima, pa se pri ukljucivanju ne zna sto
+ * ce se promijeniti.
+ */
+export function capsForCondition(id: ConditionId, targets: Targets, weight: number): NutrientCap[] {
+  const def = BY_ID.get(id)
+  if (!def?.caps) return []
+  return def.caps(targets, { weight }).map((cap) => ({ ...cap, condition: id, conditionName: def.name }))
+}
+
+/** Ciljevi koje stanje podize iznad uobicajenih. */
+export function raisesForCondition(id: ConditionId, targets: Targets): Partial<Nutrients> {
+  return BY_ID.get(id)?.raise?.(targets) ?? {}
+}
 
 export function conflictsIn(ids: readonly ConditionId[]): typeof CONDITION_CONFLICTS {
   const set = new Set(ids)
@@ -442,6 +613,40 @@ export function rateDish(
 export interface CapBreach {
   cap: NutrientCap
   value: number
+}
+
+/** Koliki dio dnevne granice pojede jedna porcija — iznad ovoga jelo ne ide u prijedloge. */
+export const PORTION_SHARE = { avoid: 0.5, careful: 0.3 } as const
+
+/**
+ * Ocjena JEDNE PORCIJE prema dnevnim granicama.
+ *
+ * Namirnica se ne moze ocijeniti granicom koja vrijedi za cijeli dan — pola
+ * dnevnog zeljeza u jednom tanjuru je problem, desetina nije. Zato se gleda
+ * udio porcije u granici.
+ */
+export function ratePortion(
+  per100: Nutrients,
+  grams: number,
+  caps: readonly NutrientCap[],
+): FoodFlag | undefined {
+  let worst: FoodFlag | undefined
+  for (const cap of caps) {
+    if (cap.max <= 0) continue
+    const value = (per100[cap.key] * grams) / 100
+    const share = value / cap.max
+    const level: FlagLevel | null =
+      share >= PORTION_SHARE.avoid ? 'izbjegavaj' : share >= PORTION_SHARE.careful ? 'oprez' : null
+    if (!level) continue
+    if (worst && !(worst.level === 'oprez' && level === 'izbjegavaj')) continue
+    worst = {
+      level,
+      why: `Jedna porcija pojede ${Math.round(share * 100)} % dnevne granice (${Math.round(value)} od ${cap.max}).`,
+      condition: cap.condition,
+      conditionName: cap.conditionName,
+    }
+  }
+  return worst
 }
 
 /** Prekoracene granice za zadani dan. */

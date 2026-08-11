@@ -10,8 +10,8 @@ import { AiUnos } from '../AiUnos'
 import { Calendar } from '../Calendar'
 import { MealEditor } from '../MealEditor'
 import { NutrientBars } from '../NutrientBars'
-import { PersonPicker } from '../PersonPicker'
 import { PlanTraka } from '../PlanTraka'
+import { Tekucina } from '../Tekucina'
 import { fmt } from '../../lib/format'
 import type { DayMeals } from '../../domain/types'
 
@@ -67,7 +67,6 @@ export function Dnevnik() {
       <div className="card">
         <div className="row" style={{ justifyContent: 'space-between', marginBottom: 10 }}>
           <div className="row">
-            <PersonPicker />
             <label htmlFor="mjesec" style={{ margin: '0 0 0 6px' }}>
               Mjesec:
             </label>
@@ -116,6 +115,8 @@ export function Dnevnik() {
       </div>
 
       <PlanTraka date={selectedDate} meals={meals} onChange={editMeals} />
+
+      <Tekucina date={selectedDate} meals={meals} onChange={editMeals} />
 
       <AiUnos onChange={editMeals} />
 

@@ -129,6 +129,7 @@ function migrateMeasurements(v: unknown): Measurement[] {
       const m: Measurement = { date: d.date }
       if (d.weight !== undefined && num(d.weight, 0) > 0) m.weight = num(d.weight)
       if (d.waist !== undefined && num(d.waist, 0) > 0) m.waist = num(d.waist)
+      if (d.sleep !== undefined && num(d.sleep, 0) > 0) m.sleep = num(d.sleep)
       const note = str(d.note).trim()
       if (note) m.note = note
       return m

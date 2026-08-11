@@ -9,12 +9,13 @@ import {
   summarize,
   weightSeries,
 } from '../../domain/progress'
+import { SLEEP_LIMITS } from '../../domain/energy'
 import { PROFILE_LIMITS } from '../../domain/targets'
 import { toast } from '../../store/dialogs'
 import { useActivePerson, useAppStore, useFoods, useUpdate } from '../../store/useAppStore'
+import { Bilanca, SanUnos } from '../Bilanca'
 import { DailyBars } from '../charts/DailyBars'
 import { TrendLine } from '../charts/TrendLine'
-import { PersonPicker } from '../PersonPicker'
 import { fmt } from '../../lib/format'
 import type { SeriesPoint } from '../../domain/progress'
 
@@ -39,6 +40,39 @@ export function Napredak() {
   const target = kcalTargetOn(person, to)
 
   const todaysWeight = person.measurements.find((m) => m.date === selectedDate)?.weight
+  const todaysSleep = person.measurements.find((m) => m.date === selectedDate)?.sleep
+
+  /** Zajednicki upis u mjerenje tog dana — tezina i san dijele isti zapis. */
+  const editMeasurement = (mutate: (m: { date: string; weight?: number; sleep?: number }) => void) =>
+    update((state) => {
+      const target = state.profiles.find((p) => p.id === person.id)
+      if (!target) return
+      let entry = target.measurements.find((m) => m.date === selectedDate)
+      if (!entry) {
+        entry = { date: selectedDate }
+        target.measurements.push(entry)
+      }
+      mutate(entry)
+      // Zapis bez ijednog podatka nema smisla drzati.
+      target.measurements = target.measurements.filter(
+        (m) => m.weight !== undefined || m.sleep !== undefined || m.waist !== undefined || m.note,
+      )
+      target.measurements.sort((a, b) => a.date.localeCompare(b.date))
+    })
+
+  const saveSleep = (hours: number) => {
+    if (hours < SLEEP_LIMITS.min || hours > SLEEP_LIMITS.max) {
+      toast(`San mora biti između ${SLEEP_LIMITS.min} i ${SLEEP_LIMITS.max} sati.`)
+      return
+    }
+    editMeasurement((m) => void (m.sleep = hours))
+    toast(`Zabilježeno ${fmt(hours, 1)} h sna za ${fmtDate(selectedDate)}.`)
+  }
+
+  const clearSleep = () => {
+    editMeasurement((m) => void delete m.sleep)
+    toast('San obrisan.')
+  }
   const [draft, setDraft] = useState('')
   const [draftDate, setDraftDate] = useState(selectedDate)
 
@@ -80,7 +114,6 @@ export function Napredak() {
       <div className="card">
         <div className="row" style={{ justifyContent: 'space-between', marginBottom: 10 }}>
           <div className="row">
-            <PersonPicker />
           </div>
           <div className="row">
             {RANGES.map((r) => (
@@ -160,6 +193,17 @@ export function Napredak() {
           )}
         </div>
       </div>
+
+      <div className="card">
+        <h2>San</h2>
+        <p className="muted small" style={{ margin: '-6px 0 10px' }}>
+          Koliko si spavao u noći pred {fmtDate(selectedDate)}. Ulazi u procjenu dnevne potrošnje —
+          sat manje sna računa se kao sat sjedenja, pa je razlika mala, ali vidljiva.
+        </p>
+        <SanUnos value={todaysSleep} onSave={saveSleep} onClear={clearSleep} />
+      </div>
+
+      <Bilanca date={selectedDate} />
 
       <div className="card">
         <div className="flexsplit">

@@ -22,6 +22,33 @@ header {
   color: #fff;
   position: relative;
   overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+/* Odabir osobe u zaglavlju — mora se citati na zelenoj podlozi. */
+.header-person {
+  position: relative;
+  z-index: 1;
+  gap: 8px;
+}
+.header-person label {
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 12.5px;
+  white-space: nowrap;
+}
+.header-person select {
+  background: rgba(255, 255, 255, 0.16);
+  border-color: rgba(255, 255, 255, 0.35);
+  color: #fff;
+  font-weight: 650;
+}
+.header-person select option {
+  color: var(--fg);
+  background: var(--panel);
 }
 header::after {
   content: '';

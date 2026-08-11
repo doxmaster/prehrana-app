@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { capBreaches, conditionPlan, personConditions, rateDish, worstFlag } from '../domain/conditions'
+import { capBreaches, conditionPlan, personConditions, rateDish, rateFood, ratePortion, worstFlag } from '../domain/conditions'
 import { itemCategory, itemName, itemPer100, mealsTotals } from '../domain/nutrients'
 import { portionFactor } from '../domain/household'
 import { portionedMeals } from '../domain/plan'
@@ -55,12 +55,21 @@ export function useConditionCheck(): ConditionCheck {
 
     const food = (f: Food): FoodFlag | undefined => {
       if (!ids.length) return undefined
+
+      // Kod stanja s brojcanom granicom mjerodavna je PORCIJA, ne sastojak:
+      // koliko dnevne granice pojede jedan tanjur.
+      const share = ratePortion(f, Math.round(f.serv * factor) || 100, plan.caps)
+
       const recipe = f.recipeId ? byRecipe.get(f.recipeId) : undefined
-      if (!recipe) return worstFlag(f, ids)
-      const parts = recipe.items
-        .map((i) => foods.byId(i.foodId))
-        .filter((x): x is Food => Boolean(x))
-      return rateDish(f, parts, ids)[0]
+      const parts = recipe
+        ? recipe.items.map((i) => foods.byId(i.foodId)).filter((x): x is Food => Boolean(x))
+        : []
+      const byName = (recipe ? rateDish(f, parts, ids) : rateFood(f, ids)).filter(
+        (flag) => !numeric.has(flag.condition),
+      )
+
+      const all = [share, ...byName].filter((x): x is FoodFlag => Boolean(x))
+      return all.sort((a, b) => (a.level === b.level ? 0 : a.level === 'izbjegavaj' ? -1 : 1))[0]
     }
 
     const item = (it: MealItem): FoodFlag | undefined => {

@@ -13,31 +13,47 @@ import { SLEEP_LIMITS } from '../../domain/energy'
 import { PROFILE_LIMITS } from '../../domain/targets'
 import { toast } from '../../store/dialogs'
 import { useActivePerson, useAppStore, useFoods, useUpdate } from '../../store/useAppStore'
-import { Bilanca, SanUnos } from '../Bilanca'
+import { Bilanca } from '../Bilanca'
 import { DailyBars } from '../charts/DailyBars'
 import { TrendLine } from '../charts/TrendLine'
 import { fmt } from '../../lib/format'
 import type { SeriesPoint } from '../../domain/progress'
 
+/**
+ * Stranica je slozena u tri zaokruzene cjeline umjesto liste kartica poredanih
+ * kako su nastajale: TEZINA (unos, graf i tablica na jednom mjestu), SAN I
+ * ENERGIJA (unos sna zivi unutar Bilance jer se ondje odmah vidi sto mijenja)
+ * i KALORIJE (graf unesenog naspram cilja). Svaka cjelina nosi SVOJ raspon
+ * dana — dijeljen raspon bi znacio da promjena za jedno tiho pomakne i drugo,
+ * sto zbunjuje kad su cjeline vizualno razdvojene.
+ */
 export function Napredak() {
   const person = useActivePerson()
   const foods = useFoods()
   const update = useUpdate()
   const selectedDate = useAppStore((s) => s.selectedDate)
   const setSelectedDate = useAppStore((s) => s.setSelectedDate)
-  const [days, setDays] = useState<number>(90)
-  const [showTable, setShowTable] = useState(false)
 
-  const to = todayISO()
-  const from = rangeStart(to, days)
+  const [weightRange, setWeightRange] = useState<number>(90)
+  const [kcalRange, setKcalRange] = useState<number>(90)
+  const [showWeightTable, setShowWeightTable] = useState(false)
+  const [showKcalTable, setShowKcalTable] = useState(false)
 
-  const weight = useMemo(() => weightSeries(person, from, to), [person, from, to])
+  const today = todayISO()
+
+  const weight = useMemo(
+    () => weightSeries(person, rangeStart(today, weightRange), today),
+    [person, today, weightRange],
+  )
   const weightTrend = useMemo(() => movingAverage(weight, 7), [weight])
-  const kcal = useMemo(() => kcalSeries(person, foods, from, to), [person, foods, from, to])
-
   const weightStats = summarize(weight)
+
+  const kcal = useMemo(
+    () => kcalSeries(person, foods, rangeStart(today, kcalRange), today),
+    [person, foods, today, kcalRange],
+  )
   const kcalStats = summarize(kcal)
-  const target = kcalTargetOn(person, to)
+  const target = kcalTargetOn(person, today)
 
   const todaysWeight = person.measurements.find((m) => m.date === selectedDate)?.weight
   const todaysSleep = person.measurements.find((m) => m.date === selectedDate)?.sleep
@@ -73,6 +89,7 @@ export function Napredak() {
     editMeasurement((m) => void delete m.sleep)
     toast('San obrisan.')
   }
+
   const [draft, setDraft] = useState('')
   const [draftDate, setDraftDate] = useState(selectedDate)
 
@@ -112,25 +129,8 @@ export function Napredak() {
   return (
     <>
       <div className="card">
-        <div className="row" style={{ justifyContent: 'space-between', marginBottom: 10 }}>
-          <div className="row">
-          </div>
-          <div className="row">
-            {RANGES.map((r) => (
-              <button
-                key={r.days}
-                className={`btn small${days === r.days ? '' : ' secondary'}`}
-                aria-pressed={days === r.days}
-                onClick={() => setDays(r.days)}
-              >
-                {r.label}
-              </button>
-            ))}
-          </div>
-        </div>
-
         {/* Dan za koji se biljezi mora biti vidljiv odmah — inace se lako upise
-            mjerenje na krivi datum. */}
+            mjerenje na krivi datum. Vrijedi za tezinu i san ispod. */}
         <div className="row" style={{ justifyContent: 'space-between' }}>
           <div className="row">
             <button
@@ -154,17 +154,29 @@ export function Napredak() {
               Danas
             </button>
           </div>
-          <span className="small muted">dan za koji se bilježi mjerenje</span>
+          <span className="small muted">dan za koji se bilježe težina i san ispod</span>
         </div>
       </div>
 
-      <div className="card">
-        <h2>Mjerenje težine</h2>
-        <p className="muted small" style={{ margin: '-6px 0 10px' }}>
-          Bilježi se za dan odabran u Dnevniku ({fmtDate(selectedDate)}). Ciljevi se od tada računaju
-          iz izmjerene težine, ne iz one upisane u profilu.
-        </p>
-        <div className="row">
+      {/* ---------- Tezina: unos, graf i tablica na jednom mjestu ---------- */}
+      <div className="card span-all">
+        <div className="flexsplit">
+          <h2 style={{ margin: 0 }}>Težina — {person.name}</h2>
+          <div className="row">
+            {RANGES.map((r) => (
+              <button
+                key={r.days}
+                className={`btn small${weightRange === r.days ? '' : ' secondary'}`}
+                aria-pressed={weightRange === r.days}
+                onClick={() => setWeightRange(r.days)}
+              >
+                {r.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div className="row" style={{ margin: '10px 0 6px' }}>
           <input
             type="number"
             step="0.1"
@@ -192,29 +204,17 @@ export function Napredak() {
             </>
           )}
         </div>
-      </div>
-
-      <div className="card">
-        <h2>San</h2>
-        <p className="muted small" style={{ margin: '-6px 0 10px' }}>
-          Koliko si spavao u noći pred {fmtDate(selectedDate)}. Ulazi u procjenu dnevne potrošnje —
-          sat manje sna računa se kao sat sjedenja, pa je razlika mala, ali vidljiva.
+        <p className="muted small" style={{ margin: '0 0 14px' }}>
+          Bilježi se za dan odabran gore. Ciljevi se od tada računaju iz izmjerene težine, ne iz
+          one upisane u profilu.
         </p>
-        <SanUnos value={todaysSleep} onSave={saveSleep} onClear={clearSleep} />
-      </div>
 
-      <Bilanca date={selectedDate} />
-
-      <div className="card span-all">
-        <div className="flexsplit">
-          <h2 style={{ margin: 0 }}>Težina — {person.name}</h2>
-          {weightStats.change !== null && (
-            <span className="small muted">
-              {weightStats.change > 0 ? '+' : '−'}
-              {fmt(Math.abs(weightStats.change), 1)} kg u razdoblju
-            </span>
-          )}
-        </div>
+        {weightStats.change !== null && (
+          <p className="small muted" style={{ margin: '0 0 4px' }}>
+            {weightStats.change > 0 ? '+' : '−'}
+            {fmt(Math.abs(weightStats.change), 1)} kg u odabranom razdoblju
+          </p>
+        )}
         <TrendLine
           points={weight}
           smoothed={weightTrend}
@@ -228,49 +228,69 @@ export function Napredak() {
             se trend vidi tek kroz prosjek.
           </p>
         )}
-      </div>
 
-      <div className="card span-all">
-        <div className="flexsplit">
-          <h2 style={{ margin: 0 }}>Unesene kalorije</h2>
-          <span className="small muted">
-            {kcal.length ? `prosjek ${fmt(kcalStats.average)} kcal/dan` : ''}
-          </span>
-        </div>
-        <DailyBars points={kcal} target={target} unit="kcal" label="Dnevne kalorije" />
-      </div>
-
-      <div className="card">
-        <div className="flexsplit">
-          <h2 style={{ margin: 0 }}>Podaci u tablici</h2>
-          <button className="btn secondary small" onClick={() => setShowTable((v) => !v)}>
-            {showTable ? 'Sakrij' : 'Prikaži'}
+        <div className="flexsplit" style={{ marginTop: 14 }}>
+          <span className="small muted">Podaci u tablici</span>
+          <button className="btn secondary small" onClick={() => setShowWeightTable((v) => !v)}>
+            {showWeightTable ? 'Sakrij' : 'Prikaži'}
           </button>
         </div>
-        <p className="muted small" style={{ margin: '4px 0 0' }}>
-          Iste brojke kao na grafovima, za čitanje bez oslanjanja na boju i oblik.
+        {showWeightTable && <SeriesTable points={weight} unit="kg" decimals={1} />}
+      </div>
+
+      {/* ---------- San i energija: unos sna zivi unutar Bilance ---------- */}
+      <Bilanca date={selectedDate} sleepEntry={{ value: todaysSleep, onSave: saveSleep, onClear: clearSleep }} />
+
+      {/* ---------- Kalorije: graf naspram cilja i tablica ---------- */}
+      <div className="card span-all">
+        <div className="flexsplit">
+          <h2 style={{ margin: 0 }}>Kalorije — {person.name}</h2>
+          <div className="row">
+            {RANGES.map((r) => (
+              <button
+                key={r.days}
+                className={`btn small${kcalRange === r.days ? '' : ' secondary'}`}
+                aria-pressed={kcalRange === r.days}
+                onClick={() => setKcalRange(r.days)}
+              >
+                {r.label}
+              </button>
+            ))}
+          </div>
+        </div>
+        <p className="muted small" style={{ margin: '-4px 0 10px' }}>
+          {kcal.length
+            ? `Prosjek ${fmt(kcalStats.average)} kcal/dan u odabranom razdoblju.`
+            : 'Nema unosa u odabranom razdoblju.'}
         </p>
-        {showTable && <ProgressTable weight={weight} kcal={kcal} target={target} />}
+        <DailyBars points={kcal} target={target} unit="kcal" label="Dnevne kalorije" />
+
+        <div className="flexsplit" style={{ marginTop: 14 }}>
+          <span className="small muted">Podaci u tablici</span>
+          <button className="btn secondary small" onClick={() => setShowKcalTable((v) => !v)}>
+            {showKcalTable ? 'Sakrij' : 'Prikaži'}
+          </button>
+        </div>
+        {showKcalTable && <SeriesTable points={kcal} unit="kcal" target={target} />}
       </div>
     </>
   )
 }
 
-function ProgressTable({
-  weight,
-  kcal,
+/** Zajednicka tablica za obje grupe — namirnica biranja i formata jednaka svugdje. */
+function SeriesTable({
+  points,
+  unit,
+  decimals = 0,
   target,
 }: {
-  weight: SeriesPoint[]
-  kcal: SeriesPoint[]
-  target: number
+  points: SeriesPoint[]
+  unit: string
+  decimals?: number
+  target?: number
 }) {
-  const byDate = new Map<string, { weight?: number; kcal?: number }>()
-  for (const p of weight) byDate.set(p.date, { ...byDate.get(p.date), weight: p.value })
-  for (const p of kcal) byDate.set(p.date, { ...byDate.get(p.date), kcal: p.value })
-
-  const rows = [...byDate.entries()].sort(([a], [b]) => b.localeCompare(a))
-  if (!rows.length) return <p className="muted small">Nema podataka.</p>
+  if (!points.length) return <p className="muted small">Nema podataka.</p>
+  const rows = [...points].sort((a, b) => b.date.localeCompare(a.date))
 
   return (
     <div style={{ overflowX: 'auto', marginTop: 10 }}>
@@ -278,22 +298,24 @@ function ProgressTable({
         <thead>
           <tr>
             <th>Datum</th>
-            <th>Težina</th>
-            <th>Kalorije</th>
-            <th>Od cilja</th>
+            <th>Vrijednost</th>
+            {target !== undefined && <th>Od cilja</th>}
           </tr>
         </thead>
         <tbody>
-          {rows.map(([date, row]) => (
-            <tr key={date}>
-              <td>{fmtDate(date)}</td>
-              <td>{row.weight !== undefined ? `${fmt(row.weight, 1)} kg` : '—'}</td>
-              <td>{row.kcal !== undefined ? `${fmt(row.kcal)} kcal` : '—'}</td>
+          {rows.map((p) => (
+            <tr key={p.date}>
+              <td>{fmtDate(p.date)}</td>
               <td>
-                {row.kcal !== undefined && target > 0
-                  ? `${row.kcal >= target ? '+' : '−'}${fmt(Math.abs(row.kcal - target))}`
-                  : '—'}
+                {fmt(p.value, decimals)} {unit}
               </td>
+              {target !== undefined && (
+                <td>
+                  {target > 0
+                    ? `${p.value >= target ? '+' : '−'}${fmt(Math.abs(p.value - target))}`
+                    : '—'}
+                </td>
+              )}
             </tr>
           ))}
         </tbody>

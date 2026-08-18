@@ -2,9 +2,15 @@ import { useState } from 'react'
 import { REFERENCE_SLEEP, SLEEP_LIMITS, energyBalance, energyBreakdown } from '../domain/energy'
 import { emptyMeals, mealsTotals } from '../domain/nutrients'
 import { weightOn } from '../domain/targets'
-import { weekDates } from '../domain/dates'
+import { fmtDate, weekDates } from '../domain/dates'
 import { useActivePerson, useFoods } from '../store/useAppStore'
 import { fmt } from '../lib/format'
+
+export interface SleepEntry {
+  value: number | undefined
+  onSave: (hours: number) => void
+  onClear: () => void
+}
 
 /**
  * Koliko energije dan trazi i koliko je uneseno.
@@ -12,8 +18,11 @@ import { fmt } from '../lib/format'
  * Ciljevi drugdje u aplikaciji odgovaraju na "koliko smijem pojesti", a ovo na
  * "gdje energija odlazi": koliko odnese samo rad tijela, koliko san, a koliko
  * kretanje. Bez tog rastava cilj od 2 700 kcal izgleda kao proizvoljan broj.
+ *
+ * Unos sna zivi OVDJE, ne u posebnoj kartici — bilanca je jedino mjesto gdje
+ * se odmah vidi sto san mijenja, pa unos i ucinak moraju biti u istom pogledu.
  */
-export function Bilanca({ date }: { date: string }) {
+export function Bilanca({ date, sleepEntry }: { date: string; sleepEntry?: SleepEntry }) {
   const person = useActivePerson()
   const foods = useFoods()
 
@@ -41,10 +50,21 @@ export function Bilanca({ date }: { date: string }) {
     <div className="card">
       <div className="flexsplit">
         <h2 style={{ margin: 0 }}>Energija — {person.name}</h2>
-        <span className="small muted">
-          {breakdown.sleepAssumed ? `san nije upisan, računa se ${REFERENCE_SLEEP} h` : `san ${fmt(breakdown.sleep, 1)} h`}
-        </span>
+        {!sleepEntry && (
+          <span className="small muted">
+            {breakdown.sleepAssumed ? `san nije upisan, računa se ${REFERENCE_SLEEP} h` : `san ${fmt(breakdown.sleep, 1)} h`}
+          </span>
+        )}
       </div>
+
+      {sleepEntry && (
+        <div style={{ margin: '10px 0 4px' }}>
+          <p className="muted small" style={{ margin: '0 0 8px' }}>
+            Koliko si spavao u noći pred {fmtDate(date)} — ulazi izravno u procjenu ispod.
+          </p>
+          <SanUnos value={sleepEntry.value} onSave={sleepEntry.onSave} onClear={sleepEntry.onClear} />
+        </div>
+      )}
 
       <div className="grid g3" style={{ marginTop: 10 }}>
         <Stat label="Potrošeno (procjena)" value={`${fmt(breakdown.total)} kcal`} note="cijeli dan" />

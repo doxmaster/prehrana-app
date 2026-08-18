@@ -91,3 +91,31 @@
     margin-bottom: 16px;
   }
 }
+
+/* ---------- dva neovisna stupca ---------- */
+
+.cols {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+.col {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+}
+/* Kartice u stupcu razmak dobivaju od stupca, ne od sebe. */
+.col > .card {
+  margin-bottom: 0;
+}
+
+@media (min-width: 1280px) {
+  .cols {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  /* Unutar mreze kartica stupci uzimaju cijeli redak. */
+  [role='tabpanel'] > .cols {
+    grid-column: 1 / -1;
+  }
+}

@@ -1,11 +1,18 @@
 import { useRef, useState } from 'react'
 import { BASE_FOODS } from '../../data/foods'
 import { confirmDialog, toast } from '../../store/dialogs'
-import { RESET_PARTS, describeReset, resetParts, restoreStarterContent, type ResetKey } from '../../domain/reset'
+import {
+  RESET_PARTS,
+  describeReset,
+  resetParts,
+  restoreStarterContent,
+  type ResetKey,
+} from '../../domain/reset'
 import { STARTER_MENUS, STARTER_WEEKS } from '../../data/menus'
 import { STARTER_RECIPES } from '../../data/recipes'
 import { downloadBlob, exportState, ImportError, parseImport } from '../../store/storage'
 import { useAppStore } from '../../store/useAppStore'
+import { Columns } from '../Columns'
 import { fmt } from '../../lib/format'
 
 export function Postavke() {
@@ -32,103 +39,130 @@ export function Postavke() {
     }
   }
 
-  return (
-    <>
-      <div className="card">
-        <h2>Sigurnosna kopija</h2>
-        <div className="row">
-          <button
-            className="btn secondary small"
-            onClick={() => {
-              downloadBlob(exportState(state), 'prehrana-backup.json')
-              toast('Sigurnosna kopija preuzeta.')
-            }}
-          >
-            ⬇ Izvezi (JSON)
-          </button>
-          <button
-            className="btn secondary small"
-            disabled={busy}
-            onClick={() => fileInput.current?.click()}
-          >
-            ⬆ Uvezi
-          </button>
-          <input
-            ref={fileInput}
-            type="file"
-            accept=".json,application/json"
-            style={{ display: 'none' }}
-            onChange={(e) => {
-              const file = e.target.files?.[0]
-              if (file) void handleImport(file)
-            }}
-          />
-        </div>
-        <p className="hint">
-          Podaci se čuvaju u pregledniku na ovom uređaju. Uvoz podržava i stari format iz HTML
-          verzije aplikacije.
-        </p>
-      </div>
-
-      <div className="card">
-        <h2>Stanje podataka</h2>
-        <div className="grid g4">
-          <Stat label="Osoba" value={fmt(state.profiles.length)} />
-          <Stat label="Dana s unosom" value={fmt(days)} />
-          <Stat label="Jelovnika" value={fmt(state.menus.length)} />
-          <Stat label="Recepata" value={fmt(state.recipes.length)} />
-          <Stat label="Vlastitih namirnica" value={fmt(state.customFoods.length)} />
-          <Stat
-            label="Provjereno prema USDA"
-            value={`${fmt(verified)} / ${fmt(BASE_FOODS.length)}`}
-            note="ugrađena baza"
-          />
-        </div>
-      </div>
-
-      <div className="card">
-        <h2>Ugrađeni sadržaj</h2>
-        <p className="muted small" style={{ margin: '-6px 0 10px' }}>
-          Recepti, dnevni jelovnici i sezonski tjedni dolaze samo pri prvom pokretanju. Ako su ti
-          obrisani ili je aplikacija u međuvremenu dobila novi sadržaj, ovime se vraća ono što
-          nedostaje — postojeće se ne dira.
-        </p>
+  const sigurnosnaKopija = (
+    <div className="card">
+      <h2>Sigurnosna kopija</h2>
+      <div className="row">
         <button
           className="btn secondary small"
           onClick={() => {
-            const { state: next, added, tagged } = restoreStarterContent(state, {
-              recipes: STARTER_RECIPES,
-              menus: STARTER_MENUS,
-              weeks: STARTER_WEEKS,
-            })
-            const parts = [
-              added.recipes && `${added.recipes} recepata`,
-              added.menus && `${added.menus} jelovnika`,
-              added.weeks && `${added.weeks} tjedana`,
-              tagged && `oznaka kuhinje na ${tagged} jelovnika`,
-            ].filter(Boolean)
-            if (!parts.length) return toast('Sve je već na mjestu.')
-            replaceAll(next)
-            toast(`Vraćeno: ${parts.join(', ')}.`)
+            downloadBlob(exportState(state), 'prehrana-backup.json')
+            toast('Sigurnosna kopija preuzeta.')
           }}
         >
-          ↺ Vrati ugrađene jelovnike i recepte
+          ⬇ Izvezi (JSON)
         </button>
+        <button
+          className="btn secondary small"
+          disabled={busy}
+          onClick={() => fileInput.current?.click()}
+        >
+          ⬆ Uvezi
+        </button>
+        <input
+          ref={fileInput}
+          type="file"
+          accept=".json,application/json"
+          style={{ display: 'none' }}
+          onChange={(e) => {
+            const file = e.target.files?.[0]
+            if (file) void handleImport(file)
+          }}
+        />
       </div>
+      <p className="hint">
+        Podaci se čuvaju u pregledniku na ovom uređaju. Uvoz podržava i stari format iz HTML verzije
+        aplikacije.
+      </p>
+    </div>
+  )
 
-      <ResetPanel />
-
-      <div className="card">
-        <h2>O podacima</h2>
-        <p className="muted small">
-          Hranjive vrijednosti ugrađene baze provjerene su prema USDA FoodData Central. Namirnice
-          označene kao <i>ručno</i> su procjene — uglavnom suplementi, gdje je vrijednost deklarirana
-          doza, i domaći proizvodi za koje USDA nema odgovarajući zapis.
-        </p>
-        <p className="muted small">
-          Aplikacija je za osobno praćenje i ne zamjenjuje savjet liječnika ili nutricionista.
-        </p>
+  const stanjePodataka = (
+    <div className="card">
+      <h2>Stanje podataka</h2>
+      <div className="grid g4">
+        <Stat label="Osoba" value={fmt(state.profiles.length)} />
+        <Stat label="Dana s unosom" value={fmt(days)} />
+        <Stat label="Jelovnika" value={fmt(state.menus.length)} />
+        <Stat label="Recepata" value={fmt(state.recipes.length)} />
+        <Stat label="Vlastitih namirnica" value={fmt(state.customFoods.length)} />
+        <Stat
+          label="Provjereno prema USDA"
+          value={`${fmt(verified)} / ${fmt(BASE_FOODS.length)}`}
+          note="ugrađena baza"
+        />
       </div>
+    </div>
+  )
+
+  const ugradeniSadrzaj = (
+    <div className="card">
+      <h2>Ugrađeni sadržaj</h2>
+      <p className="muted small" style={{ margin: '-6px 0 10px' }}>
+        Recepti, dnevni jelovnici i sezonski tjedni dolaze samo pri prvom pokretanju. Ako su ti
+        obrisani ili je aplikacija u međuvremenu dobila novi sadržaj, ovime se vraća ono što
+        nedostaje — postojeće se ne dira.
+      </p>
+      <button
+        className="btn secondary small"
+        onClick={() => {
+          const {
+            state: next,
+            added,
+            tagged,
+          } = restoreStarterContent(state, {
+            recipes: STARTER_RECIPES,
+            menus: STARTER_MENUS,
+            weeks: STARTER_WEEKS,
+          })
+          const parts = [
+            added.recipes && `${added.recipes} recepata`,
+            added.menus && `${added.menus} jelovnika`,
+            added.weeks && `${added.weeks} tjedana`,
+            tagged && `oznaka kuhinje na ${tagged} jelovnika`,
+          ].filter(Boolean)
+          if (!parts.length) return toast('Sve je već na mjestu.')
+          replaceAll(next)
+          toast(`Vraćeno: ${parts.join(', ')}.`)
+        }}
+      >
+        ↺ Vrati ugrađene jelovnike i recepte
+      </button>
+    </div>
+  )
+
+  const oPodacima = (
+    <div className="card">
+      <h2>O podacima</h2>
+      <p className="muted small">
+        Hranjive vrijednosti ugrađene baze provjerene su prema USDA FoodData Central. Namirnice
+        označene kao <i>ručno</i> su procjene — uglavnom suplementi, gdje je vrijednost deklarirana
+        doza, i domaći proizvodi za koje USDA nema odgovarajući zapis.
+      </p>
+      <p className="muted small">
+        Aplikacija je za osobno praćenje i ne zamjenjuje savjet liječnika ili nutricionista.
+      </p>
+    </div>
+  )
+
+  /*
+   * Lijevo kratke kartice, desno duga: brisanje podataka ima devet redaka i
+   * samo bi ono odredilo visinu retka, pa bi lijevo ostala rupa visoka koliko
+   * i sama kartica.
+   */
+  return (
+    <>
+      {stanjePodataka}
+      <Columns
+        left={
+          <>
+            {sigurnosnaKopija}
+            {ugradeniSadrzaj}
+            {oPodacima}
+          </>
+        }
+        right={<ResetPanel />}
+      />
     </>
   )
 }

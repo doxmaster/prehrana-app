@@ -1,33 +1,30 @@
 /**
  * Raspored po velicini zaslona.
  *
- * Do sada je sve stajalo u jednom stupcu, pa je na sirokom monitoru pola
- * povrsine bilo prazno, a citanje je trazilo skrolanje kroz kartice koje bi
- * stale jedna do druge.
+ * Nacelo: kartica koja nosi SIROK sadrzaj (tablica, kalendar, obroci, graf,
+ * obrazac u vise stupaca) uzima cijeli redak; samo uske kartice staju jedna uz
+ * drugu. Sirinu odreduje sadrzaj, ne popis kartica — nova kartica time sama
+ * upada na pravo mjesto.
  *
- * Pravilo je jednostavno: kartice koje nose SIROK sadrzaj (tablica, kalendar,
- * obroci, graf) uvijek uzimaju cijeli redak, a ostale se slazu u stupce.
- * Sirina se odreduje sadrzajem, ne nabrajanjem kartica po karticama — tako
- * nova kartica sama upada na pravo mjesto.
+ * Redoslijed se NE dira. Raniji pokusaj s `grid-auto-flow: dense` popunjavao je
+ * rupe premjestanjem kartica, pa se citanje gubilo: kartica bi se nasla iznad
+ * one koja u sucelju dolazi prije nje. Praznina je manje zlo od izmijesanog
+ * redoslijeda.
  */
 
 .wrap {
   max-width: min(1180px, 100%);
-  transition: max-width var(--dur) var(--ease);
 }
 
-/* ---------- sve sto nije telefon: dva stupca ---------- */
+/* ---------- siroki zaslon: dva stupca ---------- */
 
 /*
- * Prag je namjerno nizak (1000 px): svaki laptop i tablet u vodoravnom
- * polozaju ima mjesta za dva stupca, a telefon i uzak prozor nemaju. Granicu
- * mjeri preglednik sam i mijenja je u trenutku kad se prozor razvuce ili
- * uredaj okrene — bez skripte, pa nema ni bljeska krivog rasporeda pri
- * ucitavanju.
+ * Tek od 1280 px. Ispod toga su stupci uzi od 600 px, pa se u njima lome
+ * naslovi, gumbi i brojke — dobije se gusto, a ne pregledno.
  */
-@media (min-width: 1000px) {
+@media (min-width: 1280px) {
   .wrap {
-    max-width: min(1440px, 97vw);
+    max-width: min(1500px, 96vw);
     padding-inline: clamp(16px, 2.5vw, 32px);
   }
 
@@ -36,49 +33,30 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 16px;
     align-items: start;
-    /* Manja kartica smije popuniti rupu iza sire — inace ostaju praznine. */
-    grid-auto-flow: dense;
   }
   [role='tabpanel'] > .card,
   [role='tabpanel'] > .hero {
     margin-bottom: 0;
   }
 
-  /* Sadrzaj koji trazi sirinu. */
+  /* Sve sto trazi sirinu ide preko cijelog retka. */
   [role='tabpanel'] > .hero,
   [role='tabpanel'] > .span-all,
   [role='tabpanel'] > .card:has(table),
   [role='tabpanel'] > .card:has(.cal),
-  [role='tabpanel'] > .card:has(.meal) {
+  [role='tabpanel'] > .card:has(.meal),
+  [role='tabpanel'] > .card:has(svg),
+  [role='tabpanel'] > .card:has(.grid.g3),
+  [role='tabpanel'] > .card:has(.grid.g4) {
     grid-column: 1 / -1;
   }
 }
 
-/* ---------- vrlo siroki zaslon: tri stupca ---------- */
+/* ---------- srednji zaslon ---------- */
 
-@media (min-width: 1700px) {
-  .wrap {
-    max-width: min(1760px, 94vw);
-  }
-  [role='tabpanel'] {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-  /* Kalendar i obroci i dalje traze prostor, ali ne cijeli redak od tri. */
-  [role='tabpanel'] > .card:has(.cal),
-  [role='tabpanel'] > .card:has(.meal) {
-    grid-column: span 2;
-  }
-}
-
-/* ---------- tablet ---------- */
-
-@media (min-width: 760px) and (max-width: 999px) {
+@media (min-width: 760px) and (max-width: 1279px) {
   .wrap {
     max-width: 96vw;
-  }
-  /* Statistike u karticama podnose vise stupaca i na srednjem zaslonu. */
-  .grid.g4 {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 }
 
@@ -88,7 +66,6 @@
   .card {
     border-radius: var(--radius);
   }
-  /* Tablica namirnica na mobitelu klize vodoravno umjesto da se lomi. */
   .table-scroll {
     max-height: 60vh;
   }
@@ -104,8 +81,8 @@
   }
 }
 
-/* Preglednici bez :has() (stariji Firefox) dobivaju jedan stupac —
-   raspored je tada kakav je i bio, bez ijedne pokvarene kartice. */
+/* Preglednici bez :has() dobivaju jedan stupac — raspored je tada kakav je i
+   bio, bez ijedne pokvarene kartice. */
 @supports not selector(:has(*)) {
   [role='tabpanel'] {
     display: block;

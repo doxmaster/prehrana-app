@@ -70,9 +70,23 @@ function loadHandwrittenMains() {
   return new Set([...text.matchAll(/foodId: 'r:([^']+)'/g)].map((m) => m[1]))
 }
 
+/**
+ * Naslovi rucno slozenih jelovnika.
+ *
+ * Slozeni jelovnik nosi ime svog glavnog jela, pa bi novi recept istog imena
+ * kao rucni jelovnik dao dva jelovnika s istim naslovom — u izborniku se ne bi
+ * razlikovali. Provjera ide po NASLOVU, ne po receptu, jer rucni jelovnik moze
+ * nositi ime jela koje uopce ne koristi kao sastojak.
+ */
+function loadHandwrittenTitles() {
+  const text = readFileSync(resolve(root, 'src/data/menus.ts'), 'utf8')
+  return new Set([...text.matchAll(/title: '([^']+)'/g)].map((m) => m[1]))
+}
+
 const foods = loadFoods()
 const recipes = loadRecipes()
 const taken = loadHandwrittenMains()
+const takenTitles = loadHandwrittenTitles()
 
 /** Recept kao namirnica: vrijednosti na 100 g gotovog jela i predlozena porcija. */
 function asFood(recipe) {
@@ -158,7 +172,14 @@ const kcalOf = (r) => {
 }
 
 const mains = recipes
-  .filter((r) => isDomestic(r) && MAIN_CATS.has(r.cat) && kcalOf(r) >= 320 && !taken.has(r.id))
+  .filter(
+    (r) =>
+      isDomestic(r) &&
+      MAIN_CATS.has(r.cat) &&
+      kcalOf(r) >= 320 &&
+      !taken.has(r.id) &&
+      !takenTitles.has(r.name),
+  )
   .sort((a, b) => a.name.localeCompare(b.name, 'hr'))
 
 const dinners = recipes

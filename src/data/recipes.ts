@@ -2,7 +2,7 @@
  * GENERIRANO — ne uređivati ručno.
  * Izvor: scripts/recipes-source.json, generator: scripts/generate-recipes.mjs
  *
- * 186 tradicionalnih jela hrvatske i susjednih kuhinja. Vrijednosti se
+ * 272 tradicionalnih jela hrvatske i susjednih kuhinja. Vrijednosti se
  * računaju iz sastojaka provjerenih prema USDA, pa nijedna brojka nije procijenjena.
  *
  * `drink` je preporučeno piće uz jelo — dodaje se posebno i NE ulazi u
@@ -3100,6 +3100,1344 @@ export const STARTER_RECIPES: Recipe[] = [
       { foodId: 'u:grožđice', g: 5 }, // Grožđice
       { foodId: 'b56', g: 10 }, // Bademi
       { foodId: 'u:breskva', g: 50 }, // Breskva
+    ],
+  },
+  {
+    id: 'rc-becki-odrezak',
+    name: 'Bečki odrezak',
+    cat: 'Meso i riba',
+    cuisine: 'regionalna',
+    servings: 4,
+    yieldFactor: 0.92,
+    note: 'Pohani svinjski kotlet, klasika srednjoeuropske kuhinje.',
+    items: [
+      { foodId: 'u:svinjski-kotlet', g: 600 }, // Svinjski kotlet
+      { foodId: 'u:brašno-glatko-pšenično', g: 60 }, // Brašno glatko (pšenično)
+      { foodId: 'b11', g: 120 }, // Jaje (cijelo)
+      { foodId: 'u:krušne-mrvice', g: 120 }, // Krušne mrvice
+      { foodId: 'off:suncokretovo-ulje', g: 60 }, // Suncokretovo ulje
+    ],
+  },
+  {
+    id: 'rc-piletina-na-zaru',
+    name: 'Piletina na žaru',
+    cat: 'Meso i riba',
+    cuisine: 'hrvatska',
+    servings: 4,
+    yieldFactor: 0.8,
+    note: 'Bez masnoće u tavi; sok se čuva kratkim pečenjem.',
+    items: [
+      { foodId: 'b0', g: 640 }, // Pileća prsa (pečena)
+      { foodId: 'b62', g: 20 }, // Maslinovo ulje
+      { foodId: 'u:limun', g: 40 }, // Limun
+      { foodId: 'u:češnjak', g: 10 }, // Češnjak
+    ],
+  },
+  {
+    id: 'rc-pecena-piletina-s-krumpirom',
+    name: 'Pečena piletina s krumpirom',
+    cat: 'Meso i riba',
+    cuisine: 'hrvatska',
+    servings: 4,
+    yieldFactor: 0.85,
+    note: 'Sve u jednoj tepsiji, krumpir se peče u soku mesa.',
+    items: [
+      { foodId: 'b1', g: 800 }, // Pileći batak
+      { foodId: 'b26', g: 800 }, // Krumpir (kuhani)
+      { foodId: 'b44', g: 120 }, // Luk
+      { foodId: 'b62', g: 30 }, // Maslinovo ulje
+      { foodId: 'u:crvena-mljevena-paprika', g: 6 }, // Crvena mljevena paprika
+    ],
+  },
+  {
+    id: 'rc-svinjski-kotlet-na-zaru',
+    name: 'Svinjski kotlet na žaru',
+    cat: 'Meso i riba',
+    cuisine: 'hrvatska',
+    servings: 4,
+    yieldFactor: 0.8,
+    note: 'Uz pečeno povrće ili salatu.',
+    items: [
+      { foodId: 'u:svinjski-kotlet', g: 720 }, // Svinjski kotlet
+      { foodId: 'b62', g: 20 }, // Maslinovo ulje
+      { foodId: 'u:češnjak', g: 10 }, // Češnjak
+      { foodId: 'u:origano-suhi', g: 3 }, // Origano (suhi)
+    ],
+  },
+  {
+    id: 'rc-janjeci-kotleti-s-krumpirom',
+    name: 'Janjeći kotleti s krumpirom',
+    cat: 'Meso i riba',
+    cuisine: 'hrvatska',
+    servings: 4,
+    yieldFactor: 0.82,
+    note: 'Janjetina traži samo sol, ulje i kratko pečenje.',
+    drink: { foodId: 'b70', g: 150 },
+    items: [
+      { foodId: 'u:janjetina', g: 700 }, // Janjetina
+      { foodId: 'b26', g: 700 }, // Krumpir (kuhani)
+      { foodId: 'b62', g: 30 }, // Maslinovo ulje
+      { foodId: 'u:češnjak', g: 12 }, // Češnjak
+    ],
+  },
+  {
+    id: 'rc-mesna-struca',
+    name: 'Mesna štruca',
+    cat: 'Meso i riba',
+    cuisine: 'regionalna',
+    servings: 5,
+    yieldFactor: 0.85,
+    note: 'Peče se u komadu, dobro stoji i hladna.',
+    items: [
+      { foodId: 'b5', g: 700 }, // Mljeveno meso (miješano)
+      { foodId: 'b11', g: 120 }, // Jaje (cijelo)
+      { foodId: 'u:krušne-mrvice', g: 100 }, // Krušne mrvice
+      { foodId: 'b44', g: 120 }, // Luk
+      { foodId: 'b13', g: 100 }, // Mlijeko 2.8%
+    ],
+  },
+  {
+    id: 'rc-cufte-s-pireom',
+    name: 'Ćufte s pireom',
+    cat: 'Meso i riba',
+    cuisine: 'regionalna',
+    servings: 4,
+    yieldFactor: 0.88,
+    note: 'Mesne okruglice uz krumpirov pire.',
+    items: [
+      { foodId: 'b5', g: 500 }, // Mljeveno meso (miješano)
+      { foodId: 'b11', g: 60 }, // Jaje (cijelo)
+      { foodId: 'u:krušne-mrvice', g: 60 }, // Krušne mrvice
+      { foodId: 'b26', g: 700 }, // Krumpir (kuhani)
+      { foodId: 'b13', g: 150 }, // Mlijeko 2.8%
+      { foodId: 'b19', g: 30 }, // Maslac
+    ],
+  },
+  {
+    id: 'rc-piletina-u-umaku-od-gljiva',
+    name: 'Piletina u umaku od gljiva',
+    cat: 'Meso i riba',
+    cuisine: 'hrvatska',
+    servings: 4,
+    yieldFactor: 0.9,
+    note: 'Šampinjoni i vrhnje; ide uz rižu ili njoke.',
+    items: [
+      { foodId: 'b0', g: 600 }, // Pileća prsa (pečena)
+      { foodId: 'u:šampinjoni', g: 400 }, // Šampinjoni
+      { foodId: 'u:vrhnje-za-šlag', g: 200 }, // Vrhnje za šlag
+      { foodId: 'b44', g: 100 }, // Luk
+      { foodId: 'b62', g: 20 }, // Maslinovo ulje
+    ],
+  },
+  {
+    id: 'rc-pileci-file-s-povrcem-u-pecnici',
+    name: 'Pileći file s povrćem u pećnici',
+    cat: 'Meso i riba',
+    cuisine: 'hrvatska',
+    servings: 4,
+    yieldFactor: 0.85,
+    note: 'Jedna tepsija, bez dodatnog priloga.',
+    items: [
+      { foodId: 'b0', g: 600 }, // Pileća prsa (pečena)
+      { foodId: 'b43', g: 300 }, // Tikvica
+      { foodId: 'b39', g: 250 }, // Paprika crvena
+      { foodId: 'b38', g: 250 }, // Rajčica
+      { foodId: 'b62', g: 30 }, // Maslinovo ulje
+    ],
+  },
+  {
+    id: 'rc-svinjetina-s-kupusom',
+    name: 'Svinjetina s kupusom',
+    cat: 'Meso i riba',
+    cuisine: 'hrvatska',
+    servings: 4,
+    yieldFactor: 0.85,
+    note: 'Slavonski način: meso se krčka s kupusom.',
+    items: [
+      { foodId: 'b4', g: 600 }, // Svinjetina (but)
+      { foodId: 'b41', g: 800 }, // Kupus
+      { foodId: 'b44', g: 150 }, // Luk
+      { foodId: 'u:crvena-mljevena-paprika', g: 8 }, // Crvena mljevena paprika
+      { foodId: 'u:svinjska-mast', g: 30 }, // Svinjska mast
+    ],
+  },
+  {
+    id: 'rc-rebra-iz-pecnice',
+    name: 'Rebra iz pećnice',
+    cat: 'Meso i riba',
+    cuisine: 'hrvatska',
+    servings: 4,
+    yieldFactor: 0.75,
+    note: 'Duže i na nižoj temperaturi, da meso pusti mast.',
+    drink: { foodId: 'b68', g: 300 },
+    items: [
+      { foodId: 'u:svinjska-rebra', g: 900 }, // Svinjska rebra
+      { foodId: 'b63', g: 30 }, // Med
+      { foodId: 'off:senf', g: 20 }, // Senf
+      { foodId: 'u:češnjak', g: 15 }, // Češnjak
+    ],
+  },
+  {
+    id: 'rc-kobasice-s-pireom',
+    name: 'Kobasice s pireom',
+    cat: 'Meso i riba',
+    cuisine: 'hrvatska',
+    servings: 4,
+    yieldFactor: 0.9,
+    note: 'Brz obrok od onoga što je u hladnjaku.',
+    items: [
+      { foodId: 'off:kobasica', g: 480 }, // Kobasica
+      { foodId: 'b26', g: 700 }, // Krumpir (kuhani)
+      { foodId: 'b13', g: 150 }, // Mlijeko 2.8%
+      { foodId: 'b19', g: 30 }, // Maslac
+      { foodId: 'off:senf', g: 20 }, // Senf
+    ],
+  },
+  {
+    id: 'rc-teleci-perkelt',
+    name: 'Teleći perkelt',
+    cat: 'Meso i riba',
+    cuisine: 'regionalna',
+    servings: 4,
+    yieldFactor: 0.8,
+    note: 'Bijelo meso u paprikašu, blaži od junećeg.',
+    items: [
+      { foodId: 'u:teletina', g: 700 }, // Teletina
+      { foodId: 'b44', g: 250 }, // Luk
+      { foodId: 'u:crvena-mljevena-paprika', g: 10 }, // Crvena mljevena paprika
+      { foodId: 'b39', g: 150 }, // Paprika crvena
+      { foodId: 'off:suncokretovo-ulje', g: 30 }, // Suncokretovo ulje
+    ],
+  },
+  {
+    id: 'rc-gulas-s-palentom',
+    name: 'Gulaš s palentom',
+    cat: 'Meso i riba',
+    cuisine: 'regionalna',
+    servings: 4,
+    yieldFactor: 0.82,
+    note: 'Gusti gulaš uz palentu umjesto kruha.',
+    items: [
+      { foodId: 'u:junetina-za-gulaš', g: 600 }, // Junetina za gulaš
+      { foodId: 'b44', g: 300 }, // Luk
+      { foodId: 'u:crvena-mljevena-paprika', g: 12 }, // Crvena mljevena paprika
+      { foodId: 'b27', g: 600 }, // Palenta (kukuruzna krupica)
+      { foodId: 'u:svinjska-mast', g: 30 }, // Svinjska mast
+    ],
+  },
+  {
+    id: 'rc-pacja-prsa-s-mlincima',
+    name: 'Pačja prsa s mlincima',
+    cat: 'Meso i riba',
+    cuisine: 'hrvatska',
+    servings: 4,
+    yieldFactor: 0.78,
+    note: 'Umjesto mlinaca ide tjestenina zapečena u masti.',
+    drink: { foodId: 'b70', g: 150 },
+    items: [
+      { foodId: 'u:pačja-prsa', g: 600 }, // Pačja prsa
+      { foodId: 'b24', g: 500 }, // Tjestenina (kuhana)
+      { foodId: 'b44', g: 100 }, // Luk
+      { foodId: 'u:svinjska-mast', g: 25 }, // Svinjska mast
+    ],
+  },
+  {
+    id: 'rc-pecena-skusa-s-blitvom',
+    name: 'Pečena skuša s blitvom',
+    cat: 'Meso i riba',
+    cuisine: 'hrvatska',
+    servings: 4,
+    yieldFactor: 0.85,
+    note: 'Plava riba i blitva — dalmatinski standard.',
+    drink: { foodId: 'u:vino-bijelo-suho', g: 150 },
+    items: [
+      { foodId: 'b8', g: 700 }, // Skuša
+      { foodId: 'u:blitva', g: 600 }, // Blitva
+      { foodId: 'b26', g: 400 }, // Krumpir (kuhani)
+      { foodId: 'b62', g: 40 }, // Maslinovo ulje
+      { foodId: 'u:češnjak', g: 15 }, // Češnjak
+    ],
+  },
+  {
+    id: 'rc-oslic-na-leso',
+    name: 'Oslić na lešo',
+    cat: 'Meso i riba',
+    cuisine: 'hrvatska',
+    servings: 4,
+    yieldFactor: 0.85,
+    note: 'Kuhana riba s krumpirom, začinjena tek uljem i limunom.',
+    items: [
+      { foodId: 'u:oslić', g: 700 }, // Oslić
+      { foodId: 'b26', g: 600 }, // Krumpir (kuhani)
+      { foodId: 'b62', g: 40 }, // Maslinovo ulje
+      { foodId: 'u:limun', g: 60 }, // Limun
+      { foodId: 'u:peršin', g: 15 }, // Peršin
+    ],
+  },
+  {
+    id: 'rc-brancin-u-pecnici-s-povrcem',
+    name: 'Brancin u pećnici s povrćem',
+    cat: 'Meso i riba',
+    cuisine: 'hrvatska',
+    servings: 4,
+    yieldFactor: 0.85,
+    note: 'Riba se peče na povrću koje upije sok.',
+    drink: { foodId: 'u:vino-bijelo-pinot-gris', g: 150 },
+    items: [
+      { foodId: 'u:brancin', g: 800 }, // Brancin
+      { foodId: 'b26', g: 500 }, // Krumpir (kuhani)
+      { foodId: 'b38', g: 300 }, // Rajčica
+      { foodId: 'b62', g: 40 }, // Maslinovo ulje
+      { foodId: 'u:češnjak', g: 12 }, // Češnjak
+    ],
+  },
+  {
+    id: 'rc-orada-na-gradele',
+    name: 'Orada na gradele',
+    cat: 'Meso i riba',
+    cuisine: 'hrvatska',
+    servings: 4,
+    yieldFactor: 0.8,
+    note: 'Kratko na jakoj vatri, uz šalšu od ulja i češnjaka.',
+    drink: { foodId: 'u:vino-bijelo-sauvignon', g: 150 },
+    items: [
+      { foodId: 'u:orada', g: 800 }, // Orada
+      { foodId: 'b62', g: 40 }, // Maslinovo ulje
+      { foodId: 'u:češnjak', g: 12 }, // Češnjak
+      { foodId: 'u:peršin', g: 15 }, // Peršin
+      { foodId: 'u:limun', g: 60 }, // Limun
+    ],
+  },
+  {
+    id: 'rc-saran-u-pecnici',
+    name: 'Šaran u pećnici',
+    cat: 'Meso i riba',
+    cuisine: 'hrvatska',
+    servings: 4,
+    yieldFactor: 0.82,
+    note: 'Slavonski način, s puno mljevene paprike.',
+    items: [
+      { foodId: 'u:šaran', g: 900 }, // Šaran
+      { foodId: 'u:crvena-mljevena-paprika', g: 12 }, // Crvena mljevena paprika
+      { foodId: 'b44', g: 150 }, // Luk
+      { foodId: 'off:suncokretovo-ulje', g: 40 }, // Suncokretovo ulje
+    ],
+  },
+  {
+    id: 'rc-bakalar-na-crveno',
+    name: 'Bakalar na crveno',
+    cat: 'Meso i riba',
+    cuisine: 'hrvatska',
+    servings: 5,
+    yieldFactor: 0.85,
+    note: 'S rajčicom i krumpirom; badnjačka varijanta uz bijelu.',
+    items: [
+      { foodId: 'u:bakalar-suhi', g: 400 }, // Bakalar (suhi)
+      { foodId: 'b26', g: 700 }, // Krumpir (kuhani)
+      { foodId: 'off:pelati-guljene-rajčice', g: 400 }, // Pelati (guljene rajčice)
+      { foodId: 'b44', g: 150 }, // Luk
+      { foodId: 'b62', g: 50 }, // Maslinovo ulje
+    ],
+  },
+  {
+    id: 'rc-lignje-na-zaru',
+    name: 'Lignje na žaru',
+    cat: 'Meso i riba',
+    cuisine: 'hrvatska',
+    servings: 4,
+    yieldFactor: 0.75,
+    note: 'Vrlo kratko, inače postanu gumene.',
+    drink: { foodId: 'u:vino-bijelo-rizling', g: 150 },
+    items: [
+      { foodId: 'u:lignje', g: 800 }, // Lignje
+      { foodId: 'b62', g: 30 }, // Maslinovo ulje
+      { foodId: 'u:češnjak', g: 12 }, // Češnjak
+      { foodId: 'u:peršin', g: 15 }, // Peršin
+    ],
+  },
+  {
+    id: 'rc-pohane-lignje',
+    name: 'Pohane lignje',
+    cat: 'Meso i riba',
+    cuisine: 'hrvatska',
+    servings: 4,
+    yieldFactor: 0.85,
+    note: 'Kolutovi u brašnu, kratko prženi.',
+    items: [
+      { foodId: 'u:lignje', g: 700 }, // Lignje
+      { foodId: 'u:brašno-glatko-pšenično', g: 80 }, // Brašno glatko (pšenično)
+      { foodId: 'off:suncokretovo-ulje', g: 80 }, // Suncokretovo ulje
+      { foodId: 'u:limun', g: 60 }, // Limun
+    ],
+  },
+  {
+    id: 'rc-losos-u-pecnici-s-limunom',
+    name: 'Losos u pećnici s limunom',
+    cat: 'Meso i riba',
+    cuisine: 'ostalo',
+    servings: 4,
+    yieldFactor: 0.85,
+    note: 'Masna riba kojoj treba samo limun i papar.',
+    items: [
+      { foodId: 'b6', g: 600 }, // Losos
+      { foodId: 'u:limun', g: 80 }, // Limun
+      { foodId: 'b62', g: 20 }, // Maslinovo ulje
+      { foodId: 'u:šparoge', g: 300 }, // Šparoge
+    ],
+  },
+  {
+    id: 'rc-losos-s-kvinojom',
+    name: 'Losos s kvinojom',
+    cat: 'Meso i riba',
+    cuisine: 'ostalo',
+    servings: 4,
+    yieldFactor: 0.85,
+    note: 'Riba i cjelovita žitarica, bez dodatnog priloga.',
+    items: [
+      { foodId: 'b6', g: 560 }, // Losos
+      { foodId: 'b29', g: 600 }, // Kvinoja (kuhana)
+      { foodId: 'b36', g: 200 }, // Špinat
+      { foodId: 'b62', g: 20 }, // Maslinovo ulje
+    ],
+  },
+  {
+    id: 'rc-tjestenina-s-incunima',
+    name: 'Tjestenina s inćunima',
+    cat: 'Žitarice i kruh',
+    cuisine: 'ostalo',
+    servings: 4,
+    yieldFactor: 0.95,
+    note: 'Inćuni se rastope u ulju i posole jelo umjesto soli.',
+    items: [
+      { foodId: 'b24', g: 600 }, // Tjestenina (kuhana)
+      { foodId: 'off:inćuni-fileti-u-ulju', g: 60 }, // Inćuni (fileti u ulju)
+      { foodId: 'u:češnjak', g: 15 }, // Češnjak
+      { foodId: 'b62', g: 40 }, // Maslinovo ulje
+      { foodId: 'u:peršin', g: 15 }, // Peršin
+    ],
+  },
+  {
+    id: 'rc-skampi-na-zaru',
+    name: 'Škampi na žaru',
+    cat: 'Meso i riba',
+    cuisine: 'hrvatska',
+    servings: 4,
+    yieldFactor: 0.8,
+    note: 'S ljuskom, da meso ostane sočno.',
+    drink: { foodId: 'u:vino-bijelo-chardonnay', g: 150 },
+    items: [
+      { foodId: 'u:škampi', g: 800 }, // Škampi
+      { foodId: 'b62', g: 30 }, // Maslinovo ulje
+      { foodId: 'u:češnjak', g: 12 }, // Češnjak
+      { foodId: 'u:limun', g: 60 }, // Limun
+    ],
+  },
+  {
+    id: 'rc-salata-od-tune-i-jaja',
+    name: 'Salata od tune i jaja',
+    cat: 'Meso i riba',
+    cuisine: 'ostalo',
+    servings: 3,
+    note: 'Hladno jelo za vrući dan ili brz ručak.',
+    items: [
+      { foodId: 'b7', g: 300 }, // Tuna (konzerva u vodi)
+      { foodId: 'u:jaje-kuhano', g: 180 }, // Jaje (kuhano)
+      { foodId: 'b45', g: 200 }, // Salata (zelena)
+      { foodId: 'b38', g: 200 }, // Rajčica
+      { foodId: 'b62', g: 30 }, // Maslinovo ulje
+    ],
+  },
+  {
+    id: 'rc-leca-s-rizom',
+    name: 'Leća s rižom',
+    cat: 'Mahunarke',
+    cuisine: 'ostalo',
+    servings: 4,
+    yieldFactor: 0.95,
+    note: 'Potpuna bjelančevina iz mahunarke i žitarice.',
+    items: [
+      { foodId: 'b31', g: 500 }, // Leća (kuhana)
+      { foodId: 'b22', g: 400 }, // Riža bijela (kuhana)
+      { foodId: 'b44', g: 150 }, // Luk
+      { foodId: 'b37', g: 150 }, // Mrkva
+      { foodId: 'b62', g: 30 }, // Maslinovo ulje
+    ],
+  },
+  {
+    id: 'rc-varivo-od-slanutka',
+    name: 'Varivo od slanutka',
+    cat: 'Mahunarke',
+    cuisine: 'hrvatska',
+    servings: 4,
+    yieldFactor: 0.9,
+    note: 'Gusto varivo; slanutak se prethodno namače.',
+    items: [
+      { foodId: 'b32', g: 600 }, // Slanutak (kuhani)
+      { foodId: 'b26', g: 300 }, // Krumpir (kuhani)
+      { foodId: 'b37', g: 150 }, // Mrkva
+      { foodId: 'b44', g: 120 }, // Luk
+      { foodId: 'b62', g: 30 }, // Maslinovo ulje
+    ],
+  },
+  {
+    id: 'rc-slanutak-s-blitvom',
+    name: 'Slanutak s blitvom',
+    cat: 'Mahunarke',
+    cuisine: 'hrvatska',
+    servings: 4,
+    yieldFactor: 0.9,
+    note: 'Dalmatinski spoj mahunarke i zelja.',
+    items: [
+      { foodId: 'b32', g: 500 }, // Slanutak (kuhani)
+      { foodId: 'u:blitva', g: 500 }, // Blitva
+      { foodId: 'b26', g: 300 }, // Krumpir (kuhani)
+      { foodId: 'u:češnjak', g: 15 }, // Češnjak
+      { foodId: 'b62', g: 40 }, // Maslinovo ulje
+    ],
+  },
+  {
+    id: 'rc-grah-s-kobasicom',
+    name: 'Grah s kobasicom',
+    cat: 'Mahunarke',
+    cuisine: 'hrvatska',
+    servings: 5,
+    yieldFactor: 0.9,
+    note: 'Zasitno zimsko jelo; kobasica daje mast i sol.',
+    items: [
+      { foodId: 'b30', g: 700 }, // Grah (kuhani)
+      { foodId: 'off:kobasica', g: 300 }, // Kobasica
+      { foodId: 'b44', g: 150 }, // Luk
+      { foodId: 'b37', g: 150 }, // Mrkva
+      { foodId: 'u:crvena-mljevena-paprika', g: 8 }, // Crvena mljevena paprika
+    ],
+  },
+  {
+    id: 'rc-varivo-od-boba',
+    name: 'Varivo od boba',
+    cat: 'Mahunarke',
+    cuisine: 'hrvatska',
+    servings: 4,
+    yieldFactor: 0.9,
+    note: 'Proljetno varivo dok je bob mlad.',
+    items: [
+      { foodId: 'u:bob', g: 600 }, // Bob
+      { foodId: 'b26', g: 300 }, // Krumpir (kuhani)
+      { foodId: 'b44', g: 120 }, // Luk
+      { foodId: 'b62', g: 30 }, // Maslinovo ulje
+    ],
+  },
+  {
+    id: 'rc-juha-od-crvene-lece',
+    name: 'Juha od crvene leće',
+    cat: 'Mahunarke',
+    cuisine: 'ostalo',
+    servings: 4,
+    yieldFactor: 0.95,
+    note: 'Crvena leća se raskuha i sama zgusne juhu.',
+    items: [
+      { foodId: 'u:crvena-leća-kuhana', g: 400 }, // Crvena leća (kuhana)
+      { foodId: 'b37', g: 200 }, // Mrkva
+      { foodId: 'b44', g: 120 }, // Luk
+      { foodId: 'b38', g: 200 }, // Rajčica
+      { foodId: 'b62', g: 25 }, // Maslinovo ulje
+    ],
+  },
+  {
+    id: 'rc-soja-gulas',
+    name: 'Soja gulaš',
+    cat: 'Mahunarke',
+    cuisine: 'ostalo',
+    servings: 4,
+    yieldFactor: 0.9,
+    note: 'Bezmesna varijanta paprikaša.',
+    items: [
+      { foodId: 'u:soja-kuhana', g: 500 }, // Soja (kuhana)
+      { foodId: 'b44', g: 250 }, // Luk
+      { foodId: 'u:crvena-mljevena-paprika', g: 10 }, // Crvena mljevena paprika
+      { foodId: 'b39', g: 200 }, // Paprika crvena
+      { foodId: 'off:suncokretovo-ulje', g: 30 }, // Suncokretovo ulje
+    ],
+  },
+  {
+    id: 'rc-tofu-s-povrcem-u-woku',
+    name: 'Tofu s povrćem u woku',
+    cat: 'Mahunarke',
+    cuisine: 'ostalo',
+    servings: 4,
+    yieldFactor: 0.9,
+    note: 'Kratko na jakoj vatri, uz umak od soje.',
+    items: [
+      { foodId: 'b34', g: 500 }, // Tofu
+      { foodId: 'b35', g: 300 }, // Brokula
+      { foodId: 'b37', g: 200 }, // Mrkva
+      { foodId: 'b39', g: 200 }, // Paprika crvena
+      { foodId: 'u:umak-od-soje', g: 40 }, // Umak od soje
+      { foodId: 'u:repičino-ulje', g: 25 }, // Repičino ulje
+    ],
+  },
+  {
+    id: 'rc-rizot-od-bundeve',
+    name: 'Rižot od bundeve',
+    cat: 'Žitarice i kruh',
+    cuisine: 'hrvatska',
+    servings: 4,
+    yieldFactor: 0.9,
+    note: 'Jesenski rižot; bundeva se raspadne i zgusne ga.',
+    items: [
+      { foodId: 'b22', g: 600 }, // Riža bijela (kuhana)
+      { foodId: 'u:bundeva', g: 500 }, // Bundeva
+      { foodId: 'b44', g: 100 }, // Luk
+      { foodId: 'u:parmezan', g: 60 }, // Parmezan
+      { foodId: 'b19', g: 30 }, // Maslac
+    ],
+  },
+  {
+    id: 'rc-rizot-od-sparoga',
+    name: 'Rižot od šparoga',
+    cat: 'Žitarice i kruh',
+    cuisine: 'hrvatska',
+    servings: 4,
+    yieldFactor: 0.9,
+    note: 'Istarski proljetni rižot.',
+    items: [
+      { foodId: 'b22', g: 600 }, // Riža bijela (kuhana)
+      { foodId: 'u:šparoge', g: 400 }, // Šparoge
+      { foodId: 'b44', g: 100 }, // Luk
+      { foodId: 'u:parmezan', g: 60 }, // Parmezan
+      { foodId: 'b62', g: 30 }, // Maslinovo ulje
+    ],
+  },
+  {
+    id: 'rc-rizot-s-blitvom',
+    name: 'Rižot s blitvom',
+    cat: 'Žitarice i kruh',
+    cuisine: 'hrvatska',
+    servings: 4,
+    yieldFactor: 0.9,
+    note: 'Dalmatinski rižot, bez mesa.',
+    items: [
+      { foodId: 'b22', g: 600 }, // Riža bijela (kuhana)
+      { foodId: 'u:blitva', g: 400 }, // Blitva
+      { foodId: 'u:češnjak', g: 12 }, // Češnjak
+      { foodId: 'b62', g: 35 }, // Maslinovo ulje
+      { foodId: 'u:parmezan', g: 50 }, // Parmezan
+    ],
+  },
+  {
+    id: 'rc-palenta-s-gljivama',
+    name: 'Palenta s gljivama',
+    cat: 'Žitarice i kruh',
+    cuisine: 'regionalna',
+    servings: 4,
+    yieldFactor: 0.95,
+    note: 'Istarski spoj palente i šumskih gljiva.',
+    items: [
+      { foodId: 'b27', g: 700 }, // Palenta (kukuruzna krupica)
+      { foodId: 'u:bukovače', g: 400 }, // Bukovače
+      { foodId: 'u:češnjak', g: 12 }, // Češnjak
+      { foodId: 'b62', g: 30 }, // Maslinovo ulje
+      { foodId: 'u:parmezan', g: 50 }, // Parmezan
+    ],
+  },
+  {
+    id: 'rc-palenta-s-umakom-od-rajcice',
+    name: 'Palenta s umakom od rajčice',
+    cat: 'Žitarice i kruh',
+    cuisine: 'regionalna',
+    servings: 4,
+    yieldFactor: 0.95,
+    note: 'Jednostavan bezmesni ručak.',
+    items: [
+      { foodId: 'b27', g: 700 }, // Palenta (kukuruzna krupica)
+      { foodId: 'off:pelati-guljene-rajčice', g: 500 }, // Pelati (guljene rajčice)
+      { foodId: 'b44', g: 100 }, // Luk
+      { foodId: 'b62', g: 30 }, // Maslinovo ulje
+    ],
+  },
+  {
+    id: 'rc-njoki-sa-sirom',
+    name: 'Njoki sa sirom',
+    cat: 'Žitarice i kruh',
+    cuisine: 'regionalna',
+    servings: 4,
+    yieldFactor: 0.95,
+    note: 'Sir se otopi u vrhnju i obloži njoke.',
+    items: [
+      { foodId: 'b26', g: 700 }, // Krumpir (kuhani)
+      { foodId: 'u:brašno-glatko-pšenično', g: 200 }, // Brašno glatko (pšenično)
+      { foodId: 'b11', g: 60 }, // Jaje (cijelo)
+      { foodId: 'u:vrhnje-za-šlag', g: 200 }, // Vrhnje za šlag
+      { foodId: 'u:trapist', g: 120 }, // Trapist
+    ],
+  },
+  {
+    id: 'rc-tjestenina-s-brokulom',
+    name: 'Tjestenina s brokulom',
+    cat: 'Žitarice i kruh',
+    cuisine: 'ostalo',
+    servings: 4,
+    yieldFactor: 0.95,
+    note: 'Brokula se kuha zajedno s tjesteninom.',
+    items: [
+      { foodId: 'b24', g: 600 }, // Tjestenina (kuhana)
+      { foodId: 'b35', g: 400 }, // Brokula
+      { foodId: 'u:češnjak', g: 12 }, // Češnjak
+      { foodId: 'b62', g: 35 }, // Maslinovo ulje
+      { foodId: 'u:parmezan', g: 60 }, // Parmezan
+    ],
+  },
+  {
+    id: 'rc-tjestenina-s-tikvicama',
+    name: 'Tjestenina s tikvicama',
+    cat: 'Žitarice i kruh',
+    cuisine: 'ostalo',
+    servings: 4,
+    yieldFactor: 0.95,
+    note: 'Ljetna tjestenina, gotova dok se voda grije.',
+    items: [
+      { foodId: 'b24', g: 600 }, // Tjestenina (kuhana)
+      { foodId: 'b43', g: 400 }, // Tikvica
+      { foodId: 'u:češnjak', g: 10 }, // Češnjak
+      { foodId: 'b62', g: 35 }, // Maslinovo ulje
+      { foodId: 'u:parmezan', g: 50 }, // Parmezan
+    ],
+  },
+  {
+    id: 'rc-tjestenina-s-cesnjakom-i-uljem',
+    name: 'Tjestenina s češnjakom i uljem',
+    cat: 'Žitarice i kruh',
+    cuisine: 'ostalo',
+    servings: 3,
+    yieldFactor: 0.95,
+    note: 'Tri sastojka; sve ovisi o tome da se češnjak ne zagori.',
+    items: [
+      { foodId: 'b24', g: 450 }, // Tjestenina (kuhana)
+      { foodId: 'u:češnjak', g: 20 }, // Češnjak
+      { foodId: 'b62', g: 45 }, // Maslinovo ulje
+      { foodId: 'u:ljuta-paprika', g: 10 }, // Ljuta paprika
+    ],
+  },
+  {
+    id: 'rc-zapecena-palenta',
+    name: 'Zapečena palenta',
+    cat: 'Žitarice i kruh',
+    cuisine: 'regionalna',
+    servings: 4,
+    yieldFactor: 0.9,
+    note: 'Ostatak palente se nareže i zapeče.',
+    items: [
+      { foodId: 'b27', g: 700 }, // Palenta (kukuruzna krupica)
+      { foodId: 'b16', g: 150 }, // Sir (gauda/edamer)
+      { foodId: 'u:vrhnje-za-šlag', g: 150 }, // Vrhnje za šlag
+      { foodId: 'b11', g: 60 }, // Jaje (cijelo)
+    ],
+  },
+  {
+    id: 'rc-bulgur-s-povrcem',
+    name: 'Bulgur s povrćem',
+    cat: 'Žitarice i kruh',
+    cuisine: 'ostalo',
+    servings: 4,
+    yieldFactor: 0.95,
+    note: 'Bulgur upije sok povrća i ne treba mu umak.',
+    items: [
+      { foodId: 'u:bulgur-kuhani', g: 600 }, // Bulgur (kuhani)
+      { foodId: 'b43', g: 250 }, // Tikvica
+      { foodId: 'b39', g: 250 }, // Paprika crvena
+      { foodId: 'b38', g: 250 }, // Rajčica
+      { foodId: 'b62', g: 30 }, // Maslinovo ulje
+    ],
+  },
+  {
+    id: 'rc-kus-kus-s-piletinom',
+    name: 'Kus-kus s piletinom',
+    cat: 'Žitarice i kruh',
+    cuisine: 'ostalo',
+    servings: 4,
+    yieldFactor: 0.95,
+    note: 'Kus-kus je gotov za pet minuta.',
+    items: [
+      { foodId: 'u:kus-kus-kuhani', g: 600 }, // Kus-kus (kuhani)
+      { foodId: 'b0', g: 500 }, // Pileća prsa (pečena)
+      { foodId: 'b39', g: 200 }, // Paprika crvena
+      { foodId: 'b37', g: 150 }, // Mrkva
+      { foodId: 'b62', g: 25 }, // Maslinovo ulje
+    ],
+  },
+  {
+    id: 'rc-kvinoja-s-povrcem',
+    name: 'Kvinoja s povrćem',
+    cat: 'Žitarice i kruh',
+    cuisine: 'ostalo',
+    servings: 4,
+    yieldFactor: 0.95,
+    note: 'Cjelovita bjelančevina bez mesa.',
+    items: [
+      { foodId: 'b29', g: 600 }, // Kvinoja (kuhana)
+      { foodId: 'b35', g: 250 }, // Brokula
+      { foodId: 'b37', g: 200 }, // Mrkva
+      { foodId: 'b32', g: 200 }, // Slanutak (kuhani)
+      { foodId: 'b62', g: 30 }, // Maslinovo ulje
+    ],
+  },
+  {
+    id: 'rc-jecmeni-rizoto',
+    name: 'Ječmeni rižoto',
+    cat: 'Žitarice i kruh',
+    cuisine: 'hrvatska',
+    servings: 4,
+    yieldFactor: 0.9,
+    note: 'Ječam umjesto riže; treba mu duže kuhanje.',
+    items: [
+      { foodId: 'u:ječam-kuhani', g: 600 }, // Ječam (kuhani)
+      { foodId: 'u:šampinjoni', g: 300 }, // Šampinjoni
+      { foodId: 'b44', g: 100 }, // Luk
+      { foodId: 'b37', g: 150 }, // Mrkva
+      { foodId: 'b62', g: 30 }, // Maslinovo ulje
+    ],
+  },
+  {
+    id: 'rc-tortilja-s-piletinom',
+    name: 'Tortilja s piletinom',
+    cat: 'Žitarice i kruh',
+    cuisine: 'ostalo',
+    servings: 3,
+    note: 'Zamota se hladno, dobro putuje.',
+    items: [
+      { foodId: 'u:tortilja-pšenična', g: 240 }, // Tortilja (pšenična)
+      { foodId: 'b0', g: 300 }, // Pileća prsa (pečena)
+      { foodId: 'b45', g: 120 }, // Salata (zelena)
+      { foodId: 'b38', g: 150 }, // Rajčica
+      { foodId: 'b15', g: 100 }, // Grčki jogurt
+    ],
+  },
+  {
+    id: 'rc-tortilja-s-povrcem',
+    name: 'Tortilja s povrćem',
+    cat: 'Žitarice i kruh',
+    cuisine: 'ostalo',
+    servings: 3,
+    note: 'Bezmesna varijanta, s humusom umjesto umaka.',
+    items: [
+      { foodId: 'u:tortilja-pšenična', g: 240 }, // Tortilja (pšenična)
+      { foodId: 'u:suha-slanutkova-pasta-humus', g: 150 }, // Suha slanutkova pasta (humus)
+      { foodId: 'b39', g: 150 }, // Paprika crvena
+      { foodId: 'b40', g: 150 }, // Krastavac
+      { foodId: 'u:rikola', g: 60 }, // Rikola
+    ],
+  },
+  {
+    id: 'rc-somun-s-mesom',
+    name: 'Somun s mesom',
+    cat: 'Žitarice i kruh',
+    cuisine: 'regionalna',
+    servings: 3,
+    yieldFactor: 0.9,
+    note: 'Meso i luk u somunu, bosanski način.',
+    items: [
+      { foodId: 'u:somun-pita-kruh', g: 300 }, // Somun / pita kruh
+      { foodId: 'b5', g: 300 }, // Mljeveno meso (miješano)
+      { foodId: 'b44', g: 120 }, // Luk
+      { foodId: 'b15', g: 120 }, // Grčki jogurt
+    ],
+  },
+  {
+    id: 'rc-sendvic-sa-sunkom-i-sirom',
+    name: 'Sendvič sa šunkom i sirom',
+    cat: 'Žitarice i kruh',
+    cuisine: 'ostalo',
+    servings: 2,
+    note: 'Osnovni sendvič; integralni kruh drži sitost dulje.',
+    items: [
+      { foodId: 'b21', g: 160 }, // Kruh integralni
+      { foodId: 'b10', g: 80 }, // Šunka (pileća)
+      { foodId: 'b16', g: 60 }, // Sir (gauda/edamer)
+      { foodId: 'b38', g: 100 }, // Rajčica
+      { foodId: 'b45', g: 40 }, // Salata (zelena)
+    ],
+  },
+  {
+    id: 'rc-tost-sa-sirom-i-rajcicom',
+    name: 'Tost sa sirom i rajčicom',
+    cat: 'Žitarice i kruh',
+    cuisine: 'ostalo',
+    servings: 2,
+    yieldFactor: 0.95,
+    note: 'Kruh, sir i rajčica pod grijačem.',
+    items: [
+      { foodId: 'b20', g: 160 }, // Kruh bijeli
+      { foodId: 'b16', g: 80 }, // Sir (gauda/edamer)
+      { foodId: 'b38', g: 120 }, // Rajčica
+      { foodId: 'u:origano-suhi', g: 2 }, // Origano (suhi)
+    ],
+  },
+  {
+    id: 'rc-juha-od-mrkve',
+    name: 'Juha od mrkve',
+    cat: 'Povrće',
+    cuisine: 'ostalo',
+    servings: 4,
+    yieldFactor: 0.9,
+    note: 'Kremasta bez vrhnja — mrkva se izmiksa.',
+    items: [
+      { foodId: 'b37', g: 700 }, // Mrkva
+      { foodId: 'b26', g: 200 }, // Krumpir (kuhani)
+      { foodId: 'b44', g: 100 }, // Luk
+      { foodId: 'b62', g: 20 }, // Maslinovo ulje
+      { foodId: 'u:đumbir', g: 10 }, // Đumbir
+    ],
+  },
+  {
+    id: 'rc-krem-juha-od-cvjetace',
+    name: 'Krem juha od cvjetače',
+    cat: 'Povrće',
+    cuisine: 'ostalo',
+    servings: 4,
+    yieldFactor: 0.9,
+    note: 'Cvjetača daje gustoću bez brašna.',
+    items: [
+      { foodId: 'b42', g: 700 }, // Cvjetača
+      { foodId: 'b26', g: 200 }, // Krumpir (kuhani)
+      { foodId: 'b44', g: 100 }, // Luk
+      { foodId: 'b13', g: 200 }, // Mlijeko 2.8%
+      { foodId: 'b19', g: 25 }, // Maslac
+    ],
+  },
+  {
+    id: 'rc-juha-od-poriluka-i-krumpira',
+    name: 'Juha od poriluka i krumpira',
+    cat: 'Povrće',
+    cuisine: 'ostalo',
+    servings: 4,
+    yieldFactor: 0.9,
+    note: 'Dva sastojka nose cijelu juhu.',
+    items: [
+      { foodId: 'u:poriluk', g: 400 }, // Poriluk
+      { foodId: 'b26', g: 500 }, // Krumpir (kuhani)
+      { foodId: 'b44', g: 100 }, // Luk
+      { foodId: 'b19', g: 30 }, // Maslac
+      { foodId: 'b13', g: 200 }, // Mlijeko 2.8%
+    ],
+  },
+  {
+    id: 'rc-krem-juha-od-brokule',
+    name: 'Krem juha od brokule',
+    cat: 'Povrće',
+    cuisine: 'ostalo',
+    servings: 4,
+    yieldFactor: 0.9,
+    note: 'Brokula se kuha kratko da zadrži boju.',
+    items: [
+      { foodId: 'b35', g: 600 }, // Brokula
+      { foodId: 'b26', g: 250 }, // Krumpir (kuhani)
+      { foodId: 'b44', g: 100 }, // Luk
+      { foodId: 'u:vrhnje-za-šlag', g: 150 }, // Vrhnje za šlag
+      { foodId: 'b62', g: 20 }, // Maslinovo ulje
+    ],
+  },
+  {
+    id: 'rc-juha-od-cikle',
+    name: 'Juha od cikle',
+    cat: 'Povrće',
+    cuisine: 'regionalna',
+    servings: 4,
+    yieldFactor: 0.9,
+    note: 'Boršč; kiselina od octa drži boju.',
+    items: [
+      { foodId: 'u:cikla', g: 600 }, // Cikla
+      { foodId: 'b41', g: 300 }, // Kupus
+      { foodId: 'b37', g: 200 }, // Mrkva
+      { foodId: 'b26', g: 250 }, // Krumpir (kuhani)
+      { foodId: 'u:ocat-jabučni', g: 20 }, // Ocat (jabučni)
+      { foodId: 'b15', g: 120 }, // Grčki jogurt
+    ],
+  },
+  {
+    id: 'rc-juha-od-sparoga',
+    name: 'Juha od šparoga',
+    cat: 'Povrće',
+    cuisine: 'hrvatska',
+    servings: 4,
+    yieldFactor: 0.9,
+    note: 'Proljetna juha; tvrdi dio šparoga daje temeljac.',
+    items: [
+      { foodId: 'u:šparoge', g: 500 }, // Šparoge
+      { foodId: 'b26', g: 200 }, // Krumpir (kuhani)
+      { foodId: 'b44', g: 100 }, // Luk
+      { foodId: 'u:vrhnje-za-šlag', g: 150 }, // Vrhnje za šlag
+      { foodId: 'b19', g: 25 }, // Maslac
+    ],
+  },
+  {
+    id: 'rc-salata-od-rajcice',
+    name: 'Salata od rajčice',
+    cat: 'Povrće',
+    cuisine: 'hrvatska',
+    servings: 4,
+    note: 'Rajčica, luk i ulje — ništa više.',
+    items: [
+      { foodId: 'b38', g: 600 }, // Rajčica
+      { foodId: 'b44', g: 100 }, // Luk
+      { foodId: 'b62', g: 30 }, // Maslinovo ulje
+      { foodId: 'u:origano-suhi', g: 2 }, // Origano (suhi)
+    ],
+  },
+  {
+    id: 'rc-salata-sa-slanutkom',
+    name: 'Salata sa slanutkom',
+    cat: 'Mahunarke',
+    cuisine: 'ostalo',
+    servings: 3,
+    note: 'Hladna salata koja sama po sebi zasiti.',
+    items: [
+      { foodId: 'b32', g: 400 }, // Slanutak (kuhani)
+      { foodId: 'b38', g: 200 }, // Rajčica
+      { foodId: 'b40', g: 150 }, // Krastavac
+      { foodId: 'b18', g: 100 }, // Feta sir
+      { foodId: 'b62', g: 30 }, // Maslinovo ulje
+    ],
+  },
+  {
+    id: 'rc-salata-od-matovilca',
+    name: 'Salata od matovilca',
+    cat: 'Povrće',
+    cuisine: 'hrvatska',
+    servings: 4,
+    note: 'Matovilac s jajem i sjemenkama.',
+    items: [
+      { foodId: 'u:matovilac', g: 200 }, // Matovilac
+      { foodId: 'u:jaje-kuhano', g: 120 }, // Jaje (kuhano)
+      { foodId: 'b60', g: 40 }, // Sjemenke bundeve
+      { foodId: 'b62', g: 30 }, // Maslinovo ulje
+      { foodId: 'u:ocat-jabučni', g: 15 }, // Ocat (jabučni)
+    ],
+  },
+  {
+    id: 'rc-salata-od-rikole-s-parmezanom',
+    name: 'Salata od rikole s parmezanom',
+    cat: 'Povrće',
+    cuisine: 'ostalo',
+    servings: 4,
+    note: 'Gorka rikola i slani parmezan.',
+    items: [
+      { foodId: 'u:rikola', g: 180 }, // Rikola
+      { foodId: 'u:parmezan', g: 60 }, // Parmezan
+      { foodId: 'b38', g: 200 }, // Rajčica
+      { foodId: 'b62', g: 30 }, // Maslinovo ulje
+      { foodId: 'u:limun', g: 30 }, // Limun
+    ],
+  },
+  {
+    id: 'rc-salata-od-cikle-i-hrena',
+    name: 'Salata od cikle i hrena',
+    cat: 'Povrće',
+    cuisine: 'hrvatska',
+    servings: 4,
+    note: 'Zimska salata uz pečenje.',
+    items: [
+      { foodId: 'u:cikla', g: 500 }, // Cikla
+      { foodId: 'u:hren', g: 30 }, // Hren
+      { foodId: 'u:ocat-jabučni', g: 25 }, // Ocat (jabučni)
+      { foodId: 'b62', g: 25 }, // Maslinovo ulje
+    ],
+  },
+  {
+    id: 'rc-zapecene-tikvice',
+    name: 'Zapečene tikvice',
+    cat: 'Povrće',
+    cuisine: 'hrvatska',
+    servings: 4,
+    yieldFactor: 0.85,
+    note: 'Tikvice, jaje i sir u tepsiji.',
+    items: [
+      { foodId: 'b43', g: 800 }, // Tikvica
+      { foodId: 'b11', g: 120 }, // Jaje (cijelo)
+      { foodId: 'u:vrhnje-za-šlag', g: 200 }, // Vrhnje za šlag
+      { foodId: 'b16', g: 120 }, // Sir (gauda/edamer)
+    ],
+  },
+  {
+    id: 'rc-punjene-bukovace',
+    name: 'Punjene bukovače',
+    cat: 'Povrće',
+    cuisine: 'hrvatska',
+    servings: 4,
+    yieldFactor: 0.85,
+    note: 'Gljive punjene sirom i mrvicama.',
+    items: [
+      { foodId: 'u:bukovače', g: 500 }, // Bukovače
+      { foodId: 'b17', g: 200 }, // Svježi sir (posni)
+      { foodId: 'u:krušne-mrvice', g: 80 }, // Krušne mrvice
+      { foodId: 'u:češnjak', g: 12 }, // Češnjak
+      { foodId: 'b62', g: 25 }, // Maslinovo ulje
+    ],
+  },
+  {
+    id: 'rc-peceno-povrce-iz-pecnice',
+    name: 'Pečeno povrće iz pećnice',
+    cat: 'Povrće',
+    cuisine: 'hrvatska',
+    servings: 4,
+    yieldFactor: 0.8,
+    note: 'Sve na jedan lim; povrće se karamelizira.',
+    items: [
+      { foodId: 'b43', g: 300 }, // Tikvica
+      { foodId: 'b39', g: 250 }, // Paprika crvena
+      { foodId: 'u:patlidžan', g: 250 }, // Patlidžan
+      { foodId: 'b37', g: 200 }, // Mrkva
+      { foodId: 'b44', g: 150 }, // Luk
+      { foodId: 'b62', g: 40 }, // Maslinovo ulje
+    ],
+  },
+  {
+    id: 'rc-mahune-na-salatu',
+    name: 'Mahune na salatu',
+    cat: 'Mahunarke',
+    cuisine: 'hrvatska',
+    servings: 4,
+    note: 'Kuhane mahune s češnjakom i uljem.',
+    items: [
+      { foodId: 'u:mahune-kuhane', g: 500 }, // Mahune (kuhane)
+      { foodId: 'u:češnjak', g: 12 }, // Češnjak
+      { foodId: 'b62', g: 30 }, // Maslinovo ulje
+      { foodId: 'u:ocat-jabučni', g: 20 }, // Ocat (jabučni)
+    ],
+  },
+  {
+    id: 'rc-grasak-na-maslacu',
+    name: 'Grašak na maslacu',
+    cat: 'Mahunarke',
+    cuisine: 'hrvatska',
+    servings: 4,
+    yieldFactor: 0.9,
+    note: 'Prilog uz meso ili riblji file.',
+    items: [
+      { foodId: 'b33', g: 500 }, // Grašak
+      { foodId: 'b19', g: 40 }, // Maslac
+      { foodId: 'b44', g: 80 }, // Luk
+      { foodId: 'u:peršin', g: 10 }, // Peršin
+    ],
+  },
+  {
+    id: 'rc-restani-krumpir',
+    name: 'Restani krumpir',
+    cat: 'Žitarice i kruh',
+    cuisine: 'hrvatska',
+    servings: 4,
+    yieldFactor: 0.9,
+    note: 'Kuhani krumpir se restaje na luku.',
+    items: [
+      { foodId: 'b26', g: 800 }, // Krumpir (kuhani)
+      { foodId: 'b44', g: 200 }, // Luk
+      { foodId: 'u:svinjska-mast', g: 40 }, // Svinjska mast
+      { foodId: 'u:crvena-mljevena-paprika', g: 5 }, // Crvena mljevena paprika
+    ],
+  },
+  {
+    id: 'rc-prokulice-iz-pecnice',
+    name: 'Prokulice iz pećnice',
+    cat: 'Povrće',
+    cuisine: 'ostalo',
+    servings: 4,
+    yieldFactor: 0.8,
+    note: 'Peku se dok rubovi ne postanu hrskavi.',
+    items: [
+      { foodId: 'u:prokulica', g: 600 }, // Prokulica
+      { foodId: 'b62', g: 30 }, // Maslinovo ulje
+      { foodId: 'u:češnjak', g: 12 }, // Češnjak
+      { foodId: 'u:parmezan', g: 40 }, // Parmezan
+    ],
+  },
+  {
+    id: 'rc-punjena-tikva',
+    name: 'Punjena tikva',
+    cat: 'Povrće',
+    cuisine: 'hrvatska',
+    servings: 4,
+    yieldFactor: 0.85,
+    note: 'Bundeva punjena rižom i povrćem.',
+    items: [
+      { foodId: 'u:tikva-butternut', g: 800 }, // Tikva (butternut)
+      { foodId: 'b22', g: 300 }, // Riža bijela (kuhana)
+      { foodId: 'b44', g: 100 }, // Luk
+      { foodId: 'b37', g: 150 }, // Mrkva
+      { foodId: 'b62', g: 30 }, // Maslinovo ulje
+    ],
+  },
+  {
+    id: 'rc-griz-na-mlijeku',
+    name: 'Griz na mlijeku',
+    cat: 'Žitarice i kruh',
+    cuisine: 'hrvatska',
+    servings: 3,
+    yieldFactor: 0.95,
+    note: 'Dječji doručak; kuha se uz stalno miješanje.',
+    items: [
+      { foodId: 'off:griz-pšenična-krupica', g: 150 }, // Griz (pšenična krupica)
+      { foodId: 'b13', g: 750 }, // Mlijeko 2.8%
+      { foodId: 'u:šećer-bijeli', g: 30 }, // Šećer (bijeli)
+      { foodId: 'u:cimet', g: 3 }, // Cimet
+    ],
+  },
+  {
+    id: 'rc-rizin-puding',
+    name: 'Rižin puding',
+    cat: 'Žitarice i kruh',
+    cuisine: 'ostalo',
+    servings: 4,
+    yieldFactor: 0.9,
+    note: 'Riža kuhana u mlijeku, poslužuje se topla ili hladna.',
+    items: [
+      { foodId: 'b22', g: 400 }, // Riža bijela (kuhana)
+      { foodId: 'b13', g: 700 }, // Mlijeko 2.8%
+      { foodId: 'u:šećer-bijeli', g: 60 }, // Šećer (bijeli)
+      { foodId: 'u:cimet', g: 3 }, // Cimet
+      { foodId: 'u:grožđice', g: 60 }, // Grožđice
+    ],
+  },
+  {
+    id: 'rc-kolac-od-banane',
+    name: 'Kolač od banane',
+    cat: 'Ostalo',
+    cuisine: 'ostalo',
+    servings: 8,
+    yieldFactor: 0.9,
+    note: 'Prezrele banane zamjenjuju dio šećera.',
+    items: [
+      { foodId: 'b48', g: 400 }, // Banana
+      { foodId: 'u:brašno-glatko-pšenično', g: 300 }, // Brašno glatko (pšenično)
+      { foodId: 'b11', g: 120 }, // Jaje (cijelo)
+      { foodId: 'u:smeđi-šećer', g: 120 }, // Smeđi šećer
+      { foodId: 'off:suncokretovo-ulje', g: 80 }, // Suncokretovo ulje
+      { foodId: 'b57', g: 80 }, // Orasi
+    ],
+  },
+  {
+    id: 'rc-smoothie-od-bobicastog-voca',
+    name: 'Smoothie od bobičastog voća',
+    cat: 'Pića',
+    cuisine: 'ostalo',
+    servings: 2,
+    note: 'Voće, jogurt i zobene pahuljice za sitost.',
+    items: [
+      { foodId: 'b51', g: 150 }, // Borovnice
+      { foodId: 'u:malina', g: 100 }, // Malina
+      { foodId: 'b15', g: 200 }, // Grčki jogurt
+      { foodId: 'b25', g: 40 }, // Zobene pahuljice
+      { foodId: 'b63', g: 20 }, // Med
+    ],
+  },
+  {
+    id: 'rc-jogurt-s-medom-i-orasima',
+    name: 'Jogurt s medom i orasima',
+    cat: 'Mliječno i jaja',
+    cuisine: 'hrvatska',
+    servings: 2,
+    note: 'Tri sastojka, gotovo bez pripreme.',
+    items: [
+      { foodId: 'b15', g: 400 }, // Grčki jogurt
+      { foodId: 'b63', g: 40 }, // Med
+      { foodId: 'b57', g: 60 }, // Orasi
+    ],
+  },
+  {
+    id: 'rc-zobene-plocice',
+    name: 'Zobene pločice',
+    cat: 'Žitarice i kruh',
+    cuisine: 'ostalo',
+    servings: 8,
+    yieldFactor: 0.9,
+    note: 'Peku se u limu i režu; drže se danima.',
+    items: [
+      { foodId: 'b25', g: 300 }, // Zobene pahuljice
+      { foodId: 'b48', g: 200 }, // Banana
+      { foodId: 'b63', g: 80 }, // Med
+      { foodId: 'b56', g: 100 }, // Bademi
+      { foodId: 'u:sjemenke-lana', g: 40 }, // Sjemenke lana
+    ],
+  },
+  {
+    id: 'rc-kruh-s-medom-i-maslacem',
+    name: 'Kruh s medom i maslacem',
+    cat: 'Žitarice i kruh',
+    cuisine: 'hrvatska',
+    servings: 2,
+    note: 'Najjednostavniji doručak.',
+    items: [
+      { foodId: 'b21', g: 140 }, // Kruh integralni
+      { foodId: 'b19', g: 30 }, // Maslac
+      { foodId: 'b63', g: 40 }, // Med
+    ],
+  },
+  {
+    id: 'rc-kompot-od-sljiva',
+    name: 'Kompot od šljiva',
+    cat: 'Voće',
+    cuisine: 'hrvatska',
+    servings: 4,
+    yieldFactor: 0.9,
+    note: 'Šljive kuhane s malo šećera i cimeta.',
+    items: [
+      { foodId: 'u:šljiva', g: 700 }, // Šljiva
+      { foodId: 'u:šećer-bijeli', g: 60 }, // Šećer (bijeli)
+      { foodId: 'u:cimet', g: 3 }, // Cimet
+    ],
+  },
+  {
+    id: 'rc-pecene-jabuke',
+    name: 'Pečene jabuke',
+    cat: 'Voće',
+    cuisine: 'hrvatska',
+    servings: 4,
+    yieldFactor: 0.85,
+    note: 'Jabuke punjene orasima i medom.',
+    items: [
+      { foodId: 'b47', g: 700 }, // Jabuka
+      { foodId: 'b57', g: 80 }, // Orasi
+      { foodId: 'b63', g: 50 }, // Med
+      { foodId: 'u:cimet', g: 3 }, // Cimet
+    ],
+  },
+  {
+    id: 'rc-namaz-od-avokada',
+    name: 'Namaz od avokada',
+    cat: 'Ostalo',
+    cuisine: 'ostalo',
+    servings: 3,
+    note: 'Avokado, limun i sol; radi se neposredno prije jela.',
+    items: [
+      { foodId: 'b46', g: 300 }, // Avokado
+      { foodId: 'u:limun', g: 40 }, // Limun
+      { foodId: 'u:češnjak', g: 8 }, // Češnjak
+      { foodId: 'b62', g: 15 }, // Maslinovo ulje
+    ],
+  },
+  {
+    id: 'rc-namaz-od-cikle-i-sira',
+    name: 'Namaz od cikle i sira',
+    cat: 'Ostalo',
+    cuisine: 'hrvatska',
+    servings: 4,
+    note: 'Cikla daje boju, svježi sir gustoću.',
+    items: [
+      { foodId: 'u:cikla', g: 250 }, // Cikla
+      { foodId: 'b17', g: 250 }, // Svježi sir (posni)
+      { foodId: 'u:hren', g: 20 }, // Hren
+      { foodId: 'b62', g: 20 }, // Maslinovo ulje
+    ],
+  },
+  {
+    id: 'rc-namaz-od-skute-i-vlasca',
+    name: 'Namaz od skute i vlasca',
+    cat: 'Mliječno i jaja',
+    cuisine: 'hrvatska',
+    servings: 4,
+    note: 'Mladi sir s mladim lukom.',
+    items: [
+      { foodId: 'u:kravlji-sir-mladi', g: 300 }, // Kravlji sir (mladi)
+      { foodId: 'u:mladi-luk', g: 60 }, // Mladi luk
+      { foodId: 'u:vrhnje-za-šlag', g: 80 }, // Vrhnje za šlag
+      { foodId: 'b62', g: 15 }, // Maslinovo ulje
     ],
   },
 ]

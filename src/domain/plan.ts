@@ -111,3 +111,26 @@ export function confirmDay(planned: DayMeals): DayMeals {
   })
   return next
 }
+
+/**
+ * Kopija tjedna vezana uz konkretan ponedjeljak.
+ *
+ * Predlozak (sezonski tjedan) namjerno se KOPIRA umjesto da mu se upise datum:
+ * inace bi "Ljetni tjedan" prestao biti predlozak cim ga se jednom upotrijebi,
+ * pa bi ga za sljedeci tjedan trebalo raditi ispocetka. Oznaka sezone se ne
+ * prenosi jer kopija vise nije predlozak nego jedan konkretan tjedan.
+ */
+export function weekAppliedTo(
+  week: WeekPlan,
+  date: string,
+  identity: { id: string; title: string },
+): WeekPlan {
+  const copy: WeekPlan = {
+    ...structuredClone(week),
+    id: identity.id,
+    title: identity.title,
+    startDate: mondayOf(date),
+  }
+  delete copy.season
+  return copy
+}

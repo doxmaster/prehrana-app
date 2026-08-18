@@ -1,8 +1,18 @@
+import { useState } from 'react'
 import { MEALS } from '../domain/constants'
-import { confirmDay, confirmMeal, dayStatus, mealMatches, planForDate, portionedMeals } from '../domain/plan'
+import {
+  confirmDay,
+  confirmMeal,
+  dayStatus,
+  mealMatches,
+  planForDate,
+  portionedMeals,
+  weekAppliedTo,
+} from '../domain/plan'
 import { mealsTotals, sumItems } from '../domain/nutrients'
 import { portionFactor } from '../domain/household'
-import { fmtDate } from '../domain/dates'
+import { fmtDate, mondayOf } from '../domain/dates'
+import { uid } from '../domain/id'
 import { toast } from '../store/dialogs'
 import { useActivePerson, useAppStore, useFoods } from '../store/useAppStore'
 import { fmt } from '../lib/format'
@@ -30,7 +40,9 @@ export function PlanTraka({ date, meals, onChange }: Props) {
   const weeks = useAppStore((s) => s.data.weeks)
 
   const planned = planForDate(weeks, menus, date)
-  if (!planned) return null
+  // Bez plana se ne smije samo sutjeti: korisnik ne moze pogoditi da tjedan
+  // treba vezati uz datum, pa mu se to kaze i ponudi na jedan klik.
+  if (!planned) return <BezPlana date={date} />
 
   const factor = portionFactor(person)
   const plan = planned.menu ? portionedMeals(planned.menu.meals, factor) : undefined
@@ -60,7 +72,12 @@ export function PlanTraka({ date, meals, onChange }: Props) {
       </div>
       <p className="muted small" style={{ margin: '4px 0 10px' }}>
         {planned.week.title ?? 'Tjedan'} · {fmt(total.kcal)} kcal
-        {factor !== 1 && <> · količine za {person.name} (udio {fmt(factor, 2)})</>}
+        {factor !== 1 && (
+          <>
+            {' '}
+            · količine za {person.name} (udio {fmt(factor, 2)})
+          </>
+        )}
       </p>
 
       {status !== 'potvrdeno' && (
@@ -73,13 +90,17 @@ export function PlanTraka({ date, meals, onChange }: Props) {
                 draft.length = 0
                 draft.push(...next)
               })
-              toast(`Upisano: ${title} (${fmt(total.kcal)} kcal). Ispod možeš popraviti što nije bilo tako.`)
+              toast(
+                `Upisano: ${title} (${fmt(total.kcal)} kcal). Ispod možeš popraviti što nije bilo tako.`,
+              )
             }}
           >
             ✓ Pojeo sam po planu
           </button>
           {status === 'izmijenjeno' && (
-            <span className="small muted">Dnevnik se razlikuje od plana — potvrda ga prepisuje.</span>
+            <span className="small muted">
+              Dnevnik se razlikuje od plana — potvrda ga prepisuje.
+            </span>
           )}
         </div>
       )}
@@ -96,7 +117,10 @@ export function PlanTraka({ date, meals, onChange }: Props) {
               <br />
               <span className="muted small">
                 {items
-                  .map((item) => `${'foodId' in item ? foods.byId(item.foodId)?.name ?? '?' : item.name} ${fmt(item.g)} g`)
+                  .map(
+                    (item) =>
+                      `${'foodId' in item ? (foods.byId(item.foodId)?.name ?? '?') : item.name} ${fmt(item.g)} g`,
+                  )
                   .join(', ')}
               </span>
             </span>
@@ -137,4 +161,80 @@ function StatusOznaka({ status }: { status: ReturnType<typeof dayStatus> }) {
     )
   }
   return <span className="tag muted">nije upisano</span>
+}
+
+/**
+ * Sto se vidi kad za taj datum nema plana.
+ *
+ * Ranije se nije vidjelo NISTA, pa je izgledalo kao da tjedni jelovnici s
+ * karticom Dnevnik nisu ni povezani. Uzrok je gotovo uvijek isti: tjedan
+ * postoji, ali nije vezan uz datum — sezonski tjedni su predlosci. Zato se
+ * ovdje nudi upravo to, na jedan klik, umjesto upute da se ode drugdje.
+ */
+function BezPlana({ date }: { date: string }) {
+  const weeks = useAppStore((s) => s.data.weeks)
+  const update = useAppStore((s) => s.update)
+  const setActiveWeekId = useAppStore((s) => s.setActiveWeekId)
+  const [pick, setPick] = useState(weeks[0]?.id ?? '')
+
+  const monday = mondayOf(date)
+  const chosen = weeks.find((w) => w.id === pick) ?? weeks[0]
+
+  if (!weeks.length) {
+    return (
+      <div className="card">
+        <h2>Plan za {fmtDate(date)}</h2>
+        <p className="muted small" style={{ margin: 0 }}>
+          Još nema nijednog tjednog plana. Složi ga u kartici <b>Tjedni i nabava</b>, pa će se ovdje
+          nuditi na potvrdu — dan po dan, bez prepisivanja.
+        </p>
+      </div>
+    )
+  }
+
+  return (
+    <div className="card">
+      <h2>Plan za {fmtDate(date)}</h2>
+      <p className="muted small" style={{ margin: '-6px 0 10px' }}>
+        Za tjedan od <b>{fmtDate(monday)}</b> nije dodijeljen nijedan plan, pa nema što potvrditi.
+        Sezonski tjedni su predlošci — vežu se uz datum tek kad ih primijeniš.
+      </p>
+      <div className="row">
+        <select
+          style={{ width: 'auto', maxWidth: 280 }}
+          aria-label="Tjedni plan za primjenu"
+          value={chosen?.id ?? ''}
+          onChange={(e) => setPick(e.target.value)}
+        >
+          {weeks.map((w) => (
+            <option value={w.id} key={w.id}>
+              {w.title ?? 'Tjedan'}
+              {w.season ? ` (${w.season})` : ''}
+              {w.startDate ? ` — od ${fmtDate(w.startDate)}` : ''}
+            </option>
+          ))}
+        </select>
+        <button
+          className="btn small"
+          onClick={() => {
+            if (!chosen) return
+            const id = uid('wk')
+            const title = `${chosen.title ?? 'Tjedan'} — od ${fmtDate(monday)}`
+            update((draft) => {
+              const source = draft.weeks.find((w) => w.id === chosen.id)
+              if (source) draft.weeks.push(weekAppliedTo(source, date, { id, title }))
+            })
+            setActiveWeekId(id)
+            toast(`Primijenjeno na tjedan od ${fmtDate(monday)}.`)
+          }}
+        >
+          Primijeni na ovaj tjedan
+        </button>
+      </div>
+      <p className="hint" style={{ marginBottom: 0 }}>
+        Radi se kopija, pa predložak ostaje za sljedeći put. Raspored poslije mijenjaš u kartici
+        <b> Tjedni i nabava</b>.
+      </p>
+    </div>
+  )
 }

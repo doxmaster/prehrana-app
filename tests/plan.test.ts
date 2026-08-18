@@ -7,6 +7,7 @@ import {
   mealMatches,
   planForDate,
   portionedMeals,
+  weekAppliedTo,
 } from '../src/domain/plan'
 import { emptyMeals } from '../src/domain/nutrients'
 import type { DayMeals, Menu, WeekPlan } from '../src/domain/types'
@@ -171,5 +172,44 @@ describe('potvrda plana', () => {
     const snapshot = JSON.stringify(day)
     confirmMeal(day, 1, planned[1]!)
     expect(JSON.stringify(day)).toBe(snapshot)
+  })
+})
+
+describe('primjena tjedna na konkretan datum', () => {
+  const predlozak: WeekPlan = {
+    id: 'wk-ljeto',
+    title: 'Ljetni tjedan',
+    season: 'ljeto',
+    days: ['mn-a', 'mn-b', null, 'mn-a', 'mn-b', 'mn-a', 'mn-b'],
+  }
+
+  it('veže kopiju uz ponedjeljak tog tjedna', () => {
+    const kopija = weekAppliedTo(predlozak, '2026-08-13', { id: 'wk-novi', title: 'Tjedan' })
+    expect(kopija.startDate).toBe(PONEDJELJAK)
+    expect(kopija.id).toBe('wk-novi')
+    expect(kopija.days).toEqual(predlozak.days)
+  })
+
+  it('ne dira predložak — inače bi se potrošio prvom upotrebom', () => {
+    const snapshot = JSON.stringify(predlozak)
+    weekAppliedTo(predlozak, PONEDJELJAK, { id: 'x', title: 'Y' })
+    expect(JSON.stringify(predlozak)).toBe(snapshot)
+  })
+
+  it('kopija više nije sezonski predložak', () => {
+    const kopija = weekAppliedTo(predlozak, PONEDJELJAK, { id: 'x', title: 'Y' })
+    expect(kopija.season).toBeUndefined()
+  })
+
+  it('dani su odvojena kopija, ne ista referenca', () => {
+    const kopija = weekAppliedTo(predlozak, PONEDJELJAK, { id: 'x', title: 'Y' })
+    kopija.days[0] = 'promijenjeno'
+    expect(predlozak.days[0]).toBe('mn-a')
+  })
+
+  it('nakon primjene plan za taj datum postoji', () => {
+    const kopija = weekAppliedTo(predlozak, '2026-08-13', { id: 'wk-novi', title: 'Tjedan' })
+    const found = planForDate([kopija], menus, '2026-08-13')
+    expect(found?.menu?.id).toBe('mn-a')
   })
 })

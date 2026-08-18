@@ -118,66 +118,6 @@ export function Namirnice() {
   return (
     <>
       <div className="card">
-        <h2>Dodaj vlastitu namirnicu</h2>
-        <p className="muted small">
-          Vrijednosti na <b>100 g</b> (ili 100 ml za pića).
-        </p>
-        <div className="grid g4" style={{ marginTop: 8 }}>
-          <div>
-            <label htmlFor="nf-name">Naziv</label>
-            <input
-              id="nf-name"
-              value={form.name}
-              placeholder="npr. Domaći ajvar"
-              onChange={(e) => setForm({ ...form, name: e.target.value })}
-            />
-          </div>
-          <div>
-            <label htmlFor="nf-cat">Kategorija</label>
-            <select
-              id="nf-cat"
-              value={form.cat}
-              onChange={(e) => setForm({ ...form, cat: e.target.value as Category })}
-            >
-              {CATEGORIES.map((c) => (
-                <option key={c}>{c}</option>
-              ))}
-            </select>
-          </div>
-          {NUTRIENTS.map((n) => (
-            <div key={n.key}>
-              <label htmlFor={`nf-${n.key}`}>
-                {n.label} ({n.unit})
-              </label>
-              <input
-                id={`nf-${n.key}`}
-                type="number"
-                min="0"
-                step="0.1"
-                value={form[n.key] ?? ''}
-                onChange={(e) => setForm({ ...form, [n.key]: e.target.value })}
-              />
-            </div>
-          ))}
-          <div>
-            <label htmlFor="nf-serv">Uobičajena porcija (g/ml)</label>
-            <input
-              id="nf-serv"
-              type="number"
-              min="1"
-              value={form.serv}
-              onChange={(e) => setForm({ ...form, serv: e.target.value })}
-            />
-          </div>
-        </div>
-        <div style={{ marginTop: 12 }}>
-          <button className="btn" onClick={addFood}>
-            Dodaj namirnicu
-          </button>
-        </div>
-      </div>
-
-      <div className="card">
         <h2>
           {show === 'jela' ? 'Katalog jela' : 'Baza namirnica'}{' '}
           <span className="muted small">({rows.length})</span>
@@ -306,6 +246,66 @@ export function Namirnice() {
               ))}
             </tbody>
           </table>
+        </div>
+      </div>
+
+      <div className="card">
+        <h2>Dodaj vlastitu namirnicu</h2>
+        <p className="muted small">
+          Vrijednosti na <b>100 g</b> (ili 100 ml za pića).
+        </p>
+        <div className="grid g4" style={{ marginTop: 8 }}>
+          <div>
+            <label htmlFor="nf-name">Naziv</label>
+            <input
+              id="nf-name"
+              value={form.name}
+              placeholder="npr. Domaći ajvar"
+              onChange={(e) => setForm({ ...form, name: e.target.value })}
+            />
+          </div>
+          <div>
+            <label htmlFor="nf-cat">Kategorija</label>
+            <select
+              id="nf-cat"
+              value={form.cat}
+              onChange={(e) => setForm({ ...form, cat: e.target.value as Category })}
+            >
+              {CATEGORIES.map((c) => (
+                <option key={c}>{c}</option>
+              ))}
+            </select>
+          </div>
+          {NUTRIENTS.map((n) => (
+            <div key={n.key}>
+              <label htmlFor={`nf-${n.key}`}>
+                {n.label} ({n.unit})
+              </label>
+              <input
+                id={`nf-${n.key}`}
+                type="number"
+                min="0"
+                step="0.1"
+                value={form[n.key] ?? ''}
+                onChange={(e) => setForm({ ...form, [n.key]: e.target.value })}
+              />
+            </div>
+          ))}
+          <div>
+            <label htmlFor="nf-serv">Uobičajena porcija (g/ml)</label>
+            <input
+              id="nf-serv"
+              type="number"
+              min="1"
+              value={form.serv}
+              onChange={(e) => setForm({ ...form, serv: e.target.value })}
+            />
+          </div>
+        </div>
+        <div style={{ marginTop: 12 }}>
+          <button className="btn" onClick={addFood}>
+            Dodaj namirnicu
+          </button>
         </div>
       </div>
 

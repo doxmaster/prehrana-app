@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 import { CATEGORY_ART } from '../data/art'
 import { CatIcon } from './CatIcon'
+import { JeloIzTeksta } from './JeloIzTeksta'
 import { FlagBadge } from './FlagBadge'
 import { useConditionCheck } from '../hooks/useConditionCheck'
 import { CUISINES } from '../domain/types'
@@ -30,6 +31,7 @@ export function JeloPicker({ mealIndex, onChange, onClose }: Props) {
   const [cuisine, setCuisine] = useState<Cuisine | 'sve'>('sve')
   const [withDrink, setWithDrink] = useState(true)
   const [onlySuitable, setOnlySuitable] = useState(false)
+  const [addOpen, setAddOpen] = useState(false)
 
   const matches = useMemo(() => {
     const needle = query.trim().toLowerCase()
@@ -156,10 +158,17 @@ export function JeloPicker({ mealIndex, onChange, onClose }: Props) {
         </div>
 
         <div className="modal-actions" style={{ marginTop: 12 }}>
+          {/* Ono cega nema u katalogu dodaje se ovdje, dok je korisnik vec u
+              potrazi za jelom — a ne tako da prvo odustane pa trazi drugdje. */}
+          <button className="btn secondary" onClick={() => setAddOpen(true)}>
+            ＋ Novo jelo iz teksta
+          </button>
           <button className="btn secondary" onClick={onClose}>
             Zatvori
           </button>
         </div>
+
+        {addOpen && <JeloIzTeksta onClose={() => setAddOpen(false)} />}
       </div>
     </div>
   )

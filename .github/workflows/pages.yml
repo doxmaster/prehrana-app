@@ -1,0 +1,62 @@
+# Objava aplikacije na GitHub Pages — https://doxmaster.github.io/Prehrana/
+#
+# Objavljuje se tek ako testovi prođu: aplikacija čuva podatke o prehrani
+# obitelji, pa je bolje da izostane novo izdanje nego da izađe pokvareno.
+#
+# GITHUB_PAGES=true prebacuje Vite na base '/Prehrana/'; bez toga bi stranica
+# tražila datoteke u korijenu domene i ostala prazna.
+name: Objava na GitHub Pages
+
+on:
+  push:
+    branches: [master, modernizacija]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Jedna objava odjednom; novi push otkazuje onu koja je još u tijeku.
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  gradnja:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Instalacija
+        run: npm ci
+
+      - name: Provjera koda
+        run: npx eslint .
+
+      - name: Testovi
+        run: npx vitest run
+
+      - name: Gradnja
+        run: npm run build
+        env:
+          GITHUB_PAGES: 'true'
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  objava:
+    needs: gradnja
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.objava.outputs.page_url }}
+    steps:
+      - id: objava
+        uses: actions/deploy-pages@v4

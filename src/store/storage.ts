@@ -236,6 +236,17 @@ function claudeHost(): ClaudeHost | null {
   return host && typeof host.use === 'function' ? host : null
 }
 
+/**
+ * Stoji li stranica unutar Claudeova okvira, sudeci po podrijetlu.
+ *
+ * `window.claude` nije dovoljan znak: artefakt bez ijedne deklarirane
+ * sposobnosti ga mozda uopce ne dobije, a veza za preuzimanje je i tada mrtva.
+ * Podrijetlo je jedino sto vrijedi u oba slucaja.
+ */
+export function jeArtefaktnoPodrijetlo(hostname: string): boolean {
+  return hostname === 'claudeusercontent.com' || hostname.endsWith('.claudeusercontent.com')
+}
+
 export type SpremanjeIshod =
   | { ok: true; nacin: 'preglednik' | 'claude'; filename: string }
   | { ok: false; razlog: 'odbijeno' | 'nije-uspjelo' | 'nema-kanala' }
@@ -256,7 +267,11 @@ const zamjenskiNastavak: Record<string, string> = { csv: 'txt' }
 
 export async function spremiDatoteku(blob: Blob, filename: string): Promise<SpremanjeIshod> {
   const host = claudeHost()
-  if (!host) return vezom(blob, filename)
+  if (!host) {
+    // Okvir bez sposobnosti: veza ne radi, pa se to i kaze umjesto laznog uspjeha.
+    if (jeArtefaktnoPodrijetlo(location.hostname)) return { ok: false, razlog: 'nema-kanala' }
+    return vezom(blob, filename)
+  }
 
   const downloads = await host.use('downloads').catch(() => null)
   /*

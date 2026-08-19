@@ -3,6 +3,7 @@ import { STORAGE_KEY } from '../src/domain/constants'
 import {
   buildExport,
   exportFilename,
+  jeArtefaktnoPodrijetlo,
   loadState,
   parseImport,
   readExportMark,
@@ -170,5 +171,28 @@ describe('izvoz i uvoz', () => {
   it('pokvaren zapis ne ruši karticu', () => {
     localStorage.setItem(`${STORAGE_KEY}_zadnji_izvoz`, '{ nije json')
     expect(readExportMark()).toBeNull()
+  })
+})
+
+/**
+ * Prepoznavanje Claudeova okvira.
+ *
+ * O ovome ovisi hoce li se javiti lazni uspjeh spremanja: u okviru veza za
+ * preuzimanje ne radi, pa se na nju ne smije pasti natrag.
+ */
+describe('podrijetlo artefakta', () => {
+  it('prepoznaje okvir artefakta', () => {
+    expect(jeArtefaktnoPodrijetlo('9d76aca7-39aa.frame.claudeusercontent.com')).toBe(true)
+    expect(jeArtefaktnoPodrijetlo('claudeusercontent.com')).toBe(true)
+  })
+
+  it('obično računalo i vlastiti poslužitelj nisu okvir', () => {
+    expect(jeArtefaktnoPodrijetlo('localhost')).toBe(false)
+    expect(jeArtefaktnoPodrijetlo('darijo.github.io')).toBe(false)
+  })
+
+  it('ne nasjeda na podmetnuto ime domene', () => {
+    expect(jeArtefaktnoPodrijetlo('claudeusercontent.com.zlonamjerno.hr')).toBe(false)
+    expect(jeArtefaktnoPodrijetlo('lazniclaudeusercontent.com')).toBe(false)
   })
 })

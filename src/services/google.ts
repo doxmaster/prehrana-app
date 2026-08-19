@@ -173,6 +173,41 @@ export const prijavljen = () => token !== null
 
 /* ---------- Drive ---------- */
 
+/**
+ * Pretvara Googleov odgovor u recenicu koja kaze STO UCINITI.
+ *
+ * Sirovi JSON ("The user's Drive storage quota has been exceeded") tehnicki je
+ * tocan i posve beskoristan onome tko samo zeli spremiti dnevnik. Izdvojeno je
+ * kao cista funkcija da se moze testirati bez Googlea.
+ */
+export function porukaGreske(status: number, tijelo: string): string {
+  const razlog = /"reason":\s*"([^"]+)"/.exec(tijelo)?.[1] ?? ''
+  const poruka = /"message":\s*"([^"]+)"/.exec(tijelo)?.[1] ?? ''
+
+  if (/storage quota has been exceeded/i.test(tijelo) || razlog === 'storageQuotaExceeded') {
+    return (
+      'Google Drive ovog računa je pun, pa se datoteka ne može spremiti. ' +
+      'Oslobodi malo mjesta (najčešće pomaže isprazniti smeće u Driveu i Gmailu — ' +
+      'obrisane datoteke i dalje zauzimaju prostor) ili upotrijebi drugi Google račun.'
+    )
+  }
+  if (status === 401 || razlog === 'authError') {
+    return 'Prijava je istekla. Prijavi se ponovno pa pokušaj još jednom.'
+  }
+  if (status === 403 && /insufficient|scope/i.test(tijelo)) {
+    return 'Google nije dao dovoljna prava. Odjavi se i prijavi ponovno, pa pristani na sve stavke.'
+  }
+  if (status === 404) {
+    return 'Obiteljska datoteka nije nađena — možda je obrisana ili ti pristup više nije dan.'
+  }
+  if (status === 429 || razlog === 'rateLimitExceeded') {
+    return 'Previše zahtjeva prema Googleu u kratko vrijeme. Pričekaj minutu pa pokušaj ponovno.'
+  }
+  return poruka
+    ? `Google je odbio zahtjev (${status}): ${poruka}`
+    : `Google je odbio zahtjev (${status}).`
+}
+
 async function drive<T>(put: string, opcije: RequestInit = {}): Promise<T> {
   if (!token) throw new GoogleGreska('Nisi prijavljen.')
   const odgovor = await fetch(`https://www.googleapis.com/${put}`, {
@@ -180,8 +215,7 @@ async function drive<T>(put: string, opcije: RequestInit = {}): Promise<T> {
     headers: { Authorization: `Bearer ${token}`, ...(opcije.headers ?? {}) },
   })
   if (!odgovor.ok) {
-    const tekst = await odgovor.text()
-    throw new GoogleGreska(`Google je odbio zahtjev (${odgovor.status}). ${tekst.slice(0, 200)}`)
+    throw new GoogleGreska(porukaGreske(odgovor.status, await odgovor.text()))
   }
   return (odgovor.status === 204 ? null : await odgovor.json()) as T
 }
@@ -226,7 +260,7 @@ export async function procitajDatoteku(fileId: string): Promise<string> {
   const odgovor = await fetch(`https://www.googleapis.com/drive/v3/files/${fileId}?alt=media`, {
     headers: { Authorization: `Bearer ${token}` },
   })
-  if (!odgovor.ok) throw new GoogleGreska(`Datoteka se ne može pročitati (${odgovor.status}).`)
+  if (!odgovor.ok) throw new GoogleGreska(porukaGreske(odgovor.status, await odgovor.text()))
   return odgovor.text()
 }
 

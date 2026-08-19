@@ -1,19 +1,37 @@
 import { useMemo, useState } from 'react'
-import { MONTHS, addDays, dayName, fmtDate, firstOfMonth, iso, monthDates, parseISO, todayISO, weekDates } from '../../domain/dates'
+import {
+  MONTHS,
+  addDays,
+  dayName,
+  fmtDate,
+  firstOfMonth,
+  iso,
+  monthDates,
+  parseISO,
+  todayISO,
+  weekDates,
+} from '../../domain/dates'
 import { NUTRIENT_KEYS } from '../../domain/types'
 import { NUTRIENTS } from '../../domain/constants'
 import { capBreaches, conditionPlan } from '../../domain/conditions'
 import { energyBreakdown } from '../../domain/energy'
 import { emptyMeals, mealsFluid, mealsTotals, zeroNutrients } from '../../domain/nutrients'
 import { targetsFor, weightOn } from '../../domain/targets'
-import { ensureDay, useActivePerson, useAppStore, useFoods, useUpdate } from '../../store/useAppStore'
+import {
+  ensureDay,
+  useActivePerson,
+  useAppStore,
+  useFoods,
+  useUpdate,
+} from '../../store/useAppStore'
 import { AiUnos } from '../AiUnos'
 import { Calendar } from '../Calendar'
 import { Hero } from '../Hero'
 import { MealEditor } from '../MealEditor'
 import { KcalRing } from '../KcalRing'
 import { NutrientBars } from '../NutrientBars'
-import { PlanTraka } from '../PlanTraka'
+import { BezPlana, PlanZaglavlje } from '../Plan'
+import { usePlanZaDan } from '../../hooks/usePlanZaDan'
 import { Tekucina } from '../Tekucina'
 import { fmt } from '../../lib/format'
 import type { DayMeals } from '../../domain/types'
@@ -36,6 +54,7 @@ export function Dnevnik() {
   const fluid = mealsFluid(meals, foods)
 
   const plan = conditionPlan(targets, person, weightOn(person, selectedDate))
+  const planDana = usePlanZaDan(selectedDate)
   const sleepOn = person.measurements.find((m) => m.date === selectedDate)?.sleep
   const breaches = capBreaches(totals, plan.caps)
 
@@ -132,17 +151,26 @@ export function Dnevnik() {
                 ))}
               </select>
             </div>
-            <Calendar month={month} selected={selectedDate} kcalByDate={kcalByDate} onPick={setSelectedDate} />
-            <p className="hint">Klikni dan za prikaz; brojka u ćeliji su pojedene kalorije tog dana.</p>
+            <Calendar
+              month={month}
+              selected={selectedDate}
+              kcalByDate={kcalByDate}
+              onPick={setSelectedDate}
+            />
+            <p className="hint">
+              Klikni dan za prikaz; brojka u ćeliji su pojedene kalorije tog dana.
+            </p>
           </>
         )}
       </div>
 
-      <PlanTraka date={selectedDate} meals={meals} onChange={editMeals} />
+      {/* Bez tjedna vezanog uz datum nema sto ponuditi, pa se to kaze i nudi
+          na jedan klik; inace plan zivi unutar samih obroka ispod. */}
+      {!planDana && <BezPlana date={selectedDate} />}
 
       <div className="card">
         <div className="flexsplit">
-          <h2 style={{ margin: 0 }}>Obroci (pojedeno)</h2>
+          <h2 style={{ margin: 0 }}>Obroci</h2>
           {/* AI unos je povremen put (izvan Claudea trazi kopiraj/zalijepi), pa
               stoji kao gumb uz sam unos, a ne kao stalna kartica. */}
           <button className="btn secondary small" onClick={() => setAiOpen(true)}>
@@ -150,10 +178,14 @@ export function Dnevnik() {
           </button>
         </div>
         <p className="muted small" style={{ margin: '-4px 0 10px' }}>
-          Ovo je ono što je <b>stvarno pojedeno</b> — sve brojke u pregledu i napretku računaju se
-          samo odavde. Plan gore je prijedlog dok ga ne upišeš.
+          Ovdje je ono što je <b>stvarno pojedeno</b> — sve brojke u pregledu i napretku računaju se
+          samo odavde. Sivi redak <span className="tag">plan</span> je prijedlog iz tjednog
+          jelovnika; nestaje čim ga upišeš i tek se onda broji.
         </p>
-        <MealEditor meals={meals} onChange={editMeals} />
+        {planDana && (
+          <PlanZaglavlje date={selectedDate} plan={planDana} meals={meals} onChange={editMeals} />
+        )}
+        <MealEditor meals={meals} onChange={editMeals} plan={planDana?.meals} />
       </div>
 
       <Tekucina date={selectedDate} meals={meals} onChange={editMeals} />

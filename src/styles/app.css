@@ -590,3 +590,32 @@ tbody tr:hover {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* ---------- plan unutar obroka ---------- */
+
+/*
+ * Plan je prijedlog, ne unos, pa mora izgledati drukcije od stavki: isprekidan
+ * rub i blaga podloga govore "ovo jos nije upisano" prije nego se procita.
+ */
+.plan-redak {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding: 9px 12px;
+  margin-bottom: 12px;
+  border: 1px dashed var(--line-strong);
+  border-radius: 10px;
+  background: var(--panel2);
+}
+.plan-prijedlog {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding: 7px 10px;
+  margin: 6px 0 4px;
+  border: 1px dashed var(--line-strong);
+  border-radius: 10px;
+  font-size: 13px;
+}

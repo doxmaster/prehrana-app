@@ -2,17 +2,11 @@ import { useId, useState } from 'react'
 import { CatIcon } from './CatIcon'
 import { FlagBadge } from './FlagBadge'
 import { JeloPicker } from './JeloPicker'
+import { PlanPrijedlog } from './Plan'
 import { useConditionCheck } from '../hooks/useConditionCheck'
 import { MEALS } from '../domain/constants'
 import { catColor } from '../domain/constants'
-import {
-  itemCategory,
-  itemName,
-  itemPer100,
-  itemUnit,
-  scale,
-  sumItems,
-} from '../domain/nutrients'
+import { itemCategory, itemName, itemPer100, itemUnit, scale, sumItems } from '../domain/nutrients'
 import { isFoodRef } from '../domain/types'
 import { useClipboard } from '../store/clipboard'
 import { confirmDialog, toast } from '../store/dialogs'
@@ -24,13 +18,26 @@ interface Props {
   meals: DayMeals
   /** Prima izmjenjivi nacrt obroka; sve izmjene idu kroz store. */
   onChange: (mutate: (meals: DayMeals) => void) => void
+  /**
+   * Obroci iz tjednog plana, vec preracunati na udio osobe. Kad postoje, u
+   * svakom jos neupisanom obroku stoji prijedlog s gumbom — plan se tako ne
+   * prikazuje kao drugi popis obroka. Jelovnik ih ne prosljeduje.
+   */
+  plan?: DayMeals | undefined
 }
 
-export function MealEditor({ meals, onChange }: Props) {
+export function MealEditor({ meals, onChange, plan }: Props) {
   return (
     <div>
       {MEALS.map((name, index) => (
-        <Meal key={name} name={name} index={index} items={meals[index] ?? []} onChange={onChange} />
+        <Meal
+          key={name}
+          name={name}
+          index={index}
+          items={meals[index] ?? []}
+          planItems={plan?.[index]}
+          onChange={onChange}
+        />
       ))}
     </div>
   )
@@ -40,11 +47,13 @@ function Meal({
   name,
   index,
   items,
+  planItems,
   onChange,
 }: {
   name: string
   index: number
   items: MealItem[]
+  planItems?: MealItem[] | undefined
   onChange: Props['onChange']
 }) {
   const foods = useFoods()
@@ -96,7 +105,10 @@ function Meal({
             onClick={async () => {
               const copied = clipboard.meal
               if (!copied) return toast('Prvo kopiraj neki obrok.')
-              if (items.length && !(await confirmDialog(`Zalijepiti preko obroka ${name}?`, 'Zalijepi')))
+              if (
+                items.length &&
+                !(await confirmDialog(`Zalijepiti preko obroka ${name}?`, 'Zalijepi'))
+              )
                 return
               onChange((draft) => {
                 draft[index] = structuredClone(copied)
@@ -111,7 +123,12 @@ function Meal({
             aria-label={`Isprazni obrok ${name}`}
             onClick={async () => {
               if (!items.length) return toast(`${name} je već prazan.`)
-              if (!(await confirmDialog(`Isprazniti ${name}? Briše se ${items.length} stavki.`, 'Isprazni')))
+              if (
+                !(await confirmDialog(
+                  `Isprazniti ${name}? Briše se ${items.length} stavki.`,
+                  'Isprazni',
+                ))
+              )
                 return
               onChange((draft) => {
                 draft[index] = []
@@ -153,6 +170,16 @@ function Meal({
           }}
         />
       ))}
+
+      {planItems && (
+        <PlanPrijedlog
+          name={name}
+          index={index}
+          items={planItems}
+          postojeci={items}
+          onChange={onChange}
+        />
+      )}
 
       {pickerOpen && (
         <JeloPicker mealIndex={index} onChange={onChange} onClose={() => setPickerOpen(false)} />
@@ -245,8 +272,7 @@ function Item({
   return (
     <div className="item" style={{ borderLeft: `3px solid ${color}` }}>
       <span style={{ flex: 1, minWidth: 0 }}>
-        <CatIcon cat={itemCategory(item, foods)} />{' '}
-        {name}
+        <CatIcon cat={itemCategory(item, foods)} /> {name}
         {!isFoodRef(item) && (
           <span className="tag" title="AI stavka — nije spremljena u bazu">
             {' '}
@@ -276,10 +302,20 @@ function Item({
           }}
         />
         <span className="muted small">{itemUnit(item, foods)}</span>
-        <button className="icon" title="Kopiraj namirnicu" aria-label={`Kopiraj ${name}`} onClick={onCopy}>
+        <button
+          className="icon"
+          title="Kopiraj namirnicu"
+          aria-label={`Kopiraj ${name}`}
+          onClick={onCopy}
+        >
           ⧉
         </button>
-        <button className="icon" title="Obriši stavku" aria-label={`Obriši ${name}`} onClick={onDelete}>
+        <button
+          className="icon"
+          title="Obriši stavku"
+          aria-label={`Obriši ${name}`}
+          onClick={onDelete}
+        >
           ✕
         </button>
       </span>

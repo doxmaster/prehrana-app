@@ -6,6 +6,21 @@
     <meta name="description" content="Planiranje prehrane i praćenje hranjivih tvari" />
     <meta name="theme-color" content="#178a52" />
     <title>Prehrana</title>
+
+    <!--
+      Instalacija na pocetni zaslon. Putanje su relativne (./) jer stranica ne
+      stoji u korijenu domene nego u /prehrana-app/ — apsolutna putanja bi na
+      GitHub Pagesu promasila.
+    -->
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <link rel="icon" type="image/png" sizes="192x192" href="./ikona-192.png" />
+
+    <!-- iOS ne cita manifest: ikonu i nacin prikaza uzima iz ovih oznaka. -->
+    <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Prehrana" />
   </head>
   <body>
     <div id="root"></div>

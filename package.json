@@ -7,8 +7,9 @@
   "license": "MIT",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "tsc -b && vite build && node scripts/generate-sw.mjs",
     "build:artefakt": "npm run build && node scripts/build-artifact.mjs",
+    "ikone": "node scripts/generate-icons.mjs",
     "preview": "vite preview",
     "test": "vitest run",
     "test:watch": "vitest",

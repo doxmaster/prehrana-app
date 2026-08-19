@@ -17,10 +17,11 @@ import {
   exportState,
   ImportError,
   parseImport,
-  readLastExport,
+  readExportMark,
   readSafetyBackup,
-  writeLastExport,
+  writeExportMark,
 } from '../../store/storage'
+import type { ExportMark } from '../../store/storage'
 import { useAppStore } from '../../store/useAppStore'
 import { Columns } from '../Columns'
 import { fmt } from '../../lib/format'
@@ -31,7 +32,7 @@ export function Postavke() {
   const undo = useAppStore((s) => s.undo)
   const fileInput = useRef<HTMLInputElement>(null)
   const [busy, setBusy] = useState(false)
-  const [zadnjiIzvoz, setZadnjiIzvoz] = useState(readLastExport)
+  const [izvoz, setIzvoz] = useState(readExportMark)
 
   const verified = BASE_FOODS.filter((f) => f.source === 'usda').length
   const days = state.profiles.reduce((sum, p) => sum + Object.keys(p.log).length, 0)
@@ -39,9 +40,20 @@ export function Postavke() {
   const handleImport = async (file: File) => {
     setBusy(true)
     try {
-      const imported = parseImport(await file.text())
+      const { state: imported, exportedAt } = parseImport(await file.text())
       if (!(await confirmDialog('Zamijeniti sve trenutne podatke uvezenima?', 'Zamijeni'))) return
       replaceAll(imported, 'uvoz sigurnosne kopije')
+      /*
+       * Uvezena datoteka JEST kopija koja postoji izvan preglednika, pa se
+       * biljezi kao takva — inace bi odmah nakon uvoza pisalo da kopije nema.
+       * Datum je onaj iz datoteke, ne trenutni; stanje podataka je ono koje je
+       * uvozom postalo tekuce.
+       */
+      if (exportedAt) {
+        const mark = { at: exportedAt, dataAt: useAppStore.getState().data.updatedAt ?? 0 }
+        writeExportMark(mark)
+        setIzvoz(mark)
+      }
       toast('Uvezeno.', { label: '↩ Poništi', run: undo })
     } catch (err) {
       toast(err instanceof ImportError ? err.message : 'Uvoz nije uspio.')
@@ -64,8 +76,9 @@ export function Postavke() {
           onClick={() => {
             const now = new Date()
             downloadBlob(exportState(state, now), exportFilename(now))
-            writeLastExport(now)
-            setZadnjiIzvoz(now.toISOString())
+            const mark = { at: now.toISOString(), dataAt: state.updatedAt ?? 0 }
+            writeExportMark(mark)
+            setIzvoz(mark)
             toast('Sigurnosna kopija preuzeta.')
           }}
         >
@@ -109,7 +122,7 @@ export function Postavke() {
         e-pošta). Uvoz podržava i stari format iz HTML verzije.
       </p>
 
-      <IzvozPodsjetnik iso={zadnjiIzvoz} updatedAt={state.updatedAt} />
+      <IzvozPodsjetnik mark={izvoz} updatedAt={state.updatedAt} />
       <PovratakNaKopiju />
     </div>
   )
@@ -214,21 +227,21 @@ const DANA_DO_PODSJETNIKA = 14
  * i je li od kopije bilo promjena — stara kopija sama po sebi nije problem ako
  * se od tada nista nije mijenjalo.
  */
-function IzvozPodsjetnik({ iso, updatedAt }: { iso: string | null; updatedAt?: number }) {
+function IzvozPodsjetnik({ mark, updatedAt }: { mark: ExportMark | null; updatedAt?: number }) {
   const [sada] = useState(() => Date.now())
 
-  if (!iso) {
+  if (!mark) {
     return (
       <div className="banner warn" style={{ marginTop: 12, marginBottom: 0 }}>
-        <b>Još nema nijedne sigurnosne kopije.</b>{' '}
+        <b>Još nema nijedne kopije izvan preglednika.</b>{' '}
         <span className="small">
-          Podaci postoje samo u ovom pregledniku — napravi izvoz i spremi datoteku negdje drugdje.
+          Izvezi podatke i spremi datoteku negdje drugdje — na disk, u OneDrive ili na e-poštu.
         </span>
       </div>
     )
   }
 
-  const kada = new Date(iso)
+  const kada = new Date(mark.at)
   /*
    * Trenutak se uzme jednom pri montiranju: racunanje iz Date.now() u renderu
    * dalo bi razlicit rezultat pri svakom osvjezavanju iste kartice. Zato se
@@ -236,13 +249,15 @@ function IzvozPodsjetnik({ iso, updatedAt }: { iso: string | null; updatedAt?: n
    * "prije -1 dana".
    */
   const dana = Math.max(0, Math.floor((sada - kada.getTime()) / 86400000))
-  const promjena = updatedAt !== undefined && updatedAt > kada.getTime()
+  // Usporeduje se stanje podataka, ne vrijeme: stara kopija nije problem ako se
+  // od nje nista nije promijenilo.
+  const promjena = updatedAt !== undefined && updatedAt > mark.dataAt
   const opis = `${kada.toLocaleDateString('hr-HR')} (${dana === 0 ? 'danas' : dana === 1 ? 'jučer' : `prije ${dana} dana`})`
 
   if (promjena && dana >= DANA_DO_PODSJETNIKA) {
     return (
       <div className="banner warn" style={{ marginTop: 12, marginBottom: 0 }}>
-        <b>Zadnja kopija: {opis}</b>{' '}
+        <b>Zadnja izvezena kopija: {opis}</b>{' '}
         <span className="small">— podaci su se od tada mijenjali. Vrijeme je za novu.</span>
       </div>
     )
@@ -250,7 +265,7 @@ function IzvozPodsjetnik({ iso, updatedAt }: { iso: string | null; updatedAt?: n
 
   return (
     <p className="muted small" style={{ margin: '10px 0 0' }}>
-      Zadnja kopija: {opis}
+      Zadnja izvezena kopija: {opis}
       {promjena ? ' · podaci su se od tada mijenjali' : ' · od tada nema promjena'}
     </p>
   )
@@ -274,10 +289,11 @@ function PovratakNaKopiju() {
 
   return (
     <div className="banner" style={{ marginTop: 12, marginBottom: 0 }}>
-      <b>Sigurnosna kopija prije zadnjeg zahvata</b>
+      <b>Automatski spremljeno stanje prije zadnjeg zahvata</b>
       <br />
       <span className="small">
-        Nastala {opis} — prije zahvata: {backup.reason}.
+        Spremljeno {opis} — prije zahvata: {backup.reason}. Ovo živi u pregledniku i nije zamjena za
+        izvezenu datoteku.
       </span>
       <div style={{ marginTop: 8 }}>
         <button

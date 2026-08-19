@@ -5,8 +5,8 @@ import {
   exportFilename,
   loadState,
   parseImport,
-  readLastExport,
-  writeLastExport,
+  readExportMark,
+  writeExportMark,
 } from '../src/store/storage'
 import { migrateState } from '../src/domain/migrate'
 import { STARTER_RECIPES } from '../src/data/recipes'
@@ -116,7 +116,7 @@ describe('izvoz i uvoz', () => {
     const state = stanjeSaSvime()
     const tekst = JSON.stringify(buildExport(state))
 
-    const vraceno = parseImport(tekst)
+    const { state: vraceno } = parseImport(tekst)
     expect(vraceno.profiles[0]!.log['2026-08-19']).toEqual(state.profiles[0]!.log['2026-08-19'])
     expect(vraceno.customFoods).toHaveLength(1)
     expect(vraceno.recipes).toHaveLength(5)
@@ -125,9 +125,23 @@ describe('izvoz i uvoz', () => {
 
   it('prima i stare kopije bez omotnice', () => {
     const state = stanjeSaSvime()
-    const vraceno = parseImport(JSON.stringify(state))
+    const { state: vraceno, exportedAt } = parseImport(JSON.stringify(state))
     expect(vraceno.profiles).toHaveLength(1)
     expect(vraceno.customFoods).toHaveLength(1)
+    expect(exportedAt).toBeNull()
+  })
+
+  it('uvoz javlja kad je datoteka izvezena — inače bi pisalo da kopije nema', () => {
+    const kada = new Date(2026, 7, 19, 11, 27)
+    const tekst = JSON.stringify(buildExport(stanjeSaSvime(), kada))
+    expect(parseImport(tekst).exportedAt).toBe(kada.toISOString())
+  })
+
+  it('pokvaren datum u omotnici se ignorira, podaci se svejedno uvezu', () => {
+    const omotnica = { ...buildExport(stanjeSaSvime()), exportedAt: 'jučer navečer' }
+    const { state, exportedAt } = parseImport(JSON.stringify(omotnica))
+    expect(exportedAt).toBeNull()
+    expect(state.profiles).toHaveLength(1)
   })
 
   it('datoteka bez osoba se odbija, a ne uveze prazno preko podataka', () => {
@@ -140,10 +154,21 @@ describe('izvoz i uvoz', () => {
     expect(exportFilename(new Date(2026, 11, 31))).toBe('prehrana-2026-12-31.json')
   })
 
-  it('pamti kad je izvoz napravljen', () => {
-    expect(readLastExport()).toBeNull()
-    const kada = new Date(2026, 7, 19, 10, 30)
-    writeLastExport(kada)
-    expect(readLastExport()).toBe(kada.toISOString())
+  it('pamti datum kopije i stanje podataka u njoj', () => {
+    expect(readExportMark()).toBeNull()
+    const mark = { at: new Date(2026, 7, 19, 10, 30).toISOString(), dataAt: 1755000000000 }
+    writeExportMark(mark)
+    expect(readExportMark()).toEqual(mark)
+  })
+
+  it('čita i zapis prvog izdanja, koji je pamtio samo datum', () => {
+    localStorage.setItem(`${STORAGE_KEY}_zadnji_izvoz`, '2026-08-01T09:00:00.000Z')
+    // dataAt 0 znaci "ne zna se", pa se podaci racunaju kao promijenjeni.
+    expect(readExportMark()).toEqual({ at: '2026-08-01T09:00:00.000Z', dataAt: 0 })
+  })
+
+  it('pokvaren zapis ne ruši karticu', () => {
+    localStorage.setItem(`${STORAGE_KEY}_zadnji_izvoz`, '{ nije json')
+    expect(readExportMark()).toBeNull()
   })
 })

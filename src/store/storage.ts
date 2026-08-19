@@ -129,33 +129,57 @@ export function exportFilename(now = new Date()): string {
 }
 
 /**
- * Kad je zadnji put napravljen izvoz.
+ * Trag o zadnjoj kopiji koja postoji izvan preglednika.
  *
  * Stoji pokraj podataka, ne u njima: inace bi svaki izvoz mijenjao ono sto
  * izvozi, pa dvije uzastopne kopije istog stanja ne bi bile jednake.
+ *
+ * Uz datum se pamti i `dataAt` — koliko su podaci bili stari u trenutku kopije.
+ * Bez toga se ne moze razlikovati "kopija je stara, ali se od tada nista nije
+ * mijenjalo" od "kopija je stara i podaci su otisli dalje", a samo je drugo
+ * razlog za uzbunu.
  */
 const EXPORT_KEY = `${STORAGE_KEY}_zadnji_izvoz`
 
-export function readLastExport(): string | null {
+export interface ExportMark {
+  /** Kad je kopija nastala (ISO). Kod uvoza: datum iz same datoteke. */
+  at: string
+  /** `updatedAt` podataka koje ta kopija sadrzi. */
+  dataAt: number
+}
+
+export function readExportMark(): ExportMark | null {
   try {
-    return localStorage.getItem(EXPORT_KEY)
+    const raw = localStorage.getItem(EXPORT_KEY)
+    if (!raw) return null
+    // Prvo izdanje je pisalo goli ISO datum; tada se stanje podataka ne zna.
+    if (!raw.startsWith('{')) return { at: raw, dataAt: 0 }
+    const parsed = JSON.parse(raw) as Partial<ExportMark>
+    if (typeof parsed.at !== 'string') return null
+    return { at: parsed.at, dataAt: typeof parsed.dataAt === 'number' ? parsed.dataAt : 0 }
   } catch {
     return null
   }
 }
 
-export function writeLastExport(now = new Date()): void {
+export function writeExportMark(mark: ExportMark): void {
   try {
-    localStorage.setItem(EXPORT_KEY, now.toISOString())
+    localStorage.setItem(EXPORT_KEY, JSON.stringify(mark))
   } catch {
-    // Pamcenje datuma nije vrijedno pada; sam izvoz je vec preuzet.
+    // Pamcenje datuma nije vrijedno pada; sama kopija je vec napravljena.
   }
 }
 
 export class ImportError extends Error {}
 
+export interface ImportResult {
+  state: AppState
+  /** Kad je datoteka izvezena; null za stare kopije bez omotnice. */
+  exportedAt: string | null
+}
+
 /** Čita uvezenu datoteku; baca ImportError s porukom na hrvatskom. */
-export function parseImport(text: string): AppState {
+export function parseImport(text: string): ImportResult {
   let parsed: unknown
   try {
     parsed = JSON.parse(text)
@@ -166,17 +190,25 @@ export function parseImport(text: string): AppState {
    * Prima i novu omotnicu i goli zapis stanja: starije kopije (i one iz HTML
    * verzije) nemaju omotnicu, a moraju se i dalje moci uvesti.
    */
-  const envelope = parsed as { state?: unknown } | null
-  const payload =
-    envelope && typeof envelope === 'object' && envelope.state && typeof envelope.state === 'object'
-      ? envelope.state
-      : parsed
+  const envelope = parsed as { state?: unknown; exportedAt?: unknown } | null
+  const omotnica =
+    !!envelope &&
+    typeof envelope === 'object' &&
+    !!envelope.state &&
+    typeof envelope.state === 'object'
+  const payload = omotnica ? envelope.state : parsed
 
   const root = payload as { profiles?: unknown } | null
   if (!root || typeof root !== 'object' || !Array.isArray(root.profiles) || !root.profiles.length) {
     return raise('Datoteka ne sadrži nijednu osobu — je li to sigurnosna kopija Prehrane?')
   }
-  return migrateState(payload)
+  const exportedAt =
+    omotnica &&
+    typeof envelope.exportedAt === 'string' &&
+    !Number.isNaN(Date.parse(envelope.exportedAt))
+      ? envelope.exportedAt
+      : null
+  return { state: migrateState(payload), exportedAt }
 }
 
 function raise(message: string): never {

@@ -53,6 +53,9 @@ jobs:
 
   objava:
     needs: gradnja
+    # Samo repozitorij koji stvarno ima Pages; drugdje (npr. privatni fork)
+    # gradnja i testovi svejedno rade, ali se objava preskace bez greske.
+    if: github.repository == 'doxmaster/prehrana-app'
     runs-on: ubuntu-latest
     environment:
       name: github-pages

@@ -1,10 +1,10 @@
-# Objava aplikacije na GitHub Pages — https://doxmaster.github.io/Prehrana/
+# Objava aplikacije na GitHub Pages — https://doxmaster.github.io/prehrana-app/
 #
 # Objavljuje se tek ako testovi prođu: aplikacija čuva podatke o prehrani
 # obitelji, pa je bolje da izostane novo izdanje nego da izađe pokvareno.
 #
-# GITHUB_PAGES=true prebacuje Vite na base '/Prehrana/'; bez toga bi stranica
-# tražila datoteke u korijenu domene i ostala prazna.
+# GITHUB_PAGES=true prebacuje Vite na base '/<ime-repozitorija>/'; bez toga bi
+# stranica tražila datoteke u korijenu domene i ostala prazna.
 name: Objava na GitHub Pages
 
 on:

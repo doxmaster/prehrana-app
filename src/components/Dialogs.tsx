@@ -6,6 +6,7 @@ export function Dialogs() {
   const close = useDialogs((s) => s.close)
   const toastMessage = useDialogs((s) => s.toastMessage)
   const clearToast = useDialogs((s) => s.clearToast)
+  const toastAction = useDialogs((s) => s.toastAction)
   const inputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
@@ -14,9 +15,10 @@ export function Dialogs() {
 
   useEffect(() => {
     if (!toastMessage) return
-    const id = setTimeout(clearToast, 3600)
+    // Uz ponudu za poništavanje treba vremena da se procita i klikne.
+    const id = setTimeout(clearToast, toastAction ? 9000 : 3600)
     return () => clearTimeout(id)
-  }, [toastMessage, clearToast])
+  }, [toastMessage, toastAction, clearToast])
 
   return (
     <>
@@ -65,7 +67,18 @@ export function Dialogs() {
 
       {toastMessage && (
         <div id="toast" role="status" aria-live="polite">
-          {toastMessage}
+          <span>{toastMessage}</span>
+          {toastAction && (
+            <button
+              className="toast-action"
+              onClick={() => {
+                toastAction.run()
+                clearToast()
+              }}
+            >
+              {toastAction.label}
+            </button>
+          )}
         </div>
       )}
     </>

@@ -28,6 +28,7 @@ export function Tjedni() {
   const state = useAppStore((s) => s.data)
   const activeWeekId = useAppStore((s) => s.activeWeekId)
   const setActiveWeekId = useAppStore((s) => s.setActiveWeekId)
+  const undo = useAppStore((s) => s.undo)
 
   const week = state.weeks.find((w) => w.id === activeWeekId) ?? state.weeks[0]
   /**
@@ -140,7 +141,22 @@ export function Tjedni() {
             <button
               className="btn small"
               title="Automatski rasporedi jelovnike po danima"
-              onClick={() => {
+              onClick={async () => {
+                /*
+                 * Slaganje PREPISUJE cijeli tjedan. Kad je raspored vec
+                 * definiran, jedan promasen klik unisti posao — pa se trazi
+                 * potvrda, a poslije se nudi i poništavanje.
+                 */
+                const popunjenih = week.days.filter(Boolean).length
+                if (popunjenih > 0) {
+                  const ok = await confirmDialog(
+                    `"${week.title ?? 'Tjedan'}" već ima raspoređeno ${popunjenih} od ${WEEK_LENGTH} dana.\n\n` +
+                      'Slaganje prepisuje sve dane novim jelovnicima.',
+                    'Prepiši raspored',
+                  )
+                  if (!ok) return
+                }
+
                 // Ostali tjedni, od najnovijeg — iz njih se cita sto se ne smije ponoviti.
                 const others = state.weeks.filter((w) => w.id !== week.id).reverse()
                 /**
@@ -157,10 +173,11 @@ export function Tjedni() {
                 update((draft) => {
                   const target = draft.weeks.find((w) => w.id === week.id)
                   if (target) target.days = result.days
-                })
+                }, `slaganje tjedna "${week.title ?? 'Tjedan'}"`)
                 toast(
                   result.note ??
                     `Tjedan složen — ${WEEK_LENGTH} dana bez ponavljanja iz zadnja ${NO_REPEAT_WEEKS} tjedna.`,
+                  { label: '↩ Poništi', run: undo },
                 )
               }}
             >
@@ -203,11 +220,20 @@ export function Tjedni() {
             <button
               className="btn danger small"
               onClick={async () => {
-                if (!(await confirmDialog(`Obrisati ${week.title ?? 'tjedan'}?`, 'Obriši'))) return
+                const popunjenih = week.days.filter(Boolean).length
+                const ok = await confirmDialog(
+                  `Obrisati "${week.title ?? 'tjedan'}"?` +
+                    (popunjenih ? `
+
+Raspored od ${popunjenih} dana nestaje. Jelovnici ostaju.` : ''),
+                  'Obriši',
+                )
+                if (!ok) return
                 update((draft) => {
                   draft.weeks = draft.weeks.filter((w) => w.id !== week.id)
                   setActiveWeekId(draft.weeks[0]?.id ?? null)
-                })
+                }, `brisanje tjedna "${week.title ?? 'Tjedan'}"`)
+                toast('Tjedan obrisan.', { label: '↩ Poništi', run: undo })
               }}
             >
               Obriši
@@ -262,7 +288,23 @@ export function Tjedni() {
             Ovaj tjedan
           </button>
           {week.startDate && (
-            <button className="btn secondary small" onClick={() => editWeek((draft) => void delete draft.startDate)}>
+            <button
+              className="btn secondary small"
+              onClick={async () => {
+                // Bez datuma Dnevnik vise ne nudi ovaj plan na potvrdu; to nije
+                // ocito iz naziva gumba, pa se kaze izravno.
+                const ok = await confirmDialog(
+                  `Maknuti datum s "${week.title ?? 'tjedna'}"?
+
+` +
+                    'Dnevnik ga tada više neće nuditi na potvrdu. Raspored dana ostaje.',
+                  'Makni datum',
+                )
+                if (!ok) return
+                editWeek((draft) => void delete draft.startDate)
+                toast('Datum uklonjen.', { label: '↩ Poništi', run: undo })
+              }}
+            >
               Ukloni datum
             </button>
           )}

@@ -12,26 +12,40 @@ interface DialogRequest {
   resolve: (value: string | boolean | null) => void
 }
 
+/**
+ * Obavijest moze nositi jednu radnju — u praksi "Poništi".
+ *
+ * Zato da se destruktivna radnja ne mora braniti potvrdom PRIJE (koja usporava
+ * svaki klik), nego ponudom da se vrati POSLIJE. Potvrda ostaje samo ondje gdje
+ * povratka nema ili je skup.
+ */
+export interface ToastAction {
+  label: string
+  run: () => void
+}
+
 interface DialogState {
   request: DialogRequest | null
   toastMessage: string | null
+  toastAction: ToastAction | null
   open: (r: DialogRequest) => void
   close: (value: string | boolean | null) => void
-  showToast: (message: string) => void
+  showToast: (message: string, action?: ToastAction) => void
   clearToast: () => void
 }
 
 export const useDialogs = create<DialogState>()((set, get) => ({
   request: null,
   toastMessage: null,
+  toastAction: null,
   open: (request) => set({ request }),
   close: (value) => {
     const { request } = get()
     set({ request: null })
     request?.resolve(value)
   },
-  showToast: (toastMessage) => set({ toastMessage }),
-  clearToast: () => set({ toastMessage: null }),
+  showToast: (toastMessage, action) => set({ toastMessage, toastAction: action ?? null }),
+  clearToast: () => set({ toastMessage: null, toastAction: null }),
 }))
 
 export function confirmDialog(message: string, okText = 'U redu'): Promise<boolean> {
@@ -58,6 +72,6 @@ export function promptDialog(message: string, defaultValue = ''): Promise<string
   })
 }
 
-export function toast(message: string): void {
-  useDialogs.getState().showToast(message)
+export function toast(message: string, action?: ToastAction): void {
+  useDialogs.getState().showToast(message, action)
 }

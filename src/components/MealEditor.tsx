@@ -16,7 +16,7 @@ import {
 import { isFoodRef } from '../domain/types'
 import { useClipboard } from '../store/clipboard'
 import { confirmDialog, toast } from '../store/dialogs'
-import { useFoods } from '../store/useAppStore'
+import { useAppStore, useFoods } from '../store/useAppStore'
 import { fmt } from '../lib/format'
 import type { DayMeals, MealItem, Nutrients } from '../domain/types'
 
@@ -49,6 +49,7 @@ function Meal({
 }) {
   const foods = useFoods()
   const clipboard = useClipboard()
+  const undo = useAppStore((s) => s.undo)
   const totals = sumItems(items, foods)
   const [query, setQuery] = useState('')
   const [grams, setGrams] = useState('100')
@@ -110,10 +111,12 @@ function Meal({
             aria-label={`Isprazni obrok ${name}`}
             onClick={async () => {
               if (!items.length) return toast(`${name} je već prazan.`)
-              if (!(await confirmDialog(`Isprazniti ${name}?`, 'Isprazni'))) return
+              if (!(await confirmDialog(`Isprazniti ${name}? Briše se ${items.length} stavki.`, 'Isprazni')))
+                return
               onChange((draft) => {
                 draft[index] = []
               })
+              toast(`${name} ispražnjen.`, { label: '↩ Poništi', run: undo })
             }}
           >
             🗑
@@ -139,11 +142,15 @@ function Meal({
               if (target) target.g = value
             })
           }
-          onDelete={() =>
+          onDelete={() => {
+            const naziv = itemName(item, foods)
             onChange((draft) => {
               draft[index]?.splice(itemIndex, 1)
             })
-          }
+            // Bez potvrde, jer je brisanje jedne stavke cesto i namjerno; ali
+            // se odmah nudi povratak, pa promasen klik ne kosta nista.
+            toast(`Obrisano: ${naziv}`, { label: '↩ Poništi', run: undo })
+          }}
         />
       ))}
 

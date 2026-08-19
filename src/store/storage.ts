@@ -112,3 +112,45 @@ export function downloadBlob(blob: Blob, filename: string): void {
   a.remove()
   setTimeout(() => URL.revokeObjectURL(url), 1000)
 }
+
+/**
+ * Sigurnosna kopija prije velikih zahvata (uvoz, brisanje dijelova, obnova).
+ *
+ * Poništavanje u sucelju drzi samo zadnju promjenu i nestaje sa zatvaranjem
+ * kartice. Ovo prezivljava i zatvaranje preglednika, pa je zadnja obrana kad
+ * netko uveze krivu datoteku ili obrise vise nego sto je mislio.
+ */
+const BACKUP_KEY = `${STORAGE_KEY}_prije_zahvata`
+
+export interface SafetyBackup {
+  state: AppState
+  /** Sto se radilo kad je kopija nastala — pise se korisniku. */
+  reason: string
+  at: number
+}
+
+export function writeSafetyBackup(state: AppState, reason: string): void {
+  try {
+    const backup: SafetyBackup = { state, reason, at: Date.now() }
+    localStorage.setItem(BACKUP_KEY, JSON.stringify(backup))
+  } catch {
+    // Sigurnosna kopija ne smije srusiti sam zahvat; kad memorije nema,
+    // korisnik i dalje ima izvoz u datoteku.
+  }
+}
+
+export function readSafetyBackup(): SafetyBackup | null {
+  try {
+    const raw = localStorage.getItem(BACKUP_KEY)
+    if (!raw) return null
+    const parsed = JSON.parse(raw) as { state?: unknown; reason?: unknown; at?: unknown }
+    if (!parsed.state) return null
+    return {
+      state: migrateState(parsed.state),
+      reason: typeof parsed.reason === 'string' ? parsed.reason : 'nepoznat zahvat',
+      at: typeof parsed.at === 'number' ? parsed.at : 0,
+    }
+  } catch {
+    return null
+  }
+}

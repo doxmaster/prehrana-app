@@ -149,6 +149,10 @@ export function Dnevnik() {
             🤖 Upiši rečenicom
           </button>
         </div>
+        <p className="muted small" style={{ margin: '-4px 0 10px' }}>
+          Ovo je ono što je <b>stvarno pojedeno</b> — sve brojke u pregledu i napretku računaju se
+          samo odavde. Plan gore je prijedlog dok ga ne upišeš.
+        </p>
         <MealEditor meals={meals} onChange={editMeals} />
       </div>
 

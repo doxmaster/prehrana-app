@@ -4,7 +4,7 @@ import { emptyMeals } from '../domain/nutrients'
 import { todayISO } from '../domain/dates'
 import { weekIdForDate } from '../domain/plan'
 import { uid } from '../domain/id'
-import { loadState, saveState } from './storage'
+import { loadState, saveState, writeSafetyBackup } from './storage'
 import type { AppState, DayMeals, Person } from '../domain/types'
 
 const initial = loadState()
@@ -38,11 +38,22 @@ interface StoreState {
   saveError: string | null
   /** Podaci su pri prvom pokretanju preuzeti iz stare verzije. */
   migratedFrom: string | null
+  /**
+   * Stanje prije zadnje promjene. Postoji da se svaka izmjena moze poništiti
+   * jednim klikom — jeftinije od potvrde na svakom gumbu i hvata i ono sto se
+   * nije predvidjelo (krivo obrisana stavka, prepisan raspored).
+   */
+  previous: { state: AppState; label: string } | null
 
-  /** Jedina točka izmjene podataka — mutira nacrt, sprema i osvježava indeks. */
-  update: (recipe: (draft: AppState) => void) => void
-  /** Zamjena cijelog stanja (uvoz sigurnosne kopije). */
-  replaceAll: (next: AppState) => void
+  /**
+   * Jedina točka izmjene podataka — mutira nacrt, sprema i osvježava indeks.
+   * `label` opisuje sto se mijenjalo i pojavljuje se u ponudi za poništavanje.
+   */
+  update: (recipe: (draft: AppState) => void, label?: string) => void
+  /** Zamjena cijelog stanja (uvoz, brisanje dijelova, obnova). */
+  replaceAll: (next: AppState, label?: string) => void
+  /** Vraca stanje na ono prije zadnje promjene. */
+  undo: () => boolean
   setSelectedDate: (date: string) => void
   setActiveMenuIndex: (index: number) => void
   setActiveWeekId: (id: string | null) => void
@@ -59,14 +70,17 @@ export const useAppStore = create<StoreState>()((set, get) => ({
   activeHouseholdId: initial.state.households[0]?.id ?? null,
   saveError: null,
   migratedFrom: initial.migrated ? initial.from : null,
+  previous: null,
 
-  update: (recipe) => {
-    const next = structuredClone(get().data)
+  update: (recipe, label = 'promjena') => {
+    const before = get().data
+    const next = structuredClone(before)
     recipe(next)
     const outcome = saveState(next)
     set({
       data: next,
       foods: buildFoodIndex(next),
+      previous: { state: before, label },
       saveError:
         outcome.ok === true
           ? null
@@ -76,7 +90,11 @@ export const useAppStore = create<StoreState>()((set, get) => ({
     })
   },
 
-  replaceAll: (next) => {
+  replaceAll: (next, label = 'zamjena podataka') => {
+    const before = get().data
+    // Veliki zahvati dobivaju i kopiju koja prezivi zatvaranje preglednika;
+    // poništavanje u sucelju vrijedi samo dok je kartica otvorena.
+    writeSafetyBackup(before, label)
     saveState(next)
     set({
       data: next,
@@ -85,7 +103,22 @@ export const useAppStore = create<StoreState>()((set, get) => ({
       activeWeekId: startingWeekId(next),
       activeHouseholdId: next.households[0]?.id ?? null,
       saveError: null,
+      previous: { state: before, label },
     })
+  },
+
+  undo: () => {
+    const { previous } = get()
+    if (!previous) return false
+    saveState(previous.state)
+    set({
+      data: previous.state,
+      foods: buildFoodIndex(previous.state),
+      activeWeekId: startingWeekId(previous.state),
+      previous: null,
+      saveError: null,
+    })
+    return true
   },
 
   setSelectedDate: (selectedDate) => set({ selectedDate }),

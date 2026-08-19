@@ -13,7 +13,7 @@ import { mealsTotals, sumItems } from '../domain/nutrients'
 import { portionFactor } from '../domain/household'
 import { fmtDate, mondayOf } from '../domain/dates'
 import { uid } from '../domain/id'
-import { toast } from '../store/dialogs'
+import { confirmDialog, toast } from '../store/dialogs'
 import { useActivePerson, useAppStore, useFoods } from '../store/useAppStore'
 import { fmt } from '../lib/format'
 import type { DayMeals } from '../domain/types'
@@ -38,6 +38,7 @@ export function PlanTraka({ date, meals, onChange }: Props) {
   const foods = useFoods()
   const menus = useAppStore((s) => s.data.menus)
   const weeks = useAppStore((s) => s.data.weeks)
+  const undo = useAppStore((s) => s.undo)
 
   const planned = planForDate(weeks, menus, date)
   // Bez plana se ne smije samo sutjeti: korisnik ne moze pogoditi da tjedan
@@ -71,6 +72,8 @@ export function PlanTraka({ date, meals, onChange }: Props) {
         <StatusOznaka status={status} />
       </div>
       <p className="muted small" style={{ margin: '4px 0 10px' }}>
+        <b>Prijedlog iz tjednog plana</b> — ne broji se dok ga ne upišeš u obroke ispod.
+        <br />
         {planned.week.title ?? 'Tjedan'} · {fmt(total.kcal)} kcal
         {factor !== 1 && (
           <>
@@ -84,22 +87,36 @@ export function PlanTraka({ date, meals, onChange }: Props) {
         <div className="row" style={{ marginBottom: 10 }}>
           <button
             className="btn small"
-            onClick={() => {
+            onClick={async () => {
+              /*
+               * Potvrda plana PREPISUJE cijeli dan. Kad je u dnevniku vec nesto
+               * drugo, to je gubitak podataka — pa se pita prije, a ne samo
+               * upozorava sitnim tekstom pokraj gumba.
+               */
+              if (status === 'izmijenjeno') {
+                const ok = await confirmDialog(
+                  `Dnevnik za ${fmtDate(date)} razlikuje se od plana.\n\n` +
+                    'Potvrda briše ono što je upisano i stavlja planirane obroke.',
+                  'Prepiši dan',
+                )
+                if (!ok) return
+              }
               onChange((draft) => {
                 const next = confirmDay(plan)
                 draft.length = 0
                 draft.push(...next)
               })
-              toast(
-                `Upisano: ${title} (${fmt(total.kcal)} kcal). Ispod možeš popraviti što nije bilo tako.`,
-              )
+              toast(`Upisano: ${title} (${fmt(total.kcal)} kcal).`, {
+                label: '↩ Poništi',
+                run: undo,
+              })
             }}
           >
             ✓ Pojeo sam po planu
           </button>
           {status === 'izmijenjeno' && (
             <span className="small muted">
-              Dnevnik se razlikuje od plana — potvrda ga prepisuje.
+              Dnevnik se razlikuje od plana — potvrda pita prije prepisivanja.
             </span>
           )}
         </div>
@@ -127,13 +144,22 @@ export function PlanTraka({ date, meals, onChange }: Props) {
             <button
               className={done ? 'btn secondary small' : 'btn small'}
               disabled={done}
-              onClick={() => {
+              onClick={async () => {
+                // Obrok koji vec ima nesto drugo se prepisuje — pita se prije.
+                const postojeci = meals[index] ?? []
+                if (postojeci.length && !mealMatches(postojeci, items)) {
+                  const ok = await confirmDialog(
+                    `${name} već ima ${postojeci.length} upisanih stavki.\n\nUpis plana ih zamjenjuje.`,
+                    'Prepiši obrok',
+                  )
+                  if (!ok) return
+                }
                 onChange((draft) => {
                   const next = confirmMeal(draft, index, items)
                   draft.length = 0
                   draft.push(...next)
                 })
-                toast(`Upisan ${name.toLowerCase()}.`)
+                toast(`Upisan ${name.toLowerCase()}.`, { label: '↩ Poništi', run: undo })
               }}
             >
               {done ? '✓ upisano' : '✓ upiši'}

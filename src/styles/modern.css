@@ -528,3 +528,26 @@ tbody tr:hover {
 .ring-line.bad {
   color: var(--bad);
 }
+
+/* Gumb u obavijesti — u praksi "Poništi". */
+#toast {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+.toast-action {
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.32);
+  color: #fff;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background var(--dur) var(--ease);
+}
+.toast-action:hover {
+  background: rgba(255, 255, 255, 0.3);
+}

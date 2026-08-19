@@ -10,7 +10,13 @@ import {
 } from '../../domain/reset'
 import { STARTER_MENUS, STARTER_WEEKS } from '../../data/menus'
 import { STARTER_RECIPES } from '../../data/recipes'
-import { downloadBlob, exportState, ImportError, parseImport } from '../../store/storage'
+import {
+  downloadBlob,
+  exportState,
+  ImportError,
+  parseImport,
+  readSafetyBackup,
+} from '../../store/storage'
 import { useAppStore } from '../../store/useAppStore'
 import { Columns } from '../Columns'
 import { fmt } from '../../lib/format'
@@ -18,6 +24,7 @@ import { fmt } from '../../lib/format'
 export function Postavke() {
   const state = useAppStore((s) => s.data)
   const replaceAll = useAppStore((s) => s.replaceAll)
+  const undo = useAppStore((s) => s.undo)
   const fileInput = useRef<HTMLInputElement>(null)
   const [busy, setBusy] = useState(false)
 
@@ -29,8 +36,8 @@ export function Postavke() {
     try {
       const imported = parseImport(await file.text())
       if (!(await confirmDialog('Zamijeniti sve trenutne podatke uvezenima?', 'Zamijeni'))) return
-      replaceAll(imported)
-      toast('Uvezeno.')
+      replaceAll(imported, 'uvoz sigurnosne kopije')
+      toast('Uvezeno.', { label: '↩ Poništi', run: undo })
     } catch (err) {
       toast(err instanceof ImportError ? err.message : 'Uvoz nije uspio.')
     } finally {
@@ -74,6 +81,8 @@ export function Postavke() {
         Podaci se čuvaju u pregledniku na ovom uređaju. Uvoz podržava i stari format iz HTML verzije
         aplikacije.
       </p>
+
+      <PovratakNaKopiju />
     </div>
   )
 
@@ -122,8 +131,8 @@ export function Postavke() {
             tagged && `oznaka kuhinje na ${tagged} jelovnika`,
           ].filter(Boolean)
           if (!parts.length) return toast('Sve je već na mjestu.')
-          replaceAll(next)
-          toast(`Vraćeno: ${parts.join(', ')}.`)
+          replaceAll(next, 'obnova ugrađenog sadržaja')
+          toast(`Vraćeno: ${parts.join(', ')}.`, { label: '↩ Poništi', run: undo })
         }}
       >
         ↺ Vrati ugrađene jelovnike i recepte
@@ -168,6 +177,51 @@ export function Postavke() {
 }
 
 /**
+ * Povratak na stanje prije zadnjeg velikog zahvata.
+ *
+ * Poništavanje u obavijesti drzi samo zadnju promjenu i nestaje sa zatvaranjem
+ * kartice. Ova kopija nastaje prije uvoza, brisanja dijelova i obnove, i
+ * prezivljava zatvaranje preglednika — zadnja obrana kad se pogreska primijeti
+ * tek sutra.
+ */
+function PovratakNaKopiju() {
+  const replaceAll = useAppStore((s) => s.replaceAll)
+  const backup = readSafetyBackup()
+  if (!backup) return null
+
+  const kada = new Date(backup.at)
+  const opis = backup.at ? kada.toLocaleString('hr-HR') : 'nepoznato vrijeme'
+
+  return (
+    <div className="banner" style={{ marginTop: 12, marginBottom: 0 }}>
+      <b>Sigurnosna kopija prije zadnjeg zahvata</b>
+      <br />
+      <span className="small">
+        Nastala {opis} — prije zahvata: {backup.reason}.
+      </span>
+      <div style={{ marginTop: 8 }}>
+        <button
+          className="btn secondary small"
+          onClick={async () => {
+            const ok = await confirmDialog(
+              `Vratiti podatke na stanje od ${opis}?
+
+Sve promjene napravljene nakon toga nestaju.`,
+              'Vrati',
+            )
+            if (!ok) return
+            replaceAll(backup.state, 'povratak na sigurnosnu kopiju')
+            toast('Podaci vraćeni na stanje prije zahvata.')
+          }}
+        >
+          ↩ Vrati na to stanje
+        </button>
+      </div>
+    </div>
+  )
+}
+
+/**
  * Selektivno brisanje. Namjerno nije jedno "obrisi sve" dugme: najcesce smeta
  * samo jedan dio (testni dnevnik, probni jelovnici), a ostatak se zeli zadrzati.
  */
@@ -187,9 +241,9 @@ function ResetPanel() {
       `Obrisati:\n\n${summary.map((l) => `• ${l}`).join('\n')}\n\n` +
       'Ovo se ne može poništiti. Ako nisi izvezao sigurnosnu kopiju, odustani i prvo je napravi.'
     if (!(await confirmDialog(question, 'Obriši'))) return
-    replaceAll(resetParts(state, selected))
+    replaceAll(resetParts(state, selected), `brisanje: ${summary.join(', ')}`)
     setSelected([])
-    toast('Obrisano.')
+    toast('Obrisano.', { label: '↩ Poništi', run: useAppStore.getState().undo })
   }
 
   return (

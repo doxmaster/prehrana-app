@@ -238,7 +238,7 @@ function claudeHost(): ClaudeHost | null {
 
 export type SpremanjeIshod =
   | { ok: true; nacin: 'preglednik' | 'claude'; filename: string }
-  | { ok: false; razlog: 'odbijeno' | 'nije-uspjelo' }
+  | { ok: false; razlog: 'odbijeno' | 'nije-uspjelo' | 'nema-kanala' }
 
 function vezom(blob: Blob, filename: string): SpremanjeIshod {
   const url = URL.createObjectURL(blob)
@@ -259,8 +259,15 @@ export async function spremiDatoteku(blob: Blob, filename: string): Promise<Spre
   if (!host) return vezom(blob, filename)
 
   const downloads = await host.use('downloads').catch(() => null)
-  // Nema sposobnosti — stranica mozda i nije u artefaktu, pa vrijedi veza.
-  if (!downloads) return vezom(blob, filename)
+  /*
+   * Ovdje se NE smije pasti natrag na obicnu vezu.
+   *
+   * Unutar Claudeova okvira veza s `download` ne radi — klik jednostavno nista
+   * ne napravi. Kad bi se ovdje javilo "spremljeno", korisnik bi mislio da ima
+   * sigurnosnu kopiju koje nema, a to je gore nego da gumb otvoreno zakaze.
+   * Zato se javlja da kanala nema, pa sucelje ponudi rucno kopiranje.
+   */
+  if (!downloads) return { ok: false, razlog: 'nema-kanala' }
 
   const pokusaj = async (naziv: string): Promise<SpremanjeIshod> => {
     try {

@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useMemo, useRef, useState } from 'react'
 import { BASE_FOODS } from '../../data/foods'
 import { confirmDialog, toast } from '../../store/dialogs'
 import {
@@ -24,7 +24,7 @@ import {
 import type { ExportMark } from '../../store/storage'
 import { useAppStore } from '../../store/useAppStore'
 import { Columns } from '../Columns'
-import { fmt } from '../../lib/format'
+import { broj, fmt } from '../../lib/format'
 
 export function Postavke() {
   const state = useAppStore((s) => s.data)
@@ -33,6 +33,12 @@ export function Postavke() {
   const fileInput = useRef<HTMLInputElement>(null)
   const [busy, setBusy] = useState(false)
   const [izvoz, setIzvoz] = useState(readExportMark)
+  /*
+   * Zadnji izlaz kad spremanje datoteke nije moguce (javno dijeljen artefakt
+   * nema kanal za preuzimanje, a ni meduspremnik nije zajamcen). Tekst u polju
+   * korisnik uvijek moze oznaciti i kopirati sam — to nista ne moze zabraniti.
+   */
+  const [rucniIzvoz, setRucniIzvoz] = useState<string | null>(null)
 
   const verified = BASE_FOODS.filter((f) => f.source === 'usda').length
   const days = state.profiles.reduce((sum, p) => sum + Object.keys(p.log).length, 0)
@@ -78,11 +84,11 @@ export function Postavke() {
               const now = new Date()
               const ishod = await spremiDatoteku(exportState(state, now), exportFilename(now))
               if (!ishod.ok) {
-                return toast(
-                  ishod.razlog === 'odbijeno'
-                    ? 'Spremanje otkazano — kopija nije napravljena.'
-                    : 'Spremanje nije uspjelo. Pokušaj s gumbom ⧉ Kopiraj.',
-                )
+                if (ishod.razlog === 'odbijeno') {
+                  return toast('Spremanje otkazano — kopija nije napravljena.')
+                }
+                setRucniIzvoz(JSON.stringify(buildExport(state, now), null, 2))
+                return toast('Preuzimanje ovdje nije moguće — podaci su ispod za kopiranje.')
               }
               // Trag se biljezi tek kad je datoteka stvarno spremljena.
               const mark = { at: now.toISOString(), dataAt: state.updatedAt ?? 0 }
@@ -102,7 +108,8 @@ export function Postavke() {
               await navigator.clipboard.writeText(JSON.stringify(buildExport(state), null, 2))
               toast('Podaci kopirani — zalijepi ih gdje želiš.')
             } catch {
-              toast('Kopiranje nije uspjelo; koristi izvoz u datoteku.')
+              setRucniIzvoz(JSON.stringify(buildExport(state), null, 2))
+              toast('Međuspremnik nije dostupan — podaci su ispod za kopiranje.')
             }
           }}
         >
@@ -132,6 +139,25 @@ export function Postavke() {
         e-pošta). Uvoz podržava i stari format iz HTML verzije.
       </p>
 
+      {rucniIzvoz && (
+        <div style={{ marginTop: 12 }}>
+          <label htmlFor="rucni-izvoz">
+            Označi sve (Ctrl+A), kopiraj (Ctrl+C) i spremi u datoteku s nastavkom .json
+          </label>
+          <textarea
+            id="rucni-izvoz"
+            readOnly
+            rows={6}
+            value={rucniIzvoz}
+            onFocus={(e) => e.currentTarget.select()}
+            style={{ width: '100%', fontFamily: 'ui-monospace, monospace', fontSize: 12 }}
+          />
+          <button className="btn secondary small" onClick={() => setRucniIzvoz(null)}>
+            Sakrij
+          </button>
+        </div>
+      )}
+
       <IzvozPodsjetnik mark={izvoz} updatedAt={state.updatedAt} />
       <PovratakNaKopiju />
     </div>
@@ -155,38 +181,59 @@ export function Postavke() {
     </div>
   )
 
+  /*
+   * Sto tocno nedostaje racuna se PRIJE klika, ne poslije.
+   *
+   * Gumb je prije pisao "jelovnike i recepte", a vracao je i sezonske tjedne —
+   * pa je izgledalo kao da radi nesto sto nije obecao. Sada stoji popis onoga
+   * sto ce se vratiti, a kad nema sto, gumb je ugasen.
+   */
+  const obnova = useMemo(
+    () =>
+      restoreStarterContent(state, {
+        recipes: STARTER_RECIPES,
+        menus: STARTER_MENUS,
+        weeks: STARTER_WEEKS,
+      }),
+    [state],
+  )
+  const nedostaje = [
+    obnova.added.recipes && broj(obnova.added.recipes, ['jelo', 'jela', 'jela']),
+    obnova.added.menus && broj(obnova.added.menus, ['jelovnik', 'jelovnika', 'jelovnika']),
+    obnova.added.weeks &&
+      broj(obnova.added.weeks, ['sezonski tjedan', 'sezonska tjedna', 'sezonskih tjedana']),
+    obnova.tagged &&
+      `oznaka kuhinje na ${broj(obnova.tagged, ['jelovniku', 'jelovnika', 'jelovnika'])}`,
+  ].filter(Boolean) as string[]
+
   const ugradeniSadrzaj = (
     <div className="card">
       <h2>Ugrađeni sadržaj</h2>
       <p className="muted small" style={{ margin: '-6px 0 10px' }}>
-        Recepti, dnevni jelovnici i sezonski tjedni dolaze samo pri prvom pokretanju. Ako su ti
+        Jela, dnevni jelovnici i <b>sezonski tjedni</b> dolaze samo pri prvom pokretanju. Ako su ti
         obrisani ili je aplikacija u međuvremenu dobila novi sadržaj, ovime se vraća ono što
-        nedostaje — postojeće se ne dira.
+        nedostaje — postojeće se ne dira i ništa se ne prepisuje.
       </p>
+
+      {nedostaje.length === 0 ? (
+        <p className="muted small" style={{ margin: '0 0 10px' }}>
+          Sve je na mjestu — nema što vratiti.
+        </p>
+      ) : (
+        <div className="banner" style={{ marginTop: 0, marginBottom: 10 }}>
+          Vratit će se: <b>{nedostaje.join(', ')}</b>.
+        </div>
+      )}
+
       <button
         className="btn secondary small"
+        disabled={nedostaje.length === 0}
         onClick={() => {
-          const {
-            state: next,
-            added,
-            tagged,
-          } = restoreStarterContent(state, {
-            recipes: STARTER_RECIPES,
-            menus: STARTER_MENUS,
-            weeks: STARTER_WEEKS,
-          })
-          const parts = [
-            added.recipes && `${added.recipes} recepata`,
-            added.menus && `${added.menus} jelovnika`,
-            added.weeks && `${added.weeks} tjedana`,
-            tagged && `oznaka kuhinje na ${tagged} jelovnika`,
-          ].filter(Boolean)
-          if (!parts.length) return toast('Sve je već na mjestu.')
-          replaceAll(next, 'obnova ugrađenog sadržaja')
-          toast(`Vraćeno: ${parts.join(', ')}.`, { label: '↩ Poništi', run: undo })
+          replaceAll(obnova.state, 'obnova ugrađenog sadržaja')
+          toast(`Vraćeno: ${nedostaje.join(', ')}.`, { label: '↩ Poništi', run: undo })
         }}
       >
-        ↺ Vrati ugrađene jelovnike i recepte
+        ↺ Vrati ono što nedostaje
       </button>
     </div>
   )

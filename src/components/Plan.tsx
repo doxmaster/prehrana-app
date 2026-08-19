@@ -71,17 +71,22 @@ export function PlanZaglavlje({ date, plan, meals, onChange }: ZaglavljeProps) {
 
   return (
     <div className="plan-redak">
-      <span className="muted small" style={{ flex: 1, minWidth: 0 }}>
-        <b>Plan za ovaj dan:</b> {naslov} · {fmt(total.kcal)} kcal
+      <span className="plan-znak">plan</span>
+      <span className="small" style={{ flex: 1, minWidth: 0 }}>
+        <b>{naslov}</b> · {fmt(total.kcal)} kcal
         {plan.factor !== 1 && (
           <>
             {' '}
             · količine za {person.name} (udio {fmt(plan.factor, 2)})
           </>
         )}
+        <br />
+        <span className="muted" style={{ fontSize: 12 }}>
+          Prijedlog iz tjednog jelovnika — ne broji se dok ga ne upišeš.
+        </span>
       </span>
-      <button className="btn small" onClick={() => void upisiDan()}>
-        ✓ Pojeo sam sve po planu
+      <button className="btn" onClick={() => void upisiDan()}>
+        ✓ Upiši cijeli dan
       </button>
     </div>
   )
@@ -125,9 +130,9 @@ export function PlanPrijedlog({ name, index, items, postojeci, onChange }: Prije
 
   return (
     <div className="plan-prijedlog">
+      <span className="plan-znak">plan</span>
       <span style={{ flex: 1, minWidth: 0 }}>
-        <span className="tag">plan</span>{' '}
-        <span className="muted small">
+        <span className="small">
           {items
             .map(
               (item) =>
@@ -137,8 +142,8 @@ export function PlanPrijedlog({ name, index, items, postojeci, onChange }: Prije
           · <span className="kcal-c">{fmt(sumItems(items, foods).kcal)} kcal</span>
         </span>
       </span>
-      <button className="btn secondary small" onClick={() => void upisi()}>
-        ✓ upiši
+      <button className="btn" onClick={() => void upisi()}>
+        ✓ Upiši
       </button>
     </div>
   )

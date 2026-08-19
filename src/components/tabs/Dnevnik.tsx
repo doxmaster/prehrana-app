@@ -99,8 +99,10 @@ export function Dnevnik() {
         meals={meals.filter((m) => m.length > 0).length}
       />
 
-      {/* Pomak po danima ostaje na vrhu — jucer i danas su najcesci slucaj. */}
-      <div className="card">
+      {/* Pomak po danima ostaje na vrhu — jucer i danas su najcesci slucaj.
+          Preko cijelog retka jer je traka, ne kartica: na pola sirine bi do nje
+          ostala prazna polovica. */}
+      <div className="card span-all">
         <div className="row" style={{ justifyContent: 'space-between' }}>
           <div className="row">
             <button

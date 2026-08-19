@@ -58,16 +58,33 @@ export function Tekucina({ date, meals, onChange }: Props) {
   }
 
   return (
-    <div className="card">
+    /*
+     * Preko cijelog retka: kartica je niska, a susjedni Pregled dana visok, pa
+     * bi u dva stupca ispod nje ostala rupa visoka koliko i on.
+     */
+    <div className="card span-all">
       <div className="flexsplit">
         <h2 style={{ margin: 0 }}>💧 Tekućina</h2>
-        <span className={fluid >= target ? 'tag' : 'small muted'} style={fluid >= target ? { color: 'var(--good)' } : {}}>
+        <span
+          className={fluid >= target ? 'tag' : 'small muted'}
+          style={fluid >= target ? { color: 'var(--good)' } : {}}
+        >
           {fmt(fluid, 2)} / {fmt(target, 1)} L
         </span>
       </div>
 
-      <div className="prog" role="progressbar" aria-label="Tekućina" aria-valuenow={Math.round(pct)} aria-valuemin={0} aria-valuemax={100} style={{ margin: '8px 0 10px' }}>
-        <div style={{ width: `${pct}%`, background: fluid >= target ? 'var(--good)' : 'var(--warn)' }} />
+      <div
+        className="prog"
+        role="progressbar"
+        aria-label="Tekućina"
+        aria-valuenow={Math.round(pct)}
+        aria-valuemin={0}
+        aria-valuemax={100}
+        style={{ margin: '8px 0 10px' }}
+      >
+        <div
+          style={{ width: `${pct}%`, background: fluid >= target ? 'var(--good)' : 'var(--warn)' }}
+        />
       </div>
 
       <div className="row">

@@ -207,6 +207,10 @@ body::before {
  * navigacija drzi gore bez obzira koliko se prozor suzi.
  */
 @media (max-width: 720px) and (pointer: coarse) {
+  /* Dolje je svaki piksel sirine zauzet, pa razdjelnik skupina ide na najmanje. */
+  .tab-razdjelnik {
+    margin: 6px 2px;
+  }
   .tabs {
     position: fixed;
     top: auto;

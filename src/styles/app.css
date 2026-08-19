@@ -594,28 +594,59 @@ tbody tr:hover {
 /* ---------- plan unutar obroka ---------- */
 
 /*
- * Plan je prijedlog, ne unos, pa mora izgledati drukcije od stavki: isprekidan
- * rub i blaga podloga govore "ovo jos nije upisano" prije nego se procita.
+ * Plan je prijedlog, ne unos — i to se mora vidjeti IZDALEKA, jer je upravo ta
+ * razlika ono oko cega nastaje zabuna. Zato boja naglaska, deblji rub s lijeve
+ * strane i puni gumb: redak vice "ovo jos nije upisano, klikni".
+ * Isprekidan rub sam nije bio dovoljan.
  */
-.plan-redak {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex-wrap: wrap;
-  padding: 9px 12px;
-  margin-bottom: 12px;
-  border: 1px dashed var(--line-strong);
-  border-radius: 10px;
-  background: var(--panel2);
-}
+.plan-redak,
 .plan-prijedlog {
   display: flex;
   align-items: center;
   gap: 10px;
   flex-wrap: wrap;
-  padding: 7px 10px;
-  margin: 6px 0 4px;
-  border: 1px dashed var(--line-strong);
   border-radius: 10px;
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  border: 1px dashed color-mix(in srgb, var(--accent) 45%, transparent);
+  border-left: 4px solid var(--accent);
+}
+.plan-redak {
+  padding: 10px 14px;
+  margin-bottom: 12px;
+}
+.plan-prijedlog {
+  padding: 9px 12px;
+  margin: 8px 0 6px;
   font-size: 13px;
+}
+/* Sadrzaj plana nije sporedan tekst, pa nije ni sivi. */
+.plan-redak .muted,
+.plan-prijedlog .muted {
+  color: var(--txt);
+}
+
+/* Oznaka koja odmah kaze sto redak jest. */
+.plan-znak {
+  flex-shrink: 0;
+  background: var(--accent);
+  color: #fff;
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 3px 9px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+/*
+ * Razdjelnik skupina u navigaciji. Tanka crta, ne razmak: razmak bi na
+ * uskom zaslonu pao u novi red i skupine bi se raspale.
+ */
+.tab-razdjelnik {
+  width: 1px;
+  align-self: stretch;
+  /* Razmak uz crtu radi posao: unutar skupine gumbi su na 3 px, ovdje na ~17. */
+  margin: 5px 8px;
+  background: var(--line-strong);
 }

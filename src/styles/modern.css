@@ -7,10 +7,16 @@
  */
 
 body {
+  /*
+   * Slojevi idu odozgo prema dolje: tri prozirna mesh-gradijenta boje pleter
+   * ispod sebe, a pleter stoji na tlu koje je jednako --bg, pa se ton stranice
+   * ne mijenja ni kad se slika ne ucita.
+   */
   background:
     radial-gradient(900px 520px at 88% -8%, var(--bg-mesh-1) 0%, transparent 60%),
     radial-gradient(700px 460px at 4% 4%, var(--bg-mesh-2) 0%, transparent 58%),
     radial-gradient(760px 520px at 60% 100%, var(--bg-mesh-3) 0%, transparent 62%),
+    var(--pozadina) center / cover no-repeat,
     var(--bg);
   background-attachment: fixed;
   color: var(--txt);

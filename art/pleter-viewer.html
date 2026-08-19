@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tihi pleter — pozadine za Prehranu</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Lora:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --anthropic-dark: #141413;
+            --anthropic-light: #faf9f5;
+            --anthropic-mid-gray: #b0aea5;
+            --anthropic-light-gray: #e8e6dc;
+            --anthropic-orange: #d97757;
+            --anthropic-blue: #6a9bcc;
+            --anthropic-green: #788c5d;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, var(--anthropic-light) 0%, #f5f3ee 100%);
+            min-height: 100vh;
+            color: var(--anthropic-dark);
+        }
+        .container { display: flex; min-height: 100vh; padding: 20px; gap: 20px; }
+        .sidebar {
+            width: 320px; flex-shrink: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 24px; border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(20, 20, 19, 0.1);
+            overflow-y: auto; overflow-x: hidden;
+        }
+        .sidebar h1 { font-family: 'Lora', serif; font-size: 24px; font-weight: 500; margin-bottom: 8px; }
+        .sidebar .subtitle { color: var(--anthropic-mid-gray); font-size: 14px; margin-bottom: 32px; line-height: 1.4; }
+        .control-section { margin-bottom: 32px; }
+        .control-section h3 {
+            font-size: 16px; font-weight: 600; margin-bottom: 16px;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .control-section h3::before { content: '•'; color: var(--anthropic-orange); font-weight: bold; }
+        .seed-input {
+            width: 100%; background: var(--anthropic-light); padding: 12px; border-radius: 8px;
+            font-family: 'Courier New', monospace; font-size: 14px; margin-bottom: 12px;
+            border: 1px solid var(--anthropic-light-gray); text-align: center;
+        }
+        .seed-input:focus {
+            outline: none; border-color: var(--anthropic-orange);
+            box-shadow: 0 0 0 2px rgba(217, 119, 87, 0.1); background: white;
+        }
+        .seed-controls { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px; }
+        .regen-button { margin-bottom: 0; }
+        .control-group { margin-bottom: 20px; }
+        .control-group label { display: block; font-size: 14px; font-weight: 500; margin-bottom: 8px; }
+        .control-group .note { display: block; font-size: 11px; color: var(--anthropic-mid-gray); font-weight: 400; }
+        .slider-container { display: flex; align-items: center; gap: 12px; }
+        .slider-container input[type="range"] {
+            flex: 1; height: 4px; background: var(--anthropic-light-gray);
+            border-radius: 2px; outline: none; -webkit-appearance: none;
+        }
+        .slider-container input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none; width: 16px; height: 16px; background: var(--anthropic-orange);
+            border-radius: 50%; cursor: pointer; transition: all 0.2s ease;
+        }
+        .slider-container input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.1); background: #c86641; }
+        .slider-container input[type="range"]::-moz-range-thumb {
+            width: 16px; height: 16px; background: var(--anthropic-orange);
+            border-radius: 50%; border: none; cursor: pointer;
+        }
+        .value-display {
+            font-family: 'Courier New', monospace; font-size: 12px;
+            color: var(--anthropic-mid-gray); min-width: 60px; text-align: right;
+        }
+        .color-group { margin-bottom: 16px; }
+        .color-group label { display: block; font-size: 12px; color: var(--anthropic-mid-gray); margin-bottom: 4px; }
+        .color-picker-container { display: flex; align-items: center; gap: 8px; }
+        .color-picker-container input[type="color"] {
+            width: 32px; height: 32px; border: none; border-radius: 6px; cursor: pointer;
+            background: none; padding: 0;
+        }
+        .color-value { font-family: 'Courier New', monospace; font-size: 12px; color: var(--anthropic-mid-gray); }
+        .button {
+            background: var(--anthropic-orange); color: white; border: none;
+            padding: 10px 16px; border-radius: 6px; font-size: 14px; font-weight: 500;
+            cursor: pointer; transition: all 0.2s ease; width: 100%;
+        }
+        .button:hover { background: #c86641; transform: translateY(-1px); }
+        .button:active { transform: translateY(0); }
+        .button.secondary { background: var(--anthropic-blue); }
+        .button.secondary:hover { background: #5a8bb8; }
+        .button.tertiary { background: var(--anthropic-green); }
+        .button.tertiary:hover { background: #6b7b52; }
+        .button.ghost { background: var(--anthropic-light-gray); color: var(--anthropic-dark); }
+        .button.ghost.active { background: var(--anthropic-dark); color: white; }
+        .button-row { display: flex; gap: 8px; margin-bottom: 8px; }
+        .button-row .button { flex: 1; }
+        .canvas-area { flex: 1; display: flex; align-items: center; justify-content: center; min-width: 0; }
+        #canvas-container {
+            width: 100%; max-width: 1000px; border-radius: 12px; overflow: hidden;
+            box-shadow: 0 20px 40px rgba(20, 20, 19, 0.1); background: white;
+        }
+        #canvas-container canvas { display: block; width: 100% !important; height: auto !important; }
+        .loading { display: flex; align-items: center; justify-content: center; font-size: 18px; color: var(--anthropic-mid-gray); padding: 40px; }
+        @media (max-width: 600px) {
+            .container { flex-direction: column; }
+            .sidebar { width: 100%; }
+            .canvas-area { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <h1>Tihi pleter</h1>
+            <div class="subtitle">
+                Tri vrpce u zlatnom kutu, sedam pojasa po plohi — pleter koji se ne crta
+                linijom nego rezom sjene na križanju.
+            </div>
+
+            <div class="control-section">
+                <h3>Sjeme</h3>
+                <input type="number" id="seed-input" class="seed-input" value="7" onchange="updateSeed()">
+                <div class="seed-controls">
+                    <button class="button secondary" onclick="previousSeed()">← Prethodno</button>
+                    <button class="button secondary" onclick="nextSeed()">Sljedeće →</button>
+                </div>
+                <button class="button tertiary regen-button" onclick="randomSeedAndUpdate()">↻ Nasumično</button>
+            </div>
+
+            <div class="control-section">
+                <h3>Tema</h3>
+                <div class="button-row">
+                    <button class="button ghost active" id="theme-dark" onclick="setTheme('dark')">Tamna</button>
+                    <button class="button ghost" id="theme-light" onclick="setTheme('light')">Svijetla</button>
+                </div>
+            </div>
+
+            <div class="control-section">
+                <h3>Parametri</h3>
+
+                <div class="control-group">
+                    <label>Tišina <span class="note">niže = jedva vidljivo, više = plakat</span></label>
+                    <div class="slider-container">
+                        <input type="range" id="quietness" min="0.06" max="1" step="0.02" value="0.5" oninput="updateParam('quietness', this.value)">
+                        <span class="value-display" id="quietness-value">0.50</span>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label>Vrpci u pleteru</label>
+                    <div class="slider-container">
+                        <input type="range" id="strands" min="2" max="5" step="1" value="3" oninput="updateParam('strands', this.value)">
+                        <span class="value-display" id="strands-value">3</span>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label>Duljina vala <span class="note">manje = dulje, mirnije vrpce</span></label>
+                    <div class="slider-container">
+                        <input type="range" id="repeats" min="1" max="8" step="1" value="2" oninput="updateParam('repeats', this.value)">
+                        <span class="value-display" id="repeats-value">2</span>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label>Razmak pojasa</label>
+                    <div class="slider-container">
+                        <input type="range" id="bandGap" min="140" max="620" step="10" value="330" oninput="updateParam('bandGap', this.value)">
+                        <span class="value-display" id="bandGap-value">330</span>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label>Širina vrpce</label>
+                    <div class="slider-container">
+                        <input type="range" id="ribbonWidth" min="6" max="70" step="2" value="30" oninput="updateParam('ribbonWidth', this.value)">
+                        <span class="value-display" id="ribbonWidth-value">30</span>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label>Zrno teksture <span class="note">čestice ispod vrpci</span></label>
+                    <div class="slider-container">
+                        <input type="range" id="texture" min="0" max="1" step="0.05" value="0.55" oninput="updateParam('texture', this.value)">
+                        <span class="value-display" id="texture-value">0.55</span>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label>Udio šuma <span class="note">0 = čista geometrija</span></label>
+                    <div class="slider-container">
+                        <input type="range" id="curl" min="0" max="1" step="0.02" value="0.3" oninput="updateParam('curl', this.value)">
+                        <span class="value-display" id="curl-value">0.30</span>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label>Privlačenje uz vrpcu</label>
+                    <div class="slider-container">
+                        <input type="range" id="cling" min="0" max="1" step="0.02" value="0.7" oninput="updateParam('cling', this.value)">
+                        <span class="value-display" id="cling-value">0.70</span>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label>Čestica</label>
+                    <div class="slider-container">
+                        <input type="range" id="particleCount" min="1000" max="12000" step="500" value="3500" oninput="updateParam('particleCount', this.value)">
+                        <span class="value-display" id="particleCount-value">3500</span>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label>Duljina traga</label>
+                    <div class="slider-container">
+                        <input type="range" id="trailLength" min="6" max="60" step="1" value="26" oninput="updateParam('trailLength', this.value)">
+                        <span class="value-display" id="trailLength-value">26</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="control-section">
+                <h3>Boje</h3>
+                <div class="color-group">
+                    <label>Vrpca 1 — vrt</label>
+                    <div class="color-picker-container">
+                        <input type="color" id="color1" value="#5fb98a" onchange="updateColor(0, this.value)">
+                        <span class="color-value" id="color1-value">#5fb98a</span>
+                    </div>
+                </div>
+                <div class="color-group">
+                    <label>Vrpca 2 — kruh i ulje</label>
+                    <div class="color-picker-container">
+                        <input type="color" id="color2" value="#e0a558" onchange="updateColor(1, this.value)">
+                        <span class="color-value" id="color2-value">#e0a558</span>
+                    </div>
+                </div>
+                <div class="color-group">
+                    <label>Vrpca 3 — more</label>
+                    <div class="color-picker-container">
+                        <input type="color" id="color3" value="#4f93b8" onchange="updateColor(2, this.value)">
+                        <span class="color-value" id="color3-value">#4f93b8</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="control-section">
+                <h3>Radnje</h3>
+                <div class="button-row">
+                    <button class="button" onclick="initializeSystem()">Ponovno složi</button>
+                    <button class="button ghost" onclick="resetParameters()">Poništi</button>
+                </div>
+                <div class="button-row">
+                    <button class="button tertiary" onclick="downloadImage('png')">Spremi PNG</button>
+                    <button class="button tertiary" onclick="downloadImage('webp')">Spremi WEBP</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="canvas-area">
+            <div id="canvas-container">
+                <div class="loading">Pleter se slaže...</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ═══════════════════════════════════════════════════════════════════
+        // PARAMETRI
+        // ═══════════════════════════════════════════════════════════════════
+        let params = {
+            seed: 7,
+            theme: 'dark',
+            quietness: 0.5,
+            strands: 3,
+            repeats: 2,        // duljina vala; visok broj daje cik-cak umjesto vrpce
+            bandGap: 330,
+            ribbonWidth: 30,
+            texture: 0.55,
+            curl: 0.3,
+            cling: 0.7,
+            particleCount: 3500,
+            trailLength: 26,
+        }
+        const defaultParams = JSON.parse(JSON.stringify(params))
+
+        const W = 1600, H = 1000
+        const GOLDEN_ANGLE = Math.PI * (3 - Math.sqrt(5)) // 137.507°
+        const BRAID_TILT = -Math.PI / 7                   // blagi nagib pletera
+
+        const THEMES = {
+            dark:  { bg: [13, 20, 18],    blend: 'SCREEN',   weight: 1.6, base: 0.05, glow: 1 },
+            // Na svijetloj temi MULTIPLY pretvara isti sjaj u zelenu fleku, pa ide slabije.
+            light: { bg: [250, 249, 244], blend: 'MULTIPLY', weight: 1.9, base: 0.04, glow: 0.4 },
+        }
+
+        let particles = []
+        let paletteRGB = []
+        let freq = 1, amp = 1
+        const cosT = Math.cos(BRAID_TILT), sinT = Math.sin(BRAID_TILT)
+        let palette = ['#5fb98a', '#e0a558', '#4f93b8']
+
+        function setup() {
+            const canvas = createCanvas(W, H)
+            canvas.parent('canvas-container')
+            const loading = document.querySelector('.loading')
+            if (loading) loading.style.display = 'none'
+            noLoop()
+            initializeSystem()
+        }
+
+        /**
+         * Slika se slaze u tri sloja, uvijek istim redom:
+         *   1. tlo      — mekani prijelaz boje, da ploha nije mrtva
+         *   2. tekstura — cestice u polju, organsko zrno ispod svega
+         *   3. pleter   — siroke vrpce s rezom sjene na krizanjima
+         * Sve je jednokratno; nema animacije koju bi trebalo cekati.
+         */
+        function initializeSystem() {
+            randomSeed(params.seed)
+            noiseSeed(params.seed)
+
+            freq = (Math.PI * 2 * params.repeats) / W
+            amp = params.bandGap * 0.42
+            paletteRGB = palette.map((hex) => {
+                const c = color(hex)
+                return [red(c), green(c), blue(c)]
+            })
+
+            drawGround()
+            drawTexture()
+            drawBraid()
+        }
+
+        function themeNow() {
+            return THEMES[params.theme]
+        }
+
+        /** Tlo: osnovna boja plus vrlo blaga svjetlost izvan sredista. */
+        function drawGround() {
+            const t = themeNow()
+            blendMode(BLEND)
+            noStroke()
+            background(t.bg[0], t.bg[1], t.bg[2])
+
+            const gx = W * (0.3 + noise(params.seed * 0.7) * 0.4)
+            const gy = H * (0.26 + noise(params.seed * 1.3 + 9) * 0.48)
+            const glow = paletteRGB[0]
+            blendMode(t.blend === 'SCREEN' ? SCREEN : MULTIPLY)
+            const rMax = Math.max(W, H) * 1.15
+            for (let r = rMax; r > 0; r -= 24) {
+                const k = 1 - r / rMax
+                fill(glow[0], glow[1], glow[2], 255 * 0.014 * params.quietness * t.glow * k * k)
+                ellipse(gx, gy, r * 2.1, r * 1.5)
+            }
+        }
+
+        /**
+         * Tekstura: cestice nose isto polje kao i pleter, ali tako slabo da se
+         * pojedini trag ne vidi — vidi se samo da ploha ima zrno. Sijanje ide
+         * po fibonaccijevoj spirali, pa je pokrivenost ravnomjerna bez reda.
+         */
+        function drawTexture() {
+            const t = themeNow()
+            if (params.texture <= 0) return
+            blendMode(t.blend === 'SCREEN' ? SCREEN : MULTIPLY)
+
+            const n = Math.round(params.particleCount)
+            particles = []
+            for (let i = 0; i < n; i++) {
+                const q = (i + 0.5) / n
+                const r = Math.sqrt(q)
+                const a = i * GOLDEN_ANGLE
+                particles.push({
+                    x: W / 2 + Math.cos(a) * r * W * 0.8 + random(-16, 16),
+                    y: H / 2 + Math.sin(a) * r * H * 0.8 + random(-16, 16),
+                    off: random(-0.4, 0.4),
+                    life: random(0.5, 1),
+                })
+            }
+
+            for (let stepIndex = 0; stepIndex < params.trailLength; stepIndex++) {
+                const fade = 1 - stepIndex / params.trailLength
+                for (const p of particles) {
+                    const f = fieldAt(p.x, p.y, p.off)
+                    const nx = p.x + Math.cos(f.angle) * 3.4
+                    const ny = p.y + Math.sin(f.angle) * 3.4
+                    if (nx > -30 && nx < W + 30 && ny > -30 && ny < H + 30) {
+                        const breath = 0.2 + 1.3 * noise(p.x * 0.0009 + 5.5, p.y * 0.0009 + 8.1)
+                        const a = 255 * t.base * params.quietness * params.texture * p.life *
+                            breath * (0.4 + fade * 0.7)
+                        const c = paletteRGB[f.strand.k % paletteRGB.length]
+                        stroke(c[0], c[1], c[2], a)
+                        strokeWeight(t.weight * 0.7)
+                        line(p.x, p.y, nx, ny)
+                    }
+                    p.x = nx
+                    p.y = ny
+                }
+            }
+        }
+
+        /**
+         * Pleter: za svaki korak po duljini crta se komad svake vrpce, ali
+         * REDOM PO DUBINI — prvo ona koja ide ispod, pa rez u boji tla oko one
+         * koja ide iznad, pa tek onda ona iznad. Taj rez je jedini razlog zasto
+         * se krizanje cita kao proplitanje, a ne kao mrlja.
+         */
+        function drawBraid() {
+            const t = themeNow()
+            const reach = Math.hypot(W, H) * 0.62
+            const bands = Math.ceil(reach / params.bandGap)
+            const stepLen = 9
+
+            for (let band = -bands; band <= bands; band++) {
+                const drift = noise(band * 7.3, params.seed * 0.11) * Math.PI * 2
+                const swell = 0.55 + 0.9 * noise(band * 3.1 + 12.7, params.seed * 0.07)
+                const komadi = []
+
+                for (let k = 0; k < params.strands; k++) {
+                    const phase = k * GOLDEN_ANGLE * params.strands + band * 0.6 + drift
+                    const strand = { k, phase, swell, band }
+                    let tekuci = null
+
+                    for (let u = -reach; u <= reach; u += stepLen) {
+                        const depth = Math.cos(freq * u + phase) * (band % 2 === 0 ? 1 : -1)
+                        const iznad = depth >= 0
+                        if (!tekuci || tekuci.iznad !== iznad) {
+                            /*
+                             * Komad se ne prekida tocno na krizanju nego malo
+                             * preko njega: zaobljeni kraj tako zavrsi ispod
+                             * vrpce koja ide iznad, umjesto da viri kao batrljak.
+                             */
+                            if (tekuci) {
+                                tekuci.pts.push(ribbonPoint(strand, u))
+                                tekuci.pts.push(ribbonPoint(strand, u + stepLen * 1.6))
+                            }
+                            tekuci = { strand, iznad, depth, pts: [ribbonPoint(strand, u - stepLen * 1.6)], zbroj: 0, n: 0 }
+                            komadi.push(tekuci)
+                        }
+                        tekuci.pts.push(ribbonPoint(strand, u))
+                        tekuci.zbroj += depth
+                        tekuci.n++
+                    }
+                }
+
+                for (const komad of komadi) komad.depth = komad.zbroj / Math.max(1, komad.n)
+                komadi.sort((x, y) => x.depth - y.depth)
+                for (const komad of komadi) drawChunk(komad, t)
+            }
+        }
+
+        /**
+         * Jedan komad vrpce izmedu dva krizanja: prvo rez u boji tla oko cijele
+         * duljine, pa tri sve uza prolaza koji daju mekani rub. Rez je razlog
+         * zasto se proplitanje vidi; njegova sirina je najosjetljiviji broj u
+         * algoritmu — presiroko i pleter se raspada u odvojene komade.
+         */
+        function drawChunk(komad, t) {
+            if (komad.pts.length < 2) return
+            if (!komad.pts.some(onCanvas)) return
+
+            const p0 = komad.pts[0]
+            const width = params.ribbonWidth * (0.8 + 0.4 * noise(p0.x * 0.0011, komad.strand.band * 4.4))
+            const lift = 0.6 + 0.4 * (komad.depth * 0.5 + 0.5)
+            const breath = 0.4 + 1.1 * noise(p0.x * 0.0008 + 3.3, p0.y * 0.0008 + 6.6)
+            const c = paletteRGB[komad.strand.k % paletteRGB.length]
+
+            noFill()
+            strokeJoin(ROUND)
+            strokeCap(ROUND)
+
+            blendMode(BLEND)
+            stroke(t.bg[0], t.bg[1], t.bg[2], 255 * (0.3 + 0.62 * params.quietness))
+            strokeWeight(width * 1.55)
+            polyline(komad.pts)
+
+            blendMode(t.blend === 'SCREEN' ? SCREEN : MULTIPLY)
+            const base = 255 * params.quietness * lift * breath
+            const prolazi = [[2.2, 0.05], [1.35, 0.1], [0.8, 0.22]]
+            for (const pass of prolazi) {
+                stroke(c[0], c[1], c[2], base * pass[1])
+                strokeWeight(width * pass[0])
+                polyline(komad.pts)
+            }
+        }
+
+        function polyline(pts) {
+            beginShape()
+            for (const p of pts) vertex(p.x, p.y)
+            endShape()
+        }
+
+        /** Tocka na osi vrpce, prebacena natrag u koordinate platna. */
+        function ribbonPoint(komad, u) {
+            const wobble = (noise(u * 0.0009, komad.band * 2.2) - 0.5) * params.bandGap * 0.5 * params.curl
+            const v = komad.band * params.bandGap +
+                amp * komad.swell * Math.sin(freq * u + komad.phase) + wobble
+            return { x: W / 2 + u * cosT - v * sinT, y: H / 2 + u * sinT + v * cosT }
+        }
+
+        function onCanvas(p) {
+            return p.x > -90 && p.x < W + 90 && p.y > -90 && p.y < H + 90
+        }
+
+        /** Koordinate u sustavu pletera: u uzduz vrpci, v poprijeko. */
+        function toBraid(x, y) {
+            const cx = x - W / 2, cy = y - H / 2
+            return { u: cx * cosT + cy * sinT, v: -cx * sinT + cy * cosT }
+        }
+
+        /** Koja je vrpca najbliza zadanoj tocki — koristi je tekstura. */
+        function nearestStrand(u, v) {
+            const band = Math.round(v / params.bandGap)
+            const vLocal = v - band * params.bandGap
+            const drift = noise(band * 7.3, params.seed * 0.11) * Math.PI * 2
+            const swell = 0.55 + 0.9 * noise(band * 3.1 + 12.7, params.seed * 0.07)
+
+            let best = 0, bestDist = 1e9, bestCenter = 0, bestSlope = 0
+            for (let k = 0; k < params.strands; k++) {
+                const phase = k * GOLDEN_ANGLE * params.strands + band * 0.6 + drift
+                const local = amp * swell
+                const center = local * Math.sin(freq * u + phase)
+                const d = Math.abs(vLocal - center)
+                if (d < bestDist) {
+                    bestDist = d
+                    best = k
+                    bestCenter = center
+                    bestSlope = local * freq * Math.cos(freq * u + phase)
+                }
+            }
+            return { k: best, dist: bestDist, center: bestCenter, slope: bestSlope, vLocal }
+        }
+
+        /** Smjer u tocki: geometrija vrpce, zamucena sumom. */
+        function fieldAt(x, y, offset) {
+            const b = toBraid(x, y)
+            const s = nearestStrand(b.u, b.v)
+            const along = Math.atan2(s.slope, 1)
+            const target = s.center + offset * params.bandGap
+            const pull = -(s.vLocal - target) / Math.max(1, params.bandGap * 0.5)
+            const braidAngle = along + pull * params.cling * 0.9 + BRAID_TILT
+
+            const n = noise(x * 0.0016, y * 0.0016, params.seed * 0.01)
+            const n2 = noise(x * 0.0061 + 31.4, y * 0.0061 + 17.2)
+            const noiseAngle = (n * 2.6 + n2 * 1.4) * Math.PI * 2
+
+            const w = params.curl
+            const ax = Math.cos(braidAngle) * (1 - w) + Math.cos(noiseAngle) * w
+            const ay = Math.sin(braidAngle) * (1 - w) + Math.sin(noiseAngle) * w
+            return { angle: Math.atan2(ay, ax), strand: s }
+        }
+
+        // ═══════════════════════════════════════════════════════════════════
+        // KONTROLE
+        // ═══════════════════════════════════════════════════════════════════
+        const DECIMALS = ['quietness', 'curl', 'cling', 'texture']
+
+        function updateParam(name, value) {
+            params[name] = parseFloat(value)
+            const el = document.getElementById(name + '-value')
+            if (el) el.textContent = DECIMALS.includes(name) ? parseFloat(value).toFixed(2) : value
+            initializeSystem()
+        }
+
+        function updateColor(index, value) {
+            palette[index] = value
+            document.getElementById('color' + (index + 1) + '-value').textContent = value
+            initializeSystem()
+        }
+
+        function setTheme(theme) {
+            params.theme = theme
+            document.getElementById('theme-dark').classList.toggle('active', theme === 'dark')
+            document.getElementById('theme-light').classList.toggle('active', theme === 'light')
+            initializeSystem()
+        }
+
+        function downloadImage(kind) {
+            const q = String(params.quietness).replace('.', '')
+            const name = 'pleter-' + params.theme + '-s' + params.seed + '-q' + q
+            if (kind === 'png') return saveCanvas(name, 'png')
+            const data = document.querySelector('#canvas-container canvas').toDataURL('image/webp', 0.82)
+            const a = document.createElement('a')
+            a.href = data
+            a.download = name + '.webp'
+            a.click()
+        }
+
+        // ═══════════════════════════════════════════════════════════════════
+        // SJEME
+        // ═══════════════════════════════════════════════════════════════════
+        function updateSeedDisplay() {
+            document.getElementById('seed-input').value = params.seed
+        }
+
+        function updateSeed() {
+            const input = document.getElementById('seed-input')
+            const next = parseInt(input.value, 10)
+            if (next && next > 0) {
+                params.seed = next
+                initializeSystem()
+            } else {
+                updateSeedDisplay()
+            }
+        }
+
+        function previousSeed() {
+            params.seed = Math.max(1, params.seed - 1)
+            updateSeedDisplay()
+            initializeSystem()
+        }
+
+        function nextSeed() {
+            params.seed = params.seed + 1
+            updateSeedDisplay()
+            initializeSystem()
+        }
+
+        function randomSeedAndUpdate() {
+            params.seed = Math.floor(Math.random() * 999999) + 1
+            updateSeedDisplay()
+            initializeSystem()
+        }
+
+        function resetParameters() {
+            params = JSON.parse(JSON.stringify(defaultParams))
+            palette = ['#5fb98a', '#e0a558', '#4f93b8']
+            const keys = ['quietness', 'strands', 'repeats', 'bandGap', 'ribbonWidth', 'texture', 'curl', 'cling', 'particleCount', 'trailLength']
+            for (const key of keys) {
+                const input = document.getElementById(key)
+                const label = document.getElementById(key + '-value')
+                if (input) input.value = params[key]
+                if (label) label.textContent = DECIMALS.includes(key) ? params[key].toFixed(2) : params[key]
+            }
+            palette.forEach((hex, i) => {
+                document.getElementById('color' + (i + 1)).value = hex
+                document.getElementById('color' + (i + 1) + '-value').textContent = hex
+            })
+            setTheme(params.theme)
+            updateSeedDisplay()
+        }
+
+        window.addEventListener('load', updateSeedDisplay)
+    </script>
+</body>
+</html>

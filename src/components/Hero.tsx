@@ -1,4 +1,4 @@
-import { HERO_ART } from '../data/art'
+import pleter from '../assets/pozadina-tamna-naslov.svg'
 import { fmtDate, dayName } from '../domain/dates'
 import { fmt } from '../lib/format'
 
@@ -14,15 +14,16 @@ interface Props {
 /**
  * Baner na vrhu Dnevnika.
  *
- * Slika je izracunata, ne preuzeta (vidi scripts/generate-art.mjs) — pa nema
- * ni mreznog poziva ni tudeg materijala. Preko nje ide samo ono sto se cita u
- * prolazu: koji je dan, tko, i koliko je od dana ispunjeno.
+ * Slika je izracunata, ne preuzeta (scripts/generate-backgrounds.mjs) — pa nema
+ * ni mreznog poziva ni tudeg materijala. Uvijek ide tamna varijanta, bez obzira
+ * na temu: preko nje stoji tamna koprena i bijeli tekst. Na slici je samo ono
+ * sto se cita u prolazu: koji je dan, tko, i koliko je od dana ispunjeno.
  */
 export function Hero({ date, name, kcal, target, meals }: Props) {
   const pct = target > 0 ? Math.min(100, Math.round((kcal / target) * 100)) : 0
 
   return (
-    <div className="hero" style={{ backgroundImage: `url("${HERO_ART}")` }}>
+    <div className="hero" style={{ backgroundImage: `url("${pleter}")` }}>
       <div className="hero-shade" />
       <div className="hero-body">
         <div className="hero-day">

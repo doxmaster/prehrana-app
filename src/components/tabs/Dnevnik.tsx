@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import { MONTHS, addDays, dayName, fmtDate, firstOfMonth, iso, monthDates, parseISO, todayISO, weekDates } from '../../domain/dates'
 import { NUTRIENT_KEYS } from '../../domain/types'
 import { NUTRIENTS } from '../../domain/constants'
@@ -24,6 +24,10 @@ export function Dnevnik() {
   const update = useUpdate()
   const selectedDate = useAppStore((s) => s.selectedDate)
   const setSelectedDate = useAppStore((s) => s.setSelectedDate)
+  /* Kalendar je zatvoren dok ne zatreba: otvara se za skok na drugi dan, a
+     pomak za jedan dan ide strelicama iznad. */
+  const [calendarOpen, setCalendarOpen] = useState(false)
+  const [aiOpen, setAiOpen] = useState(false)
 
   const month = firstOfMonth(selectedDate)
   const meals: DayMeals = person.log[selectedDate] ?? emptyMeals()
@@ -76,28 +80,9 @@ export function Dnevnik() {
         meals={meals.filter((m) => m.length > 0).length}
       />
 
+      {/* Pomak po danima ostaje na vrhu — jucer i danas su najcesci slucaj. */}
       <div className="card">
-        <div className="row" style={{ justifyContent: 'space-between', marginBottom: 10 }}>
-          <div className="row">
-            <label htmlFor="mjesec" style={{ margin: '0 0 0 6px' }}>
-              Mjesec:
-            </label>
-            <select
-              id="mjesec"
-              style={{ width: 'auto' }}
-              value={parseISO(month).getMonth()}
-              onChange={(e) => {
-                const year = parseISO(month).getFullYear()
-                setSelectedDate(iso(new Date(year, Number(e.target.value), 1)))
-              }}
-            >
-              {MONTHS.map((name, i) => (
-                <option value={i} key={name}>
-                  {name}
-                </option>
-              ))}
-            </select>
-          </div>
+        <div className="row" style={{ justifyContent: 'space-between' }}>
           <div className="row">
             <button
               className="btn secondary small"
@@ -120,22 +105,56 @@ export function Dnevnik() {
               Danas
             </button>
           </div>
+          <button className="btn secondary small" onClick={() => setCalendarOpen((v) => !v)}>
+            {calendarOpen ? 'Sakrij kalendar' : '📅 Odaberi drugi dan'}
+          </button>
         </div>
 
-        <Calendar month={month} selected={selectedDate} kcalByDate={kcalByDate} onPick={setSelectedDate} />
-        <p className="hint">Klikni dan za prikaz; brojka u ćeliji su pojedene kalorije tog dana.</p>
+        {calendarOpen && (
+          <>
+            <div className="row" style={{ margin: '12px 0 8px' }}>
+              <label htmlFor="mjesec" style={{ margin: 0 }}>
+                Mjesec:
+              </label>
+              <select
+                id="mjesec"
+                style={{ width: 'auto' }}
+                value={parseISO(month).getMonth()}
+                onChange={(e) => {
+                  const year = parseISO(month).getFullYear()
+                  setSelectedDate(iso(new Date(year, Number(e.target.value), 1)))
+                }}
+              >
+                {MONTHS.map((name, i) => (
+                  <option value={i} key={name}>
+                    {name}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <Calendar month={month} selected={selectedDate} kcalByDate={kcalByDate} onPick={setSelectedDate} />
+            <p className="hint">Klikni dan za prikaz; brojka u ćeliji su pojedene kalorije tog dana.</p>
+          </>
+        )}
       </div>
 
       <PlanTraka date={selectedDate} meals={meals} onChange={editMeals} />
 
-      <Tekucina date={selectedDate} meals={meals} onChange={editMeals} />
-
-      <AiUnos onChange={editMeals} />
-
       <div className="card">
-        <h2>Obroci (pojedeno)</h2>
+        <div className="flexsplit">
+          <h2 style={{ margin: 0 }}>Obroci (pojedeno)</h2>
+          {/* AI unos je povremen put (izvan Claudea trazi kopiraj/zalijepi), pa
+              stoji kao gumb uz sam unos, a ne kao stalna kartica. */}
+          <button className="btn secondary small" onClick={() => setAiOpen(true)}>
+            🤖 Upiši rečenicom
+          </button>
+        </div>
         <MealEditor meals={meals} onChange={editMeals} />
       </div>
+
+      <Tekucina date={selectedDate} meals={meals} onChange={editMeals} />
+
+      {aiOpen && <AiUnos onChange={editMeals} onClose={() => setAiOpen(false)} />}
 
       <div className="card">
         <h2>

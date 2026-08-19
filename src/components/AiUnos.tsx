@@ -8,6 +8,7 @@ import type { DayMeals } from '../domain/types'
 
 interface Props {
   onChange: (mutate: (meals: DayMeals) => void) => void
+  onClose: () => void
 }
 
 /** Postoji samo kad je aplikacija otvorena unutar Claudea. */
@@ -34,8 +35,12 @@ function textOf(response: unknown): string {
  * Unutar Claudea ide u jednom kliku. Drugdje se upit kopira, zalijepi u bilo koji
  * jezicni model i odgovor vrati natrag — bez API kljuca u pregledniku i bez
  * troska, uz cijenu jednog kopiraj/zalijepi.
+ *
+ * Otvara se kao dijalog, a ne kao stalna kartica: izvan Claudea trazi
+ * kopiraj/zalijepi, pa je to povremen put, a ne glavni. Kao kartica je zauzimao
+ * vise prostora nego sam unos obroka.
  */
-export function AiUnos({ onChange }: Props) {
+export function AiUnos({ onChange, onClose }: Props) {
   const foods = useFoods()
   const [text, setText] = useState('')
   const [answer, setAnswer] = useState('')
@@ -100,8 +105,9 @@ export function AiUnos({ onChange }: Props) {
   }
 
   return (
-    <div className="card" style={{ background: 'linear-gradient(120deg,#eaf5ff 0%,#e9faf1 100%)' }}>
-      <h2>🤖 Upiši što si jeo</h2>
+    <div className="modal-ov" role="dialog" aria-modal="true" aria-label="Upiši što si jeo">
+      <div className="modal-box wide" style={{ maxHeight: '88vh', overflowY: 'auto' }}>
+      <h2 style={{ marginTop: 0 }}>🤖 Upiši što si jeo</h2>
       <p className="muted small" style={{ margin: '-6px 0 10px' }}>
         Napiši običnim jezikom, npr. <i>„za ručak sarma i dvije kriške kruha, uz čašu vina”</i>.
         Poznate namirnice se povezuju s provjerenom bazom, a ostalo se procjenjuje.
@@ -170,6 +176,13 @@ export function AiUnos({ onChange }: Props) {
           ključa u pregledniku i bez troška.
         </p>
       )}
+
+        <div className="modal-actions" style={{ marginTop: 12 }}>
+          <button className="btn secondary" onClick={onClose}>
+            Zatvori
+          </button>
+        </div>
+      </div>
     </div>
   )
 }

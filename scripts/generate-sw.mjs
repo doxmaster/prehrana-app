@@ -65,11 +65,24 @@ self.addEventListener('fetch', (e) => {
   if (zahtjev.method !== 'GET' || new URL(zahtjev.url).origin !== self.location.origin) return
 
   /*
-   * Otvaranje aplikacije uvijek dobiva index.html iz spremista: adresa moze
-   * imati bilo kakav nastavak, a aplikacija je jedna stranica.
+   * Otvaranje aplikacije ide PRVO NA MREZU, pa tek onda u spremiste.
+   *
+   * Obrnuto (spremiste prvo) znaci da korisnik nakon svakog novog izdanja jos
+   * danima vidi staru aplikaciju i misli da nesto ne radi — tako je nova kartica
+   * u Postavkama bila nevidljiva iako je odavno objavljena. Stranica je mala,
+   * pa je jedan mrezni zahtjev jeftiniji od te zbrke; bez mreze se i dalje
+   * posluzuje spremljena kopija, sto je i bila cijela svrha.
    */
   if (zahtjev.mode === 'navigate') {
-    e.respondWith(caches.match(BASE + 'index.html').then((o) => o || fetch(zahtjev)))
+    e.respondWith(
+      fetch(zahtjev)
+        .then((odgovor) => {
+          const kopija = odgovor.clone()
+          caches.open(VERZIJA).then((c) => c.put(BASE + 'index.html', kopija))
+          return odgovor
+        })
+        .catch(() => caches.match(BASE + 'index.html').then((o) => o || Response.error())),
+    )
     return
   }
 

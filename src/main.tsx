@@ -30,5 +30,17 @@ if (import.meta.env.PROD && 'serviceWorker' in navigator && window.top === windo
     void navigator.serviceWorker
       .register(`${import.meta.env.BASE_URL}sw.js`)
       .catch((err) => console.warn('Offline rad nije dostupan:', err))
+
+    /*
+     * Kad novo izdanje preuzme stranicu, jednom se osvjezi da korisnik odmah
+     * vidi novu verziju. Zastavica sprjecava vrtnju u krug: bez nje bi svaka
+     * promjena upravljaca pokrenula novo ucitavanje.
+     */
+    let osvjezeno = false
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+      if (osvjezeno) return
+      osvjezeno = true
+      window.location.reload()
+    })
   })
 }

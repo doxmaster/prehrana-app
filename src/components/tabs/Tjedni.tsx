@@ -1,7 +1,13 @@
 import { useMemo } from 'react'
 import { WEEKDAY_NAMES } from '../../domain/types'
 import { fmtDate, mondayOf, todayISO } from '../../domain/dates'
-import { WEEK_LENGTH, emptyWeekDays, weekDescription, weekShoppingList, weekSummary } from '../../domain/weeks'
+import {
+  WEEK_LENGTH,
+  emptyWeekDays,
+  weekDescription,
+  weekShoppingList,
+  weekSummary,
+} from '../../domain/weeks'
 import { NO_REPEAT_WEEKS, generateWeek } from '../../domain/generateWeek'
 import { rankMenus } from '../../domain/menuFit'
 import { weekIdForDate } from '../../domain/plan'
@@ -10,7 +16,7 @@ import { mealsTotals } from '../../domain/nutrients'
 import { computeTargets } from '../../domain/targets'
 import { uid } from '../../domain/id'
 import { confirmDialog, promptDialog, toast } from '../../store/dialogs'
-import { downloadBlob } from '../../store/storage'
+import { spremiDatoteku } from '../../store/storage'
 import { useAppStore, useFoods, useUpdate } from '../../store/useAppStore'
 import { FlagBadge } from '../FlagBadge'
 import { NutrientBars } from '../NutrientBars'
@@ -36,8 +42,7 @@ export function Tjedni() {
    * sadrzajem — predlozak i njegova datirana kopija — ne vidi koji je na snazi.
    */
   const naSnaziId = weekIdForDate(state.weeks, todayISO())
-  const household =
-    state.households.find((h) => h.id === week?.householdId) ?? state.households[0]
+  const household = state.households.find((h) => h.id === week?.householdId) ?? state.households[0]
 
   const factor = household ? householdFactor(household, state.profiles) : 1
   const shares = useMemo(
@@ -57,7 +62,16 @@ export function Tjedni() {
 
   /** Cilj kucanstva je zbroj dnevnih ciljeva clanova. */
   const householdTargets = useMemo(() => {
-    const base = computeTargets(state.profiles[0]?.profile ?? { sex: 'm', age: 30, act: 1.55, weight: 75, height: 178, goal: 0 })
+    const base = computeTargets(
+      state.profiles[0]?.profile ?? {
+        sex: 'm',
+        age: 30,
+        act: 1.55,
+        weight: 75,
+        height: 178,
+        goal: 0,
+      },
+    )
     if (!shares.length) return base
     const scaled = { ...base }
     for (const key of Object.keys(base) as (keyof typeof base)[]) {
@@ -83,7 +97,11 @@ export function Tjedni() {
           className="btn"
           onClick={() =>
             update((draft) => {
-              const created: WeekPlan = { id: uid('wk'), title: 'Novi tjedan', days: emptyWeekDays() }
+              const created: WeekPlan = {
+                id: uid('wk'),
+                title: 'Novi tjedan',
+                days: emptyWeekDays(),
+              }
               draft.weeks.push(created)
               setActiveWeekId(created.id)
             })
@@ -170,10 +188,13 @@ export function Tjedni() {
                   score: (menu) => fit.byId.get(menu.id)?.score ?? 0,
                   discouraged: (menu) => fit.byId.get(menu.id)?.blocked ?? false,
                 })
-                update((draft) => {
-                  const target = draft.weeks.find((w) => w.id === week.id)
-                  if (target) target.days = result.days
-                }, `slaganje tjedna "${week.title ?? 'Tjedan'}"`)
+                update(
+                  (draft) => {
+                    const target = draft.weeks.find((w) => w.id === week.id)
+                    if (target) target.days = result.days
+                  },
+                  `slaganje tjedna "${week.title ?? 'Tjedan'}"`,
+                )
                 toast(
                   result.note ??
                     `Tjedan složen — ${WEEK_LENGTH} dana bez ponavljanja iz zadnja ${NO_REPEAT_WEEKS} tjedna.`,
@@ -223,16 +244,21 @@ export function Tjedni() {
                 const popunjenih = week.days.filter(Boolean).length
                 const ok = await confirmDialog(
                   `Obrisati "${week.title ?? 'tjedan'}"?` +
-                    (popunjenih ? `
+                    (popunjenih
+                      ? `
 
-Raspored od ${popunjenih} dana nestaje. Jelovnici ostaju.` : ''),
+Raspored od ${popunjenih} dana nestaje. Jelovnici ostaju.`
+                      : ''),
                   'Obriši',
                 )
                 if (!ok) return
-                update((draft) => {
-                  draft.weeks = draft.weeks.filter((w) => w.id !== week.id)
-                  setActiveWeekId(draft.weeks[0]?.id ?? null)
-                }, `brisanje tjedna "${week.title ?? 'Tjedan'}"`)
+                update(
+                  (draft) => {
+                    draft.weeks = draft.weeks.filter((w) => w.id !== week.id)
+                    setActiveWeekId(draft.weeks[0]?.id ?? null)
+                  },
+                  `brisanje tjedna "${week.title ?? 'Tjedan'}"`,
+                )
                 toast('Tjedan obrisan.', { label: '↩ Poništi', run: undo })
               }}
             >
@@ -296,8 +322,7 @@ Raspored od ${popunjenih} dana nestaje. Jelovnici ostaju.` : ''),
                 const ok = await confirmDialog(
                   `Maknuti datum s "${week.title ?? 'tjedna'}"?
 
-` +
-                    'Dnevnik ga tada više neće nuditi na potvrdu. Raspored dana ostaje.',
+` + 'Dnevnik ga tada više neće nuditi na potvrdu. Raspored dana ostaje.',
                   'Makni datum',
                 )
                 if (!ok) return
@@ -395,8 +420,9 @@ Raspored od ${popunjenih} dana nestaje. Jelovnici ostaju.` : ''),
                 </span>
               </div>
               <div className="small muted">
-                {summary.plannedDays} {summary.plannedDays === 1 ? 'planiran dan' : 'planiranih dana'}{' '}
-                · ukupno {fmt(summary.total.kcal)} kcal
+                {summary.plannedDays}{' '}
+                {summary.plannedDays === 1 ? 'planiran dan' : 'planiranih dana'} · ukupno{' '}
+                {fmt(summary.total.kcal)} kcal
               </div>
             </div>
             <div>
@@ -410,8 +436,8 @@ Raspored od ${popunjenih} dana nestaje. Jelovnici ostaju.` : ''),
             <NutrientBars totals={summary.average} targets={householdTargets} />
           </div>
           <p className="hint">
-            Trake uspoređuju dnevni prosjek po osobi s ciljem prve osobe u kućanstvu — za pojedinačne
-            ciljeve pogledaj karticu Osobe.
+            Trake uspoređuju dnevni prosjek po osobi s ciljem prve osobe u kućanstvu — za
+            pojedinačne ciljeve pogledaj karticu Osobe.
           </p>
         </div>
       )}
@@ -427,11 +453,15 @@ Raspored od ${popunjenih} dana nestaje. Jelovnici ostaju.` : ''),
               for (const [cat, lines] of Object.entries(shopping))
                 for (const line of lines)
                   csv += `${cat};${line.name.replace(/;/g, ',')};${line.grams} ${line.unit}\n`
-              downloadBlob(
+              void spremiDatoteku(
                 new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8' }),
                 'nabava-tjedan.csv',
-              )
-              toast('CSV preuzet.')
+              ).then((ishod) => {
+                if (ishod.ok) return toast(`Popis spremljen: ${ishod.filename}`)
+                toast(
+                  ishod.razlog === 'odbijeno' ? 'Spremanje otkazano.' : 'Spremanje nije uspjelo.',
+                )
+              })
             }}
           >
             ⬇ Excel (CSV)
@@ -450,7 +480,9 @@ Raspored od ${popunjenih} dana nestaje. Jelovnici ostaju.` : ''),
             .sort(([a], [b]) => a.localeCompare(b, 'hr'))
             .map(([cat, lines]) => (
               <div key={cat}>
-                <h3 style={{ margin: '12px 0 4px', color: 'var(--accent-d)', fontSize: 12 }}>{cat}</h3>
+                <h3 style={{ margin: '12px 0 4px', color: 'var(--accent-d)', fontSize: 12 }}>
+                  {cat}
+                </h3>
                 <ul style={{ margin: '2px 0 8px', paddingLeft: 20 }}>
                   {lines.map((line) => (
                     <li key={line.name} style={{ fontSize: 13 }}>

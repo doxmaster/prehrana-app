@@ -12,7 +12,7 @@ import { STARTER_MENUS, STARTER_WEEKS } from '../../data/menus'
 import { STARTER_RECIPES } from '../../data/recipes'
 import {
   buildExport,
-  downloadBlob,
+  spremiDatoteku,
   exportFilename,
   exportState,
   ImportError,
@@ -74,12 +74,22 @@ export function Postavke() {
         <button
           className="btn small"
           onClick={() => {
-            const now = new Date()
-            downloadBlob(exportState(state, now), exportFilename(now))
-            const mark = { at: now.toISOString(), dataAt: state.updatedAt ?? 0 }
-            writeExportMark(mark)
-            setIzvoz(mark)
-            toast('Sigurnosna kopija preuzeta.')
+            void (async () => {
+              const now = new Date()
+              const ishod = await spremiDatoteku(exportState(state, now), exportFilename(now))
+              if (!ishod.ok) {
+                return toast(
+                  ishod.razlog === 'odbijeno'
+                    ? 'Spremanje otkazano — kopija nije napravljena.'
+                    : 'Spremanje nije uspjelo. Pokušaj s gumbom ⧉ Kopiraj.',
+                )
+              }
+              // Trag se biljezi tek kad je datoteka stvarno spremljena.
+              const mark = { at: now.toISOString(), dataAt: state.updatedAt ?? 0 }
+              writeExportMark(mark)
+              setIzvoz(mark)
+              toast(`Sigurnosna kopija spremljena: ${ishod.filename}`)
+            })()
           }}
         >
           ⬇ Izvezi sve (JSON)

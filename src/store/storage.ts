@@ -215,7 +215,32 @@ function raise(message: string): never {
   throw new ImportError(message)
 }
 
-export function downloadBlob(blob: Blob, filename: string): void {
+/*
+ * Spremanje datoteke iz dva svijeta.
+ *
+ * U pregledniku je to obicna veza s `download`. Kad aplikacija stoji kao Claude
+ * artefakt, ta veza je MRTVA — okvir ne smije sam pokrenuti preuzimanje — pa se
+ * ide preko `claude.use('downloads')`, gdje korisnik potvrdi spremanje. Bez
+ * ovoga bi izvoz u artefaktu tiho ne radio, a to je jedina obrana od gubitka
+ * podataka.
+ */
+interface ClaudeDownloads {
+  save(request: { filename: string; data: Blob }): Promise<{ status: 'saved' }>
+}
+interface ClaudeHost {
+  use(name: 'downloads'): Promise<ClaudeDownloads | null>
+}
+
+function claudeHost(): ClaudeHost | null {
+  const host = (window as unknown as { claude?: ClaudeHost }).claude
+  return host && typeof host.use === 'function' ? host : null
+}
+
+export type SpremanjeIshod =
+  | { ok: true; nacin: 'preglednik' | 'claude'; filename: string }
+  | { ok: false; razlog: 'odbijeno' | 'nije-uspjelo' }
+
+function vezom(blob: Blob, filename: string): SpremanjeIshod {
   const url = URL.createObjectURL(blob)
   const a = document.createElement('a')
   a.href = url
@@ -224,6 +249,39 @@ export function downloadBlob(blob: Blob, filename: string): void {
   a.click()
   a.remove()
   setTimeout(() => URL.revokeObjectURL(url), 1000)
+  return { ok: true, nacin: 'preglednik', filename }
+}
+
+const zamjenskiNastavak: Record<string, string> = { csv: 'txt' }
+
+export async function spremiDatoteku(blob: Blob, filename: string): Promise<SpremanjeIshod> {
+  const host = claudeHost()
+  if (!host) return vezom(blob, filename)
+
+  const downloads = await host.use('downloads').catch(() => null)
+  // Nema sposobnosti — stranica mozda i nije u artefaktu, pa vrijedi veza.
+  if (!downloads) return vezom(blob, filename)
+
+  const pokusaj = async (naziv: string): Promise<SpremanjeIshod> => {
+    try {
+      await downloads.save({ filename: naziv, data: blob })
+      return { ok: true, nacin: 'claude', filename: naziv }
+    } catch (err) {
+      const code = (err as { code?: string } | null)?.code
+      if (code === 'declined') return { ok: false, razlog: 'odbijeno' }
+      /*
+       * Dio nastavaka (csv) nije svugdje dopusten. Podaci su vazniji od
+       * nastavka, pa se isti sadrzaj ponudi kao .txt umjesto da izostane.
+       */
+      if (code === 'extension_not_enabled') {
+        const nastavak = naziv.split('.').pop() ?? ''
+        const zamjena = zamjenskiNastavak[nastavak]
+        if (zamjena) return pokusaj(naziv.slice(0, -nastavak.length) + zamjena)
+      }
+      return { ok: false, razlog: 'nije-uspjelo' }
+    }
+  }
+  return pokusaj(filename)
 }
 
 /**

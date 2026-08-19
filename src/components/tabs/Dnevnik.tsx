@@ -32,6 +32,7 @@ import { KcalRing } from '../KcalRing'
 import { NutrientBars } from '../NutrientBars'
 import { BezPlana, PlanZaglavlje } from '../Plan'
 import { usePlanZaDan } from '../../hooks/usePlanZaDan'
+import { StanjePlana } from '../StanjePlana'
 import { Tekucina } from '../Tekucina'
 import { fmt } from '../../lib/format'
 import type { DayMeals } from '../../domain/types'
@@ -98,6 +99,8 @@ export function Dnevnik() {
         target={plan.targets.kcal}
         meals={meals.filter((m) => m.length > 0).length}
       />
+
+      <StanjePlana />
 
       {/* Pomak po danima ostaje na vrhu — jucer i danas su najcesci slucaj.
           Preko cijelog retka jer je traka, ne kartica: na pola sirine bi do nje

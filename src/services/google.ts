@@ -16,7 +16,18 @@
  * dodirne. To je jedan klik pri pridruživanju i nikad više.
  */
 
-const OPSEG = 'https://www.googleapis.com/auth/drive.file'
+/*
+ * Tri opsega, svaki s razlogom:
+ *   openid + email + profile — ime i slika osobe, po cemu se clan obitelji
+ *     prepozna na svakom uredaju. Bez njih Google odbija citanje profila, pa je
+ *     prijava prolazila a odmah zatim padala na "userinfo".
+ *   drive.file — iskljucivo datoteke koje je ova aplikacija stvorila ili koje je
+ *     korisnik sam odabrao. Ostatak Drivea aplikacija ne vidi.
+ *
+ * Sva tri su kod Googlea "non-sensitive", pa aplikacija moze biti objavljena
+ * bez provjere koja traje tjednima.
+ */
+const OPSEG = ['openid', 'email', 'profile', 'https://www.googleapis.com/auth/drive.file'].join(' ')
 const NAZIV_DATOTEKE = 'prehrana-obitelj.json'
 const KLJUC_POSTAVKI = 'prehrana_google'
 

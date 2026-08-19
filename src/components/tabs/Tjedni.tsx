@@ -4,6 +4,7 @@ import { fmtDate, mondayOf, todayISO } from '../../domain/dates'
 import { WEEK_LENGTH, emptyWeekDays, weekDescription, weekShoppingList, weekSummary } from '../../domain/weeks'
 import { NO_REPEAT_WEEKS, generateWeek } from '../../domain/generateWeek'
 import { rankMenus } from '../../domain/menuFit'
+import { weekIdForDate } from '../../domain/plan'
 import { householdFactor, memberShares } from '../../domain/household'
 import { mealsTotals } from '../../domain/nutrients'
 import { computeTargets } from '../../domain/targets'
@@ -29,6 +30,11 @@ export function Tjedni() {
   const setActiveWeekId = useAppStore((s) => s.setActiveWeekId)
 
   const week = state.weeks.find((w) => w.id === activeWeekId) ?? state.weeks[0]
+  /**
+   * Tjedan koji Dnevnik trenutno cita. Bez oznake se medu vise tjedana s istim
+   * sadrzajem — predlozak i njegova datirana kopija — ne vidi koji je na snazi.
+   */
+  const naSnaziId = weekIdForDate(state.weeks, todayISO())
   const household =
     state.households.find((h) => h.id === week?.householdId) ?? state.households[0]
 
@@ -106,8 +112,10 @@ export function Tjedni() {
             >
               {state.weeks.map((w) => (
                 <option value={w.id} key={w.id}>
+                  {w.id === naSnaziId ? '● ' : ''}
                   {w.title ?? 'Tjedan'}
                   {w.season ? ` (${w.season})` : ''}
+                  {w.id === naSnaziId ? ' — ovaj tjedan' : ''}
                 </option>
               ))}
             </select>

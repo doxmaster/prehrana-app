@@ -8,6 +8,7 @@ import {
   planForDate,
   portionedMeals,
   weekAppliedTo,
+  weekIdForDate,
 } from '../src/domain/plan'
 import { emptyMeals } from '../src/domain/nutrients'
 import type { DayMeals, Menu, WeekPlan } from '../src/domain/types'
@@ -33,6 +34,8 @@ const week = (startDate?: string): WeekPlan => {
   if (startDate) w.startDate = startDate
   return w
 }
+
+const emptyDays = (): (string | null)[] => [null, null, null, null, null, null, null]
 
 // 10.8.2026. je ponedjeljak.
 const PONEDJELJAK = '2026-08-10'
@@ -211,5 +214,28 @@ describe('primjena tjedna na konkretan datum', () => {
     const kopija = weekAppliedTo(predlozak, '2026-08-13', { id: 'wk-novi', title: 'Tjedan' })
     const found = planForDate([kopija], menus, '2026-08-13')
     expect(found?.menu?.id).toBe('mn-a')
+  })
+})
+
+describe('koji je tjedan na snazi', () => {
+  it('bira datirani tjedan koji pokriva datum', () => {
+    const datirani = week(PONEDJELJAK)
+    expect(weekIdForDate([datirani], '2026-08-13')).toBe('wk1')
+  })
+
+  it('predložak bez datuma nije na snazi', () => {
+    // Inace bi kartica Tjedni otvorila predlozak, a Dnevnik citao datiranu
+    // kopiju — isti sadrzaj, dva zapisa, i izgleda kao da nisu usklađeni.
+    expect(weekIdForDate([week()], '2026-08-13')).toBeNull()
+  })
+
+  it('među predlošcima i datiranom kopijom bira kopiju', () => {
+    const predlozak: WeekPlan = { id: 'wk-ljeto', title: 'Ljetni', season: 'ljeto', days: emptyDays() }
+    const kopija = { ...week(PONEDJELJAK), id: 'wk-kopija' }
+    expect(weekIdForDate([predlozak, kopija], PONEDJELJAK)).toBe('wk-kopija')
+  })
+
+  it('datum izvan svih tjedana nema tjedan na snazi', () => {
+    expect(weekIdForDate([week(PONEDJELJAK)], '2026-09-01')).toBeNull()
   })
 })

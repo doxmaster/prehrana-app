@@ -134,3 +134,15 @@ export function weekAppliedTo(
   delete copy.season
   return copy
 }
+
+/**
+ * Tjedan koji je NA SNAZI za zadani datum.
+ *
+ * Dnevnik plan cita po datumu, pa kartica Tjedni mora poceti na istom tjednu —
+ * inace se ureduje predlozak, a gleda datirana kopija, i dva zaslona izgledaju
+ * neusklađeno iako su podaci ispravni. Bez datiranog tjedna vraca null i pozivatelj
+ * bira sto ce prikazati.
+ */
+export function weekIdForDate(weeks: readonly WeekPlan[], date: string): string | null {
+  return planForDate(weeks, [], date)?.week.id ?? null
+}

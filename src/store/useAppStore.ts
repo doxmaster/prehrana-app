@@ -2,11 +2,24 @@ import { create } from 'zustand'
 import { buildFoodIndex, type FoodIndex } from '../domain/foodIndex'
 import { emptyMeals } from '../domain/nutrients'
 import { todayISO } from '../domain/dates'
+import { weekIdForDate } from '../domain/plan'
 import { uid } from '../domain/id'
 import { loadState, saveState } from './storage'
 import type { AppState, DayMeals, Person } from '../domain/types'
 
 const initial = loadState()
+
+/**
+ * Tjedan na koji se kartica Tjedni otvara: onaj koji POKRIVA danasnji datum,
+ * a ne prvi u popisu.
+ *
+ * Dnevnik plan cita po datumu, pa bi Tjedni otvoreni na nekom drugom tjednu
+ * pokazivali drugi raspored od onoga koji se u Dnevniku nudi na potvrdu —
+ * izgleda kao da dva zaslona nisu usklađena, iako su podaci ispravni.
+ */
+function startingWeekId(state: AppState): string | null {
+  return weekIdForDate(state.weeks, todayISO()) ?? state.weeks[0]?.id ?? null
+}
 
 interface StoreState {
   data: AppState
@@ -42,7 +55,7 @@ export const useAppStore = create<StoreState>()((set, get) => ({
   foods: buildFoodIndex(initial.state),
   selectedDate: todayISO(),
   activeMenuIndex: 0,
-  activeWeekId: initial.state.weeks[0]?.id ?? null,
+  activeWeekId: startingWeekId(initial.state),
   activeHouseholdId: initial.state.households[0]?.id ?? null,
   saveError: null,
   migratedFrom: initial.migrated ? initial.from : null,
@@ -69,7 +82,7 @@ export const useAppStore = create<StoreState>()((set, get) => ({
       data: next,
       foods: buildFoodIndex(next),
       activeMenuIndex: 0,
-      activeWeekId: next.weeks[0]?.id ?? null,
+      activeWeekId: startingWeekId(next),
       activeHouseholdId: next.households[0]?.id ?? null,
       saveError: null,
     })

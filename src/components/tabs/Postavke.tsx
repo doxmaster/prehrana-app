@@ -24,6 +24,7 @@ import {
 import type { ExportMark } from '../../store/storage'
 import { useAppStore } from '../../store/useAppStore'
 import { Columns } from '../Columns'
+import { GoogleObitelj } from '../GoogleObitelj'
 import { broj, fmt } from '../../lib/format'
 
 export function Postavke() {
@@ -264,6 +265,7 @@ export function Postavke() {
         left={
           <>
             {sigurnosnaKopija}
+            <GoogleObitelj />
             {ugradeniSadrzaj}
             {oPodacima}
           </>

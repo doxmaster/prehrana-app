@@ -119,6 +119,13 @@ export interface Person {
    */
   portionFactor?: number
   /**
+   * Google račun povezan s ovom osobom. Postavlja se pri prijavi i služi da se
+   * ista osoba prepozna na svakom uređaju, bez obzira na promjenu imena.
+   */
+  googleSub?: string
+  /** Slika s Google profila; koristi se u izborniku osoba. */
+  slika?: string
+  /**
    * Zdravstvena stanja koja mijenjaju prehranu — vidi src/domain/conditions.ts.
    * Oznake su slobodan niz jer stanje može nestati iz kataloga, a stari zapis
    * to ne smije srušiti; pri korištenju se filtrira na poznata.

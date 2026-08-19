@@ -153,6 +153,12 @@ function migratePerson(v: unknown, index: number): Person {
   if (factor > 0) person.portionFactor = factor
   const conditions = asArray(d.conditions).filter((c): c is string => typeof c === 'string')
   if (conditions.length) person.conditions = [...new Set(conditions)]
+  // Veza s Google racunom i slika profila — isti razlog: migracija se vrti pri
+  // svakom ucitavanju, pa sto ovdje izostane, nestaje zauvijek.
+  const sub = str(d.googleSub).trim()
+  if (sub) person.googleSub = sub
+  const slika = str(d.slika).trim()
+  if (slika) person.slika = slika
   // v1: tjedan bez datuma
   if (d.week) migrateWeek(d.week, person.log)
   // v2: planovi po danu — zadržavaju se privremeno da bi se pretvorili u jelovnike

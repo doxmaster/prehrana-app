@@ -211,3 +211,34 @@ describe('pruneState', () => {
     expect(state.profiles[0]!.log['2026-08-01']).toBeDefined()
   })
 })
+
+/**
+ * Veza s Google racunom mora prezivjeti ucitavanje.
+ *
+ * Migracija se vrti pri SVAKOM pokretanju, pa polje koje ona ne prenese nestaje
+ * zauvijek — to se vec jednom dogodilo s udjelom u nabavi.
+ */
+describe('Google račun na osobi', () => {
+  it('googleSub i slika preživljavaju migraciju', () => {
+    const state = migrateState({
+      profiles: [
+        {
+          id: 'p1',
+          name: 'Darijo',
+          googleSub: '117',
+          slika: 'https://lh3.googleusercontent.com/a/x',
+          log: {},
+          measurements: [],
+        },
+      ],
+    })
+    expect(state.profiles[0]!.googleSub).toBe('117')
+    expect(state.profiles[0]!.slika).toContain('googleusercontent')
+  })
+
+  it('osoba bez Google računa nema ta polja', () => {
+    const state = migrateState({ profiles: [{ id: 'p1', name: 'Ana', log: {}, measurements: [] }] })
+    expect(state.profiles[0]!.googleSub).toBeUndefined()
+    expect(state.profiles[0]!.slika).toBeUndefined()
+  })
+})

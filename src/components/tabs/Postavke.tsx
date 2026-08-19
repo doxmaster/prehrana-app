@@ -11,11 +11,15 @@ import {
 import { STARTER_MENUS, STARTER_WEEKS } from '../../data/menus'
 import { STARTER_RECIPES } from '../../data/recipes'
 import {
+  buildExport,
   downloadBlob,
+  exportFilename,
   exportState,
   ImportError,
   parseImport,
+  readLastExport,
   readSafetyBackup,
+  writeLastExport,
 } from '../../store/storage'
 import { useAppStore } from '../../store/useAppStore'
 import { Columns } from '../Columns'
@@ -27,6 +31,7 @@ export function Postavke() {
   const undo = useAppStore((s) => s.undo)
   const fileInput = useRef<HTMLInputElement>(null)
   const [busy, setBusy] = useState(false)
+  const [zadnjiIzvoz, setZadnjiIzvoz] = useState(readLastExport)
 
   const verified = BASE_FOODS.filter((f) => f.source === 'usda').length
   const days = state.profiles.reduce((sum, p) => sum + Object.keys(p.log).length, 0)
@@ -49,15 +54,36 @@ export function Postavke() {
   const sigurnosnaKopija = (
     <div className="card">
       <h2>Sigurnosna kopija</h2>
+      <p className="muted small" style={{ margin: '-6px 0 10px' }}>
+        Izvozi se <b>sve</b>: osobe s dnevnicima i mjerenjima, kućanstva, jelovnici, tjedni,
+        recepti, vlastite namirnice i izmjene ugrađenih. Jedna datoteka, bez ičega izostavljenog.
+      </p>
       <div className="row">
         <button
-          className="btn secondary small"
+          className="btn small"
           onClick={() => {
-            downloadBlob(exportState(state), 'prehrana-backup.json')
+            const now = new Date()
+            downloadBlob(exportState(state, now), exportFilename(now))
+            writeLastExport(now)
+            setZadnjiIzvoz(now.toISOString())
             toast('Sigurnosna kopija preuzeta.')
           }}
         >
-          ⬇ Izvezi (JSON)
+          ⬇ Izvezi sve (JSON)
+        </button>
+        <button
+          className="btn secondary small"
+          title="Za slanje u poruku ili bilježnicu"
+          onClick={async () => {
+            try {
+              await navigator.clipboard.writeText(JSON.stringify(buildExport(state), null, 2))
+              toast('Podaci kopirani — zalijepi ih gdje želiš.')
+            } catch {
+              toast('Kopiranje nije uspjelo; koristi izvoz u datoteku.')
+            }
+          }}
+        >
+          ⧉ Kopiraj
         </button>
         <button
           className="btn secondary small"
@@ -78,10 +104,12 @@ export function Postavke() {
         />
       </div>
       <p className="hint">
-        Podaci se čuvaju u pregledniku na ovom uređaju. Uvoz podržava i stari format iz HTML verzije
-        aplikacije.
+        Podaci žive <b>samo u ovom pregledniku</b>. Očistiš li podatke preglednika ili se pokvari
+        uređaj, nestaju — zato kopiju povremeno spremi izvan računala (OneDrive, Google Drive,
+        e-pošta). Uvoz podržava i stari format iz HTML verzije.
       </p>
 
+      <IzvozPodsjetnik iso={zadnjiIzvoz} updatedAt={state.updatedAt} />
       <PovratakNaKopiju />
     </div>
   )
@@ -173,6 +201,58 @@ export function Postavke() {
         right={<ResetPanel />}
       />
     </>
+  )
+}
+
+const DANA_DO_PODSJETNIKA = 14
+
+/**
+ * Podsjetnik na izvoz.
+ *
+ * Bez ovoga se ne vidi razlika izmedu "kopija je od jucer" i "kopije nema
+ * nikad", a to je jedina razlika koja je vazna kad se podaci izgube. Racuna se
+ * i je li od kopije bilo promjena — stara kopija sama po sebi nije problem ako
+ * se od tada nista nije mijenjalo.
+ */
+function IzvozPodsjetnik({ iso, updatedAt }: { iso: string | null; updatedAt?: number }) {
+  const [sada] = useState(() => Date.now())
+
+  if (!iso) {
+    return (
+      <div className="banner warn" style={{ marginTop: 12, marginBottom: 0 }}>
+        <b>Još nema nijedne sigurnosne kopije.</b>{' '}
+        <span className="small">
+          Podaci postoje samo u ovom pregledniku — napravi izvoz i spremi datoteku negdje drugdje.
+        </span>
+      </div>
+    )
+  }
+
+  const kada = new Date(iso)
+  /*
+   * Trenutak se uzme jednom pri montiranju: racunanje iz Date.now() u renderu
+   * dalo bi razlicit rezultat pri svakom osvjezavanju iste kartice. Zato se
+   * kopija napravljena NAKON montiranja mora spustiti na nulu — inace pise
+   * "prije -1 dana".
+   */
+  const dana = Math.max(0, Math.floor((sada - kada.getTime()) / 86400000))
+  const promjena = updatedAt !== undefined && updatedAt > kada.getTime()
+  const opis = `${kada.toLocaleDateString('hr-HR')} (${dana === 0 ? 'danas' : dana === 1 ? 'jučer' : `prije ${dana} dana`})`
+
+  if (promjena && dana >= DANA_DO_PODSJETNIKA) {
+    return (
+      <div className="banner warn" style={{ marginTop: 12, marginBottom: 0 }}>
+        <b>Zadnja kopija: {opis}</b>{' '}
+        <span className="small">— podaci su se od tada mijenjali. Vrijeme je za novu.</span>
+      </div>
+    )
+  }
+
+  return (
+    <p className="muted small" style={{ margin: '10px 0 0' }}>
+      Zadnja kopija: {opis}
+      {promjena ? ' · podaci su se od tada mijenjali' : ' · od tada nema promjena'}
+    </p>
   )
 }
 

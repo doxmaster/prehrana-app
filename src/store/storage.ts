@@ -49,7 +49,8 @@ export function loadState(): LoadResult {
 
   for (const key of LEGACY_KEYS) {
     const legacy = read(key)
-    if (legacy) return { state: mergeStarterRecipes(migrateState(legacy)), from: key, migrated: true }
+    if (legacy)
+      return { state: mergeStarterRecipes(migrateState(legacy)), from: key, migrated: true }
   }
 
   // Prvi start: ponudi domaca jela, dnevne jelovnike i sezonske tjedne. Postojeci
@@ -77,8 +78,78 @@ export function saveState(state: AppState): SaveOutcome {
   }
 }
 
-export function exportState(state: AppState): Blob {
-  return new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' })
+/**
+ * Omotnica izvoza.
+ *
+ * Sami podaci nisu dovoljni: bez datuma i sazetka ne zna se koja je od pet
+ * datoteka u preuzimanjima novija ni sto je u njoj, a to je upravo trenutak kad
+ * sigurnosna kopija treba biti ocita. `format` postoji da se sutra moze
+ * promijeniti oblik bez razbijanja starih kopija.
+ */
+export interface ExportEnvelope {
+  app: 'prehrana'
+  format: 1
+  exportedAt: string
+  summary: {
+    osoba: number
+    danaSUnosom: number
+    jelovnika: number
+    tjedana: number
+    recepata: number
+    vlastitihNamirnica: number
+  }
+  state: AppState
+}
+
+export function buildExport(state: AppState, now = new Date()): ExportEnvelope {
+  return {
+    app: 'prehrana',
+    format: 1,
+    exportedAt: now.toISOString(),
+    summary: {
+      osoba: state.profiles.length,
+      danaSUnosom: state.profiles.reduce((sum, p) => sum + Object.keys(p.log).length, 0),
+      jelovnika: state.menus.length,
+      tjedana: state.weeks.length,
+      recepata: state.recipes.length,
+      vlastitihNamirnica: state.customFoods.length,
+    },
+    state,
+  }
+}
+
+export function exportState(state: AppState, now = new Date()): Blob {
+  return new Blob([JSON.stringify(buildExport(state, now), null, 2)], { type: 'application/json' })
+}
+
+/** Naziv datoteke s datumom — inace se kopije u preuzimanjima ne razlikuju. */
+export function exportFilename(now = new Date()): string {
+  const d = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`
+  return `prehrana-${d}.json`
+}
+
+/**
+ * Kad je zadnji put napravljen izvoz.
+ *
+ * Stoji pokraj podataka, ne u njima: inace bi svaki izvoz mijenjao ono sto
+ * izvozi, pa dvije uzastopne kopije istog stanja ne bi bile jednake.
+ */
+const EXPORT_KEY = `${STORAGE_KEY}_zadnji_izvoz`
+
+export function readLastExport(): string | null {
+  try {
+    return localStorage.getItem(EXPORT_KEY)
+  } catch {
+    return null
+  }
+}
+
+export function writeLastExport(now = new Date()): void {
+  try {
+    localStorage.setItem(EXPORT_KEY, now.toISOString())
+  } catch {
+    // Pamcenje datuma nije vrijedno pada; sam izvoz je vec preuzet.
+  }
 }
 
 export class ImportError extends Error {}
@@ -91,11 +162,21 @@ export function parseImport(text: string): AppState {
   } catch {
     return raise('Datoteka nije ispravan JSON.')
   }
-  const root = parsed as { profiles?: unknown } | null
+  /*
+   * Prima i novu omotnicu i goli zapis stanja: starije kopije (i one iz HTML
+   * verzije) nemaju omotnicu, a moraju se i dalje moci uvesti.
+   */
+  const envelope = parsed as { state?: unknown } | null
+  const payload =
+    envelope && typeof envelope === 'object' && envelope.state && typeof envelope.state === 'object'
+      ? envelope.state
+      : parsed
+
+  const root = payload as { profiles?: unknown } | null
   if (!root || typeof root !== 'object' || !Array.isArray(root.profiles) || !root.profiles.length) {
     return raise('Datoteka ne sadrži nijednu osobu — je li to sigurnosna kopija Prehrane?')
   }
-  return migrateState(parsed)
+  return migrateState(payload)
 }
 
 function raise(message: string): never {

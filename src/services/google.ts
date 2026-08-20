@@ -73,6 +73,26 @@ export function procitajPostavke(): GooglePostavke {
  * polje — samo gumb "Prijavi se". Rucni upis ostaje za onoga tko aplikaciju
  * postavlja na svoje.
  */
+/**
+ * Popis adresa kojima je dopusteno usklađivanje, ugraden u build.
+ *
+ * Prazan popis znaci "svi". Ovo NIJE sigurnosna brava — kod je javan i moze se
+ * zaobici; prava brava je popis testnih korisnika u Google konzoli, koji radi
+ * na Googleovoj strani. Ovdje sluzi da onaj tko nije pozvan dobije razumljivu
+ * recenicu umjesto sirove greske, i da se slucajno ne spoji krivi racun.
+ */
+export function dopusteneAdrese(): string[] {
+  return (import.meta.env.VITE_GOOGLE_DOZVOLJENI ?? '')
+    .split(',')
+    .map((e) => e.trim().toLowerCase())
+    .filter(Boolean)
+}
+
+export function dopustenEmail(email: string, popis: readonly string[]): boolean {
+  if (!popis.length) return true
+  return popis.includes(email.trim().toLowerCase())
+}
+
 export function kljuceviUgradeni(): boolean {
   return (import.meta.env.VITE_GOOGLE_CLIENT_ID ?? '').length > 0
 }
@@ -167,11 +187,32 @@ export async function pristup(tiho = false): Promise<string> {
         token = odgovor.access_token
         resolve(odgovor.access_token)
       } else {
-        reject(new GoogleGreska(odgovor.error ?? 'Prijava nije dovršena.'))
+        reject(new GoogleGreska(porukaPrijave(odgovor.error)))
       }
     }
     klijent.requestAccessToken(tiho ? { prompt: '' } : {})
   })
+}
+
+/**
+ * Googleova greska prijave u recenicu koja kaze sto se dogodilo.
+ *
+ * Bez ovoga korisnik dobije toast na kojem doslovno pise "access_denied".
+ */
+export function porukaPrijave(kod?: string): string {
+  if (kod === 'access_denied') {
+    return (
+      'Ovaj Google račun nema pristup aplikaciji. Ako te netko pozvao u obitelj, ' +
+      'zamoli ga da tvoju adresu doda među dopuštene račune.'
+    )
+  }
+  if (kod === 'popup_closed' || kod === 'popup_closed_by_user') {
+    return 'Prozor prijave je zatvoren prije kraja.'
+  }
+  if (kod === 'popup_failed_to_open') {
+    return 'Preglednik je blokirao prozor prijave. Dopusti skočne prozore za ovu stranicu.'
+  }
+  return kod ? `Prijava nije dovršena (${kod}).` : 'Prijava nije dovršena.'
 }
 
 export function odjava(): void {

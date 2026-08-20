@@ -56,6 +56,21 @@ export const useGoogleObitelj = create<GoogleObiteljStanje>((set, get) => ({
     try {
       await google.pristup()
       const profil = await google.profil()
+
+      /*
+       * Drugi sloj brave: i kad Google pusti racun, aplikacija ga prihvaca samo
+       * ako je na popisu. Sprjecava i obicnu zabunu — prijavu krivim racunom na
+       * zajednickom uredaju.
+       */
+      const popis = google.dopusteneAdrese()
+      if (!google.dopustenEmail(profil.email, popis)) {
+        google.odjava()
+        toast(
+          `${profil.email} nije među dopuštenim računima. Zamoli vlasnika obitelji da tvoju adresu doda.`,
+        )
+        return
+      }
+
       set({ tko: profil })
       /*
        * Prijava odmah veze Google racun uz osobu u aplikaciji: ime i slika

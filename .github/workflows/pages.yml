@@ -52,6 +52,10 @@ jobs:
           # zajednicke obitelji.
           VITE_GOOGLE_CLIENT_ID: ${{ vars.GOOGLE_CLIENT_ID }}
           VITE_GOOGLE_API_KEY: ${{ vars.GOOGLE_API_KEY }}
+          # Adrese kojima je dopusteno uskladivanje, odvojene zarezom. Prazno =
+          # svi koje Google pusti. Prava brava je popis testnih korisnika u
+          # Google konzoli; ovo je da nepozvani dobije razumljivu poruku.
+          VITE_GOOGLE_DOZVOLJENI: ${{ vars.GOOGLE_DOZVOLJENI }}
 
       - uses: actions/upload-pages-artifact@v3
         with:

@@ -7,6 +7,8 @@
 interface ImportMetaEnv {
   readonly VITE_GOOGLE_CLIENT_ID?: string
   readonly VITE_GOOGLE_API_KEY?: string
+  /** Adrese kojima je dopusteno uskladivanje, odvojene zarezom. Prazno = svi. */
+  readonly VITE_GOOGLE_DOZVOLJENI?: string
 }
 
 interface ImportMeta {

@@ -1,130 +1,49 @@
 import { useState } from 'react'
-import { confirmDialog, toast } from '../store/dialogs'
-import { useAppStore } from '../store/useAppStore'
 import * as google from '../services/google'
-import { povezisOsobom, uskladi, zaboraviOsnovu } from '../services/sinkronizacija'
 import type { UskladIshod } from '../services/sinkronizacija'
+import { useGoogleObitelj } from '../store/googleObitelj'
 
 /**
- * Spajanje obitelji preko Google računa.
+ * Kartica u Postavkama: podesavanje i cijela slika stanja.
  *
- * Namjerno NIJE automatsko u pozadini: usklađivanje mijenja podatke svih
- * ukućana, pa se pokreće klikom i uvijek javi što je učinilo. Automatika dolazi
- * tek kad se pokaže da spajanje radi kako treba na stvarnim podacima.
+ * Svakodnevne radnje (prijava, uskladi) stoje i u zaglavlju, jer se rade cesto
+ * i s bilo koje kartice. Ovdje ostaje ono sto se radi jednom — kljucevi, poziv
+ * ukucanima, pridruzivanje — i objasnjenje kako to skupa radi.
  */
 export function GoogleObitelj() {
-  const undo = useAppStore((s) => s.undo)
-  const [postavke, setPostavke] = useState(google.procitajPostavke)
-  const [tko, setTko] = useState<google.GoogleProfil | null>(null)
-  const [radi, setRadi] = useState(false)
-  const [zadnje, setZadnje] = useState<UskladIshod | null>(null)
+  const { postavke, tko, radi, zadnje, prijava, sinkroniziraj, pozovi, pridruzi, odjava } =
+    useGoogleObitelj()
+  const spremiKljuceve = useGoogleObitelj((s) => s.spremiKljuceve)
   const [otvorenoPodesavanje, setOtvorenoPodesavanje] = useState(false)
 
   const spreman = postavke.clientId.length > 0
-
-  const greska = (err: unknown) =>
-    toast(err instanceof google.GoogleGreska ? err.message : 'Nešto nije prošlo. Pokušaj ponovno.')
-
-  const prijavaIPovezivanje = async () => {
-    setRadi(true)
-    try {
-      await google.pristup()
-      const profil = await google.profil()
-      setTko(profil)
-      const ishod = povezisOsobom(profil)
-      toast(
-        ishod === 'nova'
-          ? `Dodana osoba ${profil.ime}.`
-          : ishod === 'preuzeta'
-            ? `Osoba preimenovana u ${profil.ime}.`
-            : `Prijavljen kao ${profil.ime}.`,
-        { label: '↩ Poništi', run: undo },
-      )
-    } catch (err) {
-      greska(err)
-    } finally {
-      setRadi(false)
-    }
-  }
-
-  const sinkroniziraj = async () => {
-    setRadi(true)
-    try {
-      const ishod = await uskladi()
-      setZadnje(ishod)
-      setPostavke(google.procitajPostavke())
-      if (ishod.prvaObjava) {
-        toast('Obiteljska datoteka stvorena na tvom Driveu.')
-      } else {
-        const dijelovi = [
-          ishod.drugdje && `${ishod.drugdje} stiglo s drugog uređaja`,
-          ishod.ovdje && `${ishod.ovdje} poslano odavde`,
-          ishod.sukobi.length && `${ishod.sukobi.length} sukoba`,
-        ].filter(Boolean)
-        toast(dijelovi.length ? `Usklađeno: ${dijelovi.join(', ')}.` : 'Već je sve usklađeno.', {
-          label: '↩ Poništi',
-          run: undo,
-        })
-      }
-    } catch (err) {
-      greska(err)
-    } finally {
-      setRadi(false)
-    }
-  }
-
-  const pozovi = async () => {
-    const email = window.prompt('E-pošta ukućana kojeg pozivaš (Google račun):')?.trim()
-    if (!email) return
-    const { fileId } = google.procitajPostavke()
-    if (!fileId) return toast('Prvo se uskladi — datoteka obitelji još ne postoji.')
-    setRadi(true)
-    try {
-      await google.podijeli(fileId, email)
-      toast(`${email} je pozvan i može se pridružiti obitelji.`)
-    } catch (err) {
-      greska(err)
-    } finally {
-      setRadi(false)
-    }
-  }
-
-  const pridruzi = async () => {
-    setRadi(true)
-    try {
-      const fileId = await google.odaberiDatoteku()
-      if (!fileId) return
-      const ok = await confirmDialog(
-        'Pridruživanje obitelji spaja tvoje podatke s obiteljskima.\n\n' +
-          'Ništa se ne briše: sve što postoji samo kod tebe ostaje, a razlike se prijavljuju.',
-        'Pridruži se',
-      )
-      if (!ok) return
-      zaboraviOsnovu()
-      google.zapisiPostavke({ fileId })
-      setPostavke(google.procitajPostavke())
-      await sinkroniziraj()
-    } catch (err) {
-      greska(err)
-    } finally {
-      setRadi(false)
-    }
-  }
 
   return (
     <div className="card">
       <h2>Obitelj na više uređaja</h2>
       <p className="muted small" style={{ margin: '-6px 0 10px' }}>
         Podaci se čuvaju kao <b>jedna datoteka na tvom Google Driveu</b>. Aplikacija vidi samo tu
-        datoteku — ne i ostatak Drivea. Svaki ukućanin se prijavljuje <b>svojim</b> računom i
-        automatski dobiva ime i sliku sa svog profila.
+        datoteku — ne i ostatak Drivea.
       </p>
+
+      <div className="banner" style={{ marginTop: 0, marginBottom: 10 }}>
+        <b>
+          Da bi više ljudi upisivalo s različitih uređaja, svatko se mora prijaviti svojim Google
+          računom.
+        </b>{' '}
+        <span className="small">
+          Prijava nije zbog dozvole nego zbog <i>prepoznavanja</i>: po Google adresi aplikacija zna
+          čiji je unos, pa se dnevnici ne miješaju, a ime i slika osobe dolaze s profila. Bez
+          prijave uređaj radi sam za sebe i ništa ne dijeli.
+        </span>
+      </div>
 
       {!spreman ? (
         <div className="banner warn" style={{ marginTop: 0 }}>
           <b>Još nije podešeno.</b>{' '}
           <span className="small">
-            Treba jednokratno napraviti besplatnu Google prijavu za aplikaciju i upisati dva ključa.
+            Treba jednokratno napraviti besplatnu Google prijavu za aplikaciju i upisati dva ključa
+            (niže).
           </span>
         </div>
       ) : (
@@ -145,11 +64,7 @@ export function GoogleObitelj() {
                 <span className="muted small">{tko.email}</span>
               </span>
             ) : (
-              <button
-                className="btn small"
-                disabled={radi}
-                onClick={() => void prijavaIPovezivanje()}
-              >
+              <button className="btn small" disabled={radi} onClick={() => void prijava()}>
                 Prijavi se Google računom
               </button>
             )}
@@ -166,14 +81,7 @@ export function GoogleObitelj() {
               ⇲ Pridruži se obitelji
             </button>
             {tko && (
-              <button
-                className="btn ghost small"
-                onClick={() => {
-                  google.odjava()
-                  setTko(null)
-                  toast('Odjavljen. Podaci na ovom uređaju ostaju.')
-                }}
-              >
+              <button className="btn ghost small" onClick={odjava}>
                 Odjava
               </button>
             )}
@@ -187,13 +95,7 @@ export function GoogleObitelj() {
         <summary style={{ cursor: 'pointer' }} onClick={() => setOtvorenoPodesavanje((v) => !v)}>
           <span className="small">Podešavanje Google prijave</span>
         </summary>
-        <Podesavanje
-          postavke={postavke}
-          onSpremi={(p) => {
-            setPostavke(google.zapisiPostavke(p))
-            toast('Spremljeno. Sad se možeš prijaviti.')
-          }}
-        />
+        <Podesavanje postavke={postavke} onSpremi={spremiKljuceve} />
       </details>
     </div>
   )

@@ -2,6 +2,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { ThemeToggle } from './ThemeToggle'
 import { confirmDialog, promptDialog, toast } from '../store/dialogs'
 import { newPerson, useAppStore, usePeople } from '../store/useAppStore'
+import { useGoogleObitelj } from '../store/googleObitelj'
 import { uid } from '../domain/id'
 
 /**
@@ -28,6 +29,7 @@ export function HeaderBar() {
       <div className="row header-tools">
         <HouseholdMenu />
         <PersonMenu />
+        <ObiteljGoogle />
         <ThemeToggle />
       </div>
     </header>
@@ -47,6 +49,122 @@ function Leaf() {
       <path
         d="M26 5C13 5 6 11 6 20c0 3 1 5 2 7 1-9 7-14 15-16-6 3-10 8-12 16 10 1 17-5 17-14 0-3-1-6-2-8Z"
         fill="url(#lg)"
+      />
+    </svg>
+  )
+}
+
+/**
+ * Prijava i uskladivanje uz sam odabir osobe.
+ *
+ * Stoji ovdje, a ne samo u Postavkama, jer je to svakodnevna radnja i tice se
+ * upravo onoga sto je pokraj njega: TKO si. Dok nije podeseno, gumb ne nudi
+ * prijavu koja bi svejedno pukla nego kaze gdje se podesava.
+ */
+function ObiteljGoogle() {
+  const { tko, radi, postavke, prijava, sinkroniziraj, odjava } = useGoogleObitelj()
+  const podesen = postavke.clientId.length > 0
+
+  if (!podesen) {
+    return (
+      <Popover label={<>☁ Uređaji</>} title="Podaci na više uređaja">
+        {() => (
+          <>
+            <div className="pop-title">Podaci na više uređaja</div>
+            <p className="muted small" style={{ margin: '0 0 8px' }}>
+              Još nije podešeno. Otvori <b>Postavke → Obitelj na više uređaja</b> i upiši dva Google
+              ključa — nakon toga se prijava radi odavde.
+            </p>
+            <p className="muted small" style={{ margin: 0 }}>
+              Dok toga nema, ovaj uređaj radi sam za sebe i podaci ostaju samo na njemu.
+            </p>
+          </>
+        )}
+      </Popover>
+    )
+  }
+
+  if (!tko) {
+    return (
+      <button
+        className="chip"
+        disabled={radi}
+        onClick={() => void prijava()}
+        title="Prijava Google računom"
+      >
+        <GoogleZnak />
+        <span>{radi ? 'Prijava…' : 'Prijavi se'}</span>
+      </button>
+    )
+  }
+
+  return (
+    <Popover
+      label={
+        <>
+          {tko.slika ? (
+            <img src={tko.slika} alt="" width={18} height={18} style={{ borderRadius: '50%' }} />
+          ) : (
+            <GoogleZnak />
+          )}
+          <span>{tko.ime.split(' ')[0]}</span>
+        </>
+      }
+      title="Google račun obitelji"
+    >
+      {(close) => (
+        <>
+          <div className="pop-title">{tko.ime}</div>
+          <p className="muted small" style={{ margin: '0 0 8px' }}>
+            {tko.email}
+          </p>
+          <button
+            className="pop-item"
+            disabled={radi}
+            onClick={() => {
+              close()
+              void sinkroniziraj()
+            }}
+          >
+            ⟳ Uskladi s obitelji
+          </button>
+          <button
+            className="pop-item"
+            onClick={() => {
+              close()
+              odjava()
+            }}
+          >
+            ⎋ Odjava
+          </button>
+          <p className="muted small" style={{ margin: '8px 0 0' }}>
+            Pozivanje ukućana i pridruživanje su u <b>Postavkama</b>.
+          </p>
+        </>
+      )}
+    </Popover>
+  )
+}
+
+/** Googleov znak u boji — prepoznatljiv i bez teksta. */
+function GoogleZnak() {
+  return (
+    <svg viewBox="0 0 48 48" width="16" height="16" aria-hidden="true">
+      <path
+        fill="#4285F4"
+        d="M45 24c0-1.6-.1-2.7-.4-4H24v7.5h12c-.2 2-1.5 5-4.4 7l6.7 5.2C42.2 36 45 30.6 45 24Z"
+      />
+      <path
+        fill="#34A853"
+        d="M24 46c5.9 0 10.9-2 14.5-5.3l-6.9-5.4C29.7 36.6 27.1 37.5 24 37.5c-5.8 0-10.7-3.9-12.5-9.1l-7.1 5.5C8 41 15.4 46 24 46Z"
+      />
+      <path
+        fill="#FBBC05"
+        d="M11.5 28.4c-.5-1.4-.7-2.9-.7-4.4s.3-3 .7-4.4l-7.1-5.5C2.9 17 2 20.4 2 24s.9 7 2.4 9.9l7.1-5.5Z"
+      />
+      <path
+        fill="#EA4335"
+        d="M24 10.5c4.1 0 6.9 1.8 8.5 3.3l6.2-6C34.9 4.3 29.9 2 24 2 15.4 2 8 7 4.4 14.1l7.1 5.5C13.3 14.4 18.2 10.5 24 10.5Z"
       />
     </svg>
   )
@@ -202,7 +320,13 @@ function PersonMenu() {
               close()
               if (!active) return
               if (people.length <= 1) return toast('Mora postojati barem jedna osoba.')
-              if (!(await confirmDialog(`Obrisati osobu "${active.name}" i sve njene podatke?`, 'Obriši'))) return
+              if (
+                !(await confirmDialog(
+                  `Obrisati osobu "${active.name}" i sve njene podatke?`,
+                  'Obriši',
+                ))
+              )
+                return
               update((draft) => {
                 draft.profiles = draft.profiles.filter((p) => p.id !== active.id)
                 draft.activeProfileId = draft.profiles[0]!.id

@@ -66,6 +66,17 @@ export function procitajPostavke(): GooglePostavke {
   }
 }
 
+/**
+ * Jesu li kljucevi stigli iz builda, a ne iz rucnog upisa.
+ *
+ * Objavljena aplikacija ih ima ugradene, pa korisnik nikad ne vidi ni jedno
+ * polje — samo gumb "Prijavi se". Rucni upis ostaje za onoga tko aplikaciju
+ * postavlja na svoje.
+ */
+export function kljuceviUgradeni(): boolean {
+  return (import.meta.env.VITE_GOOGLE_CLIENT_ID ?? '').length > 0
+}
+
 export function zapisiPostavke(izmjena: Partial<GooglePostavke>): GooglePostavke {
   const sljedece = { ...procitajPostavke(), ...izmjena }
   try {

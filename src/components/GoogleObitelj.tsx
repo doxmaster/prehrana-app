@@ -17,6 +17,7 @@ export function GoogleObitelj() {
   const [otvorenoPodesavanje, setOtvorenoPodesavanje] = useState(false)
 
   const spreman = postavke.clientId.length > 0
+  const ugradeno = google.kljuceviUgradeni()
 
   return (
     <div className="card">
@@ -40,10 +41,10 @@ export function GoogleObitelj() {
 
       {!spreman ? (
         <div className="banner warn" style={{ marginTop: 0 }}>
-          <b>Još nije podešeno.</b>{' '}
+          <b>Zajednička obitelj nije dostupna u ovoj instalaciji.</b>{' '}
           <span className="small">
-            Treba jednokratno napraviti besplatnu Google prijavu za aplikaciju i upisati dva ključa
-            (niže).
+            Aplikacija radi normalno, samo bez usklađivanja među uređajima. Ako je postavljaš na
+            svoje, ključeve upiši niže.
           </span>
         </div>
       ) : (
@@ -93,9 +94,13 @@ export function GoogleObitelj() {
 
       <details style={{ marginTop: 12 }} open={otvorenoPodesavanje}>
         <summary style={{ cursor: 'pointer' }} onClick={() => setOtvorenoPodesavanje((v) => !v)}>
-          <span className="small">Podešavanje Google prijave</span>
+          <span className="small muted">
+            {ugradeno
+              ? 'Vlastita instalacija (ključevi su već ugrađeni)'
+              : 'Podešavanje Google prijave'}
+          </span>
         </summary>
-        <Podesavanje postavke={postavke} onSpremi={spremiKljuceve} />
+        <Podesavanje postavke={postavke} onSpremi={spremiKljuceve} ugradeno={ugradeno} />
       </details>
     </div>
   )
@@ -143,15 +148,24 @@ function Sazetak({ ishod }: { ishod: UskladIshod }) {
 function Podesavanje({
   postavke,
   onSpremi,
+  ugradeno,
 }: {
   postavke: google.GooglePostavke
   onSpremi: (p: Partial<google.GooglePostavke>) => void
+  ugradeno: boolean
 }) {
   const [clientId, setClientId] = useState(postavke.clientId)
   const [apiKey, setApiKey] = useState(postavke.apiKey)
 
   return (
     <div style={{ marginTop: 10 }}>
+      {ugradeno && (
+        <p className="muted small" style={{ marginTop: 0 }}>
+          Ova stranica već ima svoje ključeve — ništa ne moraš upisivati. Polja ispod trebaju samo
+          ako aplikaciju postavljaš na vlastitu adresu, jer ključevi vrijede za točno određenu
+          adresu.
+        </p>
+      )}
       <p className="muted small" style={{ marginTop: 0 }}>
         U <b>console.cloud.google.com</b> napravi projekt, uključi <i>Google Drive API</i> i{' '}
         <i>Google Picker API</i>, pa pod <i>Credentials</i> stvori <b>OAuth client ID</b> (tip: Web)

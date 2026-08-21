@@ -1,11 +1,13 @@
-# Objava aplikacije na GitHub Pages — https://doxmaster.github.io/prehrana-app/
+# Provjera koda na svaki push.
 #
-# Objavljuje se tek ako testovi prođu: aplikacija čuva podatke o prehrani
-# obitelji, pa je bolje da izostane novo izdanje nego da izađe pokvareno.
+# Objavu radi Cloudflare (vidi cloudflare.yml i Cloudflareovu vezu na Git).
+# Ovdje se samo provjerava da kod stoji: lint, svi testovi i da se gradnja
+# uopće može složiti.
 #
-# GITHUB_PAGES=true prebacuje Vite na base '/<ime-repozitorija>/'; bez toga bi
-# stranica tražila datoteke u korijenu domene i ostala prazna.
-name: Objava na GitHub Pages
+# Ranije je ovaj workflow objavljivao na GitHub Pages. To je ugašeno jer su
+# dvije žive adrese značile DVA ODVOJENA skupa podataka: tko otvori staru,
+# upisuje u nešto što se nigdje ne vidi i ne može se sinkronizirati.
+name: Provjera koda
 
 on:
   push:
@@ -14,16 +16,14 @@ on:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
-# Jedna objava odjednom; novi push otkazuje onu koja je još u tijeku.
+# Jedna provjera odjednom; novi push otkazuje onu koja je još u tijeku.
 concurrency:
-  group: pages
+  group: provjera
   cancel-in-progress: true
 
 jobs:
-  gradnja:
+  provjera:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -42,10 +42,11 @@ jobs:
       - name: Testovi
         run: npx vitest run
 
+      # Gradi se bez GITHUB_PAGES: provjerava se da build prolazi, ne pravi se
+      # izdanje. Google ključevi ovdje ne trebaju — bez njih se gradi jednako.
       - name: Gradnja
         run: npm run build
         env:
-          GITHUB_PAGES: 'true'
           # Kljucevi Google prijave. Javni su po naravi (vide se u kodu svake
           # web aplikacije) i cuvaju ih dopustene adrese, ne tajnost — zato
           # `vars`, a ne `secrets`. Bez njih aplikacija radi, samo bez
@@ -56,20 +57,3 @@ jobs:
           # svi koje Google pusti. Prava brava je popis testnih korisnika u
           # Google konzoli; ovo je da nepozvani dobije razumljivu poruku.
           VITE_GOOGLE_DOZVOLJENI: ${{ vars.GOOGLE_DOZVOLJENI }}
-
-      - uses: actions/upload-pages-artifact@v3
-        with:
-          path: dist
-
-  objava:
-    needs: gradnja
-    # Samo repozitorij koji stvarno ima Pages; drugdje (npr. privatni fork)
-    # gradnja i testovi svejedno rade, ali se objava preskace bez greske.
-    if: github.repository == 'doxmaster/prehrana-app'
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.objava.outputs.page_url }}
-    steps:
-      - id: objava
-        uses: actions/deploy-pages@v4

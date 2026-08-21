@@ -230,3 +230,52 @@ describe('spajanje ne mijenja ono što mu je dano', () => {
     expect(JSON.stringify(drugdje)).toBe(prijeDrugdje)
   })
 })
+
+/**
+ * Usporedba po sadrzaju, ne po zapisu.
+ *
+ * Prvo uskladivanje prijavljivalo je cijeli ugradeni katalog kao sukob, jer je
+ * stanje s Drivea proslo kroz zapis i migraciju pa mu se promijenio redoslijed
+ * kljuceva. Podaci su bili isti; razlikovao se samo niz znakova.
+ */
+describe('redoslijed polja ne pravi lažne sukobe', () => {
+  /** Isti jelovnik, ali s poljima upisanima drugim redom. */
+  const sJelovnikom = (m: Record<string, unknown>) =>
+    stanje((s) => {
+      s.menus = [m as unknown as Menu]
+    })
+
+  it('isti jelovnik s drukčijim redoslijedom polja nije sukob', () => {
+    const ovdje = sJelovnikom({ id: 'm1', title: 'Sarma', cuisine: 'hr', meals: [[], [], [], []] })
+    const drugdje = sJelovnikom({
+      meals: [[], [], [], []],
+      cuisine: 'hr',
+      title: 'Sarma',
+      id: 'm1',
+    })
+    expect(spoji(null, ovdje, drugdje).sukobi).toHaveLength(0)
+  })
+
+  it('polje sa `undefined` jednako je polju kojeg nema', () => {
+    const ovdje = sJelovnikom({
+      id: 'm1',
+      title: 'Sarma',
+      season: undefined,
+      meals: [[], [], [], []],
+    })
+    const drugdje = sJelovnikom({ id: 'm1', title: 'Sarma', meals: [[], [], [], []] })
+    expect(spoji(null, ovdje, drugdje).sukobi).toHaveLength(0)
+  })
+
+  it('stvarna razlika i dalje jest sukob', () => {
+    const ovdje = sJelovnikom({ id: 'm1', title: 'Sarma', meals: [[], [], [], []] })
+    const drugdje = sJelovnikom({ id: 'm1', title: 'Musaka', meals: [[], [], [], []] })
+    expect(spoji(null, ovdje, drugdje).sukobi.length).toBeGreaterThan(0)
+  })
+
+  it('redoslijed u nizu OSTAJE bitan — obroci nisu skup', () => {
+    const ovdje = sJelovnikom({ id: 'm1', meals: [[{ foodId: 'f1', g: 100 }], [], [], []] })
+    const drugdje = sJelovnikom({ id: 'm1', meals: [[], [{ foodId: 'f1', g: 100 }], [], []] })
+    expect(spoji(null, ovdje, drugdje).sukobi.length).toBeGreaterThan(0)
+  })
+})

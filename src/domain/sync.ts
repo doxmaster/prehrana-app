@@ -30,7 +30,35 @@ export interface SpojIshod {
 }
 
 type Jsonable = unknown
-const jednako = (a: Jsonable, b: Jsonable) => JSON.stringify(a) === JSON.stringify(b)
+/**
+ * Usporedba po SADRŽAJU, ne po zapisu.
+ *
+ * Obicni JSON.stringify ovisi o redoslijedu kljuceva, a stanje s Drivea prolazi
+ * kroz zapis, citanje i migraciju — dovoljno da se poredak polja promijeni bez
+ * ijedne stvarne izmjene. Zbog toga je prvo uskladivanje prijavljivalo cijeli
+ * ugradeni katalog (412 stavki) kao "mijenjano na dva mjesta", pa je pravi
+ * sukob bilo nemoguce primijetiti.
+ *
+ * Poredak POLJA se zanemaruje; poredak u NIZOVIMA ostaje bitan, jer obroci i
+ * dani tjedna imaju smisao samo u svom redoslijedu.
+ */
+function stabilno(v: Jsonable): Jsonable {
+  if (Array.isArray(v)) return v.map((x) => stabilno(x as Jsonable))
+  if (v && typeof v === 'object') {
+    const izvor = v as Record<string, Jsonable>
+    const out: Record<string, Jsonable> = {}
+    for (const k of Object.keys(izvor).sort()) {
+      // Nedostajuce polje i polje sa `undefined` su ista stvar; jedno od toga
+      // prezivi zapis u JSON, drugo ne.
+      if (izvor[k] !== undefined) out[k] = stabilno(izvor[k])
+    }
+    return out
+  }
+  return v
+}
+
+const jednako = (a: Jsonable, b: Jsonable) =>
+  JSON.stringify(stabilno(a)) === JSON.stringify(stabilno(b))
 
 interface Brojac {
   ovdje: number

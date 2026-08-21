@@ -125,8 +125,12 @@ export const useGoogleObitelj = create<GoogleObiteljStanje>((set, get) => ({
     if (!fileId) return toast('Prvo se uskladi — datoteka obitelji još ne postoji.')
     set({ radi: true })
     try {
-      await google.podijeli(fileId, email)
-      toast(`${email} je pozvan i može se pridružiti obitelji.`)
+      const pozivatelj = get().tko?.ime ?? 'Netko iz tvoje obitelji'
+      await google.podijeli(fileId, email, google.porukaPoziva(pozivatelj, location.origin))
+      toast(
+        `Poziv poslan na ${email}. U e-pošti piše što treba kliknuti — ` +
+          'aplikaciju otvara na istoj adresi i prijavljuje se tim računom.',
+      )
     } catch (err) {
       greska(err)
     } finally {

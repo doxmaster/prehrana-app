@@ -336,8 +336,37 @@ export async function zapisiDatoteku(fileId: string, sadrzaj: string): Promise<v
  * pogada nepostojeca adresa, Google vrati 404, a poruka onda krivo tvrdi da
  * datoteka ne postoji.
  */
-export function putanjaDijeljenja(fileId: string): string {
-  return `drive/v3/files/${encodeURIComponent(fileId)}/permissions?sendNotificationEmail=true&fields=id`
+export function putanjaDijeljenja(fileId: string, poruka?: string): string {
+  const p = new URLSearchParams({ sendNotificationEmail: 'true', fields: 'id' })
+  // Bez poruke Google salje suhu obavijest da je netko podijelio datoteku
+  // "prehrana-obitelj.json" — primatelj nema pojma sto bi s njom.
+  if (poruka) p.set('emailMessage', poruka)
+  return `drive/v3/files/${encodeURIComponent(fileId)}/permissions?${p.toString()}`
+}
+
+/**
+ * Tekst poziva u obitelj.
+ *
+ * Ovo je jedino sto pozvani vidi prije nego otvori aplikaciju, pa mora
+ * odgovoriti na tri pitanja odjednom: tko ga zove, kamo da ode i sto ondje da
+ * klikne. Datoteka u prilogu se NE otvara rucno — to se izricito kaze, jer je
+ * prvi poriv upravo taj, a u njoj je samo zapis podataka.
+ */
+export function porukaPoziva(pozivatelj: string, adresa: string): string {
+  return (
+    `${pozivatelj} te poziva u zajedničku Prehranu — obiteljski jelovnik i dnevnik.
+
+` +
+    `1. Otvori ${adresa}
+` +
+    `2. Gore desno klikni "Prijavi se" i prijavi se OVIM Google računom
+` +
+    `3. U Postavkama klikni "Pridruži se obitelji" i odaberi datoteku prehrana-obitelj.json
+
+` +
+    'Priloženu datoteku ne treba otvarati ni preuzimati — u njoj je samo zapis ' +
+    'koji aplikacija čita sama.'
+  )
 }
 
 /** Gruba provjera adrese — da tipfeler ne zavrsi kao Googleova greska. */
@@ -345,11 +374,11 @@ export function izgledaKaoEmail(email: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email.trim())
 }
 
-export async function podijeli(fileId: string, email: string): Promise<void> {
+export async function podijeli(fileId: string, email: string, poruka?: string): Promise<void> {
   if (!izgledaKaoEmail(email)) {
     throw new GoogleGreska(`"${email}" ne izgleda kao e-mail adresa.`)
   }
-  await drive(putanjaDijeljenja(fileId), {
+  await drive(putanjaDijeljenja(fileId, poruka), {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ role: 'writer', type: 'user', emailAddress: email.trim() }),

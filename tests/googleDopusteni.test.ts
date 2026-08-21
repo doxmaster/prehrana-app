@@ -3,6 +3,7 @@ import {
   dopustenEmail,
   izgledaKaoEmail,
   porukaPrijave,
+  porukaPoziva,
   putanjaDijeljenja,
 } from '../src/services/google'
 
@@ -83,5 +84,40 @@ describe('provjera adrese', () => {
     expect(izgledaKaoEmail('helena@gmail')).toBe(false)
     expect(izgledaKaoEmail('helena @gmail.com')).toBe(false)
     expect(izgledaKaoEmail('')).toBe(false)
+  })
+})
+
+/**
+ * Tekst poziva.
+ *
+ * Helena je prvi put dobila golu Googleovu obavijest da je s njom podijeljen
+ * "prehrana-obitelj.json" — bez ijedne upute sto s tim. Ovi testovi cuvaju da
+ * poziv odgovori tko zove, kamo se ide i sto se klikne.
+ */
+describe('poruka poziva', () => {
+  const p = porukaPoziva('Darijo Dolčić', 'https://prehrana-app.pages.dev')
+
+  it('kaže tko poziva i na koju adresu', () => {
+    expect(p).toContain('Darijo Dolčić')
+    expect(p).toContain('https://prehrana-app.pages.dev')
+  })
+
+  it('kaže što kliknuti', () => {
+    expect(p).toContain('Prijavi se')
+    expect(p).toContain('Pridruži se obitelji')
+  })
+
+  it('odvraća od ručnog otvaranja datoteke', () => {
+    expect(p).toMatch(/ne treba otvarati/i)
+  })
+
+  it('poruka se šalje uz dijeljenje', () => {
+    const put = putanjaDijeljenja('abc', 'zdravo')
+    expect(put).toContain('emailMessage=zdravo')
+    expect(put).toContain('files/abc/permissions')
+  })
+
+  it('bez poruke se ne šalje prazan parametar', () => {
+    expect(putanjaDijeljenja('abc')).not.toContain('emailMessage')
   })
 })

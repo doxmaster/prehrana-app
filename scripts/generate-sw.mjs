@@ -20,6 +20,13 @@ import { fileURLToPath } from 'node:url'
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const DIST = resolve(root, 'dist')
 
+/*
+ * Datoteke koje nisu dio aplikacije nego upute posluzitelju. Nemaju sto raditi
+ * u spremistu za offline, a `_headers` bi se ondje jos i zaledio pa bi pravila
+ * predmemorije prestala vrijediti.
+ */
+const NIJE_APLIKACIJA = new Set(['sw.js', '_headers', '_redirects'])
+
 /** Sve što treba za pokretanje bez mreže; sw.js sam sebe ne kešira. */
 function datoteke(poddir = '') {
   const puni = resolve(DIST, poddir)
@@ -27,7 +34,8 @@ function datoteke(poddir = '') {
   for (const stavka of readdirSync(puni, { withFileTypes: true })) {
     const rel = poddir ? `${poddir}/${stavka.name}` : stavka.name
     if (stavka.isDirectory()) out.push(...datoteke(rel))
-    else if (stavka.name !== 'sw.js' && !stavka.name.endsWith('-artefakt.html')) out.push(rel)
+    else if (!NIJE_APLIKACIJA.has(stavka.name) && !stavka.name.endsWith('-artefakt.html'))
+      out.push(rel)
   }
   return out
 }

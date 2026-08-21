@@ -1,0 +1,28 @@
+# Pravila predmemorije za Cloudflare Pages.
+#
+# Poredak je bitan: prvo pravilo koje odgovara putanji pobjeđuje.
+
+# Service worker se NIKAD ne smije posluživati iz predmemorije.
+# Ako se zaglavi stara kopija, korisnik danima ostane na staroj aplikaciji —
+# točno ono što nam se već dogodilo na GitHub Pagesu.
+/sw.js
+  Cache-Control: no-cache, must-revalidate
+
+# Ni ulazna stranica: ona pokazuje na datoteke s trenutnim hashem.
+/
+  Cache-Control: no-cache, must-revalidate
+/index.html
+  Cache-Control: no-cache, must-revalidate
+
+# Manifest se mijenja rijetko, ali promjena mora stići isti dan.
+/manifest.webmanifest
+  Cache-Control: public, max-age=3600
+
+# Sve u /assets/ ima hash u imenu, pa se sadržaj tog imena nikad ne mijenja —
+# smije se čuvati godinu dana i time se stranica otvara istog trena.
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Ikone se mijenjaju gotovo nikad, ali nemaju hash u imenu.
+/*.png
+  Cache-Control: public, max-age=86400

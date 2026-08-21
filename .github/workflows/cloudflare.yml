@@ -1,0 +1,62 @@
+# Objava na Cloudflare iz GitHub Actionsa — https://prehrana-app.pages.dev
+#
+# Zašto ovako, a ne Cloudflareovom vezom na Git: ta se veza već raskinula i
+# stranica je danima posluživala stariji build a da to nigdje nije pisalo.
+# Ovdje GitHub gura gotov `dist/` prema Cloudflareu, pa nema ničega što bi se
+# tiho prekinulo — ako objava ne prođe, gradnja pocrveni.
+#
+# Objavljuje se tek nakon što `eslint` i svi testovi prođu.
+#
+# Traži dvoje, jednokratno:
+#   secrets.CLOUDFLARE_API_TOKEN  — token s pravom "Cloudflare Pages: Edit"
+#   vars.CLOUDFLARE_ACCOUNT_ID    — ID računa (vidi se u Cloudflare nadzornoj ploči)
+name: Objava na Cloudflare
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+concurrency:
+  group: cloudflare
+  cancel-in-progress: true
+
+jobs:
+  objava:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          # Verzija se čita iz .nvmrc, pa je na jednom mjestu za sve alate.
+          node-version-file: '.nvmrc'
+          cache: npm
+
+      - name: Instalacija
+        run: npm ci
+
+      - name: Provjera koda
+        run: npx eslint .
+
+      - name: Testovi
+        run: npx vitest run
+
+      - name: Gradnja
+        run: npm run build
+        env:
+          # Bez ovih varijabli aplikacija radi, ali bez zajedničke obitelji —
+          # gumb "Prijavi se" tada uopće ne nudi prijavu.
+          VITE_GOOGLE_CLIENT_ID: ${{ vars.GOOGLE_CLIENT_ID }}
+          VITE_GOOGLE_API_KEY: ${{ vars.GOOGLE_API_KEY }}
+          VITE_GOOGLE_DOZVOLJENI: ${{ vars.GOOGLE_DOZVOLJENI }}
+
+      - name: Objava
+        # Dok token nije postavljen, korak se preskače umjesto da svaki push
+        # završi crvenim.
+        if: ${{ secrets.CLOUDFLARE_API_TOKEN != '' }}
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy dist --project-name=prehrana-app --branch=master

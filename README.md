@@ -4,7 +4,10 @@ Aplikacija za planiranje obiteljske prehrane i praćenje unosa hranjivih tvari.
 Radi u pregledniku, bez servera i bez registracije — **podaci nikad ne napuštaju
 tvoj uređaj**, čuvaju se u `localStorage`.
 
-**Živa verzija: https://doxmaster.github.io/prehrana-app/**
+**Živa verzija: https://prehrana-app.pages.dev**
+
+Zaključana je na popis dopuštenih Google računa; podaci obitelji putuju kroz
+jednu datoteku na Google Driveu vlasnika, ne kroz nikakav poslužitelj.
 
 ## Kako je zamišljena
 
@@ -38,8 +41,9 @@ npm run build        # produkcijska verzija u dist/
 npm run build:artefakt   # cijela aplikacija u JEDNOJ HTML datoteci
 ```
 
-Push na `master` sam objavljuje novu verziju — ali tek ako `eslint` i svi testovi
-prođu.
+Push na `master` objavljuje novu verziju. Cloudflare gradi i poslužuje stranicu;
+GitHub Actions uz to vrti `eslint` i sve testove, pa se pokvarena verzija vidi
+odmah.
 
 ## Podaci žive uz podrijetlo stranice
 

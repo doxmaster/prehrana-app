@@ -1,5 +1,10 @@
 import { describe, expect, it } from 'vitest'
-import { dopustenEmail, porukaPrijave } from '../src/services/google'
+import {
+  dopustenEmail,
+  izgledaKaoEmail,
+  porukaPrijave,
+  putanjaDijeljenja,
+} from '../src/services/google'
 
 describe('popis dopuštenih računa', () => {
   const popis = ['darijo@gmail.com', 'ana@gmail.com']
@@ -42,5 +47,41 @@ describe('poruke pri prijavi', () => {
 
   it('bez koda daje opću poruku', () => {
     expect(porukaPrijave()).toBe('Prijava nije dovršena.')
+  })
+})
+
+/**
+ * Oblik putanje za dijeljenje.
+ *
+ * Ovdje je vec bila greska: fileId je bio poslan kao parametar umjesto u
+ * putanji, pa je Google vracao 404 i "Pozovi ukucana" nije radilo.
+ */
+describe('dijeljenje datoteke', () => {
+  it('fileId ide u putanju, ne kao parametar', () => {
+    const p = putanjaDijeljenja('abc123')
+    expect(p).toContain('files/abc123/permissions')
+    expect(p).not.toContain('fileId=')
+  })
+
+  it('šalje obavijest e-poštom', () => {
+    expect(putanjaDijeljenja('abc')).toContain('sendNotificationEmail=true')
+  })
+
+  it('id sa znakovima koji trebaju kodiranje ne razbija putanju', () => {
+    expect(putanjaDijeljenja('a/b?c')).toContain('files/a%2Fb%3Fc/permissions')
+  })
+})
+
+describe('provjera adrese', () => {
+  it('prihvaća uobičajene adrese', () => {
+    expect(izgledaKaoEmail('helena.cekovic.dolcic@gmail.com')).toBe(true)
+    expect(izgledaKaoEmail('  darijo@gmail.com ')).toBe(true)
+  })
+
+  it('odbija ono što nije adresa', () => {
+    expect(izgledaKaoEmail('helena')).toBe(false)
+    expect(izgledaKaoEmail('helena@gmail')).toBe(false)
+    expect(izgledaKaoEmail('helena @gmail.com')).toBe(false)
+    expect(izgledaKaoEmail('')).toBe(false)
   })
 })

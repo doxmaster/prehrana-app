@@ -249,6 +249,9 @@ export function porukaGreske(status: number, tijelo: string): string {
   if (status === 403 && /insufficient|scope/i.test(tijelo)) {
     return 'Google nije dao dovoljna prava. Odjavi se i prijavi ponovno, pa pristani na sve stavke.'
   }
+  if (/invalidSharingRequest/i.test(tijelo) || razlog === 'invalidSharingRequest') {
+    return 'Google ne prihvaća tu adresu za dijeljenje — provjeri je li točna i pripada li Google računu.'
+  }
   if (status === 404) {
     return 'Obiteljska datoteka nije nađena — možda je obrisana ili ti pristup više nije dan.'
   }
@@ -325,11 +328,31 @@ export async function zapisiDatoteku(fileId: string, sadrzaj: string): Promise<v
 }
 
 /** Daje članu obitelji pravo pisanja po datoteci. */
+/**
+ * Putanja za dijeljenje datoteke.
+ *
+ * Izdvojeno i testirano jer je ovdje vec bila greska koju se tesko primijeti:
+ * `fileId` u Drive API-ju ide U PUTANJU, ne kao parametar. S parametrom se
+ * pogada nepostojeca adresa, Google vrati 404, a poruka onda krivo tvrdi da
+ * datoteka ne postoji.
+ */
+export function putanjaDijeljenja(fileId: string): string {
+  return `drive/v3/files/${encodeURIComponent(fileId)}/permissions?sendNotificationEmail=true&fields=id`
+}
+
+/** Gruba provjera adrese — da tipfeler ne zavrsi kao Googleova greska. */
+export function izgledaKaoEmail(email: string): boolean {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email.trim())
+}
+
 export async function podijeli(fileId: string, email: string): Promise<void> {
-  await drive(`drive/v3/permissions?fileId=${fileId}&sendNotificationEmail=true`, {
+  if (!izgledaKaoEmail(email)) {
+    throw new GoogleGreska(`"${email}" ne izgleda kao e-mail adresa.`)
+  }
+  await drive(putanjaDijeljenja(fileId), {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ role: 'writer', type: 'user', emailAddress: email }),
+    body: JSON.stringify({ role: 'writer', type: 'user', emailAddress: email.trim() }),
   })
 }
 

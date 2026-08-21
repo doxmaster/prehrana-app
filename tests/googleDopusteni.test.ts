@@ -3,6 +3,7 @@ import {
   brojProjekta,
   dopustenEmail,
   izgledaKaoEmail,
+  otisakKljuca,
   porukaPrijave,
   porukaPoziva,
   putanjaDijeljenja,
@@ -138,5 +139,30 @@ describe('broj projekta iz client ID-a', () => {
 
   it('prazan client ID ne ruši ništa', () => {
     expect(brojProjekta('')).toBe('')
+  })
+})
+
+/**
+ * Otisak kljuca.
+ *
+ * Kad Googleov birac javi "developer key is invalid", jedino pitanje koje
+ * vrijedi jest koristi li aplikacija onaj kljuc koji mislis. Otisak to
+ * odgovara bez pokazivanja cijele vrijednosti.
+ */
+describe('otisak ključa', () => {
+  it('pokazuje početak, kraj i duljinu', () => {
+    const o = otisakKljuca('AIzaSyAekZHbXXXXXXXXXXXXXXXXXXXXXI2CyBg')
+    expect(o).toContain('AIzaSyAekZ')
+    expect(o).toContain('CyBg')
+    expect(o).toContain('39')
+  })
+
+  it('ne otkriva sredinu ključa', () => {
+    expect(otisakKljuca('AIzaSyAekZHbTAJNASREDINAXXXXXXXXI2CyBg')).not.toContain('TAJNASREDINA')
+  })
+
+  it('prazno i prekratko imenuje kao takvo', () => {
+    expect(otisakKljuca('')).toBe('nema ga')
+    expect(otisakKljuca('AIza')).toContain('prekratak')
   })
 })

@@ -57,11 +57,19 @@ export function procitajPostavke(): GooglePostavke {
   } catch {
     // Pokvaren zapis ne smije srusiti karticu Postavke.
   }
+  /*
+   * Ugradeni kljuc ima PREDNOST nad rucno upisanim.
+   *
+   * Obrnuto je izgledalo praktičnije, ali znaci da jedna stara ili pogresna
+   * vrijednost u pregledniku tiho nadjaca ispravnu iz builda — i onda birac
+   * javlja "developer key is invalid" a u konzoli je sve uredno. Rucni upis
+   * ostaje za instalacije koje ugradene kljuceve nemaju.
+   */
+  const ugradenClient = import.meta.env.VITE_GOOGLE_CLIENT_ID ?? ''
+  const ugradenKey = import.meta.env.VITE_GOOGLE_API_KEY ?? ''
   return {
-    // Vrijednost iz builda je zadana, a rucni upis je nadjacava — tako se moze
-    // isprobati bez ponovne gradnje.
-    clientId: spremljeno.clientId || (import.meta.env.VITE_GOOGLE_CLIENT_ID ?? ''),
-    apiKey: spremljeno.apiKey || (import.meta.env.VITE_GOOGLE_API_KEY ?? ''),
+    clientId: ugradenClient || spremljeno.clientId || '',
+    apiKey: ugradenKey || spremljeno.apiKey || '',
     ...(spremljeno.fileId ? { fileId: spremljeno.fileId } : {}),
   }
 }
@@ -91,6 +99,18 @@ export function dopusteneAdrese(): string[] {
 export function dopustenEmail(email: string, popis: readonly string[]): boolean {
   if (!popis.length) return true
   return popis.includes(email.trim().toLowerCase())
+}
+
+/**
+ * Kratki otisak kljuca za usporedbu s Googleovom konzolom.
+ *
+ * Pun kljuc se ne pokazuje bez potrebe, a ovoliko je dovoljno da se u sekundi
+ * vidi koristi li aplikacija onaj kljuc koji mislis da koristi.
+ */
+export function otisakKljuca(kljuc: string): string {
+  if (!kljuc) return 'nema ga'
+  if (kljuc.length < 12) return 'prekratak — nije ispravan ključ'
+  return `${kljuc.slice(0, 10)}…${kljuc.slice(-4)} (${kljuc.length} znakova)`
 }
 
 export function kljuceviUgradeni(): boolean {

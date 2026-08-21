@@ -205,11 +205,20 @@ function Podesavanje({
     <div style={{ marginTop: 10 }}>
       {ugradeno && (
         <p className="muted small" style={{ marginTop: 0 }}>
-          Ova stranica već ima svoje ključeve — ništa ne moraš upisivati. Polja ispod trebaju samo
-          ako aplikaciju postavljaš na vlastitu adresu, jer ključevi vrijede za točno određenu
-          adresu.
+          Ova stranica već ima svoje ključeve — ništa ne moraš upisivati, a upisano se{' '}
+          <b>zanemaruje</b>. Polja ispod trebaju samo ako aplikaciju postavljaš na vlastitu adresu.
         </p>
       )}
+      {/*
+        Otisak sluzi jednoj stvari: kad Google javi "developer key is invalid",
+        ovdje se u sekundi vidi koristi li aplikacija bas onaj kljuc koji je u
+        konzoli — bez pokazivanja cijele vrijednosti.
+      */}
+      <p className="muted small" style={{ marginTop: 0 }}>
+        Ključ u upotrebi: <code>{google.otisakKljuca(postavke.apiKey)}</code>
+        <br />
+        Usporedi s <i>Show key</i> u Google konzoli; ako se razlikuje, gradnja ima staru vrijednost.
+      </p>
       <p className="muted small" style={{ marginTop: 0 }}>
         U <b>console.cloud.google.com</b> napravi projekt, uključi <i>Google Drive API</i> i{' '}
         <i>Google Picker API</i>, pa pod <i>Credentials</i> stvori <b>OAuth client ID</b> (tip: Web)

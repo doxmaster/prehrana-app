@@ -391,6 +391,8 @@ interface PickerBuilder {
   addView(v: unknown): PickerBuilder
   setOAuthToken(t: string): PickerBuilder
   setDeveloperKey(k: string): PickerBuilder
+  /** Broj projekta; bez njega odabir ne dodjeljuje pravo na datoteku. */
+  setAppId(id: string): PickerBuilder
   setCallback(cb: (d: { action: string; docs?: { id: string }[] }) => void): PickerBuilder
   build(): { setVisible(v: boolean): void }
 }
@@ -403,8 +405,19 @@ interface GapiGlobal {
  * podijelio. Bez toga aplikacija tu datoteku ne smije ni vidjeti — to je cijena
  * uskog opsega i, po meni, dobra cijena.
  */
+/**
+ * Broj projekta iz client ID-a — dio prije crtice.
+ *
+ * Birac ga trazi kao `appId`: bez njega odabir datoteke NE dodjeljuje
+ * aplikaciji pravo na nju, pa se datoteka odabere a citanje svejedno padne.
+ * Cita se iz client ID-a da se ne mora upisivati jos jedna vrijednost.
+ */
+export function brojProjekta(clientId: string): string {
+  return clientId.split('-')[0] ?? ''
+}
+
 export async function odaberiDatoteku(): Promise<string | null> {
-  const { apiKey } = procitajPostavke()
+  const { apiKey, clientId } = procitajPostavke()
   if (!apiKey) throw new GoogleGreska('Nije upisan Google API ključ (potreban za odabir datoteke).')
   if (!token) await pristup()
 
@@ -419,21 +432,46 @@ export async function odaberiDatoteku(): Promise<string | null> {
     }
   ).google?.picker as unknown as {
     PickerBuilder: new () => PickerBuilder
-    DocsView: new () => { setIncludeFolders(v: boolean): unknown; setMode(m: unknown): unknown }
+    DocsView: new () => {
+      setIncludeFolders(v: boolean): unknown
+      setMode(m: unknown): unknown
+      setOwnedByMe(v: boolean): { setLabel?(t: string): unknown }
+    }
     ViewId: { DOCS: unknown }
     Action: { PICKED: string }
   }
   if (!picker) throw new GoogleGreska('Googleov birač nije dostupan.')
 
-  return new Promise<string | null>((resolve) => {
-    const view = new picker.DocsView()
+  return new Promise<string | null>((resolve, reject) => {
+    /*
+     * Dva prikaza, i to je bitno: onaj tko se PRIDRUZUJE obitelji nije vlasnik
+     * datoteke — ona je kod njega pod "Dijeljeno sa mnom". Sa samo zadanim
+     * prikazom (moj Drive) je jednostavno ne bi nasao.
+     */
+    const mojDrive = new picker.DocsView()
+    mojDrive.setIncludeFolders(false)
+    const dijeljeno = new picker.DocsView()
+    dijeljeno.setIncludeFolders(false)
+    dijeljeno.setOwnedByMe(false)
+
     new picker.PickerBuilder()
-      .addView(view)
+      .addView(dijeljeno)
+      .addView(mojDrive)
       .setOAuthToken(token!)
       .setDeveloperKey(apiKey)
+      .setAppId(brojProjekta(clientId))
       .setCallback((d) => {
         if (d.action === picker.Action.PICKED) resolve(d.docs?.[0]?.id ?? null)
         else if (d.action === 'cancel') resolve(null)
+        else if (d.action === 'error') {
+          reject(
+            new GoogleGreska(
+              'Googleov birač javlja grešku s API ključem. U Google konzoli provjeri: ' +
+                'je li uključen Google Picker API, je li ključ ograničen na TU adresu ' +
+                'stranice i obuhvaća li mu popis dopuštenih API-ja Picker.',
+            ),
+          )
+        }
       })
       .build()
       .setVisible(true)

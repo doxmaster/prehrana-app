@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import {
+  brojProjekta,
   dopustenEmail,
   izgledaKaoEmail,
   porukaPrijave,
@@ -119,5 +120,23 @@ describe('poruka poziva', () => {
 
   it('bez poruke se ne šalje prazan parametar', () => {
     expect(putanjaDijeljenja('abc')).not.toContain('emailMessage')
+  })
+})
+
+/**
+ * Broj projekta za Googleov birac.
+ *
+ * Bez `appId` odabir datoteke ne dodjeljuje aplikaciji pravo na nju: birac se
+ * zatvori kao da je sve u redu, a citanje poslije padne.
+ */
+describe('broj projekta iz client ID-a', () => {
+  it('uzima dio prije crtice', () => {
+    expect(brojProjekta('527960598577-pjvca0mtvku8.apps.googleusercontent.com')).toBe(
+      '527960598577',
+    )
+  })
+
+  it('prazan client ID ne ruši ništa', () => {
+    expect(brojProjekta('')).toBe('')
   })
 })

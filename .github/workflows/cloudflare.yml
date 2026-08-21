@@ -24,6 +24,10 @@ concurrency:
 jobs:
   objava:
     runs-on: ubuntu-latest
+    # Tajna se prepisuje u okolinu jer kontekst `secrets` NIJE dopusten u `if`
+    # uvjetu koraka — GitHub takav workflow odbija kao neispravan.
+    env:
+      CF_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
     steps:
       - uses: actions/checkout@v4
 
@@ -54,9 +58,9 @@ jobs:
       - name: Objava
         # Dok token nije postavljen, korak se preskače umjesto da svaki push
         # završi crvenim.
-        if: ${{ secrets.CLOUDFLARE_API_TOKEN != '' }}
+        if: env.CF_TOKEN != ''
         uses: cloudflare/wrangler-action@v3
         with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          apiToken: ${{ env.CF_TOKEN }}
           accountId: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
           command: pages deploy dist --project-name=prehrana-app --branch=master

@@ -1,13 +1,22 @@
 # 🥗 Prehrana
 
 Aplikacija za planiranje obiteljske prehrane i praćenje unosa hranjivih tvari.
-Radi u pregledniku, bez servera i bez registracije — **podaci nikad ne napuštaju
-tvoj uređaj**, čuvaju se u `localStorage`.
+Radi u pregledniku, bez servera i bez registracije.
 
 **Živa verzija: https://prehrana-app.pages.dev**
 
-Zaključana je na popis dopuštenih Google računa; podaci obitelji putuju kroz
-jednu datoteku na Google Driveu vlasnika, ne kroz nikakav poslužitelj.
+### Gdje su podaci
+
+**Bez prijave** — isključivo u pregledniku tog uređaja (`localStorage`). Ne
+odlaze nikamo, ni tebi ni ikome drugome, i nema ih tko izgubiti osim tebe.
+
+**S prijavom u obitelj** — uz to i u **jednoj datoteci na Google Driveu
+vlasnika obitelji**, da bi ukućani vidjeli isto. To je jedino mjesto izvan
+uređaja; nema posrednika, tuđeg poslužitelja ni analitike. Aplikacija od cijelog
+Drivea vidi samo tu jednu datoteku (opseg `drive.file`).
+
+Prijava je dobrovoljna: dok je ne uključiš, aplikacija radi u cijelosti i ništa
+ne šalje.
 
 ## Kako je zamišljena
 

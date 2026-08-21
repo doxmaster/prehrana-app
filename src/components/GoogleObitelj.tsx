@@ -2,6 +2,7 @@ import { useState } from 'react'
 import * as google from '../services/google'
 import type { UskladIshod } from '../services/sinkronizacija'
 import { useGoogleObitelj } from '../store/googleObitelj'
+import { toast } from '../store/dialogs'
 
 /**
  * Kartica u Postavkama: podesavanje i cijela slika stanja.
@@ -11,8 +12,9 @@ import { useGoogleObitelj } from '../store/googleObitelj'
  * ukucanima, pridruzivanje — i objasnjenje kako to skupa radi.
  */
 export function GoogleObitelj() {
-  const { postavke, tko, radi, zadnje, prijava, sinkroniziraj, pozovi, pridruzi, odjava } =
+  const { postavke, tko, radi, zadnje, poziv, prijava, sinkroniziraj, pozovi, pridruzi, odjava } =
     useGoogleObitelj()
+  const zatvoriPoziv = useGoogleObitelj((s) => s.zatvoriPoziv)
   const spremiKljuceve = useGoogleObitelj((s) => s.spremiKljuceve)
   const [otvorenoPodesavanje, setOtvorenoPodesavanje] = useState(false)
 
@@ -88,6 +90,7 @@ export function GoogleObitelj() {
             )}
           </div>
 
+          {poziv && <Poziv tekst={poziv} onZatvori={zatvoriPoziv} />}
           {zadnje && <Sazetak ishod={zadnje} />}
         </>
       )}
@@ -102,6 +105,47 @@ export function GoogleObitelj() {
         </summary>
         <Podesavanje postavke={postavke} onSpremi={spremiKljuceve} ugradeno={ugradeno} />
       </details>
+    </div>
+  )
+}
+
+/**
+ * Tekst poziva za rucno slanje.
+ *
+ * Googleova obavijest ne stigne uvijek — kad osoba vec ima pristup, nove nema.
+ * Ovo je zato jedini put koji sigurno radi: kopiras i posaljes kako ti odgovara.
+ */
+function Poziv({ tekst, onZatvori }: { tekst: string; onZatvori: () => void }) {
+  return (
+    <div className="banner" style={{ marginTop: 10, marginBottom: 0 }}>
+      <b>Pošalji ovo ukućaninu</b>
+      <p className="muted small" style={{ margin: '4px 0 8px' }}>
+        Pristup je već dan. Google ponekad ne pošalje obavijest — osobito ako je osoba pristup imala
+        i prije — pa je najsigurnije poslati porukom.
+      </p>
+      <textarea
+        readOnly
+        rows={7}
+        value={tekst}
+        onFocus={(e) => e.currentTarget.select()}
+        style={{ width: '100%', fontSize: 12 }}
+      />
+      <div className="row" style={{ marginTop: 6 }}>
+        <button
+          className="btn small"
+          onClick={() => {
+            navigator.clipboard
+              .writeText(tekst)
+              .then(() => toast('Poziv kopiran.'))
+              .catch(() => toast('Kopiranje nije uspjelo — označi tekst i kopiraj ručno.'))
+          }}
+        >
+          ⧉ Kopiraj poziv
+        </button>
+        <button className="btn secondary small" onClick={onZatvori}>
+          Sakrij
+        </button>
+      </div>
     </div>
   )
 }

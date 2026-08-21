@@ -24,6 +24,8 @@ interface GoogleObiteljStanje {
   /** Neki poziv prema Googleu je u tijeku — gumbi se gase. */
   radi: boolean
   zadnje: UskladIshod | null
+  /** Tekst zadnjeg poziva, za slanje rukom. */
+  poziv: string | null
 
   podesen: () => boolean
   spremiKljuceve: (izmjena: Partial<google.GooglePostavke>) => void
@@ -32,6 +34,7 @@ interface GoogleObiteljStanje {
   pozovi: () => Promise<void>
   pridruzi: () => Promise<void>
   odjava: () => void
+  zatvoriPoziv: () => void
 }
 
 function greska(err: unknown): void {
@@ -43,6 +46,7 @@ export const useGoogleObitelj = create<GoogleObiteljStanje>((set, get) => ({
   tko: null,
   radi: false,
   zadnje: null,
+  poziv: null,
 
   podesen: () => get().postavke.clientId.length > 0,
 
@@ -126,11 +130,16 @@ export const useGoogleObitelj = create<GoogleObiteljStanje>((set, get) => ({
     set({ radi: true })
     try {
       const pozivatelj = get().tko?.ime ?? 'Netko iz tvoje obitelji'
-      await google.podijeli(fileId, email, google.porukaPoziva(pozivatelj, location.origin))
-      toast(
-        `Poziv poslan na ${email}. U e-pošti piše što treba kliknuti — ` +
-          'aplikaciju otvara na istoj adresi i prijavljuje se tim računom.',
-      )
+      const tekst = google.porukaPoziva(pozivatelj, location.origin)
+      await google.podijeli(fileId, email, tekst)
+      /*
+       * Googleova obavijest nije pouzdana: kad osoba VEC ima pristup, nova se
+       * ne salje, a i kad se posalje zna zavrsiti kao suha poruka o dijeljenju
+       * datoteke. Zato se isti tekst uvijek ponudi i za rucno slanje — porukom,
+       * Viberom, kako god. Pristup je svejedno dan.
+       */
+      set({ poziv: tekst })
+      toast(`${email} sada ima pristup. Poruku ispod možeš poslati i sam.`)
     } catch (err) {
       greska(err)
     } finally {
@@ -160,6 +169,8 @@ export const useGoogleObitelj = create<GoogleObiteljStanje>((set, get) => ({
       set({ radi: false })
     }
   },
+
+  zatvoriPoziv: () => set({ poziv: null }),
 
   odjava: () => {
     google.odjava()

@@ -1,0 +1,16 @@
+{
+  // Objava statične stranice preko Cloudflare Workersa.
+  //
+  // Cloudflare je Pages spojio u Workers, pa noviji tok ("Create a Worker" iz
+  // Git repozitorija) traži ovu datoteku — bez nje `wrangler deploy` ne zna
+  // što objavljuje. Ovdje nema koda: Worker samo poslužuje ono što Vite složi
+  // u dist/, uključujući pravila iz public/_headers.
+  "name": "prehrana",
+  "compatibility_date": "2026-08-01",
+  "assets": {
+    "directory": "./dist",
+    // Aplikacija je jedna stranica bez poslužiteljskih ruta; nepoznata adresa
+    // vraća index.html umjesto 404, pa dijeljeni link uvijek otvori aplikaciju.
+    "not_found_handling": "single-page-application"
+  }
+}

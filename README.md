@@ -105,6 +105,27 @@ Dvije brave, neovisne jedna o drugoj:
 U tuđu obitelj se ne može ući samovoljno: pristup datoteci daje isključivo
 vlasnik, pozivom na točnu adresu.
 
+### Postavke u Google konzoli
+
+Zapisano jer se sve ovo mora poklopiti, a kad se ne poklopi, poruka o grešci
+rijetko pokazuje na pravo mjesto.
+
+| Gdje                                                         | Što                                                    |
+| ------------------------------------------------------------ | ------------------------------------------------------ |
+| _APIs & Services → Library_                                  | uključeni **Google Drive API** i **Google Picker API** |
+| _Credentials → OAuth client → Authorised JavaScript origins_ | adresa objavljene aplikacije                           |
+| _Credentials → API key → API restrictions_                   | Drive API + Picker API                                 |
+| _Credentials → API key → Application restrictions_           | vidi upozorenje niže                                   |
+| _Google Auth Platform → Audience_                            | način _Testing_ + adrese ukućana pod _Test users_      |
+
+**Ograničenje ključa na adrese ume razbiti birač datoteka.** Kod nas je _Websites_
+s ispravno upisanom adresom svejedno davao „The API developer key is invalid",
+a s _None_ je proradilo. Ako birač zapne, to je prvo mjesto koje treba isključiti
+— tako se u jednom potezu zna je li uzrok u obrascu adrese ili drugdje.
+
+Promjene na ključu Google širi **do pet minuta**; testiranje prije toga mjeri
+staro stanje.
+
 ## Podaci žive uz podrijetlo stranice
 
 Svaka adresa ima **svoj odvojeni skup podataka** — ono što upišeš na živoj
